@@ -17,7 +17,7 @@ export default defineConfig({
         lib: {
             // Could also be a dictionary or array of multiple entry points
             entry: resolve(__dirname, 'src/lib/index.ts'),
-            name: 'Library name',
+            name: 'Sentry Toolbar',
             // the proper extensions will be added
             fileName: 'index',
         },
@@ -28,9 +28,6 @@ export default defineConfig({
             output: {
                 // Provide global variables to use in the UMD build
                 // for externalized deps
-                globals: {
-                    react: 'React',
-                },
             },
         },
     },
