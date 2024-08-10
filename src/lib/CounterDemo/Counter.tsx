@@ -1,6 +1,5 @@
 import type {FC} from 'react';
 import {useEffect} from 'react';
-import {throttle} from 'lodash';
 
 import useLogic from './useLogic';
 
@@ -13,10 +12,10 @@ export const Counter: FC<Props> = ({initialValue = 0}) => {
     const {count, incrementCount} = useLogic(initialValue);
 
     useEffect(() => {
-        const runner = throttle(() => {
-            console.log('throttle');
+        const timeout = setTimeout(() => {
+            console.log('did mount and wait 10ms');
         }, 10);
-        runner();
+        return () => clearTimeout(timeout);
     }, []);
 
     return (
