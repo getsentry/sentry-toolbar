@@ -1,5 +1,6 @@
 export interface Configuration {
     apiPrefix: string;
+    cdn: string;
     environment: string | string[];
     organizationSlug: string;
     placement: 'right-edge' | 'bottom-right-corner';
