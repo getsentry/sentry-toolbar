@@ -105,7 +105,7 @@ export default [
             ],
             /* Required by vite */
             'react-refresh/only-export-components': ['warn', {allowConstantExport: true}],
-            '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+            '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
             /**
              * Allow unused variables with names stating with '_'
              * @see https://eslint.org/docs/latest/rules/no-unused-vars

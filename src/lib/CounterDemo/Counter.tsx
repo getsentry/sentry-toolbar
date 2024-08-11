@@ -3,10 +3,10 @@ import {useEffect} from 'react';
 
 import useLogic from './useLogic';
 
-export type Props = {
+export interface Props {
     /** Set initial value */
     initialValue?: number;
-};
+}
 
 export const Counter: FC<Props> = ({initialValue = 0}) => {
     const {count, incrementCount} = useLogic(initialValue);
