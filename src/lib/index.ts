@@ -1,5 +1,3 @@
-import './index.css';
-
 import mount from './mount';
 import type {Configuration} from './types';
 
