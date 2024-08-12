@@ -34,7 +34,10 @@
     "pnpm": "9.7.0"
   },
   "scripts": {
-    "dev": "vite",
+    "dev:standalone": "vite",
+    "dev:server": "cd mock/server && pnpm start",
+    "dev:watch": "nodemon --exec rm -rf ./vite.config.ts.timestamp-* && pnpm build:lib --ext ts,tsx --ignore dist/",
+    "dev": "run-p dev:server dev:watch",
     "clean:lib": "rm -rf dist",
     "build:lib": "vite build",
     "build": "run-s clean:lib build:lib",
@@ -52,6 +55,7 @@
     "lint-staged": "lint-staged"
   },
   "dependencies": {
+    "@floating-ui/react": "^0.26.22",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

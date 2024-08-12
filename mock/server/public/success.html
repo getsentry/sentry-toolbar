@@ -1,0 +1,23 @@
+<html>
+  <body>
+    You are logged in!
+
+    <script type="application/javascript">
+      const customerOrigin = 'http://localhost:3000';
+
+      // Popup window scripts.
+      if (window.opener) {
+        const hash = window.location.hash;
+        const items = hash.substring(1).split("&");
+        for (const i = 0; i < items.length; i++) {
+          const param = items[i].split("=");
+          if (param[0] == "access_token") {
+            console.log('sending', {param});
+            window.opener.postMessage(param[1], customerOrigin);
+            window.close();
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -6,6 +6,7 @@
     "src",
     ".storybook/*.ts",
     ".eslintrc.cjs",
+    "mock/**/*.js",
     "templates/**/*.ts",
     "templates/**/*.tsx"
   ],

@@ -1,28 +1,23 @@
 import {useEffect, type FC} from 'react';
 
-import {SentryToolbar} from '@/lib';
+import * as SentryToolbar from '@/lib';
 import './index.css';
 
 const App: FC = () => {
     useEffect(() => {
-        const promise = SentryToolbar.init({
+        return SentryToolbar.init({
             apiPrefix: '/api/0',
-            cdn: 'http://localhost:8888',
-            placement: 'right-edge',
-            rootNode: document.body,
             environment: ['prod'],
             organizationSlug: 'sentry',
+            placement: 'right-edge',
             projectId: 11276,
             projectPlatform: 'javascript',
             projectSlug: 'javascript',
+            rootNode: document.body,
         });
-
-        return () => {
-            promise.then(cleanup => cleanup());
-        };
     }, []);
 
-    return <div>Hello world, this is a test app</div>;
+    return <div>Test app to load SentryToolbar directly, no CDN server involved.</div>;
 };
 
 export default App;

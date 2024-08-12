@@ -1,0 +1,21 @@
+{
+  "private": true,
+  "name": "mock-server",
+  "version": "0.0.0",
+  "main": "index.js",
+  "engines": {
+    "node": ">=18",
+    "npm": "USE PNPM",
+    "pnpm": ">=9",
+    "yarn": "USE PNPM"
+  },
+  "volta": {
+    "extends": "../../package.json"
+  },
+  "scripts": {
+    "start": "PORT=8080 yarn node index.js"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {}
+}

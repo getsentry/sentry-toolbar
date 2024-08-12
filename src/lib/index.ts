@@ -1,13 +1,12 @@
+import mount from './mount';
 import type {Configuration} from './types';
 
-interface InitProps extends Configuration {
-    rootNode?: HTMLElement;
+export interface InitProps extends Configuration {
+    rootNode?: HTMLElement | (() => HTMLElement);
 }
+export type Cleanup = () => void;
 
-export const SentryToolbar = {
-    async init({rootNode, ...config}: InitProps) {
-        console.log('dynamic import mount()');
-        const {default: mount} = await import('./mount');
-        return mount(rootNode ?? document.body, config);
-    },
-};
+export function init({rootNode, ...config}: InitProps): Cleanup {
+    const root = typeof rootNode === 'function' ? rootNode() : rootNode;
+    return mount(root ?? document.body, config);
+}

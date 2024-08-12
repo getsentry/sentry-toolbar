@@ -1,7 +1,5 @@
 # @sentry/toolbar
 
-
-
 ## Development
 
 ### Setup
@@ -13,12 +11,27 @@
 
 A storybook is available by running: `pnpm start:docs` and is published to https://getsentry.github.io/sentry-toolbar/
 
-To test the package locally, inside the test app, set config values inside of `env/App/App.tsx` and run `pnpm dev`. The config values should be set for a sentry org which you are able to log in to.
+To test the package locally, inside the test app, set config values inside of `env/App/App.tsx` and run `pnpm dev:standalone`. The config values should be set for a sentry org which you are able to log in to.
 Note that features like `useCurrentTransactionName` will not match up between the example app and your real app.
 
 
 To test the package locally with another project, first setup the other project:
-- `yarn add @sentry/toolbar@link:../sentry-toolbar`
-- `yarn dev` (or whatever command you like that does HMR)
+1. Add or inject `<script src="http://localhost:8080/index.iife.js">` into your app
+2. Call `window.SentryToolbar.init(initProps)` to setup a toolbar instance.
 
-In this repo use `pnpm build` or `pnpm build:lib` to emit js files. You can run that inside of nodemon if you like too: `nodemon --exec pnpm build:lib --ext ts,tsx --ignore dist/`
+In this repo use `pnpm dev` to emit js files, and serve them over a mock CDN. Which will allow the above app setup code to work.
+
+** Be aware that since no files are changing inside your apps codebase, hot-reloading will not work with this setup! **
+The Toolbar will be automatically re-built, so clicking "ctrl+r" or "cmd+r" to refresh the browser will pickup new toolbar changes.
+
+## Production
+
+In production you need to do two things to get the toolbar working:
+1. Add or inject `<script src="http://<THE CDN>/index.iife.js">` into your app
+2. Call `window.SentryToolbar.init(initProps)` to setup a toolbar instance.
+
+#### Conditionally inserting script tag
+
+Sometimes, inside a SPA, you want to conditionally load the script tag before calling the init() method. See docs/conditional-script.md for details.
+
+This will be eventually implemented as an NPM package to benefit react and other SPA sites.

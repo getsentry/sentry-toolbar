@@ -16,8 +16,9 @@ export default defineConfig({
         lib: {
             // Could also be a dictionary or array of multiple entry points
             entry: resolve(__dirname, 'src/lib/index.ts'),
-            name: 'Sentry_Toolbar',
+            name: 'SentryToolbar',
             // formats: ['es', 'umd', 'cjs', 'iife'], // single=['es', 'umd'], multi=['es', 'cjs']
+            formats: ['iife'],
             // the proper extensions will be added
             fileName: 'index',
         },
@@ -25,7 +26,11 @@ export default defineConfig({
             output: {
                 // Provide global variables to use in the UMD build
                 // for externalized deps
+                intro: () => {
+                    return 'exports = window.SentryToolbar || {};';
+                },
             },
+            context: 'window',
         },
     },
     css: {
