@@ -4,7 +4,6 @@ import eslint from '@eslint/js';
 import eslintTS from 'typescript-eslint';
 import tsParser from '@typescript-eslint/parser';
 import pluginImport from 'eslint-plugin-import';
-import pluginSSRFriendly from 'eslint-plugin-ssr-friendly';
 import pluginPrettier from 'eslint-plugin-prettier';
 import pluginTypescript from '@typescript-eslint/eslint-plugin';
 import pluginReactRefresh from 'eslint-plugin-react-refresh';
@@ -47,11 +46,9 @@ export default [
       '@typescript-eslint': pluginTypescript,
       'react-refresh': pluginReactRefresh,
       'react-hooks': fixupPluginRules(pluginReactHooks),
-      'ssr-friendly': fixupPluginRules(pluginSSRFriendly),
     },
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
-      ...pluginSSRFriendly.configs.recommended.rules,
       /**
        * Allow empty arrow functions `() => {}`, while keeping other empty functions restricted
        * @see https://eslint.org/docs/latest/rules/no-empty-function#allow-arrowfunctions
