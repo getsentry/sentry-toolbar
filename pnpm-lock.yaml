@@ -168,6 +168,12 @@ importers:
       tailwindcss:
         specifier: 3.4.7
         version: 3.4.7(ts-node@10.9.2(@types/node@20.10.1)(typescript@5.5.4))
+      tailwindcss-animate:
+        specifier: ^1.0.7
+        version: 1.0.7(tailwindcss@3.4.7(ts-node@10.9.2(@types/node@20.10.1)(typescript@5.5.4)))
+      tailwindcss-react-aria-components:
+        specifier: ^1.1.4
+        version: 1.1.4(tailwindcss@3.4.7(ts-node@10.9.2(@types/node@20.10.1)(typescript@5.5.4)))
       ts-jest:
         specifier: 29.2.4
         version: 29.2.4(@babel/core@7.24.6)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.24.6))(esbuild@0.21.5)(jest@29.7.0(@types/node@20.10.1)(ts-node@10.9.2(@types/node@20.10.1)(typescript@5.5.4)))(typescript@5.5.4)
@@ -5742,6 +5748,16 @@ packages:
   table@6.8.2:
     resolution: {integrity: sha512-w2sfv80nrAh2VCbqR5AK27wswXhqcck2AhfnNW76beQXskGZ1V12GwS//yYVa3d3fcvAip2OUnbDAjW2k3v9fA==}
     engines: {node: '>=10.0.0'}
+
+  tailwindcss-animate@1.0.7:
+    resolution: {integrity: sha512-bl6mpH3T7I3UFxuvDEXLxy/VuFxBk5bbzplh7tXI68mwMokNYd1t9qPBHlnyTwfa4JGC4zP516I1hYYtQ/vspA==}
+    peerDependencies:
+      tailwindcss: '>=3.0.0 || insiders'
+
+  tailwindcss-react-aria-components@1.1.4:
+    resolution: {integrity: sha512-Nu425m0jUJ8yFpM29YpJSTEsEZCo5LNKPmOqEoc5bSqu3Y9vT2oEEXALKkaXu4Ay4y1MQxX6EVdCzPcstg6S7A==}
+    peerDependencies:
+      tailwindcss: '>=3.0.0 || insiders'
 
   tailwindcss@3.4.7:
     resolution: {integrity: sha512-rxWZbe87YJb4OcSopb7up2Ba4U82BoiSGUdoDr3Ydrg9ckxFS/YWsvhN323GMcddgU65QRy7JndC7ahhInhvlQ==}
@@ -13092,6 +13108,14 @@ snapshots:
       slice-ansi: 4.0.0
       string-width: 4.2.3
       strip-ansi: 6.0.1
+
+  tailwindcss-animate@1.0.7(tailwindcss@3.4.7(ts-node@10.9.2(@types/node@20.10.1)(typescript@5.5.4))):
+    dependencies:
+      tailwindcss: 3.4.7(ts-node@10.9.2(@types/node@20.10.1)(typescript@5.5.4))
+
+  tailwindcss-react-aria-components@1.1.4(tailwindcss@3.4.7(ts-node@10.9.2(@types/node@20.10.1)(typescript@5.5.4))):
+    dependencies:
+      tailwindcss: 3.4.7(ts-node@10.9.2(@types/node@20.10.1)(typescript@5.5.4))
 
   tailwindcss@3.4.7(ts-node@10.9.2(@types/node@20.10.1)(typescript@5.5.4)):
     dependencies:

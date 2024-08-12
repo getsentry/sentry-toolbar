@@ -6,5 +6,5 @@ export default {
     theme: {
         extend: {},
     },
-    plugins: [],
+    plugins: [import('tailwindcss-animate'), import('tailwindcss-react-aria-components')],
 };

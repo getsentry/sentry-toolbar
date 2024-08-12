@@ -21,4 +21,4 @@ To test the package locally with another project, first setup the other project:
 - `yarn add @sentry/toolbar@link:../sentry-toolbar`
 - `yarn dev` (or whatever command you like that does HMR)
 
-In this repo use `pnpm build` to emit js files. You can run that inside of nodemon if you like too.
+In this repo use `pnpm build` or `pnpm build:lib` to emit js files. You can run that inside of nodemon if you like too: `nodemon --exec pnpm build:lib --ext ts,tsx --ignore dist/`

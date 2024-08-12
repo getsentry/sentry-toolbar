@@ -6,7 +6,6 @@ import './index.css';
 const App: FC = () => {
     useEffect(() => {
         const promise = SentryToolbar.init({
-            domId: 'test123',
             apiPrefix: '/api/0',
             cdn: 'http://localhost:8888',
             placement: 'right-edge',
