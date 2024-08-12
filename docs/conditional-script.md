@@ -98,19 +98,19 @@ Finally, the callsite itself:
 
 ```typescript fileName=MyReactApp.tsx
 function MyReactApp() {
-    useSentryToolbar({
-        cdn: 'http://localhost:8080',
-        initProps: {
-        apiPrefix: '/api/0',
-        placement: 'right-edge',
-        rootNode: () => document.body,
-        environment: ['prod'],
-        organizationSlug: 'sentry',
-        projectId: 11276,
-        projectPlatform: 'javascript',
-        projectSlug: 'javascript',
-        }
-    });
+  useSentryToolbar({
+    cdn: 'http://localhost:8080',
+    initProps: {
+    apiPrefix: '/api/0',
+    placement: 'right-edge',
+    rootNode: () => document.body,
+    environment: ['prod'],
+    organizationSlug: 'sentry',
+    projectId: 11276,
+    projectPlatform: 'javascript',
+    projectSlug: 'javascript',
+    }
+  });
 
-    return <div>hello world, welcome to my react app</div>;
+  return <div>hello world, welcome to my react app</div>;
 }
