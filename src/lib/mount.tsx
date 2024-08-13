@@ -1,10 +1,10 @@
 import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
-import App from 'toolbar/components/app';
+import App from 'toolbar/components/App';
 import Providers from 'toolbar/components/providers';
 import styles from 'toolbar/index.css?inline'; // will not be injected
 
-import type {Configuration} from 'toolbar/types';
+import type {Configuration} from 'toolbar/types/config';
 
 export default function mount(rootNode: HTMLElement, config: Configuration) {
   const {host, reactMount, portalMount} = buildDom(config);

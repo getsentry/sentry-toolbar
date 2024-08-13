@@ -1,9 +1,10 @@
 import {FloatingPortal} from '@floating-ui/react';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {useMemo, type ReactNode} from 'react';
-import {ConfigContext} from 'toolbar/hooks/ConfigContext';
+import {AuthContextProvider} from 'toolbar/context/AuthContext';
+import {ConfigContext} from 'toolbar/context/ConfigContext';
 
-import type {Configuration} from 'toolbar/types';
+import type {Configuration} from 'toolbar/types/config';
 
 interface Props {
   children: ReactNode;
@@ -15,10 +16,12 @@ export default function Providers({children, config, portalMount}: Props) {
   const queryClient = useMemo(() => new QueryClient({}), []);
 
   return (
-    <ConfigContext.Provider value={config}>
-      <QueryClientProvider client={queryClient}>
-        <FloatingPortal root={portalMount}>{children}</FloatingPortal>
-      </QueryClientProvider>
-    </ConfigContext.Provider>
+    <FloatingPortal root={portalMount}>
+      <ConfigContext.Provider value={config}>
+        <QueryClientProvider client={queryClient}>
+          <AuthContextProvider>{children}</AuthContextProvider>
+        </QueryClientProvider>
+      </ConfigContext.Provider>
+    </FloatingPortal>
   );
 }

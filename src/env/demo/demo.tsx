@@ -10,11 +10,11 @@ const App: FC = () => {
       mountPoint: document.body,
 
       // ConnectionConfig
-      sentryHost: 'http://localhost:8080',
-      sentryApiPrefix: '/api/0',
+      sentryOrigin: 'http://localhost:8080',
+      sentryRegion: undefined,
 
       // FeatureFlagsConfig
-      featureFlags: {},
+      featureFlags: undefined,
 
       // OrgConfig
       organizationIdOrSlug: 'sentry',

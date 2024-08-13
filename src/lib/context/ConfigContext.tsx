@@ -1,14 +1,14 @@
 import {createContext} from 'react';
 
-import type {Configuration} from 'toolbar/types';
+import type {Configuration} from 'toolbar/types/config';
 
 export const ConfigContext = createContext<Configuration>({
   // ConnectionConfig
-  sentryHost: 'https://sentry.io',
-  sentryApiPrefix: '/api/0',
+  sentryOrigin: 'https://sentry.io',
+  sentryRegion: undefined,
 
   // FeatureFlagsConfig
-  featureFlags: {},
+  featureFlags: undefined,
 
   // OrgConfig
   organizationIdOrSlug: '',
