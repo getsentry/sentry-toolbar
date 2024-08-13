@@ -8,7 +8,7 @@ import Providers from './components/providers';
 
 export default function mount(rootNode: HTMLElement, config: Configuration) {
   const host = document.createElement('div');
-  host.id = config.domId ?? 'sentry-devtools';
+  host.id = config.domId ?? 'sentry-toolbar';
 
   const style = document.createElement('style');
   style.innerHTML = styles;

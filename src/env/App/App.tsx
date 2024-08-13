@@ -17,7 +17,7 @@ const App: FC = () => {
     });
   }, []);
 
-  return <div>Test app to load SentryToolbar directly, no CDN server involved.</div>;
+  return <h1>Test App</h1>;
 };
 
 export default App;

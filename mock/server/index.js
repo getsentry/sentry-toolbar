@@ -6,40 +6,51 @@ const fs = require('node:fs/promises');
 const host = "localhost";
 const port = process.env.PORT ?? "8080";
 
+const ALLOW_CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'OPTIONS, GET',
+};
+
 const requestListener = function (req, res) {
   if (req.url.endsWith(".js")) {
-    const corsHeaders = {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
-    };
-
     if (req.method === 'OPTIONS') {
-      res.writeHead(204, corsHeaders);
+      res.writeHead(204, ALLOW_CORS_HEADERS);
       res.end();
       return;
     }
 
-    fs.readFile(__dirname + "/../../dist" + req.url).then((contents) => {
-      console.log('Serving:', req.url);
-      res.setHeader("Content-Type", "application/javascript");
-      res.writeHead(200, corsHeaders);
-      res.end(contents);
-    }).catch(() => {
-      console.log('Unknown:', req.url);
-      res.writeHead(400);
-      res.end();
-    });
-  } else if (req.url.endsWith(".html")) {
-    fs.readFile(__dirname + "/public" + req.url).then((contents) => {
-      console.log('Serving:', req.url);
-      res.setHeader("Content-Type", "text/html");
-      res.writeHead(200);
-      res.end(contents);
-    }).catch(() => {
-      console.log('Unknown:', req.url);
-      res.writeHead(400);
-      res.end();
-    });
+    console.log('Serving:', req.url);
+    serveFile(req, res, {
+      'Content-Type': 'text/html',
+      ...ALLOW_CORS_HEADERS,
+    }, __dirname + "/../../dist" + req.url);
+
+  } else if (req.url === '/login.html') {
+    console.log('Serving:', req.url);
+
+    const referer = req.headers.referer;
+    const accessToken = 'sentry-access-token-hello-world';
+
+    serveTemplate(req, res, {
+      'Content-Type': 'text/html',
+    }, `<html>
+  <body>
+    <!-- We have access to \`Referer\` header to validate the requesting domain -->
+    <a href="/success.html#customer_origin=${encodeURIComponent(referer)}&access_token=${encodeURIComponent(accessToken)}">Login Now</a>
+  </body>
+</html>
+`);
+
+  } else if (req.url === '/success.html') {
+    console.log('Serving:', req.url);
+
+    const referer = req.headers.referer;
+    console.log(req.url, {referer})
+
+    serveFile(req, res, {
+      'Content-Type': 'text/html',
+    }, __dirname + "/public/success.html");
+
   } else {
     console.log('Unknown:', req.url);
     res.writeHead(400);
@@ -47,7 +58,22 @@ const requestListener = function (req, res) {
   }
 };
 
-const server = http.createServer(requestListener);
-server.listen(port, host, () => {
+http.createServer(requestListener).listen(port, host, () => {
   console.log(`Server is running on http://${host}:${port}`);
 });
+
+function serveFile(req, res, headers, filename) {
+  fs.readFile(filename).then((contents) => {
+    res.writeHead(200, headers);
+    res.end(contents);
+  }).catch(() => {
+    console.log('Failed to read:', filename);
+    res.writeHead(400);
+    res.end();
+  });
+}
+
+function serveTemplate(req, res, headers, template) {
+  res.writeHead(200, headers);
+  res.end(template);
+}
