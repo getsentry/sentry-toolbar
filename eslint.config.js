@@ -1,18 +1,18 @@
 // @ts-check
 
+import {fixupPluginRules} from '@eslint/compat';
 import eslint from '@eslint/js';
-import eslintTS from 'typescript-eslint';
+import pluginTypescript from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import pluginImport from 'eslint-plugin-import';
 import pluginPrettier from 'eslint-plugin-prettier';
-import pluginTypescript from '@typescript-eslint/eslint-plugin';
-import pluginReactRefresh from 'eslint-plugin-react-refresh';
-import configReactRecommended from 'eslint-plugin-react/configs/recommended.js';
-import configReactJSXRuntime from 'eslint-plugin-react/configs/jsx-runtime.js';
-import pluginReactHooks from 'eslint-plugin-react-hooks';
-import {fixupPluginRules} from '@eslint/compat';
 import configPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import configReactJSXRuntime from 'eslint-plugin-react/configs/jsx-runtime.js';
+import configReactRecommended from 'eslint-plugin-react/configs/recommended.js';
+import pluginReactHooks from 'eslint-plugin-react-hooks';
+import pluginReactRefresh from 'eslint-plugin-react-refresh';
 import tailwindPlugin from 'eslint-plugin-tailwindcss';
+import eslintTS from 'typescript-eslint';
 
 export default [
   eslint.configs.recommended,
@@ -71,14 +71,18 @@ export default [
       'import/order': [
         'error',
         {
-          groups: ['builtin', 'external', 'internal', ['parent', 'sibling', 'index']],
+          groups: ['builtin', 'external', 'internal', 'type'],
           pathGroups: [
             {
-              pattern: '@/**',
+              pattern: 'toolbar/**',
               group: 'internal',
             },
           ],
           'newlines-between': 'always',
+          alphabetize: {
+            order: 'asc' /* sort in ascending order. Options: ['ignore', 'asc', 'desc'] */,
+            caseInsensitive: true /* ignore case. Options: [true, false] */,
+          },
         },
       ],
       /**

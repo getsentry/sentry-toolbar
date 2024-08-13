@@ -1,29 +1,22 @@
 import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
+import App from 'toolbar/components/app';
+import Providers from 'toolbar/components/providers';
+import styles from 'toolbar/index.css?inline'; // will not be injected
 
-import styles from './index.css?inline'; // will not be injected
-import type {Configuration} from './types';
-import App from './components/app';
-import Providers from './components/providers';
+import type {Configuration} from 'toolbar/types';
 
 export default function mount(rootNode: HTMLElement, config: Configuration) {
-  const host = document.createElement('div');
-  host.id = config.domId ?? 'sentry-toolbar';
+  const {host, reactMount, portalMount} = buildDom(config);
 
-  const style = document.createElement('style');
-  style.innerHTML = styles;
-
-  const reactMount = document.createElement('div');
-  reactMount.dataset.name = 'react-mount';
-  const portalMount = document.createElement('div');
-  portalMount.dataset.name = 'portal-mount';
-
-  const reactRoot = makeReactRoot(reactMount, portalMount, config);
-
-  const shadow = host.attachShadow({mode: 'open'});
-  shadow.appendChild(style);
-  shadow.appendChild(reactMount);
-  shadow.appendChild(portalMount);
+  const reactRoot = createRoot(reactMount);
+  reactRoot.render(
+    <StrictMode>
+      <Providers config={config} portalMount={portalMount}>
+        <App />
+      </Providers>
+    </StrictMode>
+  );
 
   rootNode.appendChild(host);
 
@@ -33,14 +26,25 @@ export default function mount(rootNode: HTMLElement, config: Configuration) {
   };
 }
 
-function makeReactRoot(reactMount: HTMLElement, portalMount: HTMLElement, _config: Configuration) {
-  const root = createRoot(reactMount);
-  root.render(
-    <StrictMode>
-      <Providers portalMount={portalMount}>
-        <App />
-      </Providers>
-    </StrictMode>
-  );
-  return root;
+function buildDom(config: Configuration) {
+  const DOCUMENT = document;
+
+  const host = DOCUMENT.createElement('div');
+  host.id = config.domId ?? 'sentry-toolbar';
+
+  const shadow = host.attachShadow({mode: 'open'});
+
+  const style = DOCUMENT.createElement('style');
+  style.innerHTML = styles;
+  shadow.appendChild(style);
+
+  const reactMount = DOCUMENT.createElement('div');
+  reactMount.dataset.name = 'react-mount';
+  shadow.appendChild(reactMount);
+
+  const portalMount = DOCUMENT.createElement('div');
+  portalMount.dataset.name = 'portal-mount';
+  shadow.appendChild(portalMount);
+
+  return {host, reactMount, portalMount};
 }

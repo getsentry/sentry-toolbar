@@ -1,19 +1,33 @@
-export interface Configuration {
-  apiPrefix: string;
-  environment: string | string[];
-  organizationSlug: string;
-  placement: 'right-edge' | 'bottom-right-corner';
-  projectId: number;
-  projectPlatform: string;
-  projectSlug: string;
-  //   SentrySDK?: typeof SentrySDK;
-  domId?: string;
-  //   featureFlags?: {
-  //     clearOverrides?: () => void;
-  //     getFeatureFlagMap?: () => FeatureFlagMap;
-  //     setOverrideValue?: (name: string, override: FlagValue) => void;
-  //     urlTemplate?: (name: string) => string | undefined;
-  //   };
+import type SentrySDK from '@sentry/types';
 
+interface ConnectionConfig {
+  sentryHost: string;
+  sentryApiPrefix: string;
+}
+
+type FlagValue = boolean | string | number | undefined;
+type FeatureFlagMap = Record<string, {override: FlagValue; value: FlagValue}>;
+interface FeatureFlagsConfig {
+  featureFlags?: {
+    clearOverrides?: () => void;
+    getFeatureFlagMap?: () => FeatureFlagMap;
+    setOverrideValue?: (name: string, override: FlagValue) => void;
+    urlTemplate?: (name: string) => string | undefined;
+  };
+}
+
+interface OrgConfig {
+  organizationIdOrSlug: string | number;
+  projectIdOrSlug: string | number;
+  environment: string | string[];
+}
+
+interface RenderConfig {
+  domId?: string;
+  placement: 'right-edge' | 'bottom-right-corner';
+}
+
+export interface Configuration extends ConnectionConfig, FeatureFlagsConfig, OrgConfig, RenderConfig {
+  SentrySDK?: typeof SentrySDK;
   trackAnalytics?: (props: {eventKey: string; eventName: string}) => void;
 }

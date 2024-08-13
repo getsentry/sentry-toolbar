@@ -23,7 +23,7 @@
 
     /* Aliases */
     "paths": {
-      "@/*": ["./src/*"]
+      "toolbar/*": ["./src/lib/*"]
     }
   },
   "include": ["src", "templates/**/*.ts", "templates/**/*.tsx"],

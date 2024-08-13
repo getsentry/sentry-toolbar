@@ -1,12 +1,13 @@
-import mount from './mount';
-import type {Configuration} from './types';
+import mount from 'toolbar/mount';
+
+import type {Configuration} from 'toolbar/types';
 
 export interface InitProps extends Configuration {
-  rootNode?: HTMLElement | (() => HTMLElement);
+  mountPoint?: HTMLElement | (() => HTMLElement);
 }
 export type Cleanup = () => void;
 
-export function init({rootNode, ...config}: InitProps): Cleanup {
-  const root = typeof rootNode === 'function' ? rootNode() : rootNode;
+export function init({mountPoint, ...config}: InitProps): Cleanup {
+  const root = typeof mountPoint === 'function' ? mountPoint() : mountPoint;
   return mount(root ?? document.body, config);
 }
