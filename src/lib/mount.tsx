@@ -14,7 +14,9 @@ export default function mount(rootNode: HTMLElement, config: Configuration) {
   style.innerHTML = styles;
 
   const reactMount = document.createElement('div');
+  reactMount.dataset.name = 'react-mount';
   const portalMount = document.createElement('div');
+  portalMount.dataset.name = 'portal-mount';
 
   const reactRoot = makeReactRoot(reactMount, portalMount, config);
 

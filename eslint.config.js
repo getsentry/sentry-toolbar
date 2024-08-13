@@ -23,7 +23,7 @@ export default [
   configReactJSXRuntime,
   configPrettierRecommended,
   {
-    files: ['**/*.{js,ts,tsx,cjs}'],
+    files: ['**/*.{js,ts,jsx,tsx,cjs}'],
     linterOptions: {
       reportUnusedDisableDirectives: 'error',
     },

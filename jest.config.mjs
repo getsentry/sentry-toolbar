@@ -1,4 +1,4 @@
-import hq from 'alias-hq'
+import hq from 'alias-hq';
 
 export default {
   preset: 'ts-jest',
@@ -14,4 +14,4 @@ export default {
   },
   modulePathIgnorePatterns: ['<rootDir>/templates/'],
   setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
-}
+};
