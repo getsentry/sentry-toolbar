@@ -21,8 +21,10 @@ export default function mount(rootNode: HTMLElement, config: Configuration) {
   rootNode.appendChild(host);
 
   return () => {
-    host.remove();
-    reactRoot.unmount();
+    setTimeout(() => {
+      host.remove();
+      reactRoot.unmount();
+    }, 0);
   };
 }
 

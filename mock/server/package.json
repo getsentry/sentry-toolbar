@@ -16,6 +16,6 @@
     "start": "PORT=8080 yarn node index.js"
   },
   "dependencies": {
-  },
-  "devDependencies": {}
+    "http-proxy": "^1.18.1"
+  }
 }

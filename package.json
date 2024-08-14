@@ -35,7 +35,7 @@
   },
   "scripts": {
     "dev:standalone": "vite",
-    "dev:server": "cd mock/server && pnpm start",
+    "dev:server": "cd mock/server && pnpm install && pnpm start",
     "dev:watch": "nodemon --exec 'rm -rf ./vite.config.ts.timestamp-* && pnpm build:lib' --ext ts,tsx --ignore dist/",
     "dev": "run-p dev:server dev:watch",
     "clean:lib": "rm -rf dist",

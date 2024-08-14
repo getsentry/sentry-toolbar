@@ -33,7 +33,7 @@ export default function useSentryApi() {
 
   const origin = sentryOrigin.replace(trailingBackslash, '');
   const region = sentryRegion !== undefined && sentryRegion !== '' ? `/region/${sentryRegion}` : '';
-  const apiOrigin = origin + '/' + region + '/api/0';
+  const apiOrigin = origin + region + '/api/0';
 
   const fetchFn = useMemo(
     () =>
@@ -41,7 +41,7 @@ export default function useSentryApi() {
         const response = await fetch(qs.stringifyUrl({url: apiOrigin + endpoint, query: options?.query}), {
           body: options?.payload ? JSON.stringify(options?.payload) : undefined,
           headers: {
-            bearer: accessToken ?? '',
+            authorization: `bearer ${accessToken}`,
             ...options?.headers,
           },
           method: options?.method ?? 'GET',

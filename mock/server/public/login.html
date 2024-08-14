@@ -1,0 +1,22 @@
+<html>
+  <body>
+    <form action="/success.html" method="GET">
+      <fieldset style="padding: 2em; display: flex; flex-direction: column; gap: 2em;">
+        <label>
+          Access Token:
+          <input type="text" name="access_token" id="accessToken" />
+          <div><a href="https://sentry.io/orgredirect/organizations/:orgslug/settings/account/api/auth-tokens/" target="_blank">Get an Auth Token</a></div>
+        </label>
+
+        <input type="hidden" name="customer_origin" value="__REFERER__" />
+        <div>
+          <button type="submit">Login Now</button>
+        </div>
+      </fieldset>
+    </form>
+    <script>
+      const accessToken = localStorage.getItem('access_token') ?? '';
+      document.getElementById('accessToken').value = accessToken;
+    </script>
+  </body>
+</html>
