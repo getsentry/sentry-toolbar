@@ -47,7 +47,6 @@
     "lint:style": "stylelint ./src/**/*.css",
     "fix:style": "run-s 'lint:style --fix'",
     "test": "jest",
-    "preview": "vite preview",
     "start:docs": "storybook dev -p 6006",
     "build:docs": "storybook build",
     "generate:component": "npx generate-react-cli component",

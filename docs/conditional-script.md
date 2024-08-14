@@ -77,8 +77,12 @@ Second, the react hook:
 
 ```typescript fileName=useSentryToolbar.tsx
 type InitProps = Parameters<Awaited<ReturnType<typeof loadToolbar>>['init']>[0]
-function useSentryToolbar({cdn, initProps}: {cdn: string, initProps: InitProps}) {
+function useSentryToolbar({enabled, cdn, initProps}: {enabled: boolean; cdn: string; initProps: InitProps}) {
   useEffect(() => {
+    if (!enabled) {
+      return;
+    }
+
     const controller = new AbortController();
 
     let cleanup: Function | undefined = undefined;
@@ -90,7 +94,7 @@ function useSentryToolbar({cdn, initProps}: {cdn: string, initProps: InitProps})
       controller.abort();
       cleanup?.();
     }
-  }, []);
+  }, [enabled, cdn]);
 }
 ```
 
@@ -100,15 +104,16 @@ Finally, the callsite itself:
 function MyReactApp() {
   useSentryToolbar({
     cdn: 'http://localhost:8080',
+    enabled: true,
     initProps: {
-    apiPrefix: '/api/0',
-    placement: 'right-edge',
-    rootNode: () => document.body,
-    environment: ['prod'],
-    organizationSlug: 'sentry',
-    projectId: 11276,
-    projectPlatform: 'javascript',
-    projectSlug: 'javascript',
+      apiPrefix: '/api/0',
+      placement: 'right-edge',
+      rootNode: () => document.body,
+      environment: ['prod'],
+      organizationSlug: 'sentry',
+      projectId: 11276,
+      projectPlatform: 'javascript',
+      projectSlug: 'javascript',
     }
   });
 
