@@ -14,7 +14,7 @@ Get the code and setup your env:
 - `cd sentry-toolbar`
 - `pnpm install & pnpm prepare`
 
-A storybook is available by running: `pnpm start:docs` and is published to https://getsentry.github.io/sentry-toolbar/
+A storybook is available by running: `pnpm start:docs` and is published to https://getsentry.github.io/sentry-toolbar.
 
 To test the toolbar locally there is a basic test app to host the toolbar. Set config values inside of `env/demo/demo.tsx` and run `pnpm dev:standalone`. The config values should be set for a sentry org which you are able to log in to.
 Note that features like `useCurrentTransactionName` will not match up between the example app and your real app, because the example app doesn't have any functionality!
