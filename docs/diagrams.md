@@ -57,4 +57,6 @@ sequenceDiagram
   browser (main)->>browser (main): User interaction
   browser (main)->>browser (iframe): JS: fetch('/api/*')
   browser (iframe)->>sentry.io: JS: fetch('/api/*', <access token>)
+  sentry.io-->>browser (iframe): <response>
+  browser (iframe)->>browser (main): <response>
 ```
