@@ -1,6 +1,6 @@
 import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
-import App from 'toolbar/components/App';
+import App from 'toolbar/components/app';
 import Providers from 'toolbar/components/providers';
 import styles from 'toolbar/index.css?inline'; // will not be injected
 
@@ -33,6 +33,13 @@ function buildDom(config: Configuration) {
 
   const host = DOCUMENT.createElement('div');
   host.id = config.domId ?? 'sentry-toolbar';
+
+  const iframe = DOCUMENT.createElement('iframe');
+  iframe.referrerPolicy = 'origin';
+  iframe.height = '0';
+  iframe.width = '0';
+  iframe.src = `${config.sentryOrigin}/organizations/${config.organizationIdOrSlug}/toolbar/iframe/`;
+  host.append(iframe);
 
   const shadow = host.attachShadow({mode: 'open'});
 

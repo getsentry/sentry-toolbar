@@ -2,64 +2,56 @@
 
 const http = require('node:http');
 const fs = require('node:fs/promises');
-const url = require('node:url');
 const httpProxy = require('http-proxy');
 
-const host = "localhost";
-const port = process.env.PORT ?? "8080";
+const PATH_TO_TEMPLATE = new Map([
+  [/\/organizations\/(?<org>[a-z0-9\-]+)\/toolbar\/iframe\//, "/public/toolbar/iframe.html"],
+  [/\/auth\/login\/(?<org>[a-z0-9\-]+)/, "/public/auth/login.html"],
+  [/\/organizations\/(?<org>[a-z0-9\-]+)\/toolbar\/login-success\//, "/public/toolbar/login-success.html"],
+]);
 
-const ALLOW_CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'OPTIONS, GET',
-};
+const urlPatterns = Array.from(PATH_TO_TEMPLATE.keys());
 
 const requestListener = function (req, res) {
-  const parsed = url.parse(req.url);
+  const matchedPath = urlPatterns.filter(regex => regex.test(req.url)).at(0);
+  if (matchedPath) {
+    const template = PATH_TO_TEMPLATE.get(matchedPath);
+    const params = req.url.match(matchedPath).groups;
 
-  if (parsed.pathname.endsWith(".js")) {
-    if (req.method === 'OPTIONS') {
-      res.writeHead(204, ALLOW_CORS_HEADERS);
+    const referrer = req.headers['referer']; // Yes, the header name is spelled this way.
+
+    if (!isReferrerAllowed(referrer, params.org)) {
+      res.writeHead(401);
       res.end();
       return;
     }
 
-    console.log('Serving:', parsed.pathname);
-    serveTemplate(req, res, {
-      'Content-Type': 'application/javascript',
-      ...ALLOW_CORS_HEADERS,
-    }, __dirname + "/../../dist" + parsed.pathname, {});
+    console.log('Serving:', req.url, {org_name: params.org, referrer});
 
-  } else if (parsed.pathname === '/login.html') {
-    console.log('Serving:', parsed.pathname);
-
-    serveTemplate(req, res, {'Content-Type': 'text/html'}, __dirname + "/public/login.html", {
-      __REFERER__: req.headers.referer
+    serveTemplate(req, res, {'Content-Type': 'text/html'}, __dirname + template, {
+      __ORG_SLUG__: JSON.stringify(params.org),
+      __REFERRER__: JSON.stringify(referrer),
     });
 
-  } else if (parsed.pathname === '/success.html') {
-    console.log('Serving:', parsed.pathname);
+  } else if (req.url.endsWith(".js")) {
+    serveCDNFile(req.url, req, res);
 
-    serveTemplate(req, res, {'Content-Type': 'text/html'}, __dirname + "/public/success.html", {});
+  } else if (req.url.startsWith('/api/0/') || req.url.startsWith('/region/')) {
+    serveApiProxy(req.url, req, res)
 
-  } else if (parsed.pathname.startsWith('/api/0/') || parsed.pathname.startsWith('/region/')) {
-    console.log('Serving:', parsed.pathname);
-
-    const proxy = httpProxy.createProxyServer({
-      target: 'https://us.sentry.io',
-      changeOrigin: true,
-      secure: false,
-    });
-
-    proxy.web(req, res);
   } else {
-    console.log('Unknown:', parsed.pathname);
+    console.log('Unknown:', req.url);
     res.writeHead(400);
     res.end();
   }
 };
 
+function isReferrerAllowed(referrer, org) {
+  // TODO: in prod we should check against the database.
+  return true;
+}
+
 function serveTemplate(req, res, headers, filename, replacements) {
-  console.log('reading file', filename)
   fs.readFile(filename, {encoding: 'utf8'}).then((content) => {
     const replacedContent = Object.entries(replacements).reduce(
       (content, [token, value]) => content.replace(token, value),
@@ -75,6 +67,46 @@ function serveTemplate(req, res, headers, filename, replacements) {
     res.end();
   });
 }
+
+function serveCDNFile(pathname, req, res) {
+  const ALLOW_CORS_HEADERS = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'OPTIONS, GET',
+  };
+
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204, ALLOW_CORS_HEADERS);
+    res.end();
+    return;
+  }
+
+  console.log('Serving:', pathname);
+  serveTemplate(
+    req,
+    res,
+    {
+      'Content-Type': 'application/javascript',
+      ...ALLOW_CORS_HEADERS,
+    },
+    __dirname + "/../../dist" + pathname, {}
+  );
+
+}
+
+function serveApiProxy(pathname, req, res) {
+  console.log('Serving:', pathname);
+
+  const proxy = httpProxy.createProxyServer({
+    target: 'https://us.sentry.io',
+    changeOrigin: true,
+    secure: false,
+  });
+
+  proxy.web(req, res);
+}
+
+const host = "localhost";
+const port = process.env.PORT ?? "8080";
 
 http.createServer(requestListener).listen(port, host, () => {
   console.log(`Server is running on http://${host}:${port}`);

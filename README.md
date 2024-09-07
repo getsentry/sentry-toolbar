@@ -23,7 +23,7 @@ To test the package locally with another project, first setup the other project:
 1. Add or dyamically inject `<script src="http://localhost:8080/index.iife.js">` into your app
 2. Call `window.SentryToolbar.init(initProps)` to setup a toolbar instance.
 
-In this repo use `pnpm dev` to emit js files, and serve them over a mock CDN in parallel. This will allow the above `<script>` tag in your app to work.
+In this repo use `pnpm dev` to emit js files, and serve them over a mock CDN in parallel. This will allow the above `<script>` tag in to work. Then run either your own app, or `pnpm dev:standalone` for the simple test app.
 
 ** Be aware that since no files are changing inside your apps codebase, so even if your app usually has hot-reloading, it won't notice that the toolbar code has changed! Type CTRL+R or CMD+R to reload your app and pull down new toolbar code.**
 

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sentry DevToolbar iFrame</title>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  </head>
+  <body>
+    <script>
+      (function() {
+        // TODO get this from the SDK config
+        const serverDomain = 'localhost:8080'; // using the proxy in dev
+
+        const referrer = __REFERRER__;
+        const orgSlug = __ORG_SLUG__;
+
+        const accesToken = localStorage.getItem('accessToken');
+        console.log({accesToken});
+
+        fetch(`http://${serverDomain}/api/0/organizations/?member=1`, {
+          headers: {
+            // Note: In dev we're adding headers, in prod we'll rely on cookie being set.
+            'Authorization': `Bearer ${accesToken}`
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
