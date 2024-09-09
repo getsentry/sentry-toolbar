@@ -45,23 +45,15 @@ sequenceDiagram
   end
 ```
 
-## SDK Init
+## SDK State
 
 ```mermaid
-sequenceDiagram
-  participant browser (main)
-  participant browser (iframe)
-  participant browser (popup)
-  participant CDN
-  participant sentry.io
-
-  browser (main)->>browser (iframe): JS: Create iframe
-  browser (iframe)->>sentry.io: https://sentry.io/toolbar.html & entrypoint webpack://toolbar-iframe.js
-  sentry.io-->>browser (iframe): 
-  browser (main)->>browser (iframe): JS: <access token>
-  browser (main)->>browser (main): User interaction
-  browser (main)->>browser (iframe): JS: fetch('/api/*')
-  browser (iframe)->>sentry.io: JS: fetch('/api/*', <access token>)
-  sentry.io-->>browser (iframe): <response>
-  browser (iframe)->>browser (main): <response>
+stateDiagram-v2
+  [*] --> await_load_iframe
+  await_load_iframe --> await_check_auth
+  await_check_auth --> auth_true
+  await_check_auth --> await_login
+  await_login --> auth_true
+  auth_true --> await_login
+  auth_true --> [*]
 ```
