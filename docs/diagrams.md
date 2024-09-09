@@ -25,19 +25,24 @@ sequenceDiagram
   participant browser (main)
   participant browser (iframe)
   participant browser (popup)
+  participant NPM package
   participant CDN
-  participant sentry.io
-
-  browser (main)->>CDN: HTML: <script src=dist/index.iife.js>
-  CDN-->>browser (main): 
-  browser (main)->>browser (main): User: Click to login
-  browser (main)->>browser (popup): JS: open(https://sentry.io/oauth/login)
-  browser (popup)->>sentry.io: GET: https://sentry.io/oauth/login
-  sentry.io-->>browser (popup): 
-  browser (popup)->>sentry.io: POST: <crendentials>
-  sentry.io-->>browser (popup): <access token>
-  browser (popup)->>browser (main): JS: postMessage(<access token>)
-  browser (popup)->>browser (popup): JS: close()
+  browser (main)->>NPM package: include
+  NPM package->>CDN: GET js sdk
+  CDN-->>browser (main): js sdk
+  browser (main)->>browser (iframe): iframe.src=/organizations/<org>/toolbar/iframe/ && window.append(iframe)
+  browser (main)->>browser (iframe): postMessage(MessageChannel port2)
+  browser (iframe)->>browser (iframe): listen to MessageChannel port
+  browser (main)->>browser (iframe): proxyFetch("GET /api/0/organizations/<org>/")
+  browser (iframe)-->>browser (main): <response>
+  alt response is 401
+  browser (main)->>browser (popup): open(/organizations/<org>/toolbar/login-success/)
+  browser (popup)->>browser (popup): login
+  browser (popup)-->>browser (main): postMessage(login-success)
+  browser (main)->>browser (iframe): reload
+  else
+  
+  end
 ```
 
 ## SDK Init
