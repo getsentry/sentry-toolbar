@@ -7,7 +7,7 @@ import type {ReactNode} from 'react';
 
 const defaultProxy = new IFrameProxy();
 const IFrameProxyStateContext = createContext<ProxyState>(defaultProxy.status);
-const IFrameProxyContext = createContext<undefined | IFrameProxy>(defaultProxy);
+const IFrameProxyContext = createContext<IFrameProxy>(defaultProxy);
 
 let _uuid = 0;
 
@@ -60,7 +60,7 @@ export function ProxyContextProvider({children, config}: Props) {
   );
 }
 
-export function useProxyState() {
+export function useIFrameProxyState() {
   return useContext(IFrameProxyStateContext);
 }
 

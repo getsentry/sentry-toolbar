@@ -1,15 +1,15 @@
 import {useContext, useMemo} from 'react';
 import LoginButton from 'toolbar/components/unauth/LoginButton';
 import {ConfigContext} from 'toolbar/context/ConfigContext';
-import {useIFrameProxyContext} from 'toolbar/context/ProxyContext';
+import {useIFrameProxyState} from 'toolbar/context/ProxyContext';
 import useFetchSentryData from 'toolbar/hooks/fetch/useFetchSentryData';
 
 import type {ApiEndpointQueryKey} from 'toolbar/types/api';
 
 export default function App() {
-  const proxyState = useIFrameProxyContext();
+  const proxyState = useIFrameProxyState();
 
-  if (!proxyState.status.hasCookie) {
+  if (!proxyState.hasCookie) {
     return (
       <div>
         <p>Unauth</p>
@@ -17,10 +17,10 @@ export default function App() {
       </div>
     );
   }
-  if (!proxyState.status.hasProject) {
+  if (!proxyState.hasProject) {
     return <div>Not configured</div>;
   }
-  if (!proxyState.status.hasPort) {
+  if (!proxyState.hasPort) {
     return <div>Connecting...</div>;
   }
 

@@ -38,7 +38,6 @@ export default function useSentryApi() {
   const fetchFn = useMemo(
     () =>
       async <Data>({queryKey: [endpoint, options]}: FetchParams): Promise<ApiResult<Data>> => {
-        console.log('fetching something', endpoint);
         const response = await iframeProxy.fetch(qs.stringifyUrl({url: apiOrigin + endpoint, query: options?.query}), {
           body: options?.payload ? JSON.stringify(options?.payload) : undefined,
           headers: options?.headers,
