@@ -5,44 +5,54 @@ const fs = require('node:fs/promises');
 const httpProxy = require('http-proxy');
 
 const PATH_TO_TEMPLATE = new Map([
-  [/\/organizations\/(?<org>[a-z0-9\-]+)\/toolbar\/iframe\//, "/public/toolbar/iframe.html"],
+  [/\/toolbar\/(?<org>[a-z0-9\-]+)\/(?<project>[a-z0-9\-]+)\/iframe\//, "/public/toolbar/iframe.html"],
   [/\/auth\/login\/(?<org>[a-z0-9\-]+)/, "/public/auth/login.html"],
-  [/\/organizations\/(?<org>[a-z0-9\-]+)\/toolbar\/login-success\//, "/public/toolbar/login-success.html"],
+  [/\/toolbar\/(?<org>[a-z0-9\-]+)\/(?<project>[a-z0-9\-]+)\/login-success\//, "/public/toolbar/login-success.html"],
 ]);
 
 const urlPatterns = Array.from(PATH_TO_TEMPLATE.keys());
 
 const requestListener = function (req, res) {
-  const matchedPath = urlPatterns.filter(regex => regex.test(req.url)).at(0);
-  if (matchedPath) {
-    const template = PATH_TO_TEMPLATE.get(matchedPath);
-    const params = req.url.match(matchedPath).groups;
+  try {
+    const matchedPath = urlPatterns.filter(regex => regex.test(req.url)).at(0);
+    if (matchedPath) {
+      const template = PATH_TO_TEMPLATE.get(matchedPath);
+      const params = req.url.match(matchedPath).groups;
 
-    const referrer = req.headers['referer']; // Yes, the header name is spelled this way.
+      const referrer = req.headers['referer']; // Yes, the header name is spelled this way.
 
-    if (!isReferrerAllowed(referrer, params.org)) {
-      res.writeHead(401);
+      if (!isReferrerAllowed(referrer, params.org)) {
+        res.writeHead(403);
+        res.end();
+        return;
+      }
+
+      console.log('Serving:', req.url, {
+        template,
+        org_name: params.org,
+        project_name: params.project,
+        referrer,
+      });
+
+      serveTemplate(req, res, {'Content-Type': 'text/html'}, __dirname + template, {
+        __ORG_SLUG__: JSON.stringify(params.org),
+        __PROJECT_SLUG__: JSON.stringify(params.project),
+        __REFERRER__: JSON.stringify(referrer),
+      });
+
+    } else if (req.url.endsWith(".js")) {
+      serveCDNFile(req.url, req, res);
+
+    } else if (req.url.startsWith('/api/0/') || req.url.startsWith('/region/')) {
+      serveApiProxy(req.url, req, res)
+
+    } else {
+      console.log('Unknown:', req.url);
+      res.writeHead(400);
       res.end();
-      return;
     }
-
-    console.log('Serving:', req.url, {org_name: params.org, referrer});
-
-    serveTemplate(req, res, {'Content-Type': 'text/html'}, __dirname + template, {
-      __ORG_SLUG__: JSON.stringify(params.org),
-      __REFERRER__: JSON.stringify(referrer),
-    });
-
-  } else if (req.url.endsWith(".js")) {
-    serveCDNFile(req.url, req, res);
-
-  } else if (req.url.startsWith('/api/0/') || req.url.startsWith('/region/')) {
-    serveApiProxy(req.url, req, res)
-
-  } else {
-    console.log('Unknown:', req.url);
-    res.writeHead(400);
-    res.end();
+  } catch (error) {
+    console.error(error);
   }
 };
 
@@ -54,7 +64,7 @@ function isReferrerAllowed(referrer, org) {
 function serveTemplate(req, res, headers, filename, replacements) {
   fs.readFile(filename, {encoding: 'utf8'}).then((content) => {
     const replacedContent = Object.entries(replacements).reduce(
-      (content, [token, value]) => content.replace(token, value),
+      (content, [token, value]) => content.replaceAll(token, value),
       content
     );
 

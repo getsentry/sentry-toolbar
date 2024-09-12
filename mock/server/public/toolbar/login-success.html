@@ -17,8 +17,14 @@
           return;
         }
         const referrer = __REFERRER__;
+        const orgSlug = __ORG_SLUG__;
+        const projectSlug = __PROJECT_SLUG__;
 
-        window.opener.postMessage('success', referrer);
+        const message = projectSlug === undefined ? 'cookie-set' : 'project-ready';
+        window.opener.postMessage({
+          source: 'sentry-devtoolbar',
+          message,
+        }, referrer);
         window.close();
       }
       // NOTE: In prod we should call this automatically, in test we will leave the page open for interaction.

@@ -1,7 +1,7 @@
 import qs from 'query-string';
 import {useContext, useMemo} from 'react';
-import {AuthContext} from 'toolbar/context/AuthContext';
 import {ConfigContext} from 'toolbar/context/ConfigContext';
+import {useIFrameProxyContext} from 'toolbar/context/ProxyContext';
 import parseLinkHeader from 'toolbar/utils/parseLinkHeader';
 
 import type {ApiEndpointQueryKey, ApiResult} from 'toolbar/types/api';
@@ -28,8 +28,8 @@ interface InfiniteFetchParams extends FetchParams {
 const trailingBackslash = /\/$/;
 
 export default function useSentryApi() {
+  const iframeProxy = useIFrameProxyContext();
   const {sentryOrigin, sentryRegion} = useContext(ConfigContext);
-  const [{accessToken}] = useContext(AuthContext);
 
   const origin = sentryOrigin.replace(trailingBackslash, '');
   const region = sentryRegion !== undefined && sentryRegion !== '' ? `/region/${sentryRegion}` : '';
@@ -38,12 +38,10 @@ export default function useSentryApi() {
   const fetchFn = useMemo(
     () =>
       async <Data>({queryKey: [endpoint, options]}: FetchParams): Promise<ApiResult<Data>> => {
-        const response = await fetch(qs.stringifyUrl({url: apiOrigin + endpoint, query: options?.query}), {
+        console.log('fetching something', endpoint);
+        const response = await iframeProxy.fetch(qs.stringifyUrl({url: apiOrigin + endpoint, query: options?.query}), {
           body: options?.payload ? JSON.stringify(options?.payload) : undefined,
-          headers: {
-            authorization: `bearer ${accessToken}`,
-            ...options?.headers,
-          },
+          headers: options?.headers,
           method: options?.method ?? 'GET',
         });
 
@@ -56,7 +54,7 @@ export default function useSentryApi() {
           headers: response.headers,
         };
       },
-    [accessToken, apiOrigin]
+    [apiOrigin, iframeProxy]
   );
 
   const fetchInfiniteFn = useMemo(
