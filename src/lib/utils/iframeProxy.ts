@@ -175,7 +175,7 @@ export default class IFrameProxy {
     this._iframe?.contentWindow?.location.reload();
   };
 
-  public fetch = (input: NodeJS.fetch.RequestInfo, init?: RequestInit): Promise<Response> => {
+  public fetch = (input: RequestInfo, init?: RequestInit): Promise<Response> => {
     return this.exec('fetch', [input, init]) as Promise<Response>;
   };
 }
