@@ -1,7 +1,3 @@
-// type PostMessage = (message: unknown, transfer?: Transferable[]) => Promise<unknown>;
-// type ProxyExec = ($function: string, $args: unknown[]) => Promise<unknown>;
-// type ProxyFetch = (input: NodeJS.fetch.RequestInfo, init?: RequestInit) => Promise<Response>;
-
 type Resolve = (value: unknown) => void;
 type Reject = (reason?: any) => void; // eslint-disable-line @typescript-eslint/no-explicit-any
 
@@ -11,9 +7,14 @@ export interface ProxyState {
   hasPort: boolean;
 }
 
-export default class IFrameProxy {
-  private _uuid = 0;
+function log(...args: unknown[]) {
+  // eslint-disable-next-line no-constant-condition
+  if (false) {
+    console.log('IFrameProxy', ...args);
+  }
+}
 
+export default class ApiProxy {
   /**
    * The last reported status of the proxy.
    */
@@ -29,7 +30,11 @@ export default class IFrameProxy {
    * Callback to tell the initializer if we're ready or not. This can be called
    * any time a 403 response is returned to the `proxyFetch()` helper.
    */
-  private _updateStatusCallback: (status: ProxyState) => void = () => {};
+  private _updateStatusCallback: (status: ProxyState) => void = () => ({
+    hasCookie: false,
+    hasProject: false,
+    hasPort: false,
+  });
 
   /**
    * The port that we're using to send messages into the iframe.
@@ -48,39 +53,25 @@ export default class IFrameProxy {
    */
   private _promiseMap = new Map<number, [Resolve, Reject]>();
 
-  /**
-   * A list of functions to call during `unload()`.
-   */
-  private _cleanups: (() => void)[] = [];
-
-  private log(...args: unknown[]) {
-    console.log('IFrameProxy', this._uuid, ...args);
-  }
-
-  public async init(uuid: number, iframe: HTMLIFrameElement, onStatusChanged: (status: ProxyState) => void) {
-    this.cleanup();
-
-    this._uuid = uuid;
-    this._iframe = iframe;
+  public constructor(onStatusChanged: (status: ProxyState) => void) {
     this._updateStatusCallback = onStatusChanged;
 
     window.addEventListener('message', this._handleWindowMessage);
-    this._cleanups.push(() => window.removeEventListener('message', this._handleWindowMessage));
+  }
 
-    this._updateStatus({
-      hasCookie: false,
-      hasProject: false,
-      hasPort: false,
-    });
+  public setFrame(iframe: HTMLIFrameElement) {
+    this._iframe = iframe;
   }
 
   public cleanup() {
-    this._cleanups.forEach(cleanup => cleanup());
-    this._cleanups = [];
+    this._port?.removeEventListener('message', this._handlePortMessage);
+    this._port?.close();
+    this._port = undefined;
+    this._updateStatus({hasCookie: false, hasProject: false, hasPort: false});
   }
 
   private _updateStatus(status: ProxyState) {
-    this.log('Status changed', this._status, this._updateStatusCallback);
+    log('Status changed', this._status, this._updateStatusCallback);
     this._status = status;
     this._updateStatusCallback(status);
   }
@@ -90,11 +81,11 @@ export default class IFrameProxy {
   }
 
   private _handleWindowMessage = (event: MessageEvent) => {
-    if (event.data.source !== 'sentry-devtoolbar') {
+    if (event.data.source !== 'sentry-toolbar') {
       return; // Ignore other message sources
     }
 
-    this.log('window._handleWindowMessage', event.data, event);
+    log('window._handleWindowMessage', event.data, event);
     switch (event.data.message) {
       case 'cookie-set':
         // When the user is logged in, but the project is not setup for this domain
@@ -114,19 +105,17 @@ export default class IFrameProxy {
         break;
       case 'port-connect': {
         // We're getting the port from the iframe, for bidirectional comms
-
         try {
           const port = event.ports[0];
+          this._port = port;
           port.addEventListener('message', this._handlePortMessage);
           port.start();
-          this._cleanups.push(() => port.removeEventListener('message', this._handlePortMessage));
-          this._cleanups.push(() => port.close());
           this._updateStatus({
             ...this.status,
             hasPort: true,
           });
         } catch (error) {
-          this.log('port-connect -> error', error);
+          log('port-connect -> error', error);
         }
         break;
       }
@@ -134,8 +123,8 @@ export default class IFrameProxy {
   };
 
   private _handlePortMessage = (e: MessageEvent) => {
-    this.log('port._handlePortMessage', e.data);
-    const $id = e.data.id;
+    log('port._handlePortMessage', e.data);
+    const $id = e.data.$id;
     if (!$id) {
       return; // MessageEvent is malformed without an $id
     }
@@ -154,15 +143,15 @@ export default class IFrameProxy {
   };
 
   private postMessage = (message: unknown, transfer?: Transferable[]) => {
-    this.log('postMessage()', message);
+    log('postMessage()', message);
     if (!this._port) {
-      this.log('no port open, dropping message', message);
+      log('no port open, dropping message', message);
       return;
     }
     return new Promise((resolve, reject) => {
-      const $id = this._sequence++;
+      const $id = ++this._sequence;
       this._promiseMap.set($id, [resolve, reject]);
-      this.log('port.postMessage() => ', {$id, message, transfer});
+      log('port.postMessage() => ', {$id, message, transfer});
       this._port?.postMessage({$id, message}, transfer ?? []);
     });
   };

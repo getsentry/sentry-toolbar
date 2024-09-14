@@ -6,21 +6,18 @@
   </head>
   <body>
     <script>
-      const rnd = Math.random().toPrecision(2);
-      const _logMessages = [];
-      console.log('Log Messages', {rnd, _logMessages, window});
-      document._logMessages = _logMessages;
-      function logger(...args) {
-        _logMessages.push(args);
-        console.log('iframe:', rnd, ...args);
-      }
-
       (function() {
         const referrer = __REFERRER__;
         const orgSlug = __ORG_SLUG__;
         const projectSlug = __PROJECT_SLUG__;
 
-        logger('Init', {
+        function log(...args) {
+          if (false) {
+            console.log('iframe:', ...args);
+          }
+        }
+
+        log('Init', {
           referrer,
           orgSlug,
           projectSlug,
@@ -30,16 +27,16 @@
         // State will be [false,false,false] and user will need to click the button
         const message = projectSlug === undefined ? 'cookie-set' : 'project-ready';
         window.parent.postMessage({
-          source: 'sentry-devtoolbar',
+          source: 'sentry-toolbar',
           message,
           rnd
         }, referrer);
-        logger('Sent', {message, referrer})
+        log('Sent', {message, referrer})
 
         const {port1, port2} = new MessageChannel();
 
         const messageDispatch = {
-          'log': logger,
+          'log': log,
           'fetch': (url, init) => fetch(url, {
             ...init,
             headers: {
@@ -51,7 +48,7 @@
         };
 
         port1.addEventListener('message', (postMessage) => {
-          logger('port.onMessage', postMessage.data);
+          log('port.onMessage', postMessage.data);
 
           const {$id, message} = postMessage.data;
           if (!$id) {
@@ -70,15 +67,12 @@
         port1.start();
 
         window.parent.postMessage({
-          source: 'sentry-devtoolbar',
+          source: 'sentry-toolbar',
           message: 'port-connect',
           rnd
         }, referrer, [port2])
-        logger('Sent', {message: 'port-connect', referrer})
-
-        logger('Is Ready')
+        log('Sent', {message: 'port-connect', referrer})
       })();
-
     </script>
   </body>
 </html>

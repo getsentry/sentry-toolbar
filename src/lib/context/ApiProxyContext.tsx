@@ -1,44 +1,48 @@
 import {createContext, useContext, useEffect, useRef, useState} from 'react';
-import IFrameProxy, {type ProxyState} from 'toolbar/utils/iframeProxy';
+import ApiProxy, {type ProxyState} from 'toolbar/utils/ApiProxy';
 
 import type {Configuration} from 'toolbar/types/config';
 
 import type {ReactNode} from 'react';
 
-const defaultProxy = new IFrameProxy();
+const defaultProxy = new ApiProxy(() => {});
 const IFrameProxyStateContext = createContext<ProxyState>(defaultProxy.status);
-const IFrameProxyContext = createContext<IFrameProxy>(defaultProxy);
-
-let _uuid = 0;
+const IFrameProxyContext = createContext<ApiProxy>(defaultProxy);
 
 interface Props {
   children: ReactNode;
   config: Configuration;
 }
 
-export function ProxyContextProvider({children, config}: Props) {
+function log(...args: unknown[]) {
+  // eslint-disable-next-line no-constant-condition
+  if (false) {
+    console.log('ApiProxyContextProvider', ...args);
+  }
+}
+
+export function ApiProxyContextProvider({children, config}: Props) {
   const {sentryOrigin, organizationIdOrSlug, projectIdOrSlug} = config;
 
-  const uuidRef = useRef(0);
-  useEffect(() => {
-    uuidRef.current = _uuid++;
-  }, []);
-
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const proxyRef = useRef<IFrameProxy>(new IFrameProxy());
-  const [proxyState, setProxyState] = useState<ProxyState>(proxyRef.current.status);
+  const [proxyState, setProxyState] = useState<ProxyState>({
+    hasCookie: false,
+    hasProject: false,
+    hasPort: false,
+  });
+  const proxyRef = useRef<ApiProxy>(new ApiProxy(setProxyState));
 
   useEffect(() => {
     if (!iframeRef.current) {
-      console.log('ProxyContent', uuidRef.current, 'UNEXPECTED! Missing an iframe in ProxyContent');
+      log('UNEXPECTED! Missing an iframe in ProxyContent');
       return;
     }
     const proxy = proxyRef.current;
-    console.log('ProxyContent', uuidRef.current, 'calling proxy.load()');
-    proxy.init(uuidRef.current, iframeRef.current, setProxyState);
+    log('calling proxy.setFrame()');
+    proxy.setFrame(iframeRef.current);
 
     return () => {
-      console.log('ProxyContent', uuidRef.current, 'calling proxy.unload()');
+      log('calling proxy.cleanup()');
       proxy.cleanup();
     };
   }, []);
@@ -50,7 +54,7 @@ export function ProxyContextProvider({children, config}: Props) {
           referrerPolicy="origin"
           height="0"
           width="0"
-          src={`${sentryOrigin}/toolbar/${organizationIdOrSlug}/${projectIdOrSlug + String(uuidRef.current)}/iframe/`}
+          src={`${sentryOrigin}/toolbar/${organizationIdOrSlug}/${projectIdOrSlug}/iframe/`}
           ref={iframeRef}
         />
         {JSON.stringify(proxyState)}

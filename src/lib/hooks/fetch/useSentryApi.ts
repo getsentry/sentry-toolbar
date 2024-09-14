@@ -1,7 +1,7 @@
 import qs from 'query-string';
 import {useContext, useMemo} from 'react';
+import {useIFrameProxyContext} from 'toolbar/context/ApiProxyContext';
 import {ConfigContext} from 'toolbar/context/ConfigContext';
-import {useIFrameProxyContext} from 'toolbar/context/ProxyContext';
 import parseLinkHeader from 'toolbar/utils/parseLinkHeader';
 
 import type {ApiEndpointQueryKey, ApiResult} from 'toolbar/types/api';

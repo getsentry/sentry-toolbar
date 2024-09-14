@@ -12,6 +12,7 @@
     </div>
 
     <script>
+      (function() {
       function notifyOpener() {
         if (!window.opener) {
           return;
@@ -22,13 +23,15 @@
 
         const message = projectSlug === undefined ? 'cookie-set' : 'project-ready';
         window.opener.postMessage({
-          source: 'sentry-devtoolbar',
+          source: 'sentry-toolbar',
           message,
         }, referrer);
         window.close();
       }
       // NOTE: In prod we should call this automatically, in test we will leave the page open for interaction.
       // notifyOpener();
+      window.notifyOpener = notifyOpener;
+      })();
     </script>
 
     <!-- NOTE: The following is for mock/test purposes and won't be in prod. -->
