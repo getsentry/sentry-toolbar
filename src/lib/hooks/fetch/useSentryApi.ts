@@ -1,6 +1,6 @@
 import qs from 'query-string';
 import {useContext, useMemo} from 'react';
-import {useIFrameProxyContext} from 'toolbar/context/ApiProxyContext';
+import {useApiProxyContext} from 'toolbar/context/ApiProxyContext';
 import {ConfigContext} from 'toolbar/context/ConfigContext';
 import parseLinkHeader from 'toolbar/utils/parseLinkHeader';
 import tryJsonParse from 'toolbar/utils/tryJsonParse';
@@ -29,7 +29,7 @@ interface InfiniteFetchParams extends FetchParams {
 const trailingBackslash = /\/$/;
 
 export default function useSentryApi() {
-  const iframeProxy = useIFrameProxyContext();
+  const apiProxy = useApiProxyContext();
   const {sentryOrigin, sentryRegion} = useContext(ConfigContext);
 
   const origin = sentryOrigin.replace(trailingBackslash, '');
@@ -45,10 +45,10 @@ export default function useSentryApi() {
           headers: options?.headers,
           method: options?.method ?? 'GET',
         };
-        const result = (await iframeProxy.exec('fetch', [url, init])) as Omit<ApiResult, 'json'>;
+        const result = (await apiProxy.exec('fetch', [url, init])) as Omit<ApiResult, 'json'>;
         return {...result, json: tryJsonParse(result.text)} as ApiResult<Data>;
       },
-    [apiOrigin, iframeProxy]
+    [apiOrigin, apiProxy]
   );
 
   const fetchInfiniteFn = useMemo(

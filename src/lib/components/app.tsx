@@ -1,13 +1,13 @@
 import {useContext, useMemo} from 'react';
 import LoginButton from 'toolbar/components/unauth/LoginButton';
-import {useIFrameProxyState} from 'toolbar/context/ApiProxyContext';
+import {useApiProxyState} from 'toolbar/context/ApiProxyContext';
 import {ConfigContext} from 'toolbar/context/ConfigContext';
 import useFetchSentryData from 'toolbar/hooks/fetch/useFetchSentryData';
 
 import type {ApiEndpointQueryKey} from 'toolbar/types/api';
 
 export default function App() {
-  const proxyState = useIFrameProxyState();
+  const proxyState = useApiProxyState();
 
   if (!proxyState.hasCookie) {
     return (

@@ -1,4 +1,4 @@
-import {createContext, useContext, useEffect, useRef, useState} from 'react';
+import {createContext, useContext, useEffect, useMemo, useRef, useState} from 'react';
 import ApiProxy, {type ProxyState} from 'toolbar/utils/ApiProxy';
 
 import type {Configuration} from 'toolbar/types/config';
@@ -6,8 +6,13 @@ import type {Configuration} from 'toolbar/types/config';
 import type {ReactNode} from 'react';
 
 const defaultProxy = ApiProxy.singleton();
-const IFrameProxyStateContext = createContext<ProxyState>(defaultProxy.status);
-const IFrameProxyContext = createContext<ApiProxy>(defaultProxy);
+const ApiProxyStateContext = createContext<ProxyState>(defaultProxy.status);
+const ApiProxyContext = createContext<ApiProxy>(defaultProxy);
+const ProxyIFrameRefContext = createContext<{
+  reload: () => void;
+}>({
+  reload: () => {},
+});
 
 interface Props {
   children: ReactNode;
@@ -40,8 +45,6 @@ export function ApiProxyContextProvider({children, config}: Props) {
       return;
     }
     const proxy = proxyRef.current;
-    log('calling proxy.setFrame()');
-    proxy.setFrame(iframeRef.current);
 
     return () => {
       log('calling proxy.cleanup()');
@@ -49,27 +52,51 @@ export function ApiProxyContextProvider({children, config}: Props) {
     };
   }, []);
 
+  const proxyIframe = useMemo(
+    () => ({
+      reload: () => iframeRef.current?.contentWindow?.location.reload(),
+    }),
+    []
+  );
+
   return (
-    <IFrameProxyStateContext.Provider value={proxyState}>
-      <IFrameProxyContext.Provider value={proxyRef.current}>
-        <iframe
-          referrerPolicy="origin"
-          height="0"
-          width="0"
-          src={`${sentryOrigin}/toolbar/${organizationIdOrSlug}/${projectIdOrSlug}/iframe/`}
-          ref={iframeRef}
-        />
-        {JSON.stringify(proxyState)}
-        {children}
-      </IFrameProxyContext.Provider>
-    </IFrameProxyStateContext.Provider>
+    <ProxyIFrameRefContext.Provider value={proxyIframe}>
+      <ApiProxyContext.Provider value={proxyRef.current}>
+        <ApiProxyStateContext.Provider value={proxyState}>
+          <iframe
+            referrerPolicy="origin"
+            height="0"
+            width="0"
+            src={`${sentryOrigin}/toolbar/${organizationIdOrSlug}/${projectIdOrSlug}/iframe/`}
+            ref={iframeRef}
+          />
+          {JSON.stringify(proxyState)}
+          {children}
+        </ApiProxyStateContext.Provider>
+      </ApiProxyContext.Provider>
+    </ProxyIFrameRefContext.Provider>
   );
 }
 
-export function useIFrameProxyState() {
-  return useContext(IFrameProxyStateContext);
+/**
+ * Hook to access the proxy iframe element, and reload it if needed
+ */
+export function useProxyIFrameContext() {
+  return useContext(ProxyIFrameRefContext);
 }
 
-export function useIFrameProxyContext() {
-  return useContext(IFrameProxyContext);
+/**
+ * Hook to access the proxy instance, so we can call `.exec()` and pass messages along
+ */
+export function useApiProxyContext() {
+  return useContext(ApiProxyContext);
+}
+
+/**
+ * Hook to access the proxy state.
+ *
+ * Messages are dropped when the proxy is not fully ready.
+ */
+export function useApiProxyState() {
+  return useContext(ApiProxyStateContext);
 }

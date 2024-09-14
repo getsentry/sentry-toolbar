@@ -24,12 +24,6 @@ export default class ApiProxy {
   private _status: ProxyState = {hasCookie: false, hasProject: false, hasPort: false};
 
   /**
-   * The iframe that we're meant to render into. If this changes then we should
-   * unmount and reset things.
-   */
-  private _iframe: undefined | HTMLIFrameElement = undefined;
-
-  /**
    * Callback to tell the initializer if we're ready or not. This can be called
    * any time a 403 response is returned to the `proxyFetch()` helper.
    */
@@ -69,10 +63,6 @@ export default class ApiProxy {
 
   public setOnStatusChanged(onStatusChanged: HandleStatusChange) {
     this._updateStatusCallback = onStatusChanged;
-  }
-
-  public setFrame(iframe: HTMLIFrameElement) {
-    this._iframe = iframe;
   }
 
   public cleanup() {
@@ -170,9 +160,5 @@ export default class ApiProxy {
 
   public exec = ($function: 'log' | 'fetch', $args: unknown[]) => {
     return this.postMessage({$function, $args});
-  };
-
-  public reload = () => {
-    this._iframe?.contentWindow?.location.reload();
   };
 }
