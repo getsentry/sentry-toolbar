@@ -144,21 +144,32 @@ export default class ApiProxy {
     }
   };
 
-  private postMessage = (message: unknown, transfer?: Transferable[]) => {
+  private postMessage = (signal: AbortSignal, message: unknown, transfer?: Transferable[]) => {
     log('postMessage()', message);
     if (!this._port) {
       log('no port open, dropping message', message);
       return;
     }
+
     return new Promise((resolve, reject) => {
       const $id = ++this._sequence;
       this._promiseMap.set($id, [resolve, reject]);
       log('port.postMessage() => ', {$id, message, transfer});
+
+      signal.addEventListener(
+        'abort',
+        () => {
+          this._promiseMap.delete($id);
+          reject('aborted');
+        },
+        {once: true}
+      );
+
       this._port?.postMessage({$id, message}, transfer ?? []);
     });
   };
 
-  public exec = ($function: 'log' | 'fetch', $args: unknown[]) => {
-    return this.postMessage({$function, $args});
+  public exec = (signal: AbortSignal, $function: 'log' | 'fetch', $args: unknown[]) => {
+    return this.postMessage(signal, {$function, $args});
   };
 }

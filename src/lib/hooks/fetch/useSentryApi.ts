@@ -19,6 +19,7 @@ const getNextPageParam = parsePageParam('next');
 const getPreviousPageParam = parsePageParam('previous');
 
 interface FetchParams {
+  signal: AbortSignal;
   queryKey: ApiEndpointQueryKey;
 }
 
@@ -38,27 +39,32 @@ export default function useSentryApi() {
 
   const fetchFn = useMemo(
     () =>
-      async <Data = unknown>({queryKey: [endpoint, options]}: FetchParams): Promise<ApiResult<Data>> => {
+      async <Data = unknown>({signal, queryKey: [endpoint, options]}: FetchParams): Promise<ApiResult<Data>> => {
         const url = qs.stringifyUrl({url: apiOrigin + endpoint, query: options?.query});
         const init = {
           body: options?.payload ? JSON.stringify(options?.payload) : undefined,
           headers: options?.headers,
           method: options?.method ?? 'GET',
         };
-        const result = (await apiProxy.exec('fetch', [url, init])) as Omit<ApiResult, 'json'>;
-        return {...result, json: tryJsonParse(result.text)} as ApiResult<Data>;
+        const response = (await apiProxy.exec(signal, 'fetch', [url, init])) as Omit<ApiResult, 'json'>;
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return {...response, json: tryJsonParse(response.text)} as ApiResult<Data>;
       },
     [apiOrigin, apiProxy]
   );
 
   const fetchInfiniteFn = useMemo(
     () =>
-      <Data>({queryKey: [endpoint, options], pageParam}: InfiniteFetchParams): Promise<ApiResult<Data>> => {
+      <Data>({signal, queryKey: [endpoint, options], pageParam}: InfiniteFetchParams): Promise<ApiResult<Data>> => {
         const query = {
           ...options?.query,
           cursor: pageParam?.cursor,
         };
         return fetchFn<Data>({
+          signal,
           queryKey: [endpoint, {...options, query}],
         });
       },
@@ -72,3 +78,4 @@ export default function useSentryApi() {
     getPreviousPageParam,
   };
 }
+//{signal}: {signal: AbortSignal}

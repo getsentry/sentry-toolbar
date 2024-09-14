@@ -171,7 +171,7 @@ describe('IFrameProxy', () => {
       sendPortConnect(proxy);
       expect(outstandingPromises(proxy).size).toBe(0); // No promises to start
 
-      const promise = proxy.exec('log', ['hello world']);
+      const promise = proxy.exec(new AbortController().signal, 'log', ['hello world']);
       expect(outstandingPromises(proxy).size).toBe(1); // Added to the list of promises
 
       // Resolve the in-progress promise(s)
@@ -187,7 +187,7 @@ describe('IFrameProxy', () => {
       sendPortConnect(proxy);
       expect(outstandingPromises(proxy).size).toBe(0); // No promises to start
 
-      const promise = proxy.exec('log', ['hello world']);
+      const promise = proxy.exec(new AbortController().signal, 'log', ['hello world']);
       expect(outstandingPromises(proxy).size).toBe(1); // Added to the list of promises
 
       // Reject the in-progress promise(s)
@@ -203,7 +203,7 @@ describe('IFrameProxy', () => {
       sendPortConnect(proxy);
       expect(outstandingPromises(proxy).size).toBe(0); // No promises to start
 
-      const promise = proxy.exec('log', ['hello world']);
+      const promise = proxy.exec(new AbortController().signal, 'log', ['hello world']);
       expect(outstandingPromises(proxy).size).toBe(1); // Added to the list of promises
 
       responsePort.postMessage('hello back');
@@ -222,7 +222,7 @@ describe('IFrameProxy', () => {
       sendPortConnect(proxy);
       expect(outstandingPromises(proxy).size).toBe(0); // No promises to start
 
-      const promise = proxy.exec('log', ['hello world']);
+      const promise = proxy.exec(new AbortController().signal, 'log', ['hello world']);
       expect(outstandingPromises(proxy).size).toBe(1); // Added to the list of promises
 
       responsePort.postMessage({$id: 14, $result: 'hello back'});
@@ -233,12 +233,31 @@ describe('IFrameProxy', () => {
       expect(promise).resolves.toBe('hello to you');
       expect(outstandingPromises(proxy).size).toBe(0); // Promise is resovled
     });
+
+    it('should ignore messages that have had their signal aborted', () => {
+      const {responsePort, sendPortConnect} = getPorts();
+
+      const abortController = new AbortController();
+      const proxy = ApiProxy.singleton();
+      sendPortConnect(proxy);
+      expect(outstandingPromises(proxy).size).toBe(0); // No promises to start
+
+      const promise = proxy.exec(abortController.signal, 'log', ['hello world']);
+      expect(outstandingPromises(proxy).size).toBe(1); // Added to the list of promises
+
+      abortController.abort();
+      expect(outstandingPromises(proxy).size).toBe(0); // Promise is dropped
+
+      // When the message returns from the iframe, it's ignored
+      responsePort.postMessage({$id: 1, $result: 'hello to you'});
+      expect(promise).rejects.toBe('aborted');
+    });
   });
 
   describe('Send messages: exec/fetch', () => {
     it('should drop messaages when the port is not set', () => {
       const proxy = ApiProxy.singleton();
-      const promise = proxy.exec('log', ['hello world']);
+      const promise = proxy.exec(new AbortController().signal, 'log', ['hello world']);
 
       expect(promise).toBeUndefined();
     });
@@ -249,8 +268,8 @@ describe('IFrameProxy', () => {
       const proxy = ApiProxy.singleton();
       sendPortConnect(proxy);
 
-      proxy.exec('log', ['hello world']);
-      proxy.exec('log', ['foo bar']);
+      proxy.exec(new AbortController().signal, 'log', ['hello world']);
+      proxy.exec(new AbortController().signal, 'log', ['foo bar']);
 
       expect(requestPostMessageSpy).toHaveBeenCalledWith(
         {$id: 1, message: {$function: 'log', $args: ['hello world']}},
@@ -269,7 +288,7 @@ describe('IFrameProxy', () => {
       const proxy = ApiProxy.singleton();
       sendPortConnect(proxy);
 
-      proxy.exec('fetch', ['/welcome']);
+      proxy.exec(new AbortController().signal, 'fetch', ['/welcome']);
       expect(requestPostMessageSpy).toHaveBeenLastCalledWith(
         {$id: 1, message: {$function: 'fetch', $args: ['/welcome']}},
         []
@@ -285,7 +304,7 @@ describe('IFrameProxy', () => {
       const proxy = ApiProxy.singleton();
       sendPortConnect(proxy);
 
-      const promise = proxy.exec('log', ['hello world']);
+      const promise = proxy.exec(new AbortController().signal, 'log', ['hello world']);
       expect(requestPostMessageSpy).toHaveBeenCalledWith(
         {$id: 1, message: {$function: 'log', $args: ['hello world']}},
         []
@@ -302,7 +321,7 @@ describe('IFrameProxy', () => {
       const proxy = ApiProxy.singleton();
       sendPortConnect(proxy);
 
-      const promise = proxy.exec('log', ['hello world']);
+      const promise = proxy.exec(new AbortController().signal, 'log', ['hello world']);
       expect(requestPostMessageSpy).toHaveBeenCalledWith(
         {$id: 1, message: {$function: 'log', $args: ['hello world']}},
         []
