@@ -33,7 +33,6 @@ export default function App() {
 }
 
 function DemoOrgData() {
-  console.log('render demo org data');
   const {organizationIdOrSlug} = useContext(ConfigContext);
   const {data} = useFetchSentryData({
     queryKey: useMemo((): ApiEndpointQueryKey => [`/organizations/${organizationIdOrSlug}/`], [organizationIdOrSlug]),

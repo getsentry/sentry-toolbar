@@ -22,7 +22,11 @@ export default function mount(rootNode: HTMLElement, config: Configuration) {
 
   return () => {
     host.remove();
-    reactRoot.unmount();
+
+    // `setTimeout` helps to avoid "Attempted to synchronously unmount a root while React was already rendering."
+    setTimeout(() => {
+      reactRoot.unmount();
+    }, 0);
   };
 }
 

@@ -29,7 +29,6 @@
         window.parent.postMessage({
           source: 'sentry-toolbar',
           message,
-          rnd
         }, referrer);
         log('Sent', {message, referrer})
 
@@ -55,21 +54,20 @@
             return; // MessageEvent is malformed, missing $id
           }
 
-          if (!message.$function || !(message.$function in handlerMap)) {
+          if (!message.$function || !(message.$function in messageDispatch)) {
             return; // No-op without a $function to call
           }
 
           messageDispatch[message.$function]
             .apply(undefined, message.$args || [])
             .then($result => port1.postMessage({$id, $result}))
-            .catch((error) => port1.postMessage({$id, $error: error}, [error]));
+            .catch((error) => port1.postMessage({$id, $error: error}));
         });
         port1.start();
 
         window.parent.postMessage({
           source: 'sentry-toolbar',
           message: 'port-connect',
-          rnd
         }, referrer, [port2])
         log('Sent', {message: 'port-connect', referrer})
       })();
