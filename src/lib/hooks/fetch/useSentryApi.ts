@@ -3,13 +3,14 @@ import {useContext, useMemo} from 'react';
 import {useIFrameProxyContext} from 'toolbar/context/ApiProxyContext';
 import {ConfigContext} from 'toolbar/context/ConfigContext';
 import parseLinkHeader from 'toolbar/utils/parseLinkHeader';
+import tryJsonParse from 'toolbar/utils/tryJsonParse';
 
 import type {ApiEndpointQueryKey, ApiResult} from 'toolbar/types/api';
 import type {ParsedHeader} from 'toolbar/utils/parseLinkHeader';
 
 function parsePageParam<Data>(dir: 'previous' | 'next') {
   return ({headers}: ApiResult<Data>) => {
-    const parsed = parseLinkHeader(headers?.get('Link') ?? null);
+    const parsed = parseLinkHeader(headers.Link ?? null);
     return parsed[dir]?.results ? parsed[dir] : undefined;
   };
 }
@@ -37,21 +38,15 @@ export default function useSentryApi() {
 
   const fetchFn = useMemo(
     () =>
-      async <Data>({queryKey: [endpoint, options]}: FetchParams): Promise<ApiResult<Data>> => {
-        const response = await iframeProxy.fetch(qs.stringifyUrl({url: apiOrigin + endpoint, query: options?.query}), {
+      async <Data = unknown>({queryKey: [endpoint, options]}: FetchParams): Promise<ApiResult<Data>> => {
+        const url = qs.stringifyUrl({url: apiOrigin + endpoint, query: options?.query});
+        const init = {
           body: options?.payload ? JSON.stringify(options?.payload) : undefined,
           headers: options?.headers,
           method: options?.method ?? 'GET',
-        });
-
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        return {
-          json: await response.json(),
-          headers: response.headers,
         };
+        const result = (await iframeProxy.exec('fetch', [url, init])) as Omit<ApiResult, 'json'>;
+        return {...result, json: tryJsonParse(result.text)} as ApiResult<Data>;
       },
     [apiOrigin, iframeProxy]
   );

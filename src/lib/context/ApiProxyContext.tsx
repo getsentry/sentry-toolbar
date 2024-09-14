@@ -5,7 +5,7 @@ import type {Configuration} from 'toolbar/types/config';
 
 import type {ReactNode} from 'react';
 
-const defaultProxy = new ApiProxy(() => {});
+const defaultProxy = ApiProxy.singleton();
 const IFrameProxyStateContext = createContext<ProxyState>(defaultProxy.status);
 const IFrameProxyContext = createContext<ApiProxy>(defaultProxy);
 
@@ -30,9 +30,11 @@ export function ApiProxyContextProvider({children, config}: Props) {
     hasProject: false,
     hasPort: false,
   });
-  const proxyRef = useRef<ApiProxy>(new ApiProxy(setProxyState));
+  const proxyRef = useRef<ApiProxy>(ApiProxy.singleton());
 
   useEffect(() => {
+    proxyRef.current.setOnStatusChanged(setProxyState);
+
     if (!iframeRef.current) {
       log('UNEXPECTED! Missing an iframe in ProxyContent');
       return;

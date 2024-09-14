@@ -1,11 +1,14 @@
 type Resolve = (value: unknown) => void;
 type Reject = (reason?: any) => void; // eslint-disable-line @typescript-eslint/no-explicit-any
 
+type HandleStatusChange = (status: ProxyState) => void;
 export interface ProxyState {
   hasCookie: boolean;
   hasProject: boolean;
   hasPort: boolean;
 }
+
+let _SINGLETON: ApiProxy | undefined;
 
 function log(...args: unknown[]) {
   // eslint-disable-next-line no-constant-condition
@@ -30,11 +33,7 @@ export default class ApiProxy {
    * Callback to tell the initializer if we're ready or not. This can be called
    * any time a 403 response is returned to the `proxyFetch()` helper.
    */
-  private _updateStatusCallback: (status: ProxyState) => void = () => ({
-    hasCookie: false,
-    hasProject: false,
-    hasPort: false,
-  });
+  private _updateStatusCallback: HandleStatusChange = () => {};
 
   /**
    * The port that we're using to send messages into the iframe.
@@ -53,10 +52,23 @@ export default class ApiProxy {
    */
   private _promiseMap = new Map<number, [Resolve, Reject]>();
 
-  public constructor(onStatusChanged: (status: ProxyState) => void) {
-    this._updateStatusCallback = onStatusChanged;
+  public static singleton(): ApiProxy {
+    if (!_SINGLETON) {
+      _SINGLETON = new ApiProxy();
+    }
+    return _SINGLETON;
+  }
 
+  public static TEST_ONLY_clear_singleton() {
+    _SINGLETON = undefined;
+  }
+
+  private constructor() {
     window.addEventListener('message', this._handleWindowMessage);
+  }
+
+  public setOnStatusChanged(onStatusChanged: HandleStatusChange) {
+    this._updateStatusCallback = onStatusChanged;
   }
 
   public setFrame(iframe: HTMLIFrameElement) {
@@ -71,7 +83,7 @@ export default class ApiProxy {
   }
 
   private _updateStatus(status: ProxyState) {
-    log('Status changed', this._status, this._updateStatusCallback);
+    log('Status changed', this._status, '-->', status);
     this._status = status;
     this._updateStatusCallback(status);
   }
@@ -156,15 +168,11 @@ export default class ApiProxy {
     });
   };
 
-  public exec = ($function: string, $args: unknown[]) => {
+  public exec = ($function: 'log' | 'fetch', $args: unknown[]) => {
     return this.postMessage({$function, $args});
   };
 
   public reload = () => {
     this._iframe?.contentWindow?.location.reload();
-  };
-
-  public fetch = (input: RequestInfo, init?: RequestInit): Promise<Response> => {
-    return this.exec('fetch', [input, init]) as Promise<Response>;
   };
 }

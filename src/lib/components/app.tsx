@@ -37,5 +37,6 @@ function DemoOrgData() {
   const {data} = useFetchSentryData({
     queryKey: useMemo((): ApiEndpointQueryKey => [`/organizations/${organizationIdOrSlug}/`], [organizationIdOrSlug]),
   });
+
   return <pre>{JSON.stringify(data, null, '\t')}</pre>;
 }

@@ -36,14 +36,25 @@
 
         const messageDispatch = {
           'log': log,
-          'fetch': (url, init) => fetch(url, {
-            ...init,
-            headers: {
-              ...init.headers,
-              // For mock/test purposes we're fetching the accessToken and injecting it
-              'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+          'fetch': async (url, init) => {
+            const response =  await fetch(url, {
+              ...init,
+              headers: {
+                ...init.headers,
+                // For mock/test purposes we're fetching the accessToken and injecting it
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+              }
+            });
+
+            return {
+              ok: response.ok,
+              status: response.status,
+              statusText: response.statusText,
+              url: response.url,
+              headers: Object.fromEntries(response.headers.entries()),
+              text: await response.text(),
             }
-          }),
+          },
         };
 
         port1.addEventListener('message', (postMessage) => {
