@@ -5,9 +5,9 @@ const fs = require('node:fs/promises');
 const httpProxy = require('http-proxy');
 
 const PATH_TO_TEMPLATE = new Map([
-  [/\/toolbar\/(?<org>[a-z0-9\-]+)\/(?<project>[a-z0-9\-]+)\/iframe\//, "/public/toolbar/iframe.html"],
-  [/\/auth\/login\/(?<org>[a-z0-9\-]+)/, "/public/auth/login.html"],
-  [/\/toolbar\/(?<org>[a-z0-9\-]+)\/(?<project>[a-z0-9\-]+)\/login-success\//, "/public/toolbar/login-success.html"],
+  [/\/toolbar\/(?<org>[a-z0-9_\-]+)\/(?<project>[a-z0-9_\-]+)\/iframe\//, "/public/toolbar/iframe.html"],
+  [/\/auth\/login\/(?<org>[a-z0-9_\-]+)/, "/public/auth/login.html"],
+  [/\/toolbar\/(?<org>[a-z0-9_\-]+)\/(?<project>[a-z0-9_\-]+)\/login-success\//, "/public/toolbar/login-success.html"],
 ]);
 
 const urlPatterns = Array.from(PATH_TO_TEMPLATE.keys());
@@ -21,7 +21,7 @@ const requestListener = function (req, res) {
 
       const referrer = req.headers['referer']; // Yes, the header name is spelled this way.
 
-      if (!isReferrerAllowed(referrer, params.org)) {
+      if (!isReferrerAllowed(referrer, params.org, params.project)) {
         res.writeHead(403);
         res.end();
         return;
@@ -56,7 +56,7 @@ const requestListener = function (req, res) {
   }
 };
 
-function isReferrerAllowed(referrer, org) {
+function isReferrerAllowed(referrer, org, project) {
   // TODO: in prod we should check against the database.
   return true;
 }

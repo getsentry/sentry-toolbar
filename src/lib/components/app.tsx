@@ -34,9 +34,15 @@ export default function App() {
 
 function DemoOrgData() {
   const {organizationIdOrSlug} = useContext(ConfigContext);
-  const {data} = useFetchSentryData({
+  const {data, refetch} = useFetchSentryData({
     queryKey: useMemo((): ApiEndpointQueryKey => [`/organizations/${organizationIdOrSlug}/`], [organizationIdOrSlug]),
+    retry: false,
   });
 
-  return <pre>{JSON.stringify(data, null, '\t')}</pre>;
+  return (
+    <div>
+      <button onClick={() => refetch()}>Reload Data</button>
+      <pre>{JSON.stringify(data, null, '\t')}</pre>
+    </div>
+  );
 }

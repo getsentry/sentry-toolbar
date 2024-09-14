@@ -1,6 +1,6 @@
 import qs from 'query-string';
 import {useContext, useMemo} from 'react';
-import {useApiProxyContext} from 'toolbar/context/ApiProxyContext';
+import {useApiProxyContext, useProxyIFrameContext} from 'toolbar/context/ApiProxyContext';
 import {ConfigContext} from 'toolbar/context/ConfigContext';
 import parseLinkHeader from 'toolbar/utils/parseLinkHeader';
 import tryJsonParse from 'toolbar/utils/tryJsonParse';
@@ -30,6 +30,7 @@ interface InfiniteFetchParams extends FetchParams {
 const trailingBackslash = /\/$/;
 
 export default function useSentryApi() {
+  const iframe = useProxyIFrameContext();
   const apiProxy = useApiProxyContext();
   const {sentryOrigin, sentryRegion} = useContext(ConfigContext);
 
@@ -43,17 +44,27 @@ export default function useSentryApi() {
         const url = qs.stringifyUrl({url: apiOrigin + endpoint, query: options?.query});
         const init = {
           body: options?.payload ? JSON.stringify(options?.payload) : undefined,
-          headers: options?.headers,
+          headers: {
+            Accept: 'application/json; charset=utf-8',
+            'Content-Type': 'application/json',
+            ...options?.headers,
+          },
           method: options?.method ?? 'GET',
         };
         const response = (await apiProxy.exec(signal, 'fetch', [url, init])) as Omit<ApiResult, 'json'>;
+        const apiResult = {...response, json: tryJsonParse(response.text)} as ApiResult<Data>;
 
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          if (response.status === 401) {
+            // Not logged in, so we need to cleanup our state and reload the iframe
+            apiProxy.cleanup();
+            iframe.reload();
+          }
+          throw apiResult;
         }
-        return {...response, json: tryJsonParse(response.text)} as ApiResult<Data>;
+        return apiResult;
       },
-    [apiOrigin, apiProxy]
+    [apiOrigin, apiProxy, iframe]
   );
 
   const fetchInfiniteFn = useMemo(

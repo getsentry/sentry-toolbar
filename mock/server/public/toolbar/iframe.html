@@ -24,13 +24,16 @@
         });
 
         // If we're logged out if the iframe, then nothing happens.
-        // State will be [false,false,false] and user will need to click the button
-        const message = projectSlug === undefined ? 'cookie-set' : 'project-ready';
-        window.parent.postMessage({
-          source: 'sentry-toolbar',
-          message,
-        }, referrer);
-        log('Sent', {message, referrer})
+        // For mock/test purposes we're using the accessToken as our is-loggin-in check
+        if (localStorage.getItem('accessToken')) {
+          const message = projectSlug === undefined ? 'cookie-found' : 'domain-allowed';
+          window.parent.postMessage({
+            source: 'sentry-toolbar',
+            message,
+          }, referrer);
+          log('Sent', {message, referrer})
+
+        }
 
         const {port1, port2} = new MessageChannel();
 

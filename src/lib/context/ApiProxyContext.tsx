@@ -5,9 +5,8 @@ import type {Configuration} from 'toolbar/types/config';
 
 import type {ReactNode} from 'react';
 
-const defaultProxy = ApiProxy.singleton();
-const ApiProxyStateContext = createContext<ProxyState>(defaultProxy.status);
-const ApiProxyContext = createContext<ApiProxy>(defaultProxy);
+const ApiProxyStateContext = createContext<ProxyState | undefined>(undefined);
+const ApiProxyContext = createContext<ApiProxy | undefined>(undefined);
 const ProxyIFrameRefContext = createContext<{
   reload: () => void;
 }>({
@@ -31,11 +30,12 @@ export function ApiProxyContextProvider({children, config}: Props) {
 
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [proxyState, setProxyState] = useState<ProxyState>({
+    loginComplete: false,
     hasCookie: false,
     hasProject: false,
     hasPort: false,
   });
-  const proxyRef = useRef<ApiProxy>(ApiProxy.singleton());
+  const proxyRef = useRef<ApiProxy>(ApiProxy.singleton(config));
 
   useEffect(() => {
     proxyRef.current.setOnStatusChanged(setProxyState);
@@ -54,16 +54,28 @@ export function ApiProxyContextProvider({children, config}: Props) {
 
   const proxyIframe = useMemo(
     () => ({
-      reload: () => iframeRef.current?.contentWindow?.location.reload(),
+      reload: () =>
+        iframeRef.current?.contentWindow?.postMessage({source: 'sentry-toolbar', message: 'reload'}, sentryOrigin),
     }),
-    []
+    [sentryOrigin]
   );
+
+  useEffect(() => {
+    if (proxyState.loginComplete && !proxyState.hasCookie) {
+      proxyIframe.reload();
+    }
+  }, [proxyIframe, proxyState.loginComplete, proxyState.hasCookie]);
+
+  // This is used as a key, when it changes we will reload the iframe to pickup
+  // the updated cookie after login is done.
+  const isIFrameReady = proxyState.hasProject || proxyState.loginComplete;
 
   return (
     <ProxyIFrameRefContext.Provider value={proxyIframe}>
       <ApiProxyContext.Provider value={proxyRef.current}>
         <ApiProxyStateContext.Provider value={proxyState}>
           <iframe
+            key={String(isIFrameReady)}
             referrerPolicy="origin"
             height="0"
             width="0"
@@ -89,7 +101,11 @@ export function useProxyIFrameContext() {
  * Hook to access the proxy instance, so we can call `.exec()` and pass messages along
  */
 export function useApiProxyContext() {
-  return useContext(ApiProxyContext);
+  const context = useContext(ApiProxyContext);
+  if (!context) {
+    throw new Error('useApiProxyContext() must be a child of ApiProxyContextProvider');
+  }
+  return context;
 }
 
 /**
@@ -98,5 +114,9 @@ export function useApiProxyContext() {
  * Messages are dropped when the proxy is not fully ready.
  */
 export function useApiProxyState() {
-  return useContext(ApiProxyStateContext);
+  const context = useContext(ApiProxyStateContext);
+  if (!context) {
+    throw new Error('useApiProxyState() must be a child of ApiProxyContextProvider');
+  }
+  return context;
 }

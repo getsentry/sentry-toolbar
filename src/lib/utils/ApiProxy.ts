@@ -1,8 +1,11 @@
+import type {Configuration} from 'toolbar/types/config';
+
 type Resolve = (value: unknown) => void;
 type Reject = (reason?: any) => void; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 type HandleStatusChange = (status: ProxyState) => void;
 export interface ProxyState {
+  loginComplete: boolean;
   hasCookie: boolean;
   hasProject: boolean;
   hasPort: boolean;
@@ -21,7 +24,7 @@ export default class ApiProxy {
   /**
    * The last reported status of the proxy.
    */
-  private _status: ProxyState = {hasCookie: false, hasProject: false, hasPort: false};
+  private _status: ProxyState = {loginComplete: false, hasCookie: false, hasProject: false, hasPort: false};
 
   /**
    * Callback to tell the initializer if we're ready or not. This can be called
@@ -46,9 +49,9 @@ export default class ApiProxy {
    */
   private _promiseMap = new Map<number, [Resolve, Reject]>();
 
-  public static singleton(): ApiProxy {
+  public static singleton(config: Configuration): ApiProxy {
     if (!_SINGLETON) {
-      _SINGLETON = new ApiProxy();
+      _SINGLETON = new ApiProxy(config);
     }
     return _SINGLETON;
   }
@@ -57,7 +60,7 @@ export default class ApiProxy {
     _SINGLETON = undefined;
   }
 
-  private constructor() {
+  private constructor(private _config: Configuration) {
     window.addEventListener('message', this._handleWindowMessage);
   }
 
@@ -69,7 +72,7 @@ export default class ApiProxy {
     this._port?.removeEventListener('message', this._handlePortMessage);
     this._port?.close();
     this._port = undefined;
-    this._updateStatus({hasCookie: false, hasProject: false, hasPort: false});
+    this._updateStatus({loginComplete: false, hasCookie: false, hasProject: false, hasPort: false});
   }
 
   private _updateStatus(status: ProxyState) {
@@ -83,13 +86,20 @@ export default class ApiProxy {
   }
 
   private _handleWindowMessage = (event: MessageEvent) => {
-    if (event.data.source !== 'sentry-toolbar') {
+    if (event.origin !== this._config.sentryOrigin || event.data.source !== 'sentry-toolbar') {
       return; // Ignore other message sources
     }
 
     log('window._handleWindowMessage', event.data, event);
     switch (event.data.message) {
-      case 'cookie-set':
+      case 'login-complete':
+        // When the user is logged in, but the project is not setup for this domain
+        this._updateStatus({
+          ...this.status,
+          loginComplete: true,
+        });
+        break;
+      case 'cookie-found':
         // When the user is logged in, but the project is not setup for this domain
         this._updateStatus({
           ...this.status,
@@ -97,7 +107,7 @@ export default class ApiProxy {
           hasProject: false,
         });
         break;
-      case 'project-ready':
+      case 'domain-allowed':
         // The user is logged in, and ready to go!
         this._updateStatus({
           ...this.status,
@@ -160,7 +170,7 @@ export default class ApiProxy {
         'abort',
         () => {
           this._promiseMap.delete($id);
-          reject('aborted');
+          reject('Request was aborted');
         },
         {once: true}
       );
