@@ -33,10 +33,8 @@ describe('IFrameProxy', () => {
     it('should have a disabled state by default', () => {
       const proxy = ApiProxy.singleton(defaultConfig);
       expect(proxy.status).toEqual({
-        loginComplete: false,
-        hasCookie: false,
-        hasProject: false,
         hasPort: false,
+        isProjectConfigured: undefined,
       });
     });
 
@@ -55,14 +53,12 @@ describe('IFrameProxy', () => {
 
       // @ts-expect-error: Accessing a private method
       proxy._updateStatus({
-        hasCookie: true,
-        hasProject: true,
         hasPort: true,
+        isProjectConfigured: true,
       });
       expect(callback).toHaveBeenCalledWith({
-        hasCookie: true,
-        hasProject: true,
         hasPort: true,
+        isProjectConfigured: true,
       });
     });
   });
@@ -75,46 +71,6 @@ describe('IFrameProxy', () => {
       postMessageToWindow(proxy, {});
 
       expect(callback).not.toHaveBeenCalled();
-    });
-
-    it('should update status after getting a cookie-found messages', () => {
-      const callback = jest.fn();
-      const proxy = ApiProxy.singleton(defaultConfig);
-      proxy.setOnStatusChanged(callback);
-
-      postMessageToWindow(proxy, {source: 'sentry-toolbar', message: 'cookie-found'});
-      expect(proxy.status).toEqual(
-        expect.objectContaining({
-          hasCookie: true,
-          hasProject: false,
-        })
-      );
-      expect(callback).toHaveBeenLastCalledWith(
-        expect.objectContaining({
-          hasCookie: true,
-          hasProject: false,
-        })
-      );
-    });
-
-    it('should update status after getting a domain-allowed messages', () => {
-      const callback = jest.fn();
-      const proxy = ApiProxy.singleton(defaultConfig);
-      proxy.setOnStatusChanged(callback);
-
-      postMessageToWindow(proxy, {source: 'sentry-toolbar', message: 'domain-allowed'});
-      expect(proxy.status).toEqual(
-        expect.objectContaining({
-          hasCookie: true,
-          hasProject: true,
-        })
-      );
-      expect(callback).toHaveBeenLastCalledWith(
-        expect.objectContaining({
-          hasCookie: true,
-          hasProject: true,
-        })
-      );
     });
 
     it('should listen to a MessagePort on the port-connect message', () => {
@@ -132,11 +88,7 @@ describe('IFrameProxy', () => {
       // @ts-expect-error: Accessing a private member
       expect(proxy._port).toBeDefined();
       expect(start).toHaveBeenCalled();
-      expect(callback).toHaveBeenCalledWith(
-        expect.objectContaining({
-          hasPort: true,
-        })
-      );
+      expect(callback).toHaveBeenCalledWith({hasPort: true, isProjectConfigured: true});
     });
 
     it('should cleanup the received port', () => {
@@ -155,10 +107,8 @@ describe('IFrameProxy', () => {
       expect(removeEventListener).toHaveBeenCalledWith('message', proxy._handlePortMessage);
       expect(close).toHaveBeenCalled();
       expect(callback).toHaveBeenCalledWith({
-        loginComplete: false,
-        hasCookie: false,
-        hasProject: false,
         hasPort: false,
+        isProjectConfigured: undefined,
       });
     });
   });

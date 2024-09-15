@@ -3,7 +3,6 @@ import type {StringifiableRecord} from 'query-string';
 type APIRequestMethod = 'POST' | 'GET' | 'DELETE' | 'PUT';
 
 type THeadersIn = Record<string, string>;
-type THeadersOut = Record<string, undefined | string>;
 type TQuery = StringifiableRecord;
 type TPayload = Record<string, unknown>;
 
@@ -23,7 +22,7 @@ export interface ApiResult<Data = unknown> {
   status: number;
   statusText: string;
   url: string;
-  headers: THeadersOut;
+  headers: Headers;
   text: string;
   json: Data;
 }

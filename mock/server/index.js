@@ -1,25 +1,48 @@
 /* eslint-disable */
 
-const http = require('node:http');
 const fs = require('node:fs/promises');
+const http = require('node:http');
 const httpProxy = require('http-proxy');
+const querystring = require('node:querystring');
 
 const PATH_TO_TEMPLATE = new Map([
-  [/\/toolbar\/(?<org>[a-z0-9_\-]+)\/(?<project>[a-z0-9_\-]+)\/iframe\//, "/public/toolbar/iframe.html"],
   [/\/auth\/login\/(?<org>[a-z0-9_\-]+)/, "/public/auth/login.html"],
+  [/\/toolbar\/(?<org>[a-z0-9_\-]+)\/(?<project>[a-z0-9_\-]+)\/iframe\//, "/public/toolbar/iframe.html"],
   [/\/toolbar\/(?<org>[a-z0-9_\-]+)\/(?<project>[a-z0-9_\-]+)\/login-success\//, "/public/toolbar/login-success.html"],
 ]);
 
 const urlPatterns = Array.from(PATH_TO_TEMPLATE.keys());
 
+let hasSubmittedAuth = false;
+
 const requestListener = function (req, res) {
   try {
-    const matchedPath = urlPatterns.filter(regex => regex.test(req.url)).at(0);
-    if (matchedPath) {
-      const template = PATH_TO_TEMPLATE.get(matchedPath);
-      const params = req.url.match(matchedPath).groups;
+    const [url, rawQuery] = req.url.split('?');
+    const query = querystring.parse(rawQuery);
+    const referrer = req.headers['referer']; // Yes, the header name is spelled this way.
+    console.log('Incoming request', {referrer, method: req.method, url, query});
 
-      const referrer = req.headers['referer']; // Yes, the header name is spelled this way.
+    if (req.method === 'POST' && url.startsWith('/auth/login/')) {
+      const redirect = query.next;
+      console.log('Response', 'Setting hasSubmittedAuth=true', {redirect})
+      hasSubmittedAuth = true;
+      res.writeHead(302, {Location: redirect});
+      res.end();
+      return;
+    }
+
+    const matchedPath = urlPatterns.filter(regex => regex.test(url)).at(0);
+    if (matchedPath) {
+      const params = url.match(matchedPath).groups;
+
+
+      if (!hasSubmittedAuth && url.startsWith('/toolbar/')) {
+        const redirect = `/auth/login/${params.org}/?next=${url}`
+        console.log('Response', {hasSubmittedAuth, redirect, referrer})
+        res.writeHead(302, {Location: redirect});
+        res.end();
+        return;
+      }
 
       if (!isReferrerAllowed(referrer, params.org, params.project)) {
         res.writeHead(403);
@@ -27,7 +50,8 @@ const requestListener = function (req, res) {
         return;
       }
 
-      console.log('Serving:', req.url, {
+      const template = PATH_TO_TEMPLATE.get(matchedPath);
+      console.log('Serving:', url, query, hasSubmittedAuth, {
         template,
         org_name: params.org,
         project_name: params.project,
@@ -38,16 +62,18 @@ const requestListener = function (req, res) {
         __ORG_SLUG__: JSON.stringify(params.org),
         __PROJECT_SLUG__: JSON.stringify(params.project),
         __REFERRER__: JSON.stringify(referrer),
+        __AUTH_TOKENS_URL__: JSON.stringify(`https://sentry.io/organizations/${params.org}/settings/account/api/auth-tokens/`),
+        __AUTH_SUBMIT_ACTION__: JSON.stringify(`/auth/login/${params.org}/?next=${query.next}`),
       });
 
-    } else if (req.url.endsWith(".js")) {
-      serveCDNFile(req.url, req, res);
+    } else if (url.endsWith(".js")) {
+      serveCDNFile(url, req, res);
 
-    } else if (req.url.startsWith('/api/0/') || req.url.startsWith('/region/')) {
-      serveApiProxy(req.url, req, res)
+    } else if (url.startsWith('/api/0/') || url.startsWith('/region/')) {
+      serveApiProxy(url, req, res)
 
     } else {
-      console.log('Unknown:', req.url);
+      console.log('Unknown:', url);
       res.writeHead(400);
       res.end();
     }

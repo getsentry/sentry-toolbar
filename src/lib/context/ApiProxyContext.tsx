@@ -1,21 +1,15 @@
-import {createContext, useContext, useEffect, useMemo, useRef, useState} from 'react';
+import {createContext, useContext, useEffect, useRef, useState} from 'react';
+import {useAuthContext} from 'toolbar/context/AuthContext';
+import {ConfigContext} from 'toolbar/context/ConfigContext';
 import ApiProxy, {type ProxyState} from 'toolbar/utils/ApiProxy';
-
-import type {Configuration} from 'toolbar/types/config';
 
 import type {ReactNode} from 'react';
 
 const ApiProxyStateContext = createContext<ProxyState | undefined>(undefined);
 const ApiProxyContext = createContext<ApiProxy | undefined>(undefined);
-const ProxyIFrameRefContext = createContext<{
-  reload: () => void;
-}>({
-  reload: () => {},
-});
 
 interface Props {
   children: ReactNode;
-  config: Configuration;
 }
 
 function log(...args: unknown[]) {
@@ -25,82 +19,58 @@ function log(...args: unknown[]) {
   }
 }
 
-export function ApiProxyContextProvider({children, config}: Props) {
+export function ApiProxyContextProvider({children}: Props) {
+  const config = useContext(ConfigContext);
   const {sentryOrigin, organizationIdOrSlug, projectIdOrSlug} = config;
+  const [authState] = useAuthContext();
 
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [proxyState, setProxyState] = useState<ProxyState>({
-    loginComplete: false,
-    hasCookie: false,
-    hasProject: false,
-    hasPort: false,
-  });
-  const proxyRef = useRef<ApiProxy>(ApiProxy.singleton(config));
+  const proxy = ApiProxy.singleton(config);
+  const [proxyState, setProxyState] = useState<ProxyState>(proxy.status);
 
   useEffect(() => {
-    proxyRef.current.setOnStatusChanged(setProxyState);
+    if (!authState.isLoggedIn) {
+      log('Logged out: calling proxy.cleanup()');
+      proxy.cleanup();
+    }
+  }, [authState.isLoggedIn, proxy]);
+
+  useEffect(() => {
+    proxy.setOnStatusChanged(setProxyState);
 
     if (!iframeRef.current) {
       log('UNEXPECTED! Missing an iframe in ProxyContent');
       return;
     }
-    const proxy = proxyRef.current;
 
     return () => {
-      log('calling proxy.cleanup()');
+      log('Unmount: calling proxy.cleanup()');
       proxy.cleanup();
     };
-  }, []);
-
-  const proxyIframe = useMemo(
-    () => ({
-      reload: () =>
-        iframeRef.current?.contentWindow?.postMessage({source: 'sentry-toolbar', message: 'reload'}, sentryOrigin),
-    }),
-    [sentryOrigin]
-  );
-
-  useEffect(() => {
-    if (proxyState.loginComplete && !proxyState.hasCookie) {
-      proxyIframe.reload();
-    }
-  }, [proxyIframe, proxyState.loginComplete, proxyState.hasCookie]);
-
-  // This is used as a key, when it changes we will reload the iframe to pickup
-  // the updated cookie after login is done.
-  const isIFrameReady = proxyState.hasProject || proxyState.loginComplete;
+  }, [proxy]);
 
   return (
-    <ProxyIFrameRefContext.Provider value={proxyIframe}>
-      <ApiProxyContext.Provider value={proxyRef.current}>
-        <ApiProxyStateContext.Provider value={proxyState}>
-          <iframe
-            key={String(isIFrameReady)}
-            referrerPolicy="origin"
-            height="0"
-            width="0"
-            src={`${sentryOrigin}/toolbar/${organizationIdOrSlug}/${projectIdOrSlug}/iframe/`}
-            ref={iframeRef}
-          />
-          {JSON.stringify(proxyState)}
-          {children}
-        </ApiProxyStateContext.Provider>
-      </ApiProxyContext.Provider>
-    </ProxyIFrameRefContext.Provider>
+    <ApiProxyContext.Provider value={proxy}>
+      <ApiProxyStateContext.Provider value={proxyState}>
+        <iframe
+          key={String(authState.isLoggedIn)}
+          referrerPolicy="origin"
+          height="0"
+          width="0"
+          src={`${sentryOrigin}/toolbar/${organizationIdOrSlug}/${projectIdOrSlug}/iframe/`}
+          ref={iframeRef}
+        />
+        {JSON.stringify(proxyState)}
+        {children}
+      </ApiProxyStateContext.Provider>
+    </ApiProxyContext.Provider>
   );
-}
-
-/**
- * Hook to access the proxy iframe element, and reload it if needed
- */
-export function useProxyIFrameContext() {
-  return useContext(ProxyIFrameRefContext);
 }
 
 /**
  * Hook to access the proxy instance, so we can call `.exec()` and pass messages along
  */
-export function useApiProxyContext() {
+export function useApiProxyInstance() {
   const context = useContext(ApiProxyContext);
   if (!context) {
     throw new Error('useApiProxyContext() must be a child of ApiProxyContextProvider');

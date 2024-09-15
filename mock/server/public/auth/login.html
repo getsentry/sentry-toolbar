@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <title>Sentry - Login</title>
+
+    <!-- TODO: this should be a sentry logo -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  </head>
+  <body>
+    <form id="accessTokenForm">
+      <h3>sentry.io access token</h3>
+      <p>
+        This mock server is configured to proxy requests to sentry.io. Enter an Access Token to facilitate this.
+      </p>
+      <fieldset style="padding: 1em; display: flex; flex-direction: column; gap: 1em;">
+        <label>
+          Access Token:
+          <input type="text" name="access_token" id="accessToken" />
+          <div><a href=__AUTH_TOKENS_URL__ target="_blank">Get an Auth Token</a></div>
+        </label>
+
+        <div>
+          <button type="submit">Save Access Token</button>
+        </div>
+      </fieldset>
+    </form>
+
+    <form id="postForm" method="POST" action=__AUTH_SUBMIT_ACTION__>
+    </form>
+
+    <script>
+    (function() {
+      const accessTokenInput = document.getElementById('accessToken');
+      accessTokenInput.value = localStorage.getItem('accessToken');
+
+      document.getElementById('accessTokenForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const token = accessTokenInput.value;
+        if (!token) {
+          alert('Token cannot be empty');
+          return;
+        }
+
+        localStorage.setItem('accessToken', token);
+        document.getElementById('postForm').submit();
+      });
+    })();
+    </script>
+  </body>
+</html>

@@ -5,13 +5,13 @@ type Reject = (reason?: any) => void; // eslint-disable-line @typescript-eslint/
 
 type HandleStatusChange = (status: ProxyState) => void;
 export interface ProxyState {
-  loginComplete: boolean;
-  hasCookie: boolean;
-  hasProject: boolean;
+  // loginComplete: boolean;
+  // hasCookie: boolean;
+  isProjectConfigured: undefined | boolean;
   hasPort: boolean;
 }
 
-let _SINGLETON: ApiProxy | undefined;
+const _SINGLETON_MAP = new Map<Configuration, ApiProxy>(); // ApiProxy | undefined;
 
 function log(...args: unknown[]) {
   // eslint-disable-next-line no-constant-condition
@@ -24,7 +24,7 @@ export default class ApiProxy {
   /**
    * The last reported status of the proxy.
    */
-  private _status: ProxyState = {loginComplete: false, hasCookie: false, hasProject: false, hasPort: false};
+  private _status: ProxyState = {isProjectConfigured: undefined, hasPort: false};
 
   /**
    * Callback to tell the initializer if we're ready or not. This can be called
@@ -50,14 +50,14 @@ export default class ApiProxy {
   private _promiseMap = new Map<number, [Resolve, Reject]>();
 
   public static singleton(config: Configuration): ApiProxy {
-    if (!_SINGLETON) {
-      _SINGLETON = new ApiProxy(config);
+    if (!_SINGLETON_MAP.has(config)) {
+      _SINGLETON_MAP.set(config, new ApiProxy(config));
     }
-    return _SINGLETON;
+    return _SINGLETON_MAP.get(config) as ApiProxy;
   }
 
   public static TEST_ONLY_clear_singleton() {
-    _SINGLETON = undefined;
+    _SINGLETON_MAP.clear();
   }
 
   private constructor(private _config: Configuration) {
@@ -72,11 +72,11 @@ export default class ApiProxy {
     this._port?.removeEventListener('message', this._handlePortMessage);
     this._port?.close();
     this._port = undefined;
-    this._updateStatus({loginComplete: false, hasCookie: false, hasProject: false, hasPort: false});
+    this._updateStatus({isProjectConfigured: undefined, hasPort: false});
   }
 
   private _updateStatus(status: ProxyState) {
-    log('Status changed', this._status, '-->', status);
+    log('updateState()', status);
     this._status = status;
     this._updateStatusCallback(status);
   }
@@ -92,29 +92,13 @@ export default class ApiProxy {
 
     log('window._handleWindowMessage', event.data, event);
     switch (event.data.message) {
-      case 'login-complete':
-        // When the user is logged in, but the project is not setup for this domain
+      case 'invalid-domain': {
         this._updateStatus({
-          ...this.status,
-          loginComplete: true,
+          isProjectConfigured: false,
+          hasPort: false,
         });
         break;
-      case 'cookie-found':
-        // When the user is logged in, but the project is not setup for this domain
-        this._updateStatus({
-          ...this.status,
-          hasCookie: true,
-          hasProject: false,
-        });
-        break;
-      case 'domain-allowed':
-        // The user is logged in, and ready to go!
-        this._updateStatus({
-          ...this.status,
-          hasCookie: true,
-          hasProject: true,
-        });
-        break;
+      }
       case 'port-connect': {
         // We're getting the port from the iframe, for bidirectional comms
         try {
@@ -123,7 +107,7 @@ export default class ApiProxy {
           port.addEventListener('message', this._handlePortMessage);
           port.start();
           this._updateStatus({
-            ...this.status,
+            isProjectConfigured: true,
             hasPort: true,
           });
         } catch (error) {

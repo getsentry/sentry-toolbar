@@ -7,14 +7,25 @@
   <body>
     <script>
       (function() {
-        const referrer = __REFERRER__;
         const orgSlug = __ORG_SLUG__;
         const projectSlug = __PROJECT_SLUG__;
+        const referrer = __REFERRER__;
 
         function log(...args) {
-          if (false) {
+          if (true) {
             console.log('iframe:', ...args);
           }
+        }
+
+        // If the referrer/project pair doesn't match, we have no project and should not connect
+        if (!projectSlug) {
+          log('Invalid Domain/Project');
+          window.parent.postMessage({
+            source: 'sentry-toolbar',
+            message: 'invalid-domain',
+          }, referrer);
+          log('Sent', {message: 'invalid-domain', referrer})
+          return;
         }
 
         log('Init', {
@@ -22,18 +33,6 @@
           orgSlug,
           projectSlug,
         });
-
-        // If we're logged out if the iframe, then nothing happens.
-        // For mock/test purposes we're using the accessToken as our is-loggin-in check
-        if (localStorage.getItem('accessToken')) {
-          const message = projectSlug === undefined ? 'cookie-found' : 'domain-allowed';
-          window.parent.postMessage({
-            source: 'sentry-toolbar',
-            message,
-          }, referrer);
-          log('Sent', {message, referrer})
-
-        }
 
         const {port1, port2} = new MessageChannel();
 
@@ -54,7 +53,7 @@
               status: response.status,
               statusText: response.statusText,
               url: response.url,
-              headers: Object.fromEntries(response.headers.entries()),
+              headers: Array.from(response.headers.entries()),
               text: await response.text(),
             }
           },
@@ -82,7 +81,7 @@
         window.parent.postMessage({
           source: 'sentry-toolbar',
           message: 'port-connect',
-        }, referrer, [port2])
+        }, referrer, [port2]);
         log('Sent', {message: 'port-connect', referrer})
       })();
     </script>

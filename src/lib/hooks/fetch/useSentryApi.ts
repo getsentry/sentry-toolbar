@@ -1,6 +1,7 @@
 import qs from 'query-string';
 import {useContext, useMemo} from 'react';
-import {useApiProxyContext, useProxyIFrameContext} from 'toolbar/context/ApiProxyContext';
+import {useApiProxyInstance} from 'toolbar/context/ApiProxyContext';
+import {useAuthContext} from 'toolbar/context/AuthContext';
 import {ConfigContext} from 'toolbar/context/ConfigContext';
 import parseLinkHeader from 'toolbar/utils/parseLinkHeader';
 import tryJsonParse from 'toolbar/utils/tryJsonParse';
@@ -10,7 +11,7 @@ import type {ParsedHeader} from 'toolbar/utils/parseLinkHeader';
 
 function parsePageParam<Data>(dir: 'previous' | 'next') {
   return ({headers}: ApiResult<Data>) => {
-    const parsed = parseLinkHeader(headers.Link ?? null);
+    const parsed = parseLinkHeader(headers.get('Link') ?? null);
     return parsed[dir]?.results ? parsed[dir] : undefined;
   };
 }
@@ -29,9 +30,13 @@ interface InfiniteFetchParams extends FetchParams {
 
 const trailingBackslash = /\/$/;
 
+interface IFrameFetchResponse extends Omit<ApiResult, 'headers' | 'json'> {
+  headerEntries: [string, string][];
+}
+
 export default function useSentryApi() {
-  const iframe = useProxyIFrameContext();
-  const apiProxy = useApiProxyContext();
+  const [, setAuthState] = useAuthContext();
+  const apiProxy = useApiProxyInstance();
   const {sentryOrigin, sentryRegion} = useContext(ConfigContext);
 
   const origin = sentryOrigin.replace(trailingBackslash, '');
@@ -51,20 +56,22 @@ export default function useSentryApi() {
           },
           method: options?.method ?? 'GET',
         };
-        const response = (await apiProxy.exec(signal, 'fetch', [url, init])) as Omit<ApiResult, 'json'>;
-        const apiResult = {...response, json: tryJsonParse(response.text)} as ApiResult<Data>;
+        const response = (await apiProxy.exec(signal, 'fetch', [url, init])) as IFrameFetchResponse;
+        const apiResult = {
+          ...response,
+          headers: new Headers(response.headerEntries),
+          json: tryJsonParse(response.text),
+        } as ApiResult<Data>;
 
         if (!response.ok) {
           if (response.status === 401) {
-            // Not logged in, so we need to cleanup our state and reload the iframe
-            apiProxy.cleanup();
-            iframe.reload();
+            setAuthState({isLoggedIn: false});
           }
           throw apiResult;
         }
         return apiResult;
       },
-    [apiOrigin, apiProxy, iframe]
+    [apiOrigin, apiProxy, setAuthState]
   );
 
   const fetchInfiniteFn = useMemo(
