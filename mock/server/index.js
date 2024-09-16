@@ -1,5 +1,4 @@
 /* global require process __dirname */
-
 /* eslint-disable @typescript-eslint/no-require-imports */
 
 const fs = require('node:fs/promises');
