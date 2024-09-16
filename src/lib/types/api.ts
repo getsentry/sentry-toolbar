@@ -18,6 +18,11 @@ interface QueryKeyEndpointOptions<Headers = THeaders, Query = TQuery, Payload = 
 export type ApiEndpointQueryKey = readonly [url: string] | readonly [url: string, options: QueryKeyEndpointOptions];
 
 export interface ApiResult<Data = unknown> {
-  headers: Headers;
+  ok: boolean;
+  status: number;
+  statusText: string;
+  url: string;
+  headers: Record<string, undefined | string>;
+  text: string;
   json: Data;
 }

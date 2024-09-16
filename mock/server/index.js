@@ -1,113 +1,86 @@
-/* eslint-disable */
+/* global require process __dirname */
+/* eslint-disable @typescript-eslint/no-require-imports */
 
-const http = require('node:http');
 const fs = require('node:fs/promises');
+
+const express = require('express');
 const httpProxy = require('http-proxy');
 
-const PATH_TO_TEMPLATE = new Map([
-  [/\/organizations\/(?<org>[a-z0-9\-]+)\/toolbar\/iframe\//, "/public/toolbar/iframe.html"],
-  [/\/auth\/login\/(?<org>[a-z0-9\-]+)/, "/public/auth/login.html"],
-  [/\/organizations\/(?<org>[a-z0-9\-]+)\/toolbar\/login-success\//, "/public/toolbar/login-success.html"],
-]);
+const host = 'localhost';
+const port = process.env.PORT ?? '8080';
 
-const urlPatterns = Array.from(PATH_TO_TEMPLATE.keys());
-
-const requestListener = function (req, res) {
-  const matchedPath = urlPatterns.filter(regex => regex.test(req.url)).at(0);
-  if (matchedPath) {
-    const template = PATH_TO_TEMPLATE.get(matchedPath);
-    const params = req.url.match(matchedPath).groups;
-
-    const referrer = req.headers['referer']; // Yes, the header name is spelled this way.
-
-    if (!isReferrerAllowed(referrer, params.org)) {
-      res.writeHead(401);
-      res.end();
-      return;
-    }
-
-    console.log('Serving:', req.url, {org_name: params.org, referrer});
-
-    serveTemplate(req, res, {'Content-Type': 'text/html'}, __dirname + template, {
-      __ORG_SLUG__: JSON.stringify(params.org),
-      __REFERRER__: JSON.stringify(referrer),
+const app = express();
+function renderTemplate(filePath, options, callback) {
+  fs.readFile(filePath, {encoding: 'utf8'})
+    .then(content => {
+      const replacedContent = Object.entries(options)
+        .filter(([token]) => token.startsWith('__') && token.endsWith('__'))
+        .reduce((content, [token, value]) => content.replaceAll(token, JSON.stringify(value)), content);
+      callback(null, replacedContent);
+    })
+    .catch(error => {
+      callback(error);
     });
-
-  } else if (req.url.endsWith(".js")) {
-    serveCDNFile(req.url, req, res);
-
-  } else if (req.url.startsWith('/api/0/') || req.url.startsWith('/region/')) {
-    serveApiProxy(req.url, req, res)
-
-  } else {
-    console.log('Unknown:', req.url);
-    res.writeHead(400);
-    res.end();
-  }
-};
-
-function isReferrerAllowed(referrer, org) {
-  // TODO: in prod we should check against the database.
-  return true;
 }
+app.engine('html', renderTemplate);
+app.engine('js', renderTemplate);
+app.set('views', './public');
 
-function serveTemplate(req, res, headers, filename, replacements) {
-  fs.readFile(filename, {encoding: 'utf8'}).then((content) => {
-    const replacedContent = Object.entries(replacements).reduce(
-      (content, [token, value]) => content.replace(token, value),
-      content
-    );
+let isLoggedIn = false;
 
-    res.writeHead(200, headers);
-    res.end(replacedContent);
-  }).catch((error) => {
-    console.error('Failed to read:', filename);
-    console.error(error);
-    res.writeHead(400);
-    res.end();
+app.get('/auth/login/:org/', (req, res) => {
+  res.render('auth/login.html', {
+    __AUTH_TOKENS_URL__: `https://sentry.io/organizations/${req.params.org}/settings/account/api/auth-tokens/`,
   });
-}
+});
+app.post('/auth/login/:org/', (req, res) => {
+  isLoggedIn = true;
+  res.redirect(302, req.query.next);
+});
+app.get('/logout/', (_req, res) => {
+  isLoggedIn = false;
+  res.render('auth/logout.html');
+});
 
-function serveCDNFile(pathname, req, res) {
-  const ALLOW_CORS_HEADERS = {
+function requireAuth(req, res, next) {
+  if (isLoggedIn) {
+    next();
+  } else {
+    res.redirect(302, `/auth/login/${req.params.org}/?next=${req.url}`);
+  }
+}
+app.get('/toolbar/:org/:project/iframe/', requireAuth, (req, res) => {
+  res.render('toolbar/iframe.html', {
+    __ORG_SLUG__: req.params.org,
+    __PROJECT_SLUG__: req.params.project,
+    __REFERRER__: req.get('referer'),
+  });
+});
+app.get('/toolbar/:org/:project/login-success/', requireAuth, (_req, res) => {
+  res.render('toolbar/login-success.html');
+});
+
+const proxy = httpProxy.createProxyServer({
+  target: 'https://sentry.io',
+  changeOrigin: true,
+  secure: false,
+});
+app.get('/api/0/*', (req, res) => proxy.web(req, res));
+app.get('/region/*', (req, res) => proxy.web(req, res));
+
+function allowCORS(_req, res, next) {
+  res.set({
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'OPTIONS, GET',
-  };
-
-  if (req.method === 'OPTIONS') {
-    res.writeHead(204, ALLOW_CORS_HEADERS);
-    res.end();
-    return;
-  }
-
-  console.log('Serving:', pathname);
-  serveTemplate(
-    req,
-    res,
-    {
-      'Content-Type': 'application/javascript',
-      ...ALLOW_CORS_HEADERS,
-    },
-    __dirname + "/../../dist" + pathname, {}
-  );
-
-}
-
-function serveApiProxy(pathname, req, res) {
-  console.log('Serving:', pathname);
-
-  const proxy = httpProxy.createProxyServer({
-    target: 'https://us.sentry.io',
-    changeOrigin: true,
-    secure: false,
   });
-
-  proxy.web(req, res);
+  next();
 }
-
-const host = "localhost";
-const port = process.env.PORT ?? "8080";
-
-http.createServer(requestListener).listen(port, host, () => {
-  console.log(`Server is running on http://${host}:${port}`);
+app.options('*.js', allowCORS, (_req, res) => {
+  res.sendStatus(204);
 });
+app.get('*.js', allowCORS, (req, res) => {
+  res.set({'Content-Type': 'application/javascript'});
+  res.render(`${__dirname}/../../dist${req.url}`);
+});
+
+app.listen(port, host);

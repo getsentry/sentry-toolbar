@@ -1,15 +1,17 @@
 import qs from 'query-string';
 import {useContext, useMemo} from 'react';
-import {AuthContext} from 'toolbar/context/AuthContext';
+import {useApiProxyInstance} from 'toolbar/context/ApiProxyContext';
+import {useAuthContext} from 'toolbar/context/AuthContext';
 import {ConfigContext} from 'toolbar/context/ConfigContext';
 import parseLinkHeader from 'toolbar/utils/parseLinkHeader';
+import tryJsonParse from 'toolbar/utils/tryJsonParse';
 
 import type {ApiEndpointQueryKey, ApiResult} from 'toolbar/types/api';
 import type {ParsedHeader} from 'toolbar/utils/parseLinkHeader';
 
 function parsePageParam<Data>(dir: 'previous' | 'next') {
   return ({headers}: ApiResult<Data>) => {
-    const parsed = parseLinkHeader(headers?.get('Link') ?? null);
+    const parsed = parseLinkHeader(headers.Link ?? null);
     return parsed[dir]?.results ? parsed[dir] : undefined;
   };
 }
@@ -18,6 +20,7 @@ const getNextPageParam = parsePageParam('next');
 const getPreviousPageParam = parsePageParam('previous');
 
 interface FetchParams {
+  signal: AbortSignal;
   queryKey: ApiEndpointQueryKey;
 }
 
@@ -28,8 +31,9 @@ interface InfiniteFetchParams extends FetchParams {
 const trailingBackslash = /\/$/;
 
 export default function useSentryApi() {
+  const [, setAuthState] = useAuthContext();
+  const apiProxy = useApiProxyInstance();
   const {sentryOrigin, sentryRegion} = useContext(ConfigContext);
-  const [{accessToken}] = useContext(AuthContext);
 
   const origin = sentryOrigin.replace(trailingBackslash, '');
   const region = sentryRegion !== undefined && sentryRegion !== '' ? `/region/${sentryRegion}` : '';
@@ -37,36 +41,43 @@ export default function useSentryApi() {
 
   const fetchFn = useMemo(
     () =>
-      async <Data>({queryKey: [endpoint, options]}: FetchParams): Promise<ApiResult<Data>> => {
-        const response = await fetch(qs.stringifyUrl({url: apiOrigin + endpoint, query: options?.query}), {
+      async <Data = unknown>({signal, queryKey: [endpoint, options]}: FetchParams): Promise<ApiResult<Data>> => {
+        const url = qs.stringifyUrl({url: apiOrigin + endpoint, query: options?.query});
+        const init = {
           body: options?.payload ? JSON.stringify(options?.payload) : undefined,
           headers: {
-            authorization: `bearer ${accessToken}`,
+            Accept: 'application/json; charset=utf-8',
+            'Content-Type': 'application/json',
             ...options?.headers,
           },
           method: options?.method ?? 'GET',
-        });
-
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        return {
-          json: await response.json(),
-          headers: response.headers,
         };
+        const response = (await apiProxy.exec(signal, 'fetch', [url, init])) as Omit<ApiResult, 'json'>;
+        const apiResult = {
+          ...response,
+          json: tryJsonParse(response.text),
+        } as ApiResult<Data>;
+
+        if (!apiResult.ok) {
+          if (apiResult.status === 401) {
+            setAuthState({isLoggedIn: false});
+          }
+          throw apiResult;
+        }
+        return apiResult;
       },
-    [accessToken, apiOrigin]
+    [apiOrigin, apiProxy, setAuthState]
   );
 
   const fetchInfiniteFn = useMemo(
     () =>
-      <Data>({queryKey: [endpoint, options], pageParam}: InfiniteFetchParams): Promise<ApiResult<Data>> => {
+      <Data>({signal, queryKey: [endpoint, options], pageParam}: InfiniteFetchParams): Promise<ApiResult<Data>> => {
         const query = {
           ...options?.query,
           cursor: pageParam?.cursor,
         };
         return fetchFn<Data>({
+          signal,
           queryKey: [endpoint, {...options, query}],
         });
       },
