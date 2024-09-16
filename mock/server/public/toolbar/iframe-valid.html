@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Sentry DevToolbar iFrame</title>
+    <title>Sentry DevToolbar iFrame - valid referrer</title>
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
   </head>
   <body>
     <script>
       (function() {
-        const orgSlug = __ORG_SLUG__;
-        const projectSlug = __PROJECT_SLUG__;
         const referrer = __REFERRER__;
 
         function log(...args) {
@@ -17,22 +15,7 @@
           }
         }
 
-        // If the referrer/project pair doesn't match, we have no project and should not connect
-        if (!projectSlug) {
-          log('Invalid Domain/Project');
-          window.parent.postMessage({
-            source: 'sentry-toolbar',
-            message: 'invalid-domain',
-          }, referrer);
-          log('Sent', {message: 'invalid-domain', referrer})
-          return;
-        }
-
-        log('Init', {
-          referrer,
-          orgSlug,
-          projectSlug,
-        });
+        log('Init', {referrer});
 
         const {port1, port2} = new MessageChannel();
 

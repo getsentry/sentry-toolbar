@@ -50,11 +50,15 @@ function requireAuth(req, res, next) {
   }
 }
 app.get('/toolbar/:org/:project/iframe/', requireAuth, (req, res) => {
-  res.render('toolbar/iframe.html', {
-    __ORG_SLUG__: req.params.org,
-    __PROJECT_SLUG__: req.params.project,
-    __REFERRER__: req.get('referer'),
-  });
+  if (req.params.project === 'fake') {
+    res.render('toolbar/iframe-invalid.html', {
+      __REFERRER__: req.get('referer'),
+    });
+  } else {
+    res.render('toolbar/iframe-valid.html', {
+      __REFERRER__: req.get('referer'),
+    });
+  }
 });
 app.get('/toolbar/:org/:project/login-success/', requireAuth, (_req, res) => {
   res.render('toolbar/login-success.html');

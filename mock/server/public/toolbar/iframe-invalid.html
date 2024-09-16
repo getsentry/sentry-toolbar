@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sentry DevToolbar iFrame - invalid referrer</title>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  </head>
+  <body>
+    <script>
+      (function() {
+        const referrer = __REFERRER__;
+
+        function log(...args) {
+          if (true) {
+            console.log('iframe:', ...args);
+          }
+        }
+
+        log('Invalid Domain/Project', {referrer});
+
+        window.parent.postMessage({
+          source: 'sentry-toolbar',
+          message: 'invalid-domain',
+        }, referrer);
+      })();
+    </script>
+  </body>
+</html>
