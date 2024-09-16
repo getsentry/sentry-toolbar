@@ -2,11 +2,11 @@ import type {StringifiableRecord} from 'query-string';
 
 type APIRequestMethod = 'POST' | 'GET' | 'DELETE' | 'PUT';
 
-type THeadersIn = Record<string, string>;
+type THeaders = Record<string, string>;
 type TQuery = StringifiableRecord;
 type TPayload = Record<string, unknown>;
 
-interface QueryKeyEndpointOptions<Headers = THeadersIn, Query = TQuery, Payload = TPayload> {
+interface QueryKeyEndpointOptions<Headers = THeaders, Query = TQuery, Payload = TPayload> {
   headers?: Headers;
   method?: APIRequestMethod;
   payload?: Payload;
@@ -22,7 +22,7 @@ export interface ApiResult<Data = unknown> {
   status: number;
   statusText: string;
   url: string;
-  headers: Headers;
+  headers: Record<string, undefined | string>;
   text: string;
   json: Data;
 }

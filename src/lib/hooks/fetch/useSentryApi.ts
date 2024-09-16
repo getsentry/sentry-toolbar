@@ -11,7 +11,7 @@ import type {ParsedHeader} from 'toolbar/utils/parseLinkHeader';
 
 function parsePageParam<Data>(dir: 'previous' | 'next') {
   return ({headers}: ApiResult<Data>) => {
-    const parsed = parseLinkHeader(headers.get('Link') ?? null);
+    const parsed = parseLinkHeader(headers.Link ?? null);
     return parsed[dir]?.results ? parsed[dir] : undefined;
   };
 }
@@ -29,10 +29,6 @@ interface InfiniteFetchParams extends FetchParams {
 }
 
 const trailingBackslash = /\/$/;
-
-interface IFrameFetchResponse extends Omit<ApiResult, 'headers' | 'json'> {
-  headerEntries: [string, string][];
-}
 
 export default function useSentryApi() {
   const [, setAuthState] = useAuthContext();
@@ -56,15 +52,14 @@ export default function useSentryApi() {
           },
           method: options?.method ?? 'GET',
         };
-        const response = (await apiProxy.exec(signal, 'fetch', [url, init])) as IFrameFetchResponse;
+        const response = (await apiProxy.exec(signal, 'fetch', [url, init])) as Omit<ApiResult, 'json'>;
         const apiResult = {
           ...response,
-          headers: new Headers(response.headerEntries),
           json: tryJsonParse(response.text),
         } as ApiResult<Data>;
 
-        if (!response.ok) {
-          if (response.status === 401) {
+        if (!apiResult.ok) {
+          if (apiResult.status === 401) {
             setAuthState({isLoggedIn: false});
           }
           throw apiResult;
@@ -96,4 +91,3 @@ export default function useSentryApi() {
     getPreviousPageParam,
   };
 }
-//{signal}: {signal: AbortSignal}

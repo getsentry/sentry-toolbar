@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <title>Sentry - Logged out</title>
+
+    <!-- TODO: this should be a sentry logo -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  </head>
+  <body>
+    <div>
+      <p>You are logged out!</p>
+    </div>
+
+    <script>
+    (function() {
+      localStorage.removeItem('accessToken');
+    })();
+    </script>
+  </body>
+</html>

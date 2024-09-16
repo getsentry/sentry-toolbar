@@ -53,7 +53,7 @@
               status: response.status,
               statusText: response.statusText,
               url: response.url,
-              headers: Array.from(response.headers.entries()),
+              headers: Object.fromEntries(response.headers.entries()),
               text: await response.text(),
             }
           },
