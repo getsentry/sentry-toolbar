@@ -28,10 +28,9 @@ app.set('views', './public');
 
 let isLoggedIn = false;
 
-app.get('/auth/login/:org/', (_req, res) => {
+app.get('/auth/login/:org/', (req, res) => {
   res.render('auth/login.html', {
-    __AUTH_TOKENS_URL__: '',
-    __AUTH_SUBMIT_ACTION__: '',
+    __AUTH_TOKENS_URL__: `https://sentry.io/organizations/${req.params.org}/settings/account/api/auth-tokens/`,
   });
 });
 app.post('/auth/login/:org/', (req, res) => {
