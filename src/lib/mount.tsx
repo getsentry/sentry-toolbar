@@ -1,7 +1,7 @@
 import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
-import App from 'toolbar/components/app';
-import Providers from 'toolbar/components/providers';
+import AppRouter from 'toolbar/components/AppRouter';
+import Providers from 'toolbar/context/Providers';
 import styles from 'toolbar/index.css?inline'; // returned as a string
 
 import type {Configuration} from 'toolbar/types/config';
@@ -13,7 +13,7 @@ export default function mount(rootNode: HTMLElement, config: Configuration) {
   reactRoot.render(
     <StrictMode>
       <Providers config={config} portalMount={portalMount}>
-        <App />
+        <AppRouter />
       </Providers>
     </StrictMode>
   );

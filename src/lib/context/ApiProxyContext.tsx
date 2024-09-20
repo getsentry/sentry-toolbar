@@ -60,7 +60,6 @@ export function ApiProxyContextProvider({children}: Props) {
           src={`${sentryOrigin}/toolbar/${organizationIdOrSlug}/${projectIdOrSlug}/iframe/`}
           ref={iframeRef}
         />
-        {JSON.stringify(proxyState)}
         {children}
       </ApiProxyStateContext.Provider>
     </ApiProxyContext.Provider>

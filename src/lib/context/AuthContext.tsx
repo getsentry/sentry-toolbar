@@ -36,12 +36,7 @@ export function AuthContextProvider({children}: Props) {
     };
   }, [sentryOrigin, state]);
 
-  return (
-    <AuthContext.Provider value={state}>
-      {JSON.stringify(state[0])}
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={state}>{children}</AuthContext.Provider>;
 }
 
 export function useAuthContext() {
