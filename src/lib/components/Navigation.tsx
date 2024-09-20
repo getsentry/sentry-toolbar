@@ -1,5 +1,5 @@
-import IconClose from 'toolbar/components/icons/IconClose';
-import IconSettings from 'toolbar/components/icons/IconSettings';
+import IconClose from 'toolbar/components/icon/IconClose';
+import IconSettings from 'toolbar/components/icon/IconSettings';
 import IconButton from 'toolbar/components/navigation/IconButton';
 import NavButton from 'toolbar/components/navigation/NavButton';
 

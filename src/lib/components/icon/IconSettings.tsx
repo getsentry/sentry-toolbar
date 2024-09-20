@@ -1,8 +1,7 @@
 import {forwardRef} from 'react';
+import SvgIcon from 'toolbar/components/icon/SvgIcon';
 
 import type {ComponentProps} from 'react';
-
-import SvgIcon from './svgIcon';
 
 const IconSettings = forwardRef<SVGSVGElement, ComponentProps<typeof SvgIcon>>((props, ref) => {
   return (

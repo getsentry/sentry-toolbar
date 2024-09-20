@@ -1,6 +1,7 @@
 import {createContext, useContext} from 'react';
 
-import type SvgIcon from '../components/icons/svgIcon';
+import type SvgIcon from 'toolbar/components/icon/SvgIcon';
+
 import type {ComponentProps} from 'react';
 
 type Props = ComponentProps<typeof SvgIcon>;
