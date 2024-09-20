@@ -1,17 +1,22 @@
 import {Fragment} from 'react';
-import {Outlet} from 'react-router-dom';
 import {useLocation} from 'react-router-dom';
 import {useApiProxyState} from 'toolbar/context/ApiProxyContext';
 import {useAuthContext} from 'toolbar/context/AuthContext';
 
-export function Layout() {
+import type {ReactNode} from 'react';
+
+interface Props {
+  children: ReactNode;
+}
+
+export function Layout({children}: Props) {
   return (
     <Fragment>
       <DebugState />
       <div
         role="dialog"
         className="pointer-events-none fixed inset-0 grid grid-cols-[1fr_max-content] items-center gap-[10px] [grid-template-areas:'main_nav']">
-        <Outlet />
+        {children}
       </div>
     </Fragment>
   );

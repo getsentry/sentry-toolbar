@@ -1,4 +1,4 @@
-import {useEffect, type ReactNode} from 'react';
+import {useEffect} from 'react';
 import {Routes, Route, Outlet, useNavigate} from 'react-router-dom';
 import {Layout} from 'toolbar/components/Layout';
 import Navigation from 'toolbar/components/Navigation';
@@ -9,51 +9,42 @@ import Login from 'toolbar/components/unauth/Login';
 import {useApiProxyState} from 'toolbar/context/ApiProxyContext';
 import {useAuthContext} from 'toolbar/context/AuthContext';
 
+import type {PropsWithChildren} from 'react';
+
 export default function AppRouter() {
   return (
     <Routes>
-      <Route element={<Layout />}>
+      <Route
+        element={
+          <WithoutProxy>
+            <Outlet />
+          </WithoutProxy>
+        }>
+        <Route path="/login" element={<Login />} />
+        <Route path="/missing-config" element={<ConfigInstructions />} />
+        <Route path="/connecting" element={<Connecting />} />
+      </Route>
+      <Route
+        path="/"
+        element={
+          <WithProxy>
+            <Outlet />
+          </WithProxy>
+        }>
         <Route
           element={
-            <WithoutProxy>
-              <div className="pointer-events-auto">
-                <Outlet />
-              </div>
-            </WithoutProxy>
-          }>
-          <Route path="/login" element={<Login />} />
-          <Route path="/missing-config" element={<ConfigInstructions />} />
-          <Route path="/connecting" element={<Connecting />} />
-        </Route>
-        <Route
-          path="/"
-          element={
-            <WithProxy>
-              <div className="pointer-events-auto [grid-area:nav]">
-                <Navigation />
-              </div>
+            <MainArea>
               <Outlet />
-            </WithProxy>
+            </MainArea>
           }>
-          <Route
-            element={
-              <div className="pointer-events-auto justify-self-end [grid-area:main]">
-                <Outlet />
-              </div>
-            }>
-            <Route path="/settings" element={<SettingsPanel />} />
-          </Route>
+          <Route path="/settings" element={<SettingsPanel />} />
         </Route>
       </Route>
     </Routes>
   );
 }
 
-interface Props {
-  children: ReactNode;
-}
-
-function WithoutProxy({children}: Props) {
+function WithoutProxy({children}: PropsWithChildren) {
   const navigate = useNavigate();
   const proxyState = useApiProxyState();
 
@@ -63,10 +54,14 @@ function WithoutProxy({children}: Props) {
     }
   }, [proxyState.hasPort, navigate]);
 
-  return children;
+  return (
+    <Layout>
+      <NavArea>{children}</NavArea>
+    </Layout>
+  );
 }
 
-function WithProxy({children}: Props) {
+function WithProxy({children}: PropsWithChildren) {
   const [authState] = useAuthContext();
   const proxyState = useApiProxyState();
   const navigate = useNavigate();
@@ -85,5 +80,19 @@ function WithProxy({children}: Props) {
     }
   }, [proxyState, authState, navigate]);
 
-  return children;
+  return (
+    <Layout>
+      <NavArea>
+        <Navigation />
+      </NavArea>
+      {children}
+    </Layout>
+  );
+}
+
+function NavArea({children}: PropsWithChildren) {
+  return <div className="pointer-events-auto [grid-area:nav]">{children}</div>;
+}
+function MainArea({children}: PropsWithChildren) {
+  return <div className="pointer-events-auto justify-self-end [grid-area:main]">{children}</div>;
 }

@@ -1,5 +1,5 @@
-import IconClose from 'toolbar/components/icons/iconClose';
-import IconIssues from 'toolbar/components/icons/iconIssues';
+import IconClose from 'toolbar/components/icons/IconClose';
+import IconSettings from 'toolbar/components/icons/IconSettings';
 import IconButton from 'toolbar/components/navigation/IconButton';
 import NavButton from 'toolbar/components/navigation/NavButton';
 
@@ -10,7 +10,7 @@ export default function Navigation() {
 
       <hr className="m-0 w-full" />
 
-      <NavButton to="/settings" label="Settings" icon={<IconIssues />} />
+      <NavButton to="/settings" label="Settings" icon={<IconSettings />} />
     </div>
   );
 }
