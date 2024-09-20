@@ -5,11 +5,11 @@ export default function LoginButton() {
   const {sentryOrigin, organizationIdOrSlug, projectIdOrSlug} = useContext(ConfigContext);
 
   const openPopup = () => {
-    // We want to open the popup with noopener=false and noreferrer=false, these values must be passed along!
+    // Be explicit with noopener=false because we use `window.opener` in the popup after login.
     window.open(
       `${sentryOrigin}/toolbar/${organizationIdOrSlug}/${projectIdOrSlug}/login-success/`,
       'sentry-toolbar-auth-popup',
-      'popup=true,innerWidth=800,innerHeight=550'
+      'popup=true,innerWidth=800,innerHeight=550,noopener=false'
     );
   };
 
