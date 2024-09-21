@@ -1,9 +1,9 @@
 import {forwardRef, Fragment} from 'react';
 import SvgIcon from 'toolbar/components/icon/SvgIcon';
 
-import type {ComponentProps} from 'react';
+import type {SvgIconProps} from 'toolbar/components/icon/SvgIcon';
 
-interface Props extends ComponentProps<typeof SvgIcon> {
+interface Props extends SvgIconProps {
   isCircled?: boolean;
 }
 

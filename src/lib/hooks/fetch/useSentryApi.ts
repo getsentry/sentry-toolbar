@@ -11,7 +11,7 @@ import type {ParsedHeader} from 'toolbar/utils/parseLinkHeader';
 
 function parsePageParam<Data>(dir: 'previous' | 'next') {
   return ({headers}: ApiResult<Data>) => {
-    const parsed = parseLinkHeader(headers.Link ?? null);
+    const parsed = parseLinkHeader(headers.link ?? null);
     return parsed[dir]?.results ? parsed[dir] : undefined;
   };
 }
@@ -30,7 +30,7 @@ interface InfiniteFetchParams extends FetchParams {
 
 const trailingBackslash = /\/$/;
 
-export default function useSentryApi() {
+export default function useSentryApi<Data>() {
   const [, setAuthState] = useAuthContext();
   const apiProxy = useApiProxyInstance();
   const {sentryOrigin, sentryRegion} = useContext(ConfigContext);
@@ -41,7 +41,7 @@ export default function useSentryApi() {
 
   const fetchFn = useMemo(
     () =>
-      async <Data = unknown>({signal, queryKey: [endpoint, options]}: FetchParams): Promise<ApiResult<Data>> => {
+      async ({signal, queryKey: [endpoint, options]}: FetchParams): Promise<ApiResult<Data>> => {
         const url = qs.stringifyUrl({url: apiOrigin + endpoint, query: options?.query});
         const init = {
           body: options?.payload ? JSON.stringify(options?.payload) : undefined,
@@ -52,6 +52,7 @@ export default function useSentryApi() {
           },
           method: options?.method ?? 'GET',
         };
+
         const response = (await apiProxy.exec(signal, 'fetch', [url, init])) as Omit<ApiResult, 'json'>;
         const apiResult = {
           ...response,
@@ -71,14 +72,15 @@ export default function useSentryApi() {
 
   const fetchInfiniteFn = useMemo(
     () =>
-      <Data>({signal, queryKey: [endpoint, options], pageParam}: InfiniteFetchParams): Promise<ApiResult<Data>> => {
+      ({signal, queryKey: [endpoint, options], pageParam, ...rest}: InfiniteFetchParams): Promise<ApiResult<Data>> => {
         const query = {
           ...options?.query,
           cursor: pageParam?.cursor,
         };
-        return fetchFn<Data>({
+        return fetchFn({
           signal,
           queryKey: [endpoint, {...options, query}],
+          ...rest,
         });
       },
     [fetchFn]
