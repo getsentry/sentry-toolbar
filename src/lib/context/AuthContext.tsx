@@ -1,7 +1,7 @@
+/* eslint-disable react-refresh/only-export-components */
 import {createContext, useContext, useEffect, useState} from 'react';
-import {ConfigContext} from 'toolbar/context/ConfigContext';
-
 import type {Dispatch, ReactNode, SetStateAction} from 'react';
+import ConfigContext from 'toolbar/context/ConfigContext';
 
 interface State {
   isLoggedIn: undefined | boolean;

@@ -1,9 +1,9 @@
+/* eslint-disable react-refresh/only-export-components */
 import {createContext, useContext, useEffect, useRef, useState} from 'react';
-import {useAuthContext} from 'toolbar/context/AuthContext';
-import {ConfigContext} from 'toolbar/context/ConfigContext';
-import ApiProxy, {type ProxyState} from 'toolbar/utils/ApiProxy';
-
 import type {ReactNode} from 'react';
+import {useAuthContext} from 'toolbar/context/AuthContext';
+import ConfigContext from 'toolbar/context/ConfigContext';
+import ApiProxy, {type ProxyState} from 'toolbar/utils/ApiProxy';
 
 const ApiProxyStateContext = createContext<ProxyState | undefined>(undefined);
 const ApiProxyContext = createContext<ApiProxy | undefined>(undefined);

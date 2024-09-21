@@ -1,7 +1,6 @@
 import {useContext, useMemo} from 'react';
-import {ConfigContext} from 'toolbar/context/ConfigContext';
+import ConfigContext from 'toolbar/context/ConfigContext';
 import useFetchSentryData from 'toolbar/hooks/fetch/useFetchSentryData';
-
 import type {Project} from 'toolbar/types/sentry/project';
 
 export default function useSentryProject() {

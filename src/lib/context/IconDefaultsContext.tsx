@@ -1,8 +1,7 @@
+/* eslint-disable react-refresh/only-export-components */
 import {createContext, useContext} from 'react';
-
-import type SvgIcon from 'toolbar/components/icon/SvgIcon';
-
 import type {ComponentProps} from 'react';
+import type SvgIcon from 'toolbar/components/icon/SvgIcon';
 
 type Props = ComponentProps<typeof SvgIcon>;
 

@@ -1,6 +1,6 @@
 import type {Configuration} from 'toolbar/types/config';
 
-const DEFAULT_CONFIG: Configuration = {
+const defaultConfig: Configuration = {
   // ConnectionConfig
   sentryOrigin: 'https://sentry.io',
   sentryRegion: undefined,
@@ -18,4 +18,4 @@ const DEFAULT_CONFIG: Configuration = {
   domId: 'sentry-toolbar',
 };
 
-export default DEFAULT_CONFIG;
+export default defaultConfig;

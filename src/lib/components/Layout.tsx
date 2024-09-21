@@ -1,15 +1,14 @@
 import {Fragment} from 'react';
+import type {ReactNode} from 'react';
 import {useLocation} from 'react-router-dom';
 import {useApiProxyState} from 'toolbar/context/ApiProxyContext';
 import {useAuthContext} from 'toolbar/context/AuthContext';
-
-import type {ReactNode} from 'react';
 
 interface Props {
   children: ReactNode;
 }
 
-export function Layout({children}: Props) {
+export default function Layout({children}: Props) {
   return (
     <Fragment>
       <DebugState />

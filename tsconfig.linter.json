@@ -10,5 +10,5 @@
     "templates/**/*.ts",
     "templates/**/*.tsx"
   ],
-  "exclude": ["./dist/**"]
+  "exclude": ["./dist/**", "mock/**"]
 }

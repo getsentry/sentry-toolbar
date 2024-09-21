@@ -1,6 +1,7 @@
 import {useEffect} from 'react';
+import type {PropsWithChildren} from 'react';
 import {Routes, Route, Outlet, useNavigate} from 'react-router-dom';
-import {Layout} from 'toolbar/components/Layout';
+import Layout from 'toolbar/components/Layout';
 import Navigation from 'toolbar/components/Navigation';
 import IssuesPanel from 'toolbar/components/panels/issues/IssuesPanel';
 import SettingsPanel from 'toolbar/components/panels/settings/SettingsPanel';
@@ -9,8 +10,6 @@ import Connecting from 'toolbar/components/unauth/Connecting';
 import Login from 'toolbar/components/unauth/Login';
 import {useApiProxyState} from 'toolbar/context/ApiProxyContext';
 import {useAuthContext} from 'toolbar/context/AuthContext';
-
-import type {PropsWithChildren} from 'react';
 
 export default function AppRouter() {
   return (

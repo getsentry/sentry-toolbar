@@ -1,7 +1,6 @@
 import {useContext, useMemo} from 'react';
-import {ConfigContext} from 'toolbar/context/ConfigContext';
+import ConfigContext from 'toolbar/context/ConfigContext';
 import useFetchSentryData from 'toolbar/hooks/fetch/useFetchSentryData';
-
 import type {Organization} from 'toolbar/types/sentry/organization';
 
 export default function useSentryOrg() {

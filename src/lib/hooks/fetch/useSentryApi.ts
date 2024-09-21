@@ -2,12 +2,11 @@ import qs from 'query-string';
 import {useContext, useMemo} from 'react';
 import {useApiProxyInstance} from 'toolbar/context/ApiProxyContext';
 import {useAuthContext} from 'toolbar/context/AuthContext';
-import {ConfigContext} from 'toolbar/context/ConfigContext';
-import parseLinkHeader from 'toolbar/utils/parseLinkHeader';
-import tryJsonParse from 'toolbar/utils/tryJsonParse';
-
+import ConfigContext from 'toolbar/context/ConfigContext';
 import type {ApiEndpointQueryKey, ApiResult} from 'toolbar/types/api';
+import parseLinkHeader from 'toolbar/utils/parseLinkHeader';
 import type {ParsedHeader} from 'toolbar/utils/parseLinkHeader';
+import tryJsonParse from 'toolbar/utils/tryJsonParse';
 
 function parsePageParam<Data>(dir: 'previous' | 'next') {
   return ({headers}: ApiResult<Data>) => {

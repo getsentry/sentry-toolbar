@@ -1,9 +1,9 @@
-import './index.css';
+import 'toolbar/src/env/demo/index.css';
 
-import {useEffect, type FC} from 'react';
+import {useEffect} from 'react';
 import * as SentryToolbar from 'toolbar/index';
 
-const App: FC = () => {
+export default function App() {
   useEffect(() => {
     return SentryToolbar.init({
       // InitProps
@@ -28,6 +28,4 @@ const App: FC = () => {
   }, []);
 
   return <h1>Test App</h1>;
-};
-
-export default App;
+}

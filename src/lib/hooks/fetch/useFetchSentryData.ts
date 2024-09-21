@@ -1,9 +1,7 @@
 import {useQuery} from '@tanstack/react-query';
-import useSentryApi from 'toolbar/hooks/fetch/useSentryApi';
-
-import type {ApiEndpointQueryKey, ApiResult} from 'toolbar/types/api';
-
 import type {UseQueryOptions} from '@tanstack/react-query';
+import useSentryApi from 'toolbar/hooks/fetch/useSentryApi';
+import type {ApiEndpointQueryKey, ApiResult} from 'toolbar/types/api';
 
 type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
 

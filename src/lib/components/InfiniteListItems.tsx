@@ -1,9 +1,7 @@
+import type {InfiniteData, UseInfiniteQueryResult} from '@tanstack/react-query';
 import {useVirtualizer} from '@tanstack/react-virtual';
 import {useEffect, useRef} from 'react';
-
 import type {ApiResult} from 'toolbar/types/api';
-
-import type {InfiniteData, UseInfiniteQueryResult} from '@tanstack/react-query';
 
 // import LoadingIndicator from 'sentry/components/loadingIndicator';
 

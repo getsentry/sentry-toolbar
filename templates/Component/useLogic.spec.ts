@@ -1,6 +1,5 @@
 import {renderHook, act} from '@testing-library/react';
-
-import useLogic from './useLogic';
+import useLogic from 'toolbar/../../templates/Component/useLogic';
 
 describe('lib > Counter > useLogic', () => {
   const initialValue = 0;

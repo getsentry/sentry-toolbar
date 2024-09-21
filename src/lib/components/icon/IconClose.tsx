@@ -1,6 +1,5 @@
 import {forwardRef, Fragment} from 'react';
 import SvgIcon from 'toolbar/components/icon/SvgIcon';
-
 import type {SvgIconProps} from 'toolbar/components/icon/SvgIcon';
 
 interface Props extends SvgIconProps {

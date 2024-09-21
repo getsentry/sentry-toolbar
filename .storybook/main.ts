@@ -1,7 +1,7 @@
-import type {StorybookConfig} from '@storybook/react-vite';
 import {withoutVitePlugins} from '@storybook/builder-vite';
+import type {StorybookConfig} from '@storybook/react-vite';
 
-const config: StorybookConfig = {
+const main: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
   addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-interactions'],
   framework: {
@@ -18,4 +18,5 @@ const config: StorybookConfig = {
     reactDocgen: 'react-docgen-typescript',
   },
 };
-export default config;
+
+export default main;
