@@ -17,7 +17,6 @@
       "customTemplates": {
         "component": "templates/Component/TemplateName.tsx",
         "story": "templates/Component/TemplateName.stories.tsx",
-        "index": "templates/Component/index.ts",
         "mdx": "templates/Component/TemplateName.mdx",
         "test": "templates/Component/TemplateName.spec.tsx",
         "hook": "templates/Component/useLogic.ts",
