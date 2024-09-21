@@ -1,4 +1,5 @@
-import 'toolbar/src/env/demo/index.css';
+// eslint-disable-next-line no-relative-import-paths/no-relative-import-paths
+import './index.css';
 
 import {useEffect} from 'react';
 import * as SentryToolbar from 'toolbar/index';
