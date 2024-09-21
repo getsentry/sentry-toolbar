@@ -6,7 +6,7 @@ type THeaders = Record<string, string>;
 type TQuery = StringifiableRecord;
 type TPayload = Record<string, unknown>;
 
-interface QueryKeyEndpointOptions<Headers = THeaders, Query = TQuery, Payload = TPayload> {
+export interface QueryKeyEndpointOptions<Headers = THeaders, Query = TQuery, Payload = TPayload> {
   headers?: Headers;
   method?: APIRequestMethod;
   payload?: Payload;

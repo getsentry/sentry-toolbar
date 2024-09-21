@@ -3,7 +3,7 @@ import InfiniteListState from 'toolbar/components/InfiniteListState';
 import IssueListItem from 'toolbar/components/panels/issues/IssueListItem';
 import useInfiniteIssuesList from 'toolbar/components/panels/issues/useInfiniteIssuesList';
 import PanelLayout from 'toolbar/components/panels/PanelLayout';
-import type {Group} from 'toolbar/types/sentry/group';
+import type {Group} from 'toolbar/sentryApi/types/group';
 
 export default function IssuesPanel() {
   // const transactionName = useCurrentTransactionName();
