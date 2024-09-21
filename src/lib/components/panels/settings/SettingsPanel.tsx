@@ -1,14 +1,8 @@
-import {useContext, useMemo} from 'react';
 import PanelLayout from 'toolbar/components/panels/PanelLayout';
-import {ConfigContext} from 'toolbar/context/ConfigContext';
-import useFetchSentryData from 'toolbar/hooks/fetch/useFetchSentryData';
+import useSentryOrg from 'toolbar/hooks/useSentryOrg';
 
 export default function SettingsPanel() {
-  const {organizationIdOrSlug} = useContext(ConfigContext);
-  const {data, refetch} = useFetchSentryData({
-    queryKey: useMemo(() => [`/organizations/${organizationIdOrSlug}/`], [organizationIdOrSlug]),
-    retry: false,
-  });
+  const {data, refetch} = useSentryOrg();
 
   return (
     <PanelLayout>

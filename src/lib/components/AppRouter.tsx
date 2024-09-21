@@ -2,6 +2,7 @@ import {useEffect} from 'react';
 import {Routes, Route, Outlet, useNavigate} from 'react-router-dom';
 import {Layout} from 'toolbar/components/Layout';
 import Navigation from 'toolbar/components/Navigation';
+import IssuesPanel from 'toolbar/components/panels/issues/IssuesPanel';
 import SettingsPanel from 'toolbar/components/panels/settings/SettingsPanel';
 import ConfigInstructions from 'toolbar/components/unauth/ConfigInstructions';
 import Connecting from 'toolbar/components/unauth/Connecting';
@@ -38,6 +39,7 @@ export default function AppRouter() {
             </MainArea>
           }>
           <Route path="/settings" element={<SettingsPanel />} />
+          <Route path="/issues" element={<IssuesPanel />} />
         </Route>
       </Route>
     </Routes>

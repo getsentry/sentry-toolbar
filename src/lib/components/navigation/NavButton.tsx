@@ -1,4 +1,4 @@
-import {NavLink} from 'react-router-dom';
+import {NavLink, useLocation} from 'react-router-dom';
 import IconButton from 'toolbar/components/navigation/IconButton';
 
 import type {ComponentProps, ReactNode} from 'react';
@@ -10,8 +10,10 @@ interface Props extends ComponentProps<typeof NavLink> {
 }
 
 export default function NavButton({children, icon, label, to}: Props) {
+  const location = useLocation();
+  const isActive = location.pathname === to;
   return (
-    <NavLink to={to}>
+    <NavLink to={isActive ? '/' : to}>
       <IconButton icon={icon} title={label}>
         {children}
       </IconButton>
