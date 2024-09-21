@@ -1,5 +1,4 @@
 import mount from 'toolbar/mount';
-
 import type {Configuration} from 'toolbar/types/config';
 
 export interface InitProps extends Configuration {

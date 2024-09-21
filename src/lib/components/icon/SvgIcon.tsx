@@ -1,7 +1,6 @@
 import {forwardRef} from 'react';
-import {useIconDefaultsContext} from 'toolbar/context/IconDefaultsContext';
-
 import type {SVGAttributes} from 'react';
+import {useIconDefaultsContext} from 'toolbar/context/IconDefaultsContext';
 
 const iconNumberSizes = {
   xs: 12,

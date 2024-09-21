@@ -1,15 +1,13 @@
-import type {FC} from 'react';
-import {useEffect} from 'react';
 import {throttle} from 'lodash';
-
-import useLogic from './useLogic';
+import {useEffect} from 'react';
+import useLogic from 'toolbar/../../templates/Component/useLogic';
 
 export interface Props {
   /** Set initial value */
   initialValue?: number;
 }
 
-export const TemplateName: FC<Props> = ({initialValue = 0}) => {
+export default function TemplateName({initialValue = 0}: Props) {
   const {count, incrementCount} = useLogic(initialValue);
 
   useEffect(() => {
@@ -32,4 +30,4 @@ export const TemplateName: FC<Props> = ({initialValue = 0}) => {
       </div>
     </div>
   );
-};
+}

@@ -3,7 +3,6 @@ import {createRoot} from 'react-dom/client';
 import AppRouter from 'toolbar/components/AppRouter';
 import Providers from 'toolbar/context/Providers';
 import styles from 'toolbar/index.css?inline'; // returned as a string
-
 import type {Configuration} from 'toolbar/types/config';
 
 export default function mount(rootNode: HTMLElement, config: Configuration) {

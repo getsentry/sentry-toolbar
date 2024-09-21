@@ -3,9 +3,8 @@ import {useEffect, useMemo, type ReactNode} from 'react';
 import {MemoryRouter} from 'react-router-dom';
 import {ApiProxyContextProvider, useApiProxyState} from 'toolbar/context/ApiProxyContext';
 import {AuthContextProvider} from 'toolbar/context/AuthContext';
-import {ConfigContext} from 'toolbar/context/ConfigContext';
-import {PortalTargetContext} from 'toolbar/context/PortalTargetContext';
-
+import ConfigContext from 'toolbar/context/ConfigContext';
+import PortalTargetContext from 'toolbar/context/PortalTargetContext';
 import type {Configuration} from 'toolbar/types/config';
 
 interface Props {

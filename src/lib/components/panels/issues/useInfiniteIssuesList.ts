@@ -1,10 +1,9 @@
 import {useContext, useMemo} from 'react';
-import {ConfigContext} from 'toolbar/context/ConfigContext';
+import ConfigContext from 'toolbar/context/ConfigContext';
 import useFetchInfiniteSentryData from 'toolbar/hooks/fetch/useFetchInfiniteSentryData';
 import useSentryProject from 'toolbar/hooks/useSentryProject';
-import {IssueCategory, type Group} from 'toolbar/types/sentry/group';
-
 import type {ApiEndpointQueryKey} from 'toolbar/types/api';
+import {IssueCategory, type Group} from 'toolbar/types/sentry/group';
 
 interface Props {
   query: string;

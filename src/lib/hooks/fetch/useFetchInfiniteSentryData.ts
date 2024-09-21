@@ -1,10 +1,8 @@
 import {useInfiniteQuery} from '@tanstack/react-query';
+import type {UseInfiniteQueryOptions, InfiniteData} from '@tanstack/react-query';
 import useSentryApi from 'toolbar/hooks/fetch/useSentryApi';
-
 import type {ApiEndpointQueryKey, ApiResult} from 'toolbar/types/api';
 import type {ParsedHeader} from 'toolbar/utils/parseLinkHeader';
-
-import type {UseInfiniteQueryOptions, InfiniteData} from '@tanstack/react-query';
 
 type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
 

@@ -1,6 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/react';
-
-import {TemplateName} from './TemplateName';
+import TemplateName from 'toolbar/../../templates/Component/TemplateName';
 
 const meta = {
   title: 'Example/TemplateName',

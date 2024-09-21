@@ -1,6 +1,5 @@
 import {render, fireEvent} from '@testing-library/react';
-
-import {TemplateName} from './TemplateName';
+import TemplateName from 'toolbar/../../templates/Component/TemplateName';
 
 describe('lib > TemplateName', () => {
   /**

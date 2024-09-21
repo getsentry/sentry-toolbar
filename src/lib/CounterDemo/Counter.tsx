@@ -1,8 +1,6 @@
 import {useEffect} from 'react';
-
 import type {FC} from 'react';
-
-import useLogic from './useLogic';
+import useLogic from 'toolbar/CounterDemo/useLogic';
 
 export interface Props {
   /** Set initial value */

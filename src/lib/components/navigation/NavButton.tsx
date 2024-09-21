@@ -1,7 +1,6 @@
+import type {ComponentProps, ReactNode} from 'react';
 import {NavLink, useLocation} from 'react-router-dom';
 import IconButton from 'toolbar/components/navigation/IconButton';
-
-import type {ComponentProps, ReactNode} from 'react';
 
 interface Props extends ComponentProps<typeof NavLink> {
   icon: ReactNode;

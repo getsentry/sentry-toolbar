@@ -1,5 +1,5 @@
 import {useContext} from 'react';
-import {ConfigContext} from 'toolbar/context/ConfigContext';
+import ConfigContext from 'toolbar/context/ConfigContext';
 
 export default function LoginButton() {
   const {sentryOrigin, organizationIdOrSlug, projectIdOrSlug} = useContext(ConfigContext);
