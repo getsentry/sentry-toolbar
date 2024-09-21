@@ -46,12 +46,23 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
-      - name: Run test tasks
-        run: |
-          pnpm install
-          pnpm run lint:code --quiet
-          pnpm run lint:style --quiet
-          pnpm run test --silent
-          pnpm run start:docs --smoke-test --quiet
-          pnpm run build
-          pnpm run generate:component Foo --dry-run
+      - name: Install pnpm
+        run: pnpm install
+
+      - name: Lint Code
+        run: pnpm run lint:code --quiet
+
+      - name: Lint Style
+        run: pnpm run lint:style --quiet
+
+      - name: Test
+        run: pnpm run test --silent
+
+      - name: Smoke Test Storybook
+        run: pnpm run start:docs --smoke-test --quiet
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Generate Component
+        run: pnpm run generate:component Foo --dry-run

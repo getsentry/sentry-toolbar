@@ -47,6 +47,19 @@ jobs:
         run: |
           pnpm install
 
+      - name: Lint Code
+        run: pnpm run lint:code --quiet
+
+      - name: Lint Style
+        run: pnpm run lint:style --quiet
+
+      - name: Test
+        run: pnpm run test --silent
+
+      - name: Build
+        run: pnpm run build
+
+#      TODO: Publish with Craft to the CDN
 #      - name: Publish NPM package
 #        uses: JS-DevTools/npm-publish@v3
 #        with:
