@@ -20,6 +20,9 @@ export default function parseLinkHeader(header: string | null): Record<string, P
     const [, href, rel, results, cursor] = match;
     const hasResults = results === 'true' ? true : results === 'false' ? false : null;
 
+    if (!rel || !href || !cursor) {
+      return;
+    }
     links[rel] = {
       href,
       results: hasResults,
