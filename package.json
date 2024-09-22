@@ -50,6 +50,7 @@
     "start:docs": "storybook dev -p 6006",
     "build:docs": "storybook build",
     "generate:component": "npx generate-react-cli component",
+    "generate:api-types": "cd bin/detect-types && pnpm generate",
     "prepare": "is-ci || husky",
     "lint-staged": "lint-staged"
   },

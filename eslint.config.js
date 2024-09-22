@@ -242,6 +242,24 @@ const eslint_config = [
       ],
     },
   },
+  /* Disable `raw` directory imports form any file except types */
+  {
+    files: ['src/**/*.{js,jsx,ts,tsx}'],
+    ignores: ['src/lib/sentryApi/types/**'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['toolbar/sentryApi/raw/**'],
+              message: 'Imports from `toolbar/sentryApi/types/*` instead.',
+            },
+          ],
+        },
+      ],
+    },
+  },
   /**
    * Disable rules of hooks for story files in order to have better story code display.
    * @see TemplateName.stories.tsx
@@ -253,7 +271,7 @@ const eslint_config = [
     },
   },
   {
-    ignores: ['**/*.snap', 'dist/**', 'mock/**', '*.config.{js,ts}'],
+    ignores: ['**/*.snap', 'dist/**', 'bin/**', 'mock/**', '*.config.{js,ts}'],
   },
 ];
 

@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "mock-server",
+  "name": "detect-types",
   "version": "0.0.0",
   "main": "index.js",
   "engines": {
@@ -13,10 +13,10 @@
     "extends": "../../package.json"
   },
   "scripts": {
-    "start": "PORT=8080 node index.js"
+    "generate": "node index.js"
   },
   "dependencies": {
-    "express": "^4.21.0",
-    "http-proxy": "^1.18.1"
+    "maketypes": "^1.1.2",
+    "prompt-sync": "^4.2.0"
   }
 }

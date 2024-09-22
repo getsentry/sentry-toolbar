@@ -1,4 +1,4 @@
-import type {Group} from 'toolbar/types/sentry/group';
+import type {Group} from 'toolbar/sentryApi/types/group';
 
 export default function IssueListItem({item}: {item: Group}) {
   return <div>{item.metadata.value}</div>;

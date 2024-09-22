@@ -1,8 +1,15 @@
+import {useContext} from 'react';
 import PanelLayout from 'toolbar/components/panels/PanelLayout';
-import useSentryOrg from 'toolbar/hooks/useSentryOrg';
+import ConfigContext from 'toolbar/context/ConfigContext';
+import useFetchSentryData from 'toolbar/hooks/fetch/useFetchSentryData';
+import {useOrganizationQuery} from 'toolbar/sentryApi/queryKeys';
 
 export default function SettingsPanel() {
-  const {data, refetch} = useSentryOrg();
+  const {organizationIdOrSlug} = useContext(ConfigContext);
+  const {data, refetch} = useFetchSentryData({
+    ...useOrganizationQuery(String(organizationIdOrSlug)),
+    retry: false,
+  });
 
   return (
     <PanelLayout>
