@@ -102,7 +102,10 @@ export default class ApiProxy {
       case 'port-connect': {
         // We're getting the port from the iframe, for bidirectional comms
         try {
-          const port = event.ports[0];
+          const port = event.ports.at(0);
+          if (!port) {
+            throw new Error('Unexpected: Port was not included in message');
+          }
           this._port = port;
           port.addEventListener('message', this._handlePortMessage);
           port.start();

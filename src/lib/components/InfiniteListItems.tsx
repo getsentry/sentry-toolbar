@@ -54,11 +54,15 @@ export default function InfiniteListItems<Data>({
           {items.length ? null : emptyMessage()}
           {items.map(virtualRow => {
             const isLoaderRow = virtualRow.index > loadedRows.length - 1;
-            const item = loadedRows[virtualRow.index];
+            const item = loadedRows.at(virtualRow.index);
 
             return (
               <li data-index={virtualRow.index} key={virtualRow.index} ref={rowVirtualizer.measureElement}>
-                {isLoaderRow ? (hasNextPage ? loadingMoreMessage() : loadingCompleteMessage()) : itemRenderer({item})}
+                {isLoaderRow
+                  ? hasNextPage
+                    ? loadingMoreMessage()
+                    : loadingCompleteMessage()
+                  : item && itemRenderer({item})}
               </li>
             );
           })}
