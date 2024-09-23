@@ -7,27 +7,41 @@
 - Run `pnpm install`
 - Run `pnpm prepare`
 
-### Dev
+### Development
 
 Get the code and setup your env:
 - `git clone git@github.com:getsentry/sentry-toolbar.git`
 - `cd sentry-toolbar`
 - `pnpm install & pnpm prepare`
 
+#### Quickstart
+
+If you have your own app and you want to install the toolbar into it follow these steps:
+
+1. Run `pnpm dev` - Builds the library and starts a local webserver to serve it.
+2. Add `<script src="http://localhost:8080/index.iife.js">` to your app.
+3. Configure the SDK in your app with `<script>window.SentryToolbar.init({...})</script>`.
+
+__Be aware that the usual hot-reload of your app will not apply to the toolbar library. Type CTRL+R or CMD+R to reload your app and pull down new toolbar code.__
+
+If you want to use the bundled sample app, follow these steps:
+
+1. Run `pnpm dev` - Builds the library and starts a local webserver to serve it.
+2. Edit `src/env/demo/App.tsx` to configure the toolbar for your Sentry organization.
+3. Run `pnpm dev:standalone` - Run the sample app.
+4. Visit `http://localhost:5173/` in your browser.
+
+Note that `pnpm dev` is a convenience for running `pnpm dev:watch` & `pnpm dev:server` in parallel.
+  - `pnpm dev:watch` rebuilds the library on code changes.
+  - `pnpm dev:server` serves the library from a local webserver.
+
+
+The local webserver does double-duty, serving the library code (acting as a CDN) and also a mock Sentry instance. Visit `http://localhost:8080/logout/` to "log out" of the mock Sentry instance.
+
+#### Storybook
+
 A storybook is available by running: `pnpm start:docs` and is published to https://getsentry.github.io/sentry-toolbar.
 
-To test the toolbar locally there is a basic test app to host the toolbar. Set config values inside of `env/demo/demo.tsx` and run `pnpm dev:standalone`. The config values should be set for a sentry org which you are able to log in to.
-Note that features like `useCurrentTransactionName` will not match up between the example app and your real app, because the example app doesn't have any functionality!
-
-To test the package locally with another project, first setup the other project:
-1. Add or dyamically inject `<script src="http://localhost:8080/index.iife.js">` into your app
-2. Call `window.SentryToolbar.init(initProps)` to setup a toolbar instance.
-
-In this repo use `pnpm dev` to emit js files, and serve them over a mock CDN in parallel. This will allow the above `<script>` tag in to work. Then run either your own app, or `pnpm dev:standalone` for the simple test app.
-
-** Be aware that since no files are changing inside your apps codebase, so even if your app usually has hot-reloading, it won't notice that the toolbar code has changed! Type CTRL+R or CMD+R to reload your app and pull down new toolbar code.**
-
-Check package.json for other helpful scripts to run during development.
 
 ## Production
 
