@@ -1,8 +1,8 @@
 import type {QueryFunction} from '@tanstack/react-query';
 import useSentryApi from 'toolbar/hooks/fetch/useSentryApi';
 import type {Group} from 'toolbar/sentryApi/types/group';
-import type {Organization} from 'toolbar/sentryApi/types/organization';
-import type {Project} from 'toolbar/sentryApi/types/project';
+import type {Organization} from 'toolbar/sentryApi/types/Organization';
+import type {Project} from 'toolbar/sentryApi/types/Project';
 import type {ApiEndpointQueryKey, ApiResult, QueryKeyEndpointOptions} from 'toolbar/types/api';
 import type {ParsedHeader} from 'toolbar/utils/parseLinkHeader';
 
