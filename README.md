@@ -24,8 +24,6 @@ If you have your own app and you want to install the toolbar into it follow thes
 
 __Be aware that the usual hot-reload of your app will not apply to the toolbar library. Type CTRL+R or CMD+R to reload your app and pull down new toolbar code.__
 
----
-
 If you want to use the bundled sample app, follow these steps:
 
 1. Run `pnpm dev` - Builds the library and starts a local webserver to serve it.
@@ -33,13 +31,12 @@ If you want to use the bundled sample app, follow these steps:
 3. Run `pnpm dev:standalone` - Run the sample app.
 4. Visit `http://localhost:5173/` in your browser.
 
----
-
 Note that `pnpm dev` is a convenience for running `pnpm dev:watch` & `pnpm dev:server` in parallel.
   - `pnpm dev:watch` rebuilds the library on code changes.
   - `pnpm dev:server` serves the library from a local webserver.
 
-Check [package.json](https://github.com/getsentry/sentry-toolbar/blob/main/package.json) for other helpful scripts to run during development.
+
+The local webserver does double-duty, serving the library code (acting as a CDN) and also a mock Sentry instance. Visit `http://localhost:8080/logout/` to "log out" of the mock Sentry instance.
 
 #### Storybook
 
