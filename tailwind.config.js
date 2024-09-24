@@ -30,6 +30,13 @@ const tailwind_config = {
         200: 'var(--translucent-surface-200)',
         100: 'var(--translucent-surface-100)',
       },
+
+      shadow: {
+        light:  'var(--shadow-light)',
+        medium: 'var(--shadow-medium)',
+        heavy: 'var(--shadow-heavy)',
+      },
+
       gray: {
         500: 'var(--gray-500)',
         400: 'var(--gray-400)',
@@ -73,7 +80,60 @@ const tailwind_config = {
         200: 'var(--pink-200)',
         100: 'var(--pink-100)',
       },
-    }
+
+      sentryPurple: 'var(--sentry-purple)',
+
+      alpha: {
+        bg: `linear-gradient(90deg, var(--pink-300), var(--yellow-300))`,
+        indicatorColor: 'var(--pink-300)',
+        fg: '#fff',
+      },
+      beta: {
+        bg: `linear-gradient(90deg, var(--purple-300), var(--pink-300))`,
+        indicatorColor: 'var(--purple-300)',
+        fg: '#fff',
+      },
+      new: {
+        bg: `linear-gradient(90deg, var(--blue-300), var(--green-300))`,
+        indicatorColor: 'var(--green-300)',
+        fg: '#fff',
+      },
+    },
+
+    zIndex: {
+      initial: 1,
+    },
+
+    icon: {
+      up: 'rotate(0deg)',
+      right: 'rotate(90deg)',
+      down: 'rotate(180deg)',
+      left: 'rotate(270deg)',
+    },
+
+    fontFamily: {
+      sans: ['Rubik', 'Avenir Next', 'sans-serif'],
+      mono: ['Roboto Mono', 'Monaco', 'Consolas', 'Courier New', 'monospace']
+    },
+
+    font: {
+      xs: '11px',
+      s: '12px',
+      m: '14px',
+      l: '16px',
+      xl: '18px',
+    },
+
+    spacing: {
+      0.25: '2px',
+      0.5: '4px',
+      0.75: '6px',
+      1: '8px',
+      1.5: '12px',
+      2: '16px',
+      3: '20px',
+      4: '30px',
+    },
   },
   plugins: [import('tailwindcss-animate'), import('tailwindcss-react-aria-components')],
 };
