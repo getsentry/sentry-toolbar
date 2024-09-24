@@ -1,7 +1,8 @@
 import {useEffect} from 'react';
 import type {PropsWithChildren} from 'react';
 import {Routes, Route, Outlet, useNavigate} from 'react-router-dom';
-import Layout from 'toolbar/components/Layout';
+import CenterLayout from 'toolbar/components/layouts/CenterLayout';
+import RightEdgeLayout from 'toolbar/components/layouts/RightEdgeLayout';
 import Navigation from 'toolbar/components/Navigation';
 import IssuesPanel from 'toolbar/components/panels/issues/IssuesPanel';
 import SettingsPanel from 'toolbar/components/panels/settings/SettingsPanel';
@@ -17,7 +18,11 @@ export default function AppRouter() {
       <Route
         element={
           <WithoutProxy>
-            <Outlet />
+            <CenterLayout>
+              <CenterLayout.MainArea>
+                <Outlet />
+              </CenterLayout.MainArea>
+            </CenterLayout>
           </WithoutProxy>
         }>
         <Route path="/login" element={<Login />} />
@@ -28,14 +33,19 @@ export default function AppRouter() {
         path="/"
         element={
           <WithProxy>
-            <Outlet />
+            <RightEdgeLayout>
+              <RightEdgeLayout.NavArea>
+                <Navigation />
+              </RightEdgeLayout.NavArea>
+              <Outlet />
+            </RightEdgeLayout>
           </WithProxy>
         }>
         <Route
           element={
-            <MainArea>
+            <RightEdgeLayout.MainArea>
               <Outlet />
-            </MainArea>
+            </RightEdgeLayout.MainArea>
           }>
           <Route path="/settings" element={<SettingsPanel />} />
           <Route path="/issues" element={<IssuesPanel />} />
@@ -55,11 +65,7 @@ function WithoutProxy({children}: PropsWithChildren) {
     }
   }, [proxyState.hasPort, navigate]);
 
-  return (
-    <Layout>
-      <NavArea>{children}</NavArea>
-    </Layout>
-  );
+  return children;
 }
 
 function WithProxy({children}: PropsWithChildren) {
@@ -81,19 +87,5 @@ function WithProxy({children}: PropsWithChildren) {
     }
   }, [proxyState, authState, navigate]);
 
-  return (
-    <Layout>
-      <NavArea>
-        <Navigation />
-      </NavArea>
-      {children}
-    </Layout>
-  );
-}
-
-function NavArea({children}: PropsWithChildren) {
-  return <div className="pointer-events-auto [grid-area:nav]">{children}</div>;
-}
-function MainArea({children}: PropsWithChildren) {
-  return <div className="pointer-events-auto justify-self-end [grid-area:main]">{children}</div>;
+  return children;
 }

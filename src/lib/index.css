@@ -54,7 +54,7 @@
     --pink100: rgb(249 26 138 / 9%);
 
     /* Special */
-    --sentry-purple: '#2f1937';
+    --sentry-purple: #2f1937;
   }
 
   @media (prefers-color-scheme: dark) {
@@ -109,7 +109,7 @@
       --pink-100: rgb(206 59 133 / 13%);
 
       /* Special */
-      --sentry-purple: '#181622';
+      --sentry-purple: #181622;
     }
   }
 }

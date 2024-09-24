@@ -8,6 +8,7 @@ const tailwind_config = {
     extend: {
       zIndex: {
         initial: 1,
+        debug: 9999,
       },
 
       icon: {
@@ -137,8 +138,6 @@ const tailwind_config = {
         fg: '#fff',
       },
     },
-
-
   },
   plugins: [import('tailwindcss-animate'), import('tailwindcss-react-aria-components')],
 };

@@ -13,5 +13,9 @@ export default function LoginButton() {
     );
   };
 
-  return <button onClick={openPopup}>Login</button>;
+  return (
+    <button className="rounded-full p-1 hover:bg-gray-500 hover:underline" onClick={openPopup}>
+      Login to Sentry
+    </button>
+  );
 }

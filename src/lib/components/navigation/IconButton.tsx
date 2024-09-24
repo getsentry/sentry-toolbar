@@ -11,21 +11,7 @@ export default function IconButton({children, icon, onClick, title, ...props}: I
   return (
     <button
       aria-label={title}
-      className="
-      flex
-      gap-2
-      rounded-sm
-      border-2
-      border-solid
-      border-transparent
-      bg-none
-      p-4
-      text-white
-      hover:border-white
-      hover:disabled:border-transparent
-      data-[active-route=true]:bg-white
-      data-[active-route=true]:text-gray-400
-      "
+      className="flex gap-1 rounded-md border-2 border-solid border-transparent bg-none p-1 text-white hover:border-white hover:disabled:border-transparent data-[active-route=true]:bg-white data-[active-route=true]:text-gray-400"
       onClick={onClick}
       title={title}
       {...props}>
