@@ -75,7 +75,7 @@ if (isDev || isEmployeeInProd) {
 }
 ```
 
-If the toolbar `<script>` is accidentally included on your site, and `SentryToolbar.init()` is called, then a "Login to Sentry" button will be visible to the public. This is not idea, but your data in sentry will still be safe as users not inside your sentry organization will not be able to authenticate themselves.
+If the toolbar `<script>` is accidentally included on your site, and `SentryToolbar.init()` is called, then a "Login to Sentry" button will be visible to the public. This is not ideal, but your data in sentry will still be safe as users not inside your sentry organization will not be able to authenticate themselves.
 
 
 #### Conditionally inserting script tag
