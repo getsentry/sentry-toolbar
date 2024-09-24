@@ -26,7 +26,7 @@ function DebugState() {
   const proxyState = useApiProxyState();
 
   return (
-    <div className="fixed bottom-0 left-0 z-[9999] bg-gray-100 p-2.5">
+    <div className="fixed bottom-0 left-0 z-[9999] bg-gray-100 p-1">
       <pre>
         {JSON.stringify(
           {

@@ -1,3 +1,115 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --white: #fff;
+    --black: #1d1127;
+
+    /* Surface */
+    --surface-100: #f5f3f7;
+    --surface-200: #faf9fb;
+    --surface-300: #fff;
+    --surface-400: #fff;
+
+    /* Translucent Surface */
+    --translucent-surface-100: #f5f3f7b6;
+    --translucent-surface-200: #faf9fbe6;
+
+    /* Shadows */
+    --shadow-light: '0 0 1px rgba(43, 34, 51, 0.04)';
+    --shadow-medium: '0 1px 2px rgba(43, 34, 51, 0.04)';
+    --shadow-heavy: '0 4px 24px rgba(43, 34, 51, 0.12)';
+
+    /* Colors */
+    --gray-500: #2b2233;
+    --gray-400: #3e3446;
+    --gray-300: #80708f;
+    --gray-200: #e0dce5;
+    --gray-100: #f0ecf3;
+    --purple-400: #6559c5;
+    --purple-300: #6c5fc7;
+    --purple-200: rgb(108 95 199 / 50%);
+    --purple-100: rgb(108 95 199 / 9%);
+    --blue-400: #2562d4;
+    --blue-300: #3c74dd;
+    --blue-200: rgb(60 116 221 / 50%);
+    --blue-100: rgb(60 116 221 / 9%);
+    --green-400: #207964;
+    --green-300: #2ba185;
+    --green-200: rgb(43 161 133 / 55%);
+    --green-100: rgb(43 161 133 / 11%);
+    --yellow-400: #856c00;
+    --yellow-300: #ebc000;
+    --yellow-200: rgb(235 192 0 / 70%);
+    --yellow-100: rgb(235 192 0 / 14%);
+    --red-400: #cf2126;
+    --red-300: #f55459;
+    --red-200: rgb(245 84 89 / 50%);
+    --red-100: rgb(245 84 89 / 10%);
+    --pink-400: #d1056b;
+    --pink-300: #f14499;
+    --pink-200: rgb(249 26 138 / 50%);
+    --pink100: rgb(249 26 138 / 9%);
+
+    /* Special */
+    --sentry-purple: '#2f1937';
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --black: #1d1127;
+      --white: #fff;
+
+      /* Surface */
+      --surface100: '#18121c';
+      --surface-200: '#1a141f';
+      --surface-300: '#241d2a';
+      --surface-400: '#2c2433';
+
+      /* Translucent Surface */
+      --translucent-surface-100: '#18121cb3';
+      --translucent-surface-200: '#1a141fb3';
+
+      /* Shadows */
+      --shadow-light: '0 0 1px rgba(10, 8, 12, 0.2)';
+      --shadow-medium: '0 1px 2px rgba(10, 8, 12, 0.2)';
+      --shadow-heavy: '0 4px 24px rgba(10, 8, 12, 0.36)';
+
+      /* Colors */
+      --gray-500: #ebe6ef;
+      --gray-400: #d6d0dc;
+      --gray-300: #998da5;
+      --gray-200: #393041;
+      --gray-100: #302735;
+      --purple-400: #aba0f8;
+      --purple-300: #7669d3;
+      --purple-200: rgb(118 105 211 / 27%);
+      --purple-100: rgb(118 105 211 / 11%);
+      --blue-400: #80acff;
+      --blue-300: #3070e8;
+      --blue-200: rgb(48 112 232 / 25%);
+      --blue-100: rgb(48 112 232 / 12%);
+      --green-400: #1cc49d;
+      --green-300: #1d876e;
+      --green-200: rgb(29 135 110 / 30%);
+      --green-100: rgb(29 135 110 / 12%);
+      --yellow-400: #c7b000;
+      --yellow-300: #a89500;
+      --yellow-200: rgb(168 149 0 / 25%);
+      --yellow-100: rgb(168 149 0 / 9%);
+      --red-400: #f98a8f;
+      --red-300: #e12d33;
+      --red-200: rgb(225 45 51 / 25%);
+      --red-100: rgb(225 45 51 / 15%);
+      --pink-400: #eb8fbc;
+      --pink-300: #ce3b85;
+      --pink-200: rgb(206 59 133 / 25%);
+      --pink-100: rgb(206 59 133 / 13%);
+
+      /* Special */
+      --sentry-purple: '#181622';
+    }
+  }
+}

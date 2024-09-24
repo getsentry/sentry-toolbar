@@ -18,10 +18,10 @@ export const Counter: FC<Props> = ({initialValue = 0}) => {
   }, []);
 
   return (
-    <div className="w-60 border border-slate-300 p-6 text-center">
+    <div className="w-100 border border-surface-300 p-4 text-center">
       <h2 className="mb-3 text-2xl">Counter</h2>
       <button
-        className="mb-6 rounded-lg bg-teal-600 px-6 py-3 text-base text-white drop-shadow-md active:relative active:left-0.5 active:top-0.5 active:drop-shadow-none"
+        className="mb-4 rounded-lg bg-blue-400 px-4 py-3 text-base text-white drop-shadow-md active:relative active:left-0.5 active:top-0.5 active:drop-shadow-none"
         type="button"
         onClick={incrementCount}>
         Increment by one
