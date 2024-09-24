@@ -12,9 +12,6 @@ export default function IconButton({children, icon, onClick, title, ...props}: I
     <button
       aria-label={title}
       className="
-      text-white
-      hover:border-white
-      data-[active-route=true]:bg-white
       flex
       gap-2
       rounded-sm
@@ -23,7 +20,10 @@ export default function IconButton({children, icon, onClick, title, ...props}: I
       border-transparent
       bg-none
       p-4
+      text-white
+      hover:border-white
       hover:disabled:border-transparent
+      data-[active-route=true]:bg-white
       data-[active-route=true]:text-gray-400
       "
       onClick={onClick}

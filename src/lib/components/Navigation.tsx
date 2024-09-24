@@ -6,7 +6,7 @@ import NavButton from 'toolbar/components/navigation/NavButton';
 
 export default function Navigation() {
   return (
-    <div className="bg-purple-600 text-white-fg">
+    <div className="bg-sentryPurple text-white">
       <IconButton onClick={() => {}} title="Hide for this session" icon={<IconClose />} />
 
       <hr className="m-0 w-full" />

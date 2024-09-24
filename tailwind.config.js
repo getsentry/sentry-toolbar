@@ -5,18 +5,56 @@
 const tailwind_config = {
   content: ['./index.html', './src/**/*.tsx'],
   theme: {
-    extend: {},
+    extend: {
+      zIndex: {
+        initial: 1,
+      },
+
+      icon: {
+        up: 'rotate(0deg)',
+        right: 'rotate(90deg)',
+        down: 'rotate(180deg)',
+        left: 'rotate(270deg)',
+      },
+
+      fontFamily: {
+        sans: ['Rubik', 'Avenir Next', 'sans-serif'],
+        mono: ['Roboto Mono', 'Monaco', 'Consolas', 'Courier New', 'monospace']
+      },
+
+      font: {
+        xs: '11px',
+        sm: '12px',
+        md: '14px',
+        lg: '16px',
+        xl: '18px',
+        xxl: '18px',
+      },
+
+      spacing: {
+        0: 0,
+        0.25: '2px',
+        0.5: '4px',
+        0.75: '6px',
+        1: '8px',
+        1.5: '12px',
+        2: '16px',
+        3: '20px',
+        4: '30px',
+        100: '100%',
+      },
+    },
 
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
 
       white: {
-        fg: 'var(--white)',
+        DEFAULT: 'var(--white)',
         raw: '#fff',
       },
       black: {
-        fg: 'var(--black)',
+        DEFAULT: 'var(--black)',
         raw: '#1d1127'
       },
 
@@ -100,40 +138,7 @@ const tailwind_config = {
       },
     },
 
-    zIndex: {
-      initial: 1,
-    },
 
-    icon: {
-      up: 'rotate(0deg)',
-      right: 'rotate(90deg)',
-      down: 'rotate(180deg)',
-      left: 'rotate(270deg)',
-    },
-
-    fontFamily: {
-      sans: ['Rubik', 'Avenir Next', 'sans-serif'],
-      mono: ['Roboto Mono', 'Monaco', 'Consolas', 'Courier New', 'monospace']
-    },
-
-    font: {
-      xs: '11px',
-      s: '12px',
-      m: '14px',
-      l: '16px',
-      xl: '18px',
-    },
-
-    spacing: {
-      0.25: '2px',
-      0.5: '4px',
-      0.75: '6px',
-      1: '8px',
-      1.5: '12px',
-      2: '16px',
-      3: '20px',
-      4: '30px',
-    },
   },
   plugins: [import('tailwindcss-animate'), import('tailwindcss-react-aria-components')],
 };
