@@ -27,7 +27,7 @@
       "toolbar/*": ["./src/lib/*"]
     }
   },
-  "include": ["src", "templates/**/*.ts", "templates/**/*.tsx", "src/lib/components/icon/SVGIcon.tsx"],
+  "include": ["src", "templates/**/*.ts", "templates/**/*.tsx", "src/lib/components/icon/SVGIconBase.tsx"],
   "exclude": ["**/*.stories.*"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -1,6 +1,6 @@
 import {forwardRef, Fragment} from 'react';
-import SVGIcon from 'toolbar/components/icon/SVGIcon';
-import type {SVGIconProps} from 'toolbar/components/icon/SVGIcon';
+import SVGIconBase from 'toolbar/components/icon/SVGIconBase';
+import type {SVGIconProps} from 'toolbar/components/icon/SVGIconBase';
 
 interface Props extends SVGIconProps {
   isCircled?: boolean;
@@ -8,7 +8,7 @@ interface Props extends SVGIconProps {
 
 const IconClose = forwardRef<SVGSVGElement, Props>(function IconClose({isCircled = false, ...props}: Props, ref) {
   return (
-    <SVGIcon ref={ref} {...props} data-test-id="icon-close">
+    <SVGIconBase ref={ref} {...props} data-test-id="icon-close">
       {isCircled ? (
         <Fragment>
           <path d="M8,16a8,8,0,1,1,8-8A8,8,0,0,1,8,16ZM8,1.53A6.47,6.47,0,1,0,14.47,8,6.47,6.47,0,0,0,8,1.53Z" />
@@ -20,7 +20,7 @@ const IconClose = forwardRef<SVGSVGElement, Props>(function IconClose({isCircled
           <path d="M6.94,8,1.47,13.47a.75.75,0,0,0,0,1.06.75.75,0,0,0,1.06,0L8,9.06l5.47,5.47a.75.75,0,0,0,1.06,0,.75.75,0,0,0,0-1.06L9.06,8l5.47-5.47a.75.75,0,0,0-1.06-1.06L8,6.94,2.53,1.47A.75.75,0,0,0,1.47,2.53Z" />
         </Fragment>
       )}
-    </SVGIcon>
+    </SVGIconBase>
   );
 });
 

@@ -26,7 +26,7 @@ export interface SVGIconProps extends SVGAttributes<SVGSVGElement> {
   size?: keyof typeof iconSizes;
 }
 
-const SVGIcon = forwardRef<SVGSVGElement, SVGIconProps>(function SVGIcon(props: SVGIconProps, ref) {
+const SVGIconBase = forwardRef<SVGSVGElement, SVGIconProps>(function SVGIcon(props: SVGIconProps, ref) {
   const {
     color = 'currentColor',
     size: providedSize = 'sm',
@@ -39,4 +39,4 @@ const SVGIcon = forwardRef<SVGSVGElement, SVGIconProps>(function SVGIcon(props: 
   return <svg {...rest} viewBox={viewBox} fill={color} height={size} width={size} ref={ref} />;
 });
 
-export default SVGIcon;
+export default SVGIconBase;

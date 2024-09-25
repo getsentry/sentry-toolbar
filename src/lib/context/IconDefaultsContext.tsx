@@ -1,9 +1,9 @@
 /* eslint-disable react-refresh/only-export-components */
 import {createContext, useContext} from 'react';
 import type {ComponentProps} from 'react';
-import type SVGIcon from 'toolbar/components/icon/SVGIcon';
+import type SVGIconBase from 'toolbar/components/icon/SVGIconBase';
 
-type Props = ComponentProps<typeof SVGIcon>;
+type Props = ComponentProps<typeof SVGIconBase>;
 
 const IconDefaultsContext = createContext<Props>({});
 
