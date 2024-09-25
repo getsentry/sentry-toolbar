@@ -69,17 +69,17 @@ export default function Navigation() {
       onMouseOver={() => setIsHovered(true)}
       onMouseOut={() => setIsHovered(false)}>
       <span className={navItemClassName({clickable: false})}>
-        <IconSentry size="md" />
+        <IconSentry size="sm" />
       </span>
       {isExpanded ? (
         <Fragment>
           <hr className={navSeparator} />
 
           <NavLink to={toPathOrHome('/settings')} title="Settings" className={navItemClassName({})}>
-            <IconSettings />
+            <IconSettings size="sm" />
           </NavLink>
           <NavLink to={toPathOrHome('/issues')} title="Issues" className={navItemClassName()}>
-            <IconIssues />
+            <IconIssues size="sm" />
           </NavLink>
 
           <hr className={navSeparator} />
@@ -89,7 +89,7 @@ export default function Navigation() {
             onClick={() => setIsPinned(!isPinned)}
             title={isPinned ? 'Allow collapsing' : 'Keep the toolbar open'}
             aria-label={isPinned ? 'Allow collapsing' : 'Keep the toolbar open'}>
-            <IconPin isSolid={isPinned} />
+            <IconPin size="sm" isSolid={isPinned} />
           </button>
         </Fragment>
       ) : null}

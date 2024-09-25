@@ -23,7 +23,7 @@ export default function RightEdgeLayout({children}: Props) {
 }
 
 RightEdgeLayout.NavArea = function NavArea({children}: Props) {
-  return <div className="pointer-events-auto flex [grid-area:nav]">{children}</div>;
+  return <div className="pointer-events-auto flex pr-2 [grid-area:nav]">{children}</div>;
 };
 RightEdgeLayout.MainArea = function MainArea({children}: Props) {
   return <div className="pointer-events-auto flex justify-self-end [grid-area:main]">{children}</div>;

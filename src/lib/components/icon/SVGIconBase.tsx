@@ -3,12 +3,12 @@ import type {SVGAttributes} from 'react';
 import {useIconDefaultsContext} from 'toolbar/context/IconDefaultsContext';
 
 const iconNumberSizes = {
-  xs: 12,
-  sm: 14,
-  md: 18,
+  xs: 16,
+  sm: 16,
+  md: 20,
   lg: 24,
   xl: 32,
-  xxl: 72,
+  xxl: 32,
 } as const;
 
 const iconSizes = {
