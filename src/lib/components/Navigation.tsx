@@ -60,7 +60,7 @@ const navItemClassName = cva(
 export default function Navigation() {
   const {isExpanded, isPinned, setIsHovered, setIsPinned} = useNavigationExpansion();
   const {pathname} = useLocation();
-  const toPathOrHome = (to: To) => (pathname === '/' ? to : '/');
+  const toPathOrHome = (to: To) => (pathname === to ? '/' : to);
 
   return (
     <motion.div
