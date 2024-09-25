@@ -7,7 +7,7 @@ export default function DebugState() {
   const proxyState = useApiProxyState();
 
   return (
-    <pre className="bg-gray-100 p-1">
+    <pre className="bg-gray-100 p-1 text-white">
       {JSON.stringify(
         {
           authState,

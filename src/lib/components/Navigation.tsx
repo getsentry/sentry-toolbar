@@ -1,60 +1,96 @@
-import {Fragment, useEffect, useRef, useState} from 'react';
+import {cva, cx} from 'cva';
+import {motion} from 'framer-motion';
+import {Fragment} from 'react';
+import {NavLink, useLocation} from 'react-router-dom';
+import type {To} from 'react-router-dom';
 import IconIssues from 'toolbar/components/icon/IconIssues';
 import IconPin from 'toolbar/components/icon/IconPin';
 import IconSentry from 'toolbar/components/icon/IconSentry';
 import IconSettings from 'toolbar/components/icon/IconSettings';
-import IconButton from 'toolbar/components/navigation/IconButton';
-import NavButton from 'toolbar/components/navigation/NavButton';
+import useNavigationExpansion from 'toolbar/hooks/useNavigationExpansion';
+
+const navClassName = cx([
+  'flex',
+  'flex-col',
+  'items-center',
+  'gap-1',
+  'rounded-xl',
+  'border',
+  'border-translucentGray-200',
+  'bg-white',
+  'p-1',
+  'text-purple-400',
+  'shadow-lg',
+  'shadow-shadow-heavy',
+]);
+
+const navSeparator = cx(['m-0', 'w-full', 'border-translucentGray-200']);
+
+const navItemClassName = cva(
+  [
+    'flex',
+    'gap-1',
+    'rounded-md',
+    'p-1',
+    'text-gray-400',
+    'hover:text-purple-400',
+    'hover:bg-purple-100',
+    'data-[aria-current=page]:bg-white',
+    'data-[aria-current=page]:border-current',
+    'data-[aria-current=page]:text-gray-400',
+  ],
+  {
+    variants: {
+      borderless: {
+        false: ['border', 'border-solid', 'border-transparent', 'hover:border-current'],
+      },
+      disabled: {
+        true: ['hover:disabled:border-transparent'],
+      },
+    },
+    defaultVariants: {
+      borderless: false,
+      disabled: false,
+    },
+  }
+);
 
 export default function Navigation() {
-  const timeoutRef = useRef<null | ReturnType<typeof setTimeout>>(null);
-  const [isDelayedOpen, setIsDelayedOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isPinned, setIsPinned] = useState(false);
-
-  useEffect(() => {
-    if (isPinned || isHovered) {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      timeoutRef.current = null;
-    } else if (!isHovered) {
-      setIsDelayedOpen(true);
-      timeoutRef.current = setTimeout(() => {
-        setIsDelayedOpen(false);
-      }, 2_000);
-    }
-  }, [isHovered, isPinned]);
+  const {isExpanded, isPinned, setIsHovered, setIsPinned} = useNavigationExpansion();
+  const {pathname} = useLocation();
+  const toPathOrHome = (to: To) => (pathname === '/' ? to : '/');
 
   return (
-    <div
-      className="flex flex-col items-center gap-0.5 rounded-xl border border-red-100 bg-white p-0.5 text-black shadow-lg"
+    <motion.div
+      layout="position"
+      className={navClassName}
       onMouseOver={() => setIsHovered(true)}
       onMouseOut={() => setIsHovered(false)}>
-      {isPinned || isHovered || isDelayedOpen ? (
+      <span className={navItemClassName()}>
+        <IconSentry size="md" />
+      </span>
+      {isExpanded ? (
         <Fragment>
-          <span className="p-1">
-            <IconSentry size="md" />
-          </span>
+          <hr className={navSeparator} />
 
-          <hr className="m-0 w-full" />
+          <NavLink to={toPathOrHome('/settings')} title="Settings" className={navItemClassName()}>
+            <IconSettings />
+          </NavLink>
+          <NavLink to={toPathOrHome('/issues')} title="Issues" className={navItemClassName()}>
+            <IconIssues />
+          </NavLink>
 
-          <NavButton to="/settings" label="Settings" icon={<IconSettings />} />
-          <NavButton to="/issues" label="Issues" icon={<IconIssues />} />
+          <hr className={navSeparator} />
 
-          <hr className="m-0 w-full" />
-
-          <IconButton
+          <button
+            className={navItemClassName()}
             onClick={() => setIsPinned(!isPinned)}
             title={isPinned ? 'Allow collapsing' : 'Keep the toolbar open'}
-            icon={<IconPin isSolid={isPinned} />}
-          />
+            aria-label={isPinned ? 'Allow collapsing' : 'Keep the toolbar open'}>
+            <IconPin isSolid={isPinned} />
+          </button>
         </Fragment>
-      ) : (
-        <span className="p-1">
-          <IconSentry size="md" />
-        </span>
-      )}
-    </div>
+      ) : null}
+    </motion.div>
   );
 }

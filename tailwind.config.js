@@ -65,6 +65,10 @@ const tailwind_config = {
         200: 'var(--surface-200)',
         100: 'var(--surface-100)',
       },
+      translucentGray: {
+        200: 'var(--translucent-gray-200)',
+        100: 'var(--translucent-gray-100)',
+      },
       translucentSurface: {
         200: 'var(--translucent-surface-200)',
         100: 'var(--translucent-surface-100)',

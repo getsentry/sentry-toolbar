@@ -81,6 +81,12 @@ interface RenderConfig {
    * Default: `"right-edge"`
    */
   placement: 'right-edge' | 'bottom-right-corner';
+
+  /**
+   * Whether to use dark mode, or light
+   * Defaults to 'system' which defers to `prefers-color-scheme`
+   */
+  theme?: 'system' | 'dark' | 'light';
 }
 
 export interface Configuration extends ConnectionConfig, FeatureFlagsConfig, OrgConfig, RenderConfig {
