@@ -33,24 +33,26 @@ const navItemClassName = cva(
     'rounded-md',
     'p-1',
     'text-gray-400',
-    'hover:text-purple-400',
-    'hover:bg-purple-100',
+    'border',
+    'border-solid',
+    'border-transparent',
     'data-[aria-current=page]:bg-white',
     'data-[aria-current=page]:border-current',
     'data-[aria-current=page]:text-gray-400',
   ],
   {
     variants: {
-      borderless: {
-        false: ['border', 'border-solid', 'border-transparent', 'hover:border-current'],
-      },
-      disabled: {
-        true: ['hover:disabled:border-transparent'],
+      clickable: {
+        true: [
+          'hover:text-purple-400',
+          'hover:bg-purple-100',
+          'hover:border-current',
+          'hover:disabled:border-transparent',
+        ],
       },
     },
     defaultVariants: {
-      borderless: false,
-      disabled: false,
+      clickable: true,
     },
   }
 );
@@ -66,14 +68,14 @@ export default function Navigation() {
       className={navClassName}
       onMouseOver={() => setIsHovered(true)}
       onMouseOut={() => setIsHovered(false)}>
-      <span className={navItemClassName()}>
+      <span className={navItemClassName({clickable: false})}>
         <IconSentry size="md" />
       </span>
       {isExpanded ? (
         <Fragment>
           <hr className={navSeparator} />
 
-          <NavLink to={toPathOrHome('/settings')} title="Settings" className={navItemClassName()}>
+          <NavLink to={toPathOrHome('/settings')} title="Settings" className={navItemClassName({})}>
             <IconSettings />
           </NavLink>
           <NavLink to={toPathOrHome('/issues')} title="Issues" className={navItemClassName()}>
