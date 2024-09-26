@@ -53,7 +53,7 @@ export default function Navigation() {
   const {isExpanded, isPinned, setIsHovered, setIsPinned} = useNavigationExpansion();
   const {pathname} = useLocation();
   const navigate = useNavigate();
-  const toRouteOrHome = (to: To) => ({
+  const toPathOrHome = (to: To) => ({
     to,
     onClick: (e: MouseEvent) => {
       if (pathname === to) {
@@ -76,10 +76,10 @@ export default function Navigation() {
         <Fragment>
           <hr className={navSeparator} />
 
-          <NavLink {...toRouteOrHome('/settings')} title="Settings" className={navItemClassName({})}>
+          <NavLink {...toPathOrHome('/settings')} title="Settings" className={navItemClassName({})}>
             <IconSettings size="sm" />
           </NavLink>
-          <NavLink {...toRouteOrHome('/issues')} title="Issues" className={navItemClassName()}>
+          <NavLink {...toPathOrHome('/issues')} title="Issues" className={navItemClassName()}>
             <IconIssues size="sm" />
           </NavLink>
 
