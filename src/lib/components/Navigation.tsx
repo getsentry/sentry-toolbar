@@ -1,7 +1,8 @@
 import {cva, cx} from 'cva';
 import {motion} from 'framer-motion';
 import {Fragment} from 'react';
-import {NavLink, useLocation} from 'react-router-dom';
+import type {MouseEvent} from 'react';
+import {NavLink, useLocation, useNavigate} from 'react-router-dom';
 import type {To} from 'react-router-dom';
 import IconIssues from 'toolbar/components/icon/IconIssues';
 import IconPin from 'toolbar/components/icon/IconPin';
@@ -27,19 +28,7 @@ const navClassName = cx([
 const navSeparator = cx(['m-0', 'w-full', 'border-translucentGray-200']);
 
 const navItemClassName = cva(
-  [
-    'flex',
-    'gap-1',
-    'rounded-md',
-    'p-1',
-    'text-gray-400',
-    'border',
-    'border-solid',
-    'border-transparent',
-    'data-[aria-current=page]:bg-white',
-    'data-[aria-current=page]:border-current',
-    'data-[aria-current=page]:text-gray-400',
-  ],
+  ['flex', 'gap-1', 'rounded-md', 'p-1', 'text-gray-400', 'border', 'border-solid', 'border-transparent'],
   {
     variants: {
       clickable: {
@@ -48,6 +37,9 @@ const navItemClassName = cva(
           'hover:bg-purple-100',
           'hover:border-current',
           'hover:disabled:border-transparent',
+          'aria-currentPage:text-purple-400',
+          'aria-currentPage:bg-purple-100',
+          'aria-currentPage:border-current',
         ],
       },
     },
@@ -60,7 +52,16 @@ const navItemClassName = cva(
 export default function Navigation() {
   const {isExpanded, isPinned, setIsHovered, setIsPinned} = useNavigationExpansion();
   const {pathname} = useLocation();
-  const toPathOrHome = (to: To) => (pathname === to ? '/' : to);
+  const navigate = useNavigate();
+  const toPathOrHome = (to: To) => ({
+    to,
+    onClick: (e: MouseEvent) => {
+      if (pathname === to) {
+        e.preventDefault();
+        navigate('/');
+      }
+    },
+  });
 
   return (
     <motion.div
@@ -75,10 +76,10 @@ export default function Navigation() {
         <Fragment>
           <hr className={navSeparator} />
 
-          <NavLink to={toPathOrHome('/settings')} title="Settings" className={navItemClassName({})}>
+          <NavLink {...toPathOrHome('/settings')} title="Settings" className={navItemClassName({})}>
             <IconSettings size="sm" />
           </NavLink>
-          <NavLink to={toPathOrHome('/issues')} title="Issues" className={navItemClassName()}>
+          <NavLink {...toPathOrHome('/issues')} title="Issues" className={navItemClassName()}>
             <IconIssues size="sm" />
           </NavLink>
 
