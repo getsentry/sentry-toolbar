@@ -47,10 +47,10 @@ const eslint_config = [
       import: pluginImport,
       prettier: pluginPrettier,
       '@typescript-eslint': pluginTypescript,
-      'react-refresh': pluginReactRefresh,
-      'react-hooks': fixupPluginRules(pluginReactHooks),
       'filename-export': pluginFilenameExport,
       'no-relative-import-paths': pluginNoRelativeImportPaths,
+      'react-hooks': fixupPluginRules(pluginReactHooks),
+      'react-refresh': pluginReactRefresh,
     },
     rules: {
       ...pluginReactHooks.configs.recommended.rules,

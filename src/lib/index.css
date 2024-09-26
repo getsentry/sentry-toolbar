@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
+  [data-theme='light'] {
     --white: #fff;
     --black: #1d1127;
 
@@ -14,13 +14,15 @@
     --surface-400: #fff;
 
     /* Translucent Surface */
+    --translucent-gray-200: rgb(58 17 95 / 14%);
+    --translucent-gray-100: rgb(45 0 85 / 6%);
     --translucent-surface-100: #f5f3f7b6;
     --translucent-surface-200: #faf9fbe6;
 
     /* Shadows */
-    --shadow-light: '0 0 1px rgba(43, 34, 51, 0.04)';
-    --shadow-medium: '0 1px 2px rgba(43, 34, 51, 0.04)';
-    --shadow-heavy: '0 4px 24px rgba(43, 34, 51, 0.12)';
+    --shadow-light: rgb(43 34 51 / 4%);
+    --shadow-medium: rgb(43 34 51 / 4%);
+    --shadow-heavy: rgb(43 34 51 / 12%);
 
     /* Colors */
     --gray-500: #2b2233;
@@ -54,62 +56,62 @@
     --pink100: rgb(249 26 138 / 9%);
 
     /* Special */
-    --sentry-purple: '#2f1937';
+    --sentry-purple: #2f1937;
   }
 
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --black: #1d1127;
-      --white: #fff;
+  [data-theme='dark'] {
+    --black: #fff;
+    --white: #1d1127;
 
-      /* Surface */
-      --surface100: '#18121c';
-      --surface-200: '#1a141f';
-      --surface-300: '#241d2a';
-      --surface-400: '#2c2433';
+    /* Surface */
+    --surface100: '#18121c';
+    --surface-200: '#1a141f';
+    --surface-300: '#241d2a';
+    --surface-400: '#2c2433';
 
-      /* Translucent Surface */
-      --translucent-surface-100: '#18121cb3';
-      --translucent-surface-200: '#1a141fb3';
+    /* Translucent */
+    --translucent-gray-200: rgb(218 184 245 / 16%);
+    --translucent-gray-100: rgb(208 168 240 / 7%);
+    --translucent-surface-100: '#18121cb3';
+    --translucent-surface-200: '#1a141fb3';
 
-      /* Shadows */
-      --shadow-light: '0 0 1px rgba(10, 8, 12, 0.2)';
-      --shadow-medium: '0 1px 2px rgba(10, 8, 12, 0.2)';
-      --shadow-heavy: '0 4px 24px rgba(10, 8, 12, 0.36)';
+    /* Shadows */
+    --shadow-light: '0 0 1px rgba(10, 8, 12, 0.2)';
+    --shadow-medium: '0 1px 2px rgba(10, 8, 12, 0.2)';
+    --shadow-heavy: '0 4px 24px rgba(10, 8, 12, 0.36)';
 
-      /* Colors */
-      --gray-500: #ebe6ef;
-      --gray-400: #d6d0dc;
-      --gray-300: #998da5;
-      --gray-200: #393041;
-      --gray-100: #302735;
-      --purple-400: #aba0f8;
-      --purple-300: #7669d3;
-      --purple-200: rgb(118 105 211 / 27%);
-      --purple-100: rgb(118 105 211 / 11%);
-      --blue-400: #80acff;
-      --blue-300: #3070e8;
-      --blue-200: rgb(48 112 232 / 25%);
-      --blue-100: rgb(48 112 232 / 12%);
-      --green-400: #1cc49d;
-      --green-300: #1d876e;
-      --green-200: rgb(29 135 110 / 30%);
-      --green-100: rgb(29 135 110 / 12%);
-      --yellow-400: #c7b000;
-      --yellow-300: #a89500;
-      --yellow-200: rgb(168 149 0 / 25%);
-      --yellow-100: rgb(168 149 0 / 9%);
-      --red-400: #f98a8f;
-      --red-300: #e12d33;
-      --red-200: rgb(225 45 51 / 25%);
-      --red-100: rgb(225 45 51 / 15%);
-      --pink-400: #eb8fbc;
-      --pink-300: #ce3b85;
-      --pink-200: rgb(206 59 133 / 25%);
-      --pink-100: rgb(206 59 133 / 13%);
+    /* Colors */
+    --gray-500: #ebe6ef;
+    --gray-400: #d6d0dc;
+    --gray-300: #998da5;
+    --gray-200: #393041;
+    --gray-100: #302735;
+    --purple-400: #aba0f8;
+    --purple-300: #7669d3;
+    --purple-200: rgb(118 105 211 / 27%);
+    --purple-100: rgb(118 105 211 / 11%);
+    --blue-400: #80acff;
+    --blue-300: #3070e8;
+    --blue-200: rgb(48 112 232 / 25%);
+    --blue-100: rgb(48 112 232 / 12%);
+    --green-400: #1cc49d;
+    --green-300: #1d876e;
+    --green-200: rgb(29 135 110 / 30%);
+    --green-100: rgb(29 135 110 / 12%);
+    --yellow-400: #c7b000;
+    --yellow-300: #a89500;
+    --yellow-200: rgb(168 149 0 / 25%);
+    --yellow-100: rgb(168 149 0 / 9%);
+    --red-400: #f98a8f;
+    --red-300: #e12d33;
+    --red-200: rgb(225 45 51 / 25%);
+    --red-100: rgb(225 45 51 / 15%);
+    --pink-400: #eb8fbc;
+    --pink-300: #ce3b85;
+    --pink-200: rgb(206 59 133 / 25%);
+    --pink-100: rgb(206 59 133 / 13%);
 
-      /* Special */
-      --sentry-purple: '#181622';
-    }
+    /* Special */
+    --sentry-purple: #181622;
   }
 }

@@ -25,6 +25,7 @@ export default function App() {
       // RenderConfig
       domId: 'sentry-toolbar',
       placement: 'right-edge',
+      theme: 'light',
     });
   }, []);
 

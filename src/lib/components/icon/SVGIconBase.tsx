@@ -3,12 +3,12 @@ import type {SVGAttributes} from 'react';
 import {useIconDefaultsContext} from 'toolbar/context/IconDefaultsContext';
 
 const iconNumberSizes = {
-  xs: 12,
-  sm: 14,
-  md: 18,
+  xs: 16,
+  sm: 16,
+  md: 20,
   lg: 24,
   xl: 32,
-  xxl: 72,
+  xxl: 32,
 } as const;
 
 const iconSizes = {
@@ -20,13 +20,13 @@ const iconSizes = {
   xxl: `${iconNumberSizes.xxl}px`,
 } as const;
 
-export interface SvgIconProps extends SVGAttributes<SVGSVGElement> {
+export interface SVGIconProps extends SVGAttributes<SVGSVGElement> {
   className?: string;
   color?: string | 'currentColor';
   size?: keyof typeof iconSizes;
 }
 
-const SvgIcon = forwardRef<SVGSVGElement, SvgIconProps>((props: SvgIconProps, ref) => {
+const SVGIconBase = forwardRef<SVGSVGElement, SVGIconProps>(function SVGIcon(props: SVGIconProps, ref) {
   const {
     color = 'currentColor',
     size: providedSize = 'sm',
@@ -39,6 +39,4 @@ const SvgIcon = forwardRef<SVGSVGElement, SvgIconProps>((props: SvgIconProps, re
   return <svg {...rest} viewBox={viewBox} fill={color} height={size} width={size} ref={ref} />;
 });
 
-SvgIcon.displayName = 'SvgIcon';
-
-export default SvgIcon;
+export default SVGIconBase;

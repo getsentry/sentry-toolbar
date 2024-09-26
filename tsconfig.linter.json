@@ -5,6 +5,7 @@
     "*.config.*",
     "src",
     ".storybook/*.ts",
+    ".storybook/*.tsx",
     ".eslintrc.cjs",
     "mock/**/*.js",
     "templates/**/*.ts",

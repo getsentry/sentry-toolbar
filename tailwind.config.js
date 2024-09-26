@@ -8,6 +8,7 @@ const tailwind_config = {
     extend: {
       zIndex: {
         initial: 1,
+        debug: 9999,
       },
 
       icon: {
@@ -63,6 +64,10 @@ const tailwind_config = {
         300: 'var(--surface-300)',
         200: 'var(--surface-200)',
         100: 'var(--surface-100)',
+      },
+      translucentGray: {
+        200: 'var(--translucent-gray-200)',
+        100: 'var(--translucent-gray-100)',
       },
       translucentSurface: {
         200: 'var(--translucent-surface-200)',
@@ -137,8 +142,6 @@ const tailwind_config = {
         fg: '#fff',
       },
     },
-
-
   },
   plugins: [import('tailwindcss-animate'), import('tailwindcss-react-aria-components')],
 };
