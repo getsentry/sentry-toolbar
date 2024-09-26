@@ -6,6 +6,10 @@ const tailwind_config = {
   content: ['./index.html', './src/**/*.tsx'],
   theme: {
     extend: {
+      aria: {
+        currentPage: 'current="page"',
+      },
+
       zIndex: {
         initial: 1,
         debug: 9999,
