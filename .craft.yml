@@ -1,0 +1,14 @@
+github:
+  owner: getsentry
+  repo: sentry-toolbar
+preReleaseCommand: bash bin/bump-version.sh
+targets:
+  # CDN Bundle Target
+  - name: gcs
+    id: 'browser-cdn-bundles'
+    includeNames: /.*\.js.*$/
+    bucket: sentry-js-sdk
+    paths:
+      - path: /toolbar/
+        metadata:
+          cacheControl: 'public, max-age=31536000'
