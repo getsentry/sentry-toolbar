@@ -2,6 +2,11 @@ github:
   owner: getsentry
   repo: sentry-toolbar
 preReleaseCommand: bash bin/bump-version.sh
+statusProvider:
+  name: github
+  config:
+    contexts:
+      - lint-test
 targets:
   # CDN Bundle Target
   - name: gcs
