@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react';
 import hq from 'alias-hq';
 import {defineConfig} from 'vite';
 import dts from 'vite-plugin-dts';
+import { sentryVitePlugin } from "@sentry/vite-plugin";
 
 const {env} = process;
 env.NODE_ENV = env.NODE_ENV ?? 'development';
@@ -13,7 +14,15 @@ export default defineConfig({
   resolve: {
     alias: hq.get('rollup'),
   },
-  plugins: [react(), dts({rollupTypes: true, exclude: ['**/*.stories.(ts|tsx)']})],
+  plugins: [
+    react(),
+    dts({rollupTypes: true, exclude: ['**/*.stories.(ts|tsx)']}),
+    sentryVitePlugin({
+      telemetry: false,
+      sourcemaps: {disable: true},
+      reactComponentAnnotation: {enabled: true},
+    }),
+  ],
   define: {
     'process.env.NODE_ENV': JSON.stringify(env.NODE_ENV),
   },
