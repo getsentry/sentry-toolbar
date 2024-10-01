@@ -92,4 +92,5 @@ interface RenderConfig {
 export interface Configuration extends ConnectionConfig, FeatureFlagsConfig, OrgConfig, RenderConfig {
   SentrySDK?: typeof SentrySDK;
   trackAnalytics?: (props: {eventKey: string; eventName: string}) => void;
+  debug?: boolean;
 }
