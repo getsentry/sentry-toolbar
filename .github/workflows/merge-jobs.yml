@@ -5,7 +5,7 @@ name: Post-merge tasks
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "release/*"]
 
 jobs:
   build-publish:
