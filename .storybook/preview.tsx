@@ -24,7 +24,7 @@ const baseConfig = {
 const preview: Preview = {
   decorators: [
     (Story, {parameters: {theme}}) => (
-      <div data-theme={theme}>
+      <div data-theme={theme} style={{background: theme === 'dark' ? 'var(--white)' : undefined}}>
         <Story />
       </div>
     ),
@@ -34,7 +34,7 @@ const preview: Preview = {
       </Providers>
     ),
     (Story, {parameters: {storage}}) => {
-      Object.entries(storage).forEach(([key, value]) => {
+      Object.entries(storage || {}).forEach(([key, value]) => {
         localStorage.setItem(key, value);
       });
       return <Story />;

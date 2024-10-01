@@ -13,13 +13,15 @@ export default function CenterLayout({children}: Props) {
         <DebugState />
       </div>
 
-      <div role="dialog" className="pointer-events-none fixed inset-0 flex place-items-center justify-center">
-        {children}
-      </div>
+      <div className="pointer-events-none fixed inset-0 flex place-items-center justify-center">{children}</div>
     </Fragment>
   );
 }
 
 CenterLayout.MainArea = function MainArea({children}: Props) {
-  return <div className="pointer-events-auto flex">{children}</div>;
+  return (
+    <div role="dialog" className="pointer-events-auto flex overscroll-contain contain-layout">
+      {children}
+    </div>
+  );
 };

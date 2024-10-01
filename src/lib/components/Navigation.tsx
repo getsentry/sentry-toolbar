@@ -10,20 +10,7 @@ import IconSentry from 'toolbar/components/icon/IconSentry';
 import IconSettings from 'toolbar/components/icon/IconSettings';
 import useNavigationExpansion from 'toolbar/hooks/useNavigationExpansion';
 
-const navClassName = cx([
-  'flex',
-  'flex-col',
-  'items-center',
-  'gap-1',
-  'rounded-xl',
-  'border',
-  'border-translucentGray-200',
-  'bg-white',
-  'p-1',
-  'text-purple-400',
-  'shadow-lg',
-  'shadow-shadow-heavy',
-]);
+const navClassName = cx(['flex flex-col items-center gap-1 p-1']);
 
 const navSeparator = cx(['m-0', 'w-full', 'border-translucentGray-200']);
 
