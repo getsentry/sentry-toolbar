@@ -1,6 +1,6 @@
 import {cva, cx} from 'cva';
 import {motion} from 'framer-motion';
-import {Fragment} from 'react';
+import {Fragment, useContext} from 'react';
 import type {MouseEvent} from 'react';
 import {NavLink, useLocation, useNavigate} from 'react-router-dom';
 import type {To} from 'react-router-dom';
@@ -8,6 +8,7 @@ import IconIssues from 'toolbar/components/icon/IconIssues';
 import IconPin from 'toolbar/components/icon/IconPin';
 import IconSentry from 'toolbar/components/icon/IconSentry';
 import IconSettings from 'toolbar/components/icon/IconSettings';
+import ConfigContext from 'toolbar/context/ConfigContext';
 import useNavigationExpansion from 'toolbar/hooks/useNavigationExpansion';
 
 const navClassName = cx(['flex flex-col items-center gap-1 p-1']);
@@ -37,6 +38,7 @@ const navItemClassName = cva(
 );
 
 export default function Navigation() {
+  const {debug} = useContext(ConfigContext);
   const {isExpanded, isPinned, setIsHovered, setIsPinned} = useNavigationExpansion();
   const {pathname} = useLocation();
   const navigate = useNavigate();
@@ -63,9 +65,11 @@ export default function Navigation() {
         <Fragment>
           <hr className={navSeparator} />
 
-          <NavLink {...toPathOrHome('/settings')} title="Settings" className={navItemClassName({})}>
-            <IconSettings size="sm" />
-          </NavLink>
+          {debug ? (
+            <NavLink {...toPathOrHome('/settings')} title="Settings" className={navItemClassName({})}>
+              <IconSettings size="sm" />
+            </NavLink>
+          ) : null}
           <NavLink {...toPathOrHome('/issues')} title="Issues" className={navItemClassName()}>
             <IconIssues size="sm" />
           </NavLink>

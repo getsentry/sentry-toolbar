@@ -1,17 +1,21 @@
-import {Fragment} from 'react';
+import {Fragment, useContext} from 'react';
 import type {ReactNode} from 'react';
 import DebugState from 'toolbar/components/DebugState';
+import ConfigContext from 'toolbar/context/ConfigContext';
 
 interface Props {
   children: ReactNode;
 }
 
 export default function CenterLayout({children}: Props) {
+  const {debug} = useContext(ConfigContext);
   return (
     <Fragment>
-      <div className="fixed bottom-0 left-0 z-debug">
-        <DebugState />
-      </div>
+      {debug ? (
+        <div className="fixed bottom-0 left-0 z-debug">
+          <DebugState />
+        </div>
+      ) : null}
 
       <div className="pointer-events-none fixed inset-0 flex place-items-center justify-center">{children}</div>
     </Fragment>
