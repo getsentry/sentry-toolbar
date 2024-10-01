@@ -1,0 +1,31 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version to release
+        required: true
+        default: '1.0.0'
+      force:
+        description: Force a release even when there are release-blockers (optional)
+        required: false
+        default: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    name: 'Release a new version'
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GH_RELEASE_PAT }}
+          fetch-depth: 0
+
+      - name: Prepare release
+        uses: getsentry/action-prepare-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_RELEASE_PAT }}
+        with:
+          version: ${{ github.event.inputs.version }}
+          force: ${{ github.event.inputs.force }}

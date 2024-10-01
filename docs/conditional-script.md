@@ -32,11 +32,11 @@ export async function loadToolbar(signal: AbortSignal, cdn: string): Promise<Sen
     return existing;
   }
 
-  await lazyLoad(signal, cdn, 'index.iife.js');
+  await lazyLoad(signal, cdn, 'index.min.js');
 
   const toolbarModule = getWindow().SentryToolbar;
   if (!toolbarModule) {
-    throw new Error(`Could not load integration: index.iife.js`);
+    throw new Error(`Could not load integration: index.min.js`);
   }
 
   return toolbarModule;

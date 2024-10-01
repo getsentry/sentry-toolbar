@@ -59,8 +59,9 @@ jobs:
       - name: Build
         run: pnpm run build
 
-#      TODO: Publish with Craft to the CDN
-#      - name: Publish NPM package
-#        uses: JS-DevTools/npm-publish@v3
-#        with:
-#          token: ${{ secrets.NPM_TOKEN }}
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.sha }}
+          path: |
+            ${{ github.workspace }}/packages/browser/build/bundles/**
