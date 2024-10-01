@@ -9,6 +9,6 @@ targets:
     includeNames: /.*\.js.*$/
     bucket: sentry-js-sdk
     paths:
-      - path: /toolbar/
+      - path: /sentry-toolbar/
         metadata:
           cacheControl: 'public, max-age=31536000'

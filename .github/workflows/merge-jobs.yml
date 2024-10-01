@@ -58,3 +58,10 @@ jobs:
 
       - name: Build
         run: pnpm run build
+
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.sha }}
+          path: |
+            ${{ github.workspace }}/packages/browser/build/bundles/**

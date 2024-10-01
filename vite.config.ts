@@ -32,7 +32,8 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/lib/index.ts'),
       name: 'SentryToolbar',
       formats: ['iife'],
-      fileName: 'index',
+      // Implement a custom filename to remove the `iife` suffix
+      fileName: (format, entryName) => 'index.min.js',
     },
     rollupOptions: {
       output: {
