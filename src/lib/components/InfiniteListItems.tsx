@@ -1,9 +1,8 @@
 import type {InfiniteData, UseInfiniteQueryResult} from '@tanstack/react-query';
 import {useVirtualizer} from '@tanstack/react-virtual';
 import {useEffect, useRef} from 'react';
+import LoadingSpinner from 'toolbar/components/LoadingSpinner';
 import type {ApiResult} from 'toolbar/types/api';
-
-// import LoadingIndicator from 'sentry/components/loadingIndicator';
 
 interface Props<Data> {
   itemRenderer: ({item}: {item: Data}) => React.ReactNode;
@@ -48,9 +47,9 @@ export default function InfiniteListItems<Data>({
   }, [hasNextPage, fetchNextPage, loadedRows.length, isFetchingNextPage, items]);
 
   return (
-    <div ref={parentRef}>
-      <div style={{height: rowVirtualizer.getTotalSize()}}>
-        <ul style={{transform: `translateY(${items[0]?.start ?? 0}px)`}}>
+    <div ref={parentRef} className="flex size-full flex-col overflow-auto overscroll-contain contain-strict">
+      <div style={{height: rowVirtualizer.getTotalSize()}} className="relative flex w-full flex-col">
+        <ul style={{transform: `translateY(${items[0]?.start ?? 0}px)`}} className="absolute left-0 top-0 w-full">
           {items.length ? null : emptyMessage()}
           {items.map(virtualRow => {
             const isLoaderRow = virtualRow.index > loadedRows.length - 1;
@@ -77,7 +76,13 @@ function EmptyMessage() {
 }
 
 function LoadingMoreMessage() {
-  return <footer title="Loading more items...">Loading...</footer>;
+  return (
+    <footer
+      title="Loading more items..."
+      className="absolute bottom-0 z-initial flex w-full grow items-center justify-center">
+      <LoadingSpinner size="mini" />
+    </footer>
+  );
 }
 
 function LoadingCompleteMessage() {

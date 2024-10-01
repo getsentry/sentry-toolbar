@@ -1,4 +1,9 @@
-import type {RawGroup, Avatar as GroupAvatar, Project as GroupProject} from 'toolbar/sentryApi/raw/rawgroup';
+import type {
+  AssignedTo as GroupAssignedTo,
+  RawGroup,
+  Avatar as GroupAvatar,
+  Project as GroupProject,
+} from 'toolbar/sentryApi/raw/rawgroup';
 
 type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
 
@@ -11,4 +16,4 @@ export enum IssueCategory {
 }
 
 export type Group = Overwrite<RawGroup, {issueCategory: IssueCategory}>;
-export type {GroupAvatar, GroupProject};
+export type {GroupAssignedTo, GroupAvatar, GroupProject};

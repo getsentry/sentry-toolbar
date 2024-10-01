@@ -1,11 +1,15 @@
+import {useContext} from 'react';
 import InfiniteListItems from 'toolbar/components/InfiniteListItems';
 import InfiniteListState from 'toolbar/components/InfiniteListState';
 import IssueListItem from 'toolbar/components/panels/issues/IssueListItem';
 import useInfiniteIssuesList from 'toolbar/components/panels/issues/useInfiniteIssuesList';
-import PanelLayout from 'toolbar/components/panels/PanelLayout';
+import Placeholder from 'toolbar/components/Placeholder';
+import SentryAppLink from 'toolbar/components/SentryAppLink';
+import ConfigContext from 'toolbar/context/ConfigContext';
 import type {Group} from 'toolbar/sentryApi/types/group';
 
 export default function IssuesPanel() {
+  const {organizationIdOrSlug} = useContext(ConfigContext);
   // const transactionName = useCurrentTransactionName();
   const queryResult = useInfiniteIssuesList({
     // query: `url:*${transactionName}`,
@@ -16,21 +20,21 @@ export default function IssuesPanel() {
   // const placeholderHeight = `${estimateSize - 8}px`; // The real height of the items, minus the padding-block value
 
   return (
-    <PanelLayout>
-      <div>
-        <span>Unresolved issues related to this page</span>
-      </div>
+    <section className="flex grow flex-col gap-1">
+      <h1 className="flex flex-col border-b border-b-translucentGray-200 px-2 py-1">
+        <SentryAppLink to={{url: `/issues/`, query: {project: organizationIdOrSlug}}}>Issues</SentryAppLink>
+      </h1>
 
-      <div>
+      <div className="flex grow flex-col">
         <InfiniteListState
           queryResult={queryResult}
           backgroundUpdatingMessage={() => null}
           loadingMessage={() => (
-            <div>
-              {/* <Placeholder height={placeholderHeight} />
-              <Placeholder height={placeholderHeight} />
-              <Placeholder height={placeholderHeight} />
-              <Placeholder height={placeholderHeight} /> */}
+            <div className="flex flex-col gap-1 px-1">
+              <div className={Placeholder()} />
+              <div className={Placeholder()} />
+              <div className={Placeholder()} />
+              <div className={Placeholder()} />
             </div>
           )}>
           <InfiniteListItems<Group>
@@ -41,6 +45,6 @@ export default function IssuesPanel() {
           />
         </InfiniteListState>
       </div>
-    </PanelLayout>
+    </section>
   );
 }
