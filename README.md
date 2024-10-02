@@ -19,7 +19,7 @@ Get the code and setup your env:
 If you have your own app and you want to install the toolbar into it follow these steps:
 
 1. Run `pnpm dev` - Builds the library and starts a local webserver to serve it.
-2. Add `<script src="http://localhost:8080/index.min.js">` to your app.
+2. Add `<script src="http://localhost:8080/toolbar.min.js">` to your app.
 3. Configure the SDK in your app with `<script>window.SentryToolbar.init({...})</script>`.
 
 __Be aware that the usual hot-reload of your app will not apply to the toolbar library. Type CTRL+R or CMD+R to reload your app and pull down new toolbar code.__
@@ -46,7 +46,7 @@ A storybook is available by running: `pnpm start:docs` and is published to https
 ## Production
 
 In production you need to do two things to get the toolbar working:
-1. Add or dynamically inject `<script src="https://browser.sentry-cdn.com/sentry-toolbar/index.min.js">` into your app
+1. Add or dynamically inject `<script src="https://browser.sentry-cdn.com/sentry-toolbar/latest/toolbar.min.js">` into your app
 2. Call `window.SentryToolbar.init(initProps)` to setup a toolbar instance.
 
 ### Deploy targets

@@ -1,4 +1,4 @@
-This file show one way to conditioanlly load the `<script>` tag, and call it within a react app.
+This file show one way to conditionally load the `<script>` tag, and call it within a react app.
 
 There are 3 files to look at:
 - util to insert the script tag
@@ -32,18 +32,17 @@ export async function loadToolbar(signal: AbortSignal, cdn: string): Promise<Sen
     return existing;
   }
 
-  await lazyLoad(signal, cdn, 'index.min.js');
+  await lazyLoad(signal, cdn);
 
   const toolbarModule = getWindow().SentryToolbar;
   if (!toolbarModule) {
-    throw new Error(`Could not load integration: index.min.js`);
+    throw new Error(`Could not load toolbar bundle from ${cdn}`);
   }
 
   return toolbarModule;
 }
 
-async function lazyLoad(signal: AbortSignal, baseUrl: string, path: string): Promise<void> {
-  const url = new URL(path, baseUrl).toString();
+async function lazyLoad(signal: AbortSignal, url: string): Promise<void> {
   const script = document.createElement('script');
   script.src = url;
   script.crossOrigin = 'anonymous';
@@ -77,7 +76,15 @@ Second, the react hook:
 
 ```typescript fileName=useSentryToolbar.tsx
 type InitProps = Parameters<Awaited<ReturnType<typeof loadToolbar>>['init']>[0]
-function useSentryToolbar({enabled, cdn, initProps}: {enabled: boolean; cdn: string; initProps: InitProps}) {
+function useSentryToolbar({
+  enabled,
+  cdn = 'https://browser.sentry-cdn.com/sentry-toolbar/latest/toolbar.min.js',
+  initProps,
+}: {
+  enabled: boolean;
+  cdn: string;
+  initProps: InitProps,
+}) {
   useEffect(() => {
     if (!enabled) {
       return;
@@ -103,17 +110,32 @@ Finally, the callsite itself:
 ```typescript fileName=MyReactApp.tsx
 function MyReactApp() {
   useSentryToolbar({
-    cdn: 'http://localhost:8080',
+    // Bootstrap config
+    cdn: 'http://localhost:8080/toolbar.min.js',
     enabled: true,
     initProps: {
-      apiPrefix: '/api/0',
-      placement: 'right-edge',
-      rootNode: () => document.body,
+      // InitProps
+      mountPoint: document.body,
+
+      // Connection Config
+      sentryOrigin: 'https://sentry.io',
+      sentryRegion: 'us',
+
+      // FeatureFlags Config
+      featureFlags: undefined,
+
+      // Org Config
+      organizationIdOrSlug: 'sentry',
+      projectIdOrSlug: 'javascript',
       environment: ['prod'],
-      organizationSlug: 'sentry',
-      projectId: 11276,
-      projectPlatform: 'javascript',
-      projectSlug: 'javascript',
+
+      // Render Config
+      diomId: 'sentry-toolbar',
+      placement: 'right-edge',
+      theme: 'light',
+
+      // Debug
+      debug: false,
     }
   });
 

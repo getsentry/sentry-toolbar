@@ -33,7 +33,7 @@ export default defineConfig({
       name: 'SentryToolbar',
       formats: ['iife'],
       // Implement a custom filename to remove the `iife` suffix
-      fileName: (format, entryName) => 'index.min.js',
+      fileName: (format, entryName) => 'toolbar.min.js',
     },
     rollupOptions: {
       output: {
