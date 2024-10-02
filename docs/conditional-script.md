@@ -36,7 +36,7 @@ export async function loadToolbar(signal: AbortSignal, cdn: string): Promise<Sen
 
   const toolbarModule = getWindow().SentryToolbar;
   if (!toolbarModule) {
-    throw new Error(`Could not load integration: toolbar.min.js`);
+    throw new Error(`Could not load toolbar bundle from ${cdn}`);
   }
 
   return toolbarModule;
