@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Sentry DevToolbar iFrame</title>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  </head>
+  <body>
+    <form id="login-form">
+      <button type="submit">Log in</button>
+    </form>
+
+    <script>
+      (function() {
+        const referrer = __REFERRER__;
+        const state = __STATE__;
+        const logging = __LOGGING__;
+
+        function log(...args) {
+          if (logging) {
+            console.log('/toolbar/:org/:project/iframe/', ...args);
+          }
+        }
+
+        function setupLoginForm() {
+          const form = document.getElementById('login-form');
+          form.addEventListener('submit', e => {
+            e.preventDefault();
+            window.open(
+              `/toolbar/sentry/javascript/login-success/`,
+              'sentry-toolbar-auth-popup',
+              'popup=true,innerWidth=800,innerHeight=550,noopener=false'
+            );
+          });
+        }
+
+        function sendStateMessage(state) {
+          window.parent.postMessage({
+            source: 'sentry-toolbar',
+            message: state
+          }, referrer);
+        }
+
+        function listenForLoginSuccess() {
+          window.addEventListener('message', event => {
+            // if (event.origin !== this._config.sentryOrigin || event.data.source !== 'sentry-toolbar') {
+            if (event.data.source !== 'sentry-toolbar') {
+              return;
+            }
+
+            if (event.data.message === 'did-login') {
+              // Expect that on reload we'll have the cookie, becuase we setup
+              // the cookie from a popup that this frame triggered.
+              window.location.reload();
+            }
+          });
+        }
+        function setupMessageChannel() {
+          const { port1, port2 } = new MessageChannel();
+
+          const messageDispatch = {
+            'log': log,
+            'fetch': async (url, init) => {
+              const response = await fetch(url, init);
+              return {
+                ok: response.ok,
+                status: response.status,
+                statusText: response.statusText,
+                url: response.url,
+                headers: Object.fromEntries(response.headers.entries()),
+                text: await response.text(),
+              };
+            },
+          };
+
+          port1.addEventListener('message', (postMessage) => {
+            log('port.onMessage', postMessage.data);
+
+            const { $id, message } = postMessage.data;
+            if (!$id) {
+              return; // MessageEvent is malformed, missing $id
+            }
+
+            if (!message.$function || !(message.$function in messageDispatch)) {
+              return; // No-op without a $function to call
+            }
+
+            messageDispatch[message.$function]
+              .apply(undefined, message.$args || [])
+              .then($result => port1.postMessage({ $id, $result }))
+              .catch((error) => port1.postMessage({ $id, $error: error }));
+          });
+          port1.start();
+
+          window.parent.postMessage({
+            source: 'sentry-toolbar',
+            message: 'port-connect',
+          }, referrer, [port2]);
+
+          log('Sent', { message: 'port-connect', referrer });
+        }
+
+        log('Init', { referrer, state });
+
+        if (state === 'success') {
+          setupMessageChannel();
+        } else {
+          setupLoginForm();
+          // enum of: logged-out, missing-project, invalid-domain
+          sendStateMessage(state);
+          listenForLoginSuccess();
+        }
+      })();
+    </script>
+  </body>
+</html>

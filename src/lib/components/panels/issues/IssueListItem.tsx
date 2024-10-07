@@ -7,7 +7,7 @@ import type {Group, GroupAssignedTo} from 'toolbar/sentryApi/types/group';
 
 export default function IssueListItem({item}: {item: Group}) {
   return (
-    <div className="px-2 ">
+    <div className="px-2">
       <div className="flex flex-col gap-0.25 border-b border-b-translucentGray-200 py-0.75">
         <div className="flex justify-between">
           <IssueType item={item} />

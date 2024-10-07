@@ -49,19 +49,22 @@ function requireAuth(req, res, next) {
     res.redirect(302, `/auth/login/${req.params.org}/?next=${req.url}`);
   }
 }
-app.get('/toolbar/:org/:project/iframe/', requireAuth, (req, res) => {
-  if (req.params.project === 'fake') {
-    res.render('toolbar/iframe-invalid.html', {
-      __REFERRER__: req.get('referer'),
-    });
-  } else {
-    res.render('toolbar/iframe-valid.html', {
-      __REFERRER__: req.get('referer'),
-    });
-  }
+app.get('/toolbar/:org/:project/iframe/', (req, res) => {
+  const state = !isLoggedIn
+    ? 'logged-out'
+    : req.params.project === 'fake'
+    ? 'missing-project'
+    : 'success';
+  res.render('toolbar/iframe.html', {
+    __REFERRER__: req.get('referer'),
+    __STATE__: state,
+    __LOGGING__: 1,
+  });
 });
 app.get('/toolbar/:org/:project/login-success/', requireAuth, (_req, res) => {
-  res.render('toolbar/login-success.html');
+  res.render('toolbar/login-success.html', {
+    __DELAY__: 0,
+  });
 });
 
 const proxy = httpProxy.createProxyServer({

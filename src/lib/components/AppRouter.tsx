@@ -1,91 +1,102 @@
+import {useQueryClient} from '@tanstack/react-query';
 import {useEffect} from 'react';
-import type {PropsWithChildren} from 'react';
+import {Fragment} from 'react/jsx-runtime';
 import {Routes, Route, Outlet, useNavigate} from 'react-router-dom';
+import DebugState from 'toolbar/components/DebugState';
 import CenterLayout from 'toolbar/components/layouts/CenterLayout';
 import RightEdgeLayout from 'toolbar/components/layouts/RightEdgeLayout';
 import Navigation from 'toolbar/components/Navigation';
 import IssuesPanel from 'toolbar/components/panels/issues/IssuesPanel';
 import SettingsPanel from 'toolbar/components/panels/settings/SettingsPanel';
-import ConfigInstructions from 'toolbar/components/unauth/ConfigInstructions';
 import Connecting from 'toolbar/components/unauth/Connecting';
+import InvalidDomain from 'toolbar/components/unauth/InvalidDomain';
 import Login from 'toolbar/components/unauth/Login';
+import MissingProject from 'toolbar/components/unauth/MissingProject';
 import {useApiProxyState} from 'toolbar/context/ApiProxyContext';
-import {useAuthContext} from 'toolbar/context/AuthContext';
 
 export default function AppRouter() {
+  useNavigateOnProxyStateChange();
+  useClearQueryCacheOnProxyStateChange();
+
   return (
     <Routes>
       <Route
         element={
-          <WithoutProxy>
+          <Fragment>
+            <DebugState />
+            <Outlet />
+          </Fragment>
+        }>
+        <Route
+          element={
             <CenterLayout>
               <CenterLayout.MainArea>
                 <Outlet />
               </CenterLayout.MainArea>
             </CenterLayout>
-          </WithoutProxy>
-        }>
-        <Route path="/login" element={<Login />} />
-        <Route path="/missing-config" element={<ConfigInstructions />} />
-        <Route path="/connecting" element={<Connecting />} />
-      </Route>
-      <Route
-        path="/"
-        element={
-          <WithProxy>
+          }>
+          <Route path="/connecting" element={<Connecting />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/missing-project" element={<MissingProject />} />
+          <Route path="/invalid-domain" element={<InvalidDomain />} />
+        </Route>
+        <Route
+          path="/"
+          element={
             <RightEdgeLayout>
               <RightEdgeLayout.NavArea>
                 <Navigation />
               </RightEdgeLayout.NavArea>
               <Outlet />
             </RightEdgeLayout>
-          </WithProxy>
-        }>
-        <Route
-          element={
-            <RightEdgeLayout.MainArea>
-              <Outlet />
-            </RightEdgeLayout.MainArea>
           }>
-          <Route path="/settings" element={<SettingsPanel />} />
-          <Route path="/issues" element={<IssuesPanel />} />
+          <Route
+            element={
+              <RightEdgeLayout.MainArea>
+                <Outlet />
+              </RightEdgeLayout.MainArea>
+            }>
+            <Route path="/settings" element={<SettingsPanel />} />
+            <Route path="/issues" element={<IssuesPanel />} />
+          </Route>
         </Route>
       </Route>
     </Routes>
   );
 }
 
-function WithoutProxy({children}: PropsWithChildren) {
-  const navigate = useNavigate();
+function useNavigateOnProxyStateChange() {
   const proxyState = useApiProxyState();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (proxyState.hasPort) {
-      navigate('/');
+    switch (proxyState) {
+      case 'connecting':
+        navigate('/connecting');
+        break;
+      case 'logged-out':
+        navigate('/login');
+        break;
+      case 'missing-project':
+        navigate('/missing-project');
+        break;
+      case 'invalid-domain':
+        navigate('/invalid-domain');
+        break;
+      case 'connected':
+        navigate('/');
     }
-  }, [proxyState.hasPort, navigate]);
-
-  return children;
+  }, [proxyState, navigate]);
 }
 
-function WithProxy({children}: PropsWithChildren) {
-  const [authState] = useAuthContext();
+function useClearQueryCacheOnProxyStateChange() {
   const proxyState = useApiProxyState();
-  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (proxyState.hasPort) {
-      return;
+    // If the user becomes logged out then clear the query cache
+    if (proxyState !== 'connected') {
+      queryClient.clear();
     }
-
-    if (proxyState.isProjectConfigured) {
-      navigate('/connecting');
-    } else if (authState.isLoggedIn) {
-      navigate('/missing-config');
-    } else {
-      navigate('/login');
-    }
-  }, [proxyState, authState, navigate]);
-
-  return children;
+  }, [proxyState, queryClient]);
 }
