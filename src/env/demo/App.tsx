@@ -22,7 +22,7 @@ export default function App() {
       // OrgConfig
       organizationIdOrSlug: 'sentry',
       projectIdOrSlug: 'internal',
-      environment: ['prod'],
+      environment: [],
 
       // RenderConfig
       domId: 'sentry-toolbar',

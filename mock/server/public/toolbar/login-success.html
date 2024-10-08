@@ -23,8 +23,8 @@
           window.opener.postMessage({
             source: 'sentry-toolbar',
             message: 'did-login',
-            // token: document.cookie.split(';').filter(k => k.trim().startsWith('sc=')).at(0),
-          }, '*'); // sentry.dev.getsentry.net:8000
+            token: localStorage.getItem('token'),
+          }, window.location.origin);
 
           if (delay && typeof delay === 'number') {
             setTimeout(() => {

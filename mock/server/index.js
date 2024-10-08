@@ -59,6 +59,8 @@ app.get('/toolbar/:org/:project/iframe/', (req, res) => {
     __REFERRER__: req.get('referer'),
     __STATE__: state,
     __LOGGING__: 1,
+    __ORGANIZATION_SLUG__: req.params.org,
+    __PROJECT_ID_OR_SLUG__: req.params.project,
   });
 });
 app.get('/toolbar/:org/:project/login-success/', requireAuth, (_req, res) => {
