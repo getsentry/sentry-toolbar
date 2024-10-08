@@ -42,6 +42,16 @@ The local webserver does double-duty, serving the library code (acting as a CDN)
 
 A storybook is available by running: `pnpm start:docs` and is published to https://getsentry.github.io/sentry-toolbar.
 
+#### Publishing
+
+To publish a new version of the toolbar follow the usual steps for craft:
+1. Run the [Release github action](https://github.com/getsentry/sentry-toolbar/actions/workflows/release.yml) and put in the version number you'd like to release.
+    - To see the previous releases just look at the previous runs of that action.
+2. Check #proj-release-approval in slack, or visit https://github.com/getsentry/publish/issues to find the issue for this release.
+3. Get the 'approved' label added to the issue.
+4. Check that the release actions completed successfully.
+    - The issue links to a workflow that should have completed successfully
+    - You should see a merge of the release branch [into main](https://github.com/getsentry/sentry-toolbar/commits/main/).
 
 ## Production
 
