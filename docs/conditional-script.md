@@ -67,7 +67,7 @@ async function lazyLoad(signal: AbortSignal, url: string): Promise<void> {
     await waitForLoad;
   } catch (error) {
     console.log(error);
-    throw new Error(`Error when loading integration: ${path}`);
+    throw new Error(`Error when loading integration: ${url}`);
   }
 }
 ```
@@ -117,19 +117,19 @@ function MyReactApp() {
       // InitProps
       mountPoint: document.body,
 
-      // Connection Config
+      // ConnectionConfig
       sentryOrigin: 'https://sentry.io',
       sentryRegion: 'us',
 
-      // FeatureFlags Config
+      // FeatureFlagsConfig
       featureFlags: undefined,
 
-      // Org Config
+      // OrgConfig
       organizationIdOrSlug: 'sentry',
       projectIdOrSlug: 'javascript',
       environment: ['prod'],
 
-      // Render Config
+      // RenderConfig
       diomId: 'sentry-toolbar',
       placement: 'right-edge',
       theme: 'light',
