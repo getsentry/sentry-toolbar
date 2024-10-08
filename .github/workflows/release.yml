@@ -6,7 +6,6 @@ on:
       version:
         description: Version to release
         required: true
-        default: '1.0.0'
       force:
         description: Force a release even when there are release-blockers (optional)
         required: false
