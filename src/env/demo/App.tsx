@@ -11,9 +11,7 @@ export default function App() {
       mountPoint: document.body,
 
       // ConnectionConfig
-      sentryOrigin: 'https://dev.getsentry.net:8003',
-      // sentryOrigin: 'https://sentry.sentry.io',
-      // sentryOrigin: 'http://localhost:8080',
+      sentryOrigin: 'http://localhost:8080',
       sentryRegion: undefined,
 
       // FeatureFlagsConfig
@@ -21,16 +19,13 @@ export default function App() {
 
       // OrgConfig
       organizationIdOrSlug: 'sentry',
-      projectIdOrSlug: 'internal',
-      environment: [],
+      projectIdOrSlug: 'javascript',
+      environment: ['prod'],
 
       // RenderConfig
       domId: 'sentry-toolbar',
       placement: 'right-edge',
       theme: 'light',
-
-      // Debug
-      debug: true,
     });
   }, []);
 
