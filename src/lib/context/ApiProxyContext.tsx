@@ -1,63 +1,57 @@
 /* eslint-disable react-refresh/only-export-components */
-import {createContext, useContext, useEffect, useRef, useState} from 'react';
+import {createContext, useCallback, useContext, useEffect, useRef, useState} from 'react';
 import type {ReactNode} from 'react';
-import {useAuthContext} from 'toolbar/context/AuthContext';
 import ConfigContext from 'toolbar/context/ConfigContext';
+import defaultConfig from 'toolbar/context/defaultConfig';
 import ApiProxy, {type ProxyState} from 'toolbar/utils/ApiProxy';
 
-const ApiProxyStateContext = createContext<ProxyState | undefined>(undefined);
-const ApiProxyContext = createContext<ApiProxy | undefined>(undefined);
+const ApiProxyStateContext = createContext<ProxyState>('connecting');
+const ApiProxyContext = createContext<ApiProxy>(new ApiProxy(defaultConfig));
 
 interface Props {
   children: ReactNode;
 }
 
-function log(...args: unknown[]) {
-  // eslint-disable-next-line no-constant-condition
-  if (false) {
-    console.log('ApiProxyContextProvider', ...args);
-  }
-}
-
 export function ApiProxyContextProvider({children}: Props) {
   const config = useContext(ConfigContext);
-  const {sentryOrigin, organizationIdOrSlug, projectIdOrSlug} = config;
-  const [authState] = useAuthContext();
+  const {debug, sentryOrigin, organizationIdOrSlug, projectIdOrSlug} = config;
 
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const proxy = ApiProxy.singleton(config);
-  const [proxyState, setProxyState] = useState<ProxyState>(proxy.status);
+
+  const log = useCallback(
+    (...args: unknown[]) => {
+      if (debug) {
+        console.log('<ApiProxyContextProvider>', ...args);
+      }
+    },
+    [debug]
+  );
+
+  const proxyRef = useRef<ApiProxy>(new ApiProxy(config));
+  const [proxyState, setProxyState] = useState<ProxyState>('connecting');
 
   useEffect(() => {
-    if (!authState.isLoggedIn) {
-      log('Logged out: calling proxy.cleanup()');
-      proxy.cleanup();
-    }
-  }, [authState.isLoggedIn, proxy]);
+    proxyRef.current.listen();
+    proxyRef.current.setOnStatusChanged(setProxyState);
 
-  useEffect(() => {
-    proxy.setOnStatusChanged(setProxyState);
-
-    if (!iframeRef.current) {
-      log('UNEXPECTED! Missing an iframe in ProxyContent');
-      return;
-    }
-
+    const proxy = proxyRef.current;
     return () => {
-      log('Unmount: calling proxy.cleanup()');
-      proxy.cleanup();
+      log('Unmount: calling proxy.dispose()');
+      proxy.dispose();
     };
-  }, [proxy]);
+  }, [config, log]);
+
+  const display = proxyState === 'logged-out' ? 'block' : 'none';
 
   return (
-    <ApiProxyContext.Provider value={proxy}>
+    <ApiProxyContext.Provider value={proxyRef.current}>
       <ApiProxyStateContext.Provider value={proxyState}>
         <iframe
-          key={String(authState.isLoggedIn)}
           referrerPolicy="origin"
-          height="0"
-          width="0"
-          src={`${sentryOrigin}/toolbar/${organizationIdOrSlug}/${projectIdOrSlug}/iframe/`}
+          height="200"
+          width="400"
+          src={`${sentryOrigin}/toolbar/${organizationIdOrSlug}/${projectIdOrSlug}/iframe/?logging=1`}
+          style={{display}}
           ref={iframeRef}
         />
         {children}
@@ -71,9 +65,6 @@ export function ApiProxyContextProvider({children}: Props) {
  */
 export function useApiProxyInstance() {
   const context = useContext(ApiProxyContext);
-  if (!context) {
-    throw new Error('useApiProxyContext() must be a child of ApiProxyContextProvider');
-  }
   return context;
 }
 
@@ -84,8 +75,5 @@ export function useApiProxyInstance() {
  */
 export function useApiProxyState() {
   const context = useContext(ApiProxyStateContext);
-  if (!context) {
-    throw new Error('useApiProxyState() must be a child of ApiProxyContextProvider');
-  }
   return context;
 }

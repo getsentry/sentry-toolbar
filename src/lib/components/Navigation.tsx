@@ -9,7 +9,9 @@ import IconPin from 'toolbar/components/icon/IconPin';
 import IconSentry from 'toolbar/components/icon/IconSentry';
 import IconSettings from 'toolbar/components/icon/IconSettings';
 import ConfigContext from 'toolbar/context/ConfigContext';
+import useFetchSentryData from 'toolbar/hooks/fetch/useFetchSentryData';
 import useNavigationExpansion from 'toolbar/hooks/useNavigationExpansion';
+import {useOrganizationQuery} from 'toolbar/sentryApi/queryKeys';
 
 const navClassName = cx(['flex flex-col items-center gap-1 p-1']);
 
@@ -51,6 +53,13 @@ export default function Navigation() {
       }
     },
   });
+
+  const {organizationIdOrSlug} = useContext(ConfigContext);
+  const {data} = useFetchSentryData({
+    ...useOrganizationQuery(String(organizationIdOrSlug)),
+    retry: false,
+  });
+  console.log({org: data});
 
   return (
     <motion.div

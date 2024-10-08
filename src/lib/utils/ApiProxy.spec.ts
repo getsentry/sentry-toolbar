@@ -25,30 +25,26 @@ describe('IFrameProxy', () => {
     };
   }
 
-  beforeEach(() => {
-    ApiProxy.TEST_ONLY_clear_singleton();
-  });
-
   describe('constructor()', () => {
     it('should have a disabled state by default', () => {
-      const proxy = ApiProxy.singleton(defaultConfig);
-      expect(proxy.status).toEqual({
-        hasPort: false,
-        isProjectConfigured: undefined,
-      });
+      const proxy = new ApiProxy(defaultConfig);
+      expect(proxy.state).toEqual('connecting');
     });
 
-    it('should listen to window messages on init', () => {
+    it('should listen to window messages after calling listen()', () => {
       const spy = jest.spyOn(window, 'addEventListener');
-      const proxy = ApiProxy.singleton(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig);
 
+      expect(spy).not.toHaveBeenCalled();
+
+      proxy.listen();
       // @ts-expect-error: Accessing a private method
       expect(spy).toHaveBeenCalledWith('message', proxy._handleWindowMessage);
     });
 
     it('should callback when status changes', () => {
       const callback = jest.fn();
-      const proxy = ApiProxy.singleton(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig);
       proxy.setOnStatusChanged(callback);
 
       // @ts-expect-error: Accessing a private method
@@ -66,7 +62,7 @@ describe('IFrameProxy', () => {
   describe('_handleWindowMessage', () => {
     it('should ignore messages without source==="sentry-toolbar"', () => {
       const callback = jest.fn();
-      const proxy = ApiProxy.singleton(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig);
       proxy.setOnStatusChanged(callback);
       postMessageToWindow(proxy, {});
 
@@ -79,7 +75,8 @@ describe('IFrameProxy', () => {
       const start = jest.spyOn(port, 'start');
 
       const callback = jest.fn();
-      const proxy = ApiProxy.singleton(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig);
+      proxy.listen();
       proxy.setOnStatusChanged(callback);
       postMessageToWindow(proxy, {source: 'sentry-toolbar', message: 'port-connect'}, [port]);
 
@@ -88,7 +85,7 @@ describe('IFrameProxy', () => {
       // @ts-expect-error: Accessing a private member
       expect(proxy._port).toBeDefined();
       expect(start).toHaveBeenCalled();
-      expect(callback).toHaveBeenCalledWith({hasPort: true, isProjectConfigured: true});
+      expect(callback).toHaveBeenCalledWith('connected');
     });
 
     it('should cleanup the received port', () => {
@@ -97,19 +94,18 @@ describe('IFrameProxy', () => {
       const close = jest.spyOn(port, 'close');
 
       const callback = jest.fn();
-      const proxy = ApiProxy.singleton(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig);
+      proxy.listen();
       proxy.setOnStatusChanged(callback);
       postMessageToWindow(proxy, {source: 'sentry-toolbar', message: 'port-connect'}, [port]);
+      expect(callback).toHaveBeenCalledWith('connected');
 
-      proxy.cleanup();
+      proxy.dispose();
 
       // @ts-expect-error: Accessing a private method
       expect(removeEventListener).toHaveBeenCalledWith('message', proxy._handlePortMessage);
       expect(close).toHaveBeenCalled();
-      expect(callback).toHaveBeenCalledWith({
-        hasPort: false,
-        isProjectConfigured: undefined,
-      });
+      expect(callback).toHaveBeenCalledWith('logged-out');
     });
   });
 
@@ -122,7 +118,8 @@ describe('IFrameProxy', () => {
     it('should resolve cached promises based on the message $result', () => {
       const {responsePort, sendPortConnect} = getPorts();
 
-      const proxy = ApiProxy.singleton(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig);
+      proxy.listen();
       sendPortConnect(proxy);
       expect(outstandingPromises(proxy).size).toBe(0); // No promises to start
 
@@ -138,7 +135,8 @@ describe('IFrameProxy', () => {
     it('should reject cached promises based on the message $error', () => {
       const {responsePort, sendPortConnect} = getPorts();
 
-      const proxy = ApiProxy.singleton(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig);
+      proxy.listen();
       sendPortConnect(proxy);
       expect(outstandingPromises(proxy).size).toBe(0); // No promises to start
 
@@ -154,7 +152,8 @@ describe('IFrameProxy', () => {
     it('should handle and ignore malformed messages', () => {
       const {responsePort, sendPortConnect} = getPorts();
 
-      const proxy = ApiProxy.singleton(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig);
+      proxy.listen();
       sendPortConnect(proxy);
       expect(outstandingPromises(proxy).size).toBe(0); // No promises to start
 
@@ -173,7 +172,8 @@ describe('IFrameProxy', () => {
     it('should ignore messages in reply to an unknown promise', () => {
       const {responsePort, sendPortConnect} = getPorts();
 
-      const proxy = ApiProxy.singleton(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig);
+      proxy.listen();
       sendPortConnect(proxy);
       expect(outstandingPromises(proxy).size).toBe(0); // No promises to start
 
@@ -193,7 +193,8 @@ describe('IFrameProxy', () => {
       const {responsePort, sendPortConnect} = getPorts();
 
       const abortController = new AbortController();
-      const proxy = ApiProxy.singleton(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig);
+      proxy.listen();
       sendPortConnect(proxy);
       expect(outstandingPromises(proxy).size).toBe(0); // No promises to start
 
@@ -211,7 +212,7 @@ describe('IFrameProxy', () => {
 
   describe('Send messages: exec', () => {
     it('should drop messaages when the port is not set', () => {
-      const proxy = ApiProxy.singleton(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig);
       const promise = proxy.exec(new AbortController().signal, 'log', ['hello world']);
 
       expect(promise).toBeUndefined();
@@ -220,7 +221,8 @@ describe('IFrameProxy', () => {
     it('should send sequential messages and cache a promise for later', () => {
       const {responsePort, requestPostMessageSpy, sendPortConnect} = getPorts();
 
-      const proxy = ApiProxy.singleton(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig);
+      proxy.listen();
       sendPortConnect(proxy);
 
       proxy.exec(new AbortController().signal, 'log', ['hello world']);
@@ -240,7 +242,8 @@ describe('IFrameProxy', () => {
     it('should send fetch messages', () => {
       const {responsePort, requestPostMessageSpy, sendPortConnect} = getPorts();
 
-      const proxy = ApiProxy.singleton(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig);
+      proxy.listen();
       sendPortConnect(proxy);
 
       proxy.exec(new AbortController().signal, 'fetch', ['/welcome']);
@@ -256,7 +259,8 @@ describe('IFrameProxy', () => {
     it('should resolve promises with the resolved data', () => {
       const {responsePort, requestPostMessageSpy, sendPortConnect} = getPorts();
 
-      const proxy = ApiProxy.singleton(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig);
+      proxy.listen();
       sendPortConnect(proxy);
 
       const promise = proxy.exec(new AbortController().signal, 'log', ['hello world']);
@@ -273,7 +277,8 @@ describe('IFrameProxy', () => {
     it('should reject promises with the error object', () => {
       const {responsePort, requestPostMessageSpy, sendPortConnect} = getPorts();
 
-      const proxy = ApiProxy.singleton(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig);
+      proxy.listen();
       sendPortConnect(proxy);
 
       const promise = proxy.exec(new AbortController().signal, 'log', ['hello world']);

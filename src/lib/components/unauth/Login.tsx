@@ -1,5 +1,4 @@
 import IconSentry from 'toolbar/components/icon/IconSentry';
-import LoginButton from 'toolbar/components/unauth/LoginButton';
 
 export default function Login() {
   return (
@@ -7,7 +6,7 @@ export default function Login() {
       <span title="sentry.io">
         <IconSentry size="md" />
       </span>
-      <LoginButton />
+      {/* TODO: login button is inside the iframe, we need to render it in position */}
     </div>
   );
 }

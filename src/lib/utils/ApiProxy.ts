@@ -4,27 +4,13 @@ type Resolve = (value: unknown) => void;
 type Reject = (reason?: any) => void; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 type HandleStatusChange = (status: ProxyState) => void;
-export interface ProxyState {
-  // loginComplete: boolean;
-  // hasCookie: boolean;
-  isProjectConfigured: undefined | boolean;
-  hasPort: boolean;
-}
-
-const _SINGLETON_MAP = new Map<Configuration, ApiProxy>(); // ApiProxy | undefined;
-
-function log(...args: unknown[]) {
-  // eslint-disable-next-line no-constant-condition
-  if (false) {
-    console.log('IFrameProxy', ...args);
-  }
-}
+export type ProxyState = 'connecting' | 'logged-out' | 'missing-project' | 'invalid-domain' | 'connected';
 
 export default class ApiProxy {
   /**
    * The last reported status of the proxy.
    */
-  private _status: ProxyState = {isProjectConfigured: undefined, hasPort: false};
+  private _state: ProxyState = 'connecting';
 
   /**
    * Callback to tell the initializer if we're ready or not. This can be called
@@ -49,18 +35,17 @@ export default class ApiProxy {
    */
   private _promiseMap = new Map<number, [Resolve, Reject]>();
 
-  public static singleton(config: Configuration): ApiProxy {
-    if (!_SINGLETON_MAP.has(config)) {
-      _SINGLETON_MAP.set(config, new ApiProxy(config));
+  public constructor(private _config: Configuration) {
+    this.log('ApiProxy instance created');
+  }
+
+  private log(...args: unknown[]) {
+    if (this._config.debug) {
+      console.log('ApiProxy', ...args);
     }
-    return _SINGLETON_MAP.get(config) as ApiProxy;
   }
 
-  public static TEST_ONLY_clear_singleton() {
-    _SINGLETON_MAP.clear();
-  }
-
-  private constructor(private _config: Configuration) {
+  public listen() {
     window.addEventListener('message', this._handleWindowMessage);
   }
 
@@ -68,21 +53,31 @@ export default class ApiProxy {
     this._updateStatusCallback = onStatusChanged;
   }
 
-  public cleanup() {
+  public dispose() {
+    window.removeEventListener('message', this._handleWindowMessage);
+    this.disposePort();
+  }
+
+  public disposePort() {
     this._port?.removeEventListener('message', this._handlePortMessage);
     this._port?.close();
     this._port = undefined;
-    this._updateStatus({isProjectConfigured: undefined, hasPort: false});
+    this._updateStatus('logged-out');
   }
 
-  private _updateStatus(status: ProxyState) {
-    log('updateState()', status);
-    this._status = status;
-    this._updateStatusCallback(status);
+  private _updateStatus(state: ProxyState) {
+    this.log('updateState()', state);
+    this._state = state;
+    console.log('Calling back with new status', state);
+    this._updateStatusCallback(state);
   }
 
-  get status() {
-    return this._status;
+  get state() {
+    return this._state;
+  }
+
+  public setState(state: ProxyState) {
+    this._updateStatus(state);
   }
 
   private _handleWindowMessage = (event: MessageEvent) => {
@@ -90,15 +85,14 @@ export default class ApiProxy {
       return; // Ignore other message sources
     }
 
-    log('window._handleWindowMessage', event.data, event);
+    this.log('window._handleWindowMessage', event.data, event);
     switch (event.data.message) {
-      case 'invalid-domain': {
-        this._updateStatus({
-          isProjectConfigured: false,
-          hasPort: false,
-        });
+      case 'logged-out': // fallthrough
+      case 'missing-project': // fallthrough
+      case 'invalid-domain': // fallthrough
+        this.disposePort();
+        this._updateStatus(event.data.message);
         break;
-      }
       case 'port-connect': {
         // We're getting the port from the iframe, for bidirectional comms
         try {
@@ -109,12 +103,9 @@ export default class ApiProxy {
           this._port = port;
           port.addEventListener('message', this._handlePortMessage);
           port.start();
-          this._updateStatus({
-            isProjectConfigured: true,
-            hasPort: true,
-          });
+          this._updateStatus('connected');
         } catch (error) {
-          log('port-connect -> error', error);
+          this.log('port-connect -> error', error);
         }
         break;
       }
@@ -122,12 +113,14 @@ export default class ApiProxy {
   };
 
   private _handlePortMessage = (e: MessageEvent) => {
-    log('port._handlePortMessage', e.data);
+    this.log('port._handlePortMessage', e.data);
     const $id = e.data.$id;
     if (!$id) {
+      this.log('message missing $id');
       return; // MessageEvent is malformed without an $id
     }
     if (!this._promiseMap.has($id)) {
+      this.log('message already handled', $id, Array.from(this._promiseMap.entries()));
       return; // Message was handled already?
     }
 
@@ -135,27 +128,30 @@ export default class ApiProxy {
     this._promiseMap.delete($id);
 
     if ('$result' in e.data) {
+      this.log('resolving message with', e.data.$result);
       resolve(e.data.$result);
     } else {
+      this.log('rejecting message with', e.data.$error);
       reject(e.data.$error);
     }
   };
 
   private postMessage = (signal: AbortSignal, message: unknown, transfer?: Transferable[]) => {
-    log('postMessage()', message);
+    this.log('postMessage()', message);
     if (!this._port) {
-      log('no port open, dropping message', message);
+      this.log('Port is not open, dropping message', message);
       return;
     }
 
     return new Promise((resolve, reject) => {
       const $id = ++this._sequence;
       this._promiseMap.set($id, [resolve, reject]);
-      log('port.postMessage() => ', {$id, message, transfer});
+      this.log('port.postMessage() => ', {$id, message, transfer}, Array.from(this._promiseMap.entries()));
 
       signal.addEventListener(
         'abort',
         () => {
+          this.log('request was aborted', $id);
           this._promiseMap.delete($id);
           reject('Request was aborted');
         },

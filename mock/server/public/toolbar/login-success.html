@@ -1,8 +1,7 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
     <title>Sentry - Login Success</title>
-
-    <!-- TODO: this should be a sentry logo -->
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
   </head>
   <body>
@@ -14,26 +13,25 @@
 
     <script>
       (function() {
-        function notifyOpener() {
-          if (!window.opener) {
-            return;
-          }
+        const delay = __DELAY__;
 
-          window.opener.postMessage({
-            source: 'sentry-toolbar',
-            message: 'did-login',
-          }, '*');
-        }
-
-        notifyOpener();
-        setTimeout(() => {
-          window.close();
-        }, 3_000);
-
-        // If the popup doesn't close, we can let people try to close it manually.
         document.getElementById('close-popup').addEventListener('click', () => {
           window.close();
         });
+
+        if (window.opener) {
+          window.opener.postMessage({
+            source: 'sentry-toolbar',
+            message: 'did-login',
+            token: localStorage.getItem('token'),
+          }, window.location.origin);
+
+          if (delay && typeof delay === 'number') {
+            setTimeout(() => {
+              window.close();
+            }, delay);
+          }
+        }
       })();
     </script>
   </body>
