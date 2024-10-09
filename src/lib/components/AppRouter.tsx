@@ -1,7 +1,5 @@
-import {useQueryClient} from '@tanstack/react-query';
-import {useEffect} from 'react';
 import {Fragment} from 'react/jsx-runtime';
-import {Routes, Route, Outlet, useNavigate} from 'react-router-dom';
+import {Routes, Route, Outlet} from 'react-router-dom';
 import DebugState from 'toolbar/components/DebugState';
 import CenterLayout from 'toolbar/components/layouts/CenterLayout';
 import RightEdgeLayout from 'toolbar/components/layouts/RightEdgeLayout';
@@ -12,12 +10,12 @@ import Connecting from 'toolbar/components/unauth/Connecting';
 import InvalidDomain from 'toolbar/components/unauth/InvalidDomain';
 import Login from 'toolbar/components/unauth/Login';
 import MissingProject from 'toolbar/components/unauth/MissingProject';
-import {useApiProxyState} from 'toolbar/context/ApiProxyContext';
+import useClearQueryCacheOnProxyStateChange from 'toolbar/hooks/useClearQueryCacheOnProxyStateChange';
+import useNavigateOnProxyStateChange from 'toolbar/hooks/useNavigateOnProxyStateChange';
 
 export default function AppRouter() {
   useNavigateOnProxyStateChange();
   useClearQueryCacheOnProxyStateChange();
-
   return (
     <Routes>
       <Route
@@ -63,40 +61,4 @@ export default function AppRouter() {
       </Route>
     </Routes>
   );
-}
-
-function useNavigateOnProxyStateChange() {
-  const proxyState = useApiProxyState();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    switch (proxyState) {
-      case 'connecting':
-        navigate('/connecting');
-        break;
-      case 'logged-out':
-        navigate('/login');
-        break;
-      case 'missing-project':
-        navigate('/missing-project');
-        break;
-      case 'invalid-domain':
-        navigate('/invalid-domain');
-        break;
-      case 'connected':
-        navigate('/');
-    }
-  }, [proxyState, navigate]);
-}
-
-function useClearQueryCacheOnProxyStateChange() {
-  const proxyState = useApiProxyState();
-  const queryClient = useQueryClient();
-
-  useEffect(() => {
-    // If the user becomes logged out then clear the query cache
-    if (proxyState !== 'connected') {
-      queryClient.clear();
-    }
-  }, [proxyState, queryClient]);
 }
