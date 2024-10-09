@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-relative-import-paths/no-relative-import-paths
-import './index.css';
+import 'toolbar/../env/demo/index.css';
 
 import {useEffect} from 'react';
 import * as SentryToolbar from 'toolbar/index';
@@ -10,22 +9,25 @@ export default function App() {
       // InitProps
       mountPoint: document.body,
 
-      // ConnectionConfig
-      sentryOrigin: 'http://localhost:8080',
-      sentryRegion: undefined,
+      // ConnectionConfig -> See .env.example for defaults
+      sentryOrigin: import.meta.env.VITE_SENTRY_ORIGIN ?? 'http://localhost:8080',
+      sentryRegion: import.meta.env.VITE_SENTRY_REGION ?? undefined,
 
       // FeatureFlagsConfig
       featureFlags: undefined,
 
-      // OrgConfig
-      organizationIdOrSlug: 'sentry',
-      projectIdOrSlug: 'javascript',
-      environment: ['prod'],
+      // OrgConfig  -> See .env.example for defaults
+      organizationIdOrSlug: import.meta.env.VITE_SENTRY_ORGANIZATION ?? 'sentry',
+      projectIdOrSlug: import.meta.env.VITE_SENTRY_PROJECT ?? 'internal',
+      environment: [import.meta.env.VITE_SENTRY_ENVIRONMENT],
 
       // RenderConfig
       domId: 'sentry-toolbar',
       placement: 'right-edge',
       theme: 'light',
+
+      // Debug
+      debug: import.meta.env.VITE_SENTRY_TOOLBAR_DEBUG === 'true',
     });
   }, []);
 

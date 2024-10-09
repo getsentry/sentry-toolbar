@@ -62,7 +62,7 @@ export default class ApiProxy {
     this._port?.removeEventListener('message', this._handlePortMessage);
     this._port?.close();
     this._port = undefined;
-    this._updateStatus('logged-out');
+    this._updateStatus('connecting');
   }
 
   private _updateStatus(state: ProxyState) {
