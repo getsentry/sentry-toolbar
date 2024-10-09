@@ -105,7 +105,7 @@ describe('IFrameProxy', () => {
       // @ts-expect-error: Accessing a private method
       expect(removeEventListener).toHaveBeenCalledWith('message', proxy._handlePortMessage);
       expect(close).toHaveBeenCalled();
-      expect(callback).toHaveBeenCalledWith('logged-out');
+      expect(callback).toHaveBeenCalledWith('connecting');
     });
   });
 

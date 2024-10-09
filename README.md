@@ -18,18 +18,20 @@ Get the code and setup your env:
 
 If you have your own app and you want to install the toolbar into it follow these steps:
 
-1. Run `pnpm dev` - Builds the library and starts a local webserver to serve it.
-2. Add `<script src="http://localhost:8080/toolbar.min.js">` to your app.
-3. Configure the SDK in your app with `<script>window.SentryToolbar.init({...})</script>`.
+1. Create a `.env.local` file, based on `.env.example`.
+2. Run `pnpm dev` - Builds the library and starts a local webserver to serve it.
+3. Add `<script src="http://localhost:8080/toolbar.min.js">` to your app.
+4. Configure the SDK in your app with `<script>window.SentryToolbar.init({...})</script>`.
 
 __Be aware that the usual hot-reload of your app will not apply to the toolbar library. Type CTRL+R or CMD+R to reload your app and pull down new toolbar code.__
 
 If you want to use the bundled sample app, follow these steps:
-
-1. Run `pnpm dev` - Builds the library and starts a local webserver to serve it.
-2. Edit `src/env/demo/App.tsx` to configure the toolbar for your Sentry organization.
-3. Run `pnpm dev:standalone` - Run the sample app.
-4. Visit `http://localhost:5173/` in your browser.
+1. Remove/replace your .env.local file with .env.example.
+    - The default .env values are configured to work with the standalone dev server.
+2. Run `pnpm dev` - Builds the library and starts a local webserver to serve it.
+3. Edit `src/env/demo/App.tsx` to configure the toolbar for your Sentry organization.
+4. Run `pnpm dev:standalone` - Run the sample app.
+5. Visit `http://localhost:5173/` in your browser.
 
 Note that `pnpm dev` is a convenience for running `pnpm dev:watch` & `pnpm dev:server` in parallel.
   - `pnpm dev:watch` rebuilds the library on code changes.
