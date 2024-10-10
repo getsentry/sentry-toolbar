@@ -8,7 +8,6 @@ import IssuesPanel from 'toolbar/components/panels/issues/IssuesPanel';
 import SettingsPanel from 'toolbar/components/panels/settings/SettingsPanel';
 import Connecting from 'toolbar/components/unauth/Connecting';
 import InvalidDomain from 'toolbar/components/unauth/InvalidDomain';
-import Login from 'toolbar/components/unauth/Login';
 import MissingProject from 'toolbar/components/unauth/MissingProject';
 import useClearQueryCacheOnProxyStateChange from 'toolbar/hooks/useClearQueryCacheOnProxyStateChange';
 import useNavigateOnProxyStateChange from 'toolbar/hooks/useNavigateOnProxyStateChange';
@@ -34,7 +33,7 @@ export default function AppRouter() {
             </CenterLayout>
           }>
           <Route path="/connecting" element={<Connecting />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={null /* ApiProxyContextProvider will render the login iframe */} />
           <Route path="/missing-project" element={<MissingProject />} />
           <Route path="/invalid-domain" element={<InvalidDomain />} />
         </Route>

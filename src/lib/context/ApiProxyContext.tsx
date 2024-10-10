@@ -1,6 +1,8 @@
 /* eslint-disable react-refresh/only-export-components */
 import {createContext, useCallback, useContext, useEffect, useRef, useState} from 'react';
 import type {ReactNode} from 'react';
+import CenterLayout from 'toolbar/components/layouts/CenterLayout';
+import UnauthPill from 'toolbar/components/unauth/UnauthPill';
 import ConfigContext from 'toolbar/context/ConfigContext';
 import defaultConfig from 'toolbar/context/defaultConfig';
 import {getSentryWebUrl} from 'toolbar/sentryApi/urls';
@@ -48,7 +50,15 @@ export function ApiProxyContextProvider({children}: Props) {
   return (
     <ApiProxyContext.Provider value={proxyRef.current}>
       <ApiProxyStateContext.Provider value={proxyState}>
-        <iframe referrerPolicy="origin" height="200" width="400" src={frameSrc} style={{display}} ref={iframeRef} />
+        <div style={{display}}>
+          <CenterLayout>
+            <CenterLayout.MainArea>
+              <UnauthPill>
+                <iframe referrerPolicy="origin" height="40" width="80" src={frameSrc} ref={iframeRef} />
+              </UnauthPill>
+            </CenterLayout.MainArea>
+          </CenterLayout>
+        </div>
         {children}
       </ApiProxyStateContext.Provider>
     </ApiProxyContext.Provider>

@@ -1,3 +1,5 @@
+import UnauthPill from 'toolbar/components/unauth/UnauthPill';
+
 export default function MissingProject() {
-  return <div>Missing Project</div>;
+  return <UnauthPill>Missing Project</UnauthPill>;
 }
