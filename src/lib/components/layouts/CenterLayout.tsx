@@ -8,7 +8,7 @@ interface Props {
 export default function CenterLayout({children}: Props) {
   return (
     <Fragment>
-      <div className="pointer-events-none fixed inset-0 flex place-items-center justify-center">{children}</div>
+      <div className="pointer-events-none fixed inset-0 z-debug flex place-items-center justify-center">{children}</div>
     </Fragment>
   );
 }

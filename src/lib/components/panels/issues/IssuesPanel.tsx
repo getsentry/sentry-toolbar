@@ -20,7 +20,7 @@ export default function IssuesPanel() {
   // const placeholderHeight = `${estimateSize - 8}px`; // The real height of the items, minus the padding-block value
 
   return (
-    <section className="flex grow flex-col gap-1">
+    <section className="flex grow flex-col">
       <h1 className="flex flex-col border-b border-b-translucentGray-200 px-2 py-1">
         <SentryAppLink to={{url: `/issues/`, query: {project: organizationSlug}}}>Issues</SentryAppLink>
       </h1>
@@ -30,7 +30,7 @@ export default function IssuesPanel() {
           queryResult={queryResult}
           backgroundUpdatingMessage={() => null}
           loadingMessage={() => (
-            <div className="flex flex-col gap-1 px-1">
+            <div className="flex flex-col gap-1 px-1 pt-1">
               <div className={Placeholder()} />
               <div className={Placeholder()} />
               <div className={Placeholder()} />
