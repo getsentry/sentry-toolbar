@@ -10,16 +10,16 @@ interface Props {
 }
 
 export default function useInfiniteIssuesList({query}: Props) {
-  const {environment, organizationIdOrSlug, projectIdOrSlug} = useContext(ConfigContext);
+  const {environment, organizationSlug, projectIdOrSlug} = useContext(ConfigContext);
 
   const {data: project, isSuccess} = useFetchSentryData({
-    ...useProjectQuery(String(organizationIdOrSlug), String(projectIdOrSlug)),
+    ...useProjectQuery(String(organizationSlug), String(projectIdOrSlug)),
   });
 
   const mailbox = 'unresolved';
 
   return useFetchInfiniteSentryData({
-    ...useInfiniteIssueListQuery(String(organizationIdOrSlug), {
+    ...useInfiniteIssueListQuery(String(organizationSlug), {
       query: {
         environment: Array.isArray(environment) ? environment : [environment],
         project: project?.json.id,

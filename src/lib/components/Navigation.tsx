@@ -54,9 +54,9 @@ export default function Navigation() {
     },
   });
 
-  const {organizationIdOrSlug} = useContext(ConfigContext);
+  const {organizationSlug} = useContext(ConfigContext);
   const {data} = useFetchSentryData({
-    ...useOrganizationQuery(String(organizationIdOrSlug)),
+    ...useOrganizationQuery(String(organizationSlug)),
     retry: false,
   });
   console.log({org: data});

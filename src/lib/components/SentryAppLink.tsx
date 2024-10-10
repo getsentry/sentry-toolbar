@@ -10,10 +10,10 @@ interface Props {
 }
 
 export default function SentryAppLink({children, to, onClick}: Props) {
-  const {organizationIdOrSlug} = useContext(ConfigContext);
+  const {sentryOrigin} = useContext(ConfigContext);
 
   const url = qs.stringifyUrl({
-    url: `https://${organizationIdOrSlug}.sentry.io${to.url}`,
+    url: `${sentryOrigin}${to.url}`,
     query: to.query,
   });
 

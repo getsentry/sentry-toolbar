@@ -120,12 +120,13 @@ function MyReactApp() {
       // ConnectionConfig
       sentryOrigin: 'https://sentry.io',
       sentryRegion: 'us',
+      sentryApiPath: '/api/0,
 
       // FeatureFlagsConfig
       featureFlags: undefined,
 
       // OrgConfig
-      organizationIdOrSlug: 'sentry',
+      organizationSlug: 'sentry',
       projectIdOrSlug: 'javascript',
       environment: ['prod'],
 

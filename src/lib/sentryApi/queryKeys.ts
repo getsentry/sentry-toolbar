@@ -11,30 +11,30 @@ interface QueryKeyAndQueryFn<Data> {
   queryFn: QueryFunction<ApiResult<Data>, ApiEndpointQueryKey, ParsedHeader>;
 }
 
-export function useOrganizationQuery<Data = Organization>(organizationIdOrSlug: string): QueryKeyAndQueryFn<Data> {
+export function useOrganizationQuery<Data = Organization>(organizationSlug: string): QueryKeyAndQueryFn<Data> {
   return {
-    queryKey: [`/organizations/${organizationIdOrSlug}/`, {query: {queryReferrer: 'devtoolbar'}}],
+    queryKey: [`/organizations/${organizationSlug}/`, {query: {queryReferrer: 'devtoolbar'}}],
     queryFn: useSentryApi<Data>().fetchFn,
   };
 }
 
 export function useProjectQuery<Data = Project>(
-  organizationIdOrSlug: string,
+  organizationSlug: string,
   projectIdOrSlug: string
 ): QueryKeyAndQueryFn<Data> {
   return {
-    queryKey: [`/projects/${organizationIdOrSlug}/${projectIdOrSlug}/`, {query: {queryReferrer: 'devtoolbar'}}],
+    queryKey: [`/projects/${organizationSlug}/${projectIdOrSlug}/`, {query: {queryReferrer: 'devtoolbar'}}],
     queryFn: useSentryApi<Data>().fetchFn,
   };
 }
 
 export function useInfiniteIssueListQuery<Data = Group[]>(
-  organizationIdOrSlug: string,
+  organizationSlug: string,
   options: QueryKeyEndpointOptions
 ): QueryKeyAndQueryFn<Data> {
   return {
     queryKey: [
-      `/organizations/${organizationIdOrSlug}/issues/`,
+      `/organizations/${organizationSlug}/issues/`,
       {...options, query: {limit: 25, queryReferrer: 'devtoolbar', shortIdLookup: 0, ...options.query}},
     ],
     queryFn: useSentryApi<Data>().fetchInfiniteFn,

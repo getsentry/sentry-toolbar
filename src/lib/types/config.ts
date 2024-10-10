@@ -2,26 +2,36 @@ import type SentrySDK from '@sentry/types';
 
 interface ConnectionConfig {
   /**
-   * The origin where sentry can be found. This is the base for all OAuth operations, as well as API calls.
+   * The origin where sentry can be found
    *
-   * Default: `"https://sentry.io"`
+   * For example: `"https://acme.sentry.io"`
    *
-   * Must include: protocol, domain or sub-domain name, port (if non-standard).
+   * Must include: protocol, domain & port (if non-standard).
    * May include a url path if sentry is not hosted at the domain root.
-   * Should not have a trailing backslash.
+   * Must not have a trailing backslash.
    */
   sentryOrigin: string;
 
   /**
-   * Any prefix to append to API calls, before the api version is suffixed.
+   * The region of the sentry organization when hosted on Sentry Cloud.`
    *
-   * Default: `undefined`
+   * Valid values: `"us"` or `"de"`
    *
-   * For example: `"us"` or `"de"`.
-   *
-   * The current version is `/api/0`. Should begin with a backslash.
+   * Only applies if you're using Sentry Cloud on `sentry.io` as your sentry origin.
    */
-  sentryRegion?: string | undefined;
+  sentryRegion: string | undefined;
+
+  /**
+   * The path prefix for the api endpoints.
+   *
+   * Example: `/api/0`
+   *
+   * Must not have a trailing backslash.
+   *
+   * You could write API_PATH=/region/us/api/0, and leave REGION blank but
+   * that's discouraged because it's not as clear as using the individual vars.
+   */
+  sentryApiPath: string | undefined;
 }
 
 type FlagValue = boolean | string | number | undefined;
@@ -45,22 +55,16 @@ interface FeatureFlagsConfig {
 interface OrgConfig {
   /**
    * The organization that users should login to
-   *
-   * TODO: maybe we can extract this from the DSN instead?
    */
-  organizationIdOrSlug: string | number;
+  organizationSlug: string | number;
 
   /**
    * The project for which this website is associated
-   *
-   * TODO: maybe we can extract this from the DSN instead?
    */
   projectIdOrSlug: string | number;
 
   /**
    * The environment of this deployment
-   *
-   * TODO: maybe we can extract this from the DSN instead?
    */
   environment: string | string[];
 }

@@ -68,7 +68,6 @@ export default class ApiProxy {
   private _updateStatus(state: ProxyState) {
     this.log('updateState()', state);
     this._state = state;
-    console.log('Calling back with new status', state);
     this._updateStatusCallback(state);
   }
 

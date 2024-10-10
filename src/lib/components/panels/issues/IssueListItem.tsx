@@ -24,11 +24,11 @@ export default function IssueListItem({item}: {item: Group}) {
 }
 
 function IssueType({item}: {item: Group}) {
-  const {organizationIdOrSlug} = useContext(ConfigContext);
+  const {organizationSlug} = useContext(ConfigContext);
 
   return (
     <span className={cx({truncate: true, 'font-bold': !item.hasSeen, 'text-sm': true})}>
-      <SentryAppLink to={{url: `/issues/${item.id}/`, query: {project: organizationIdOrSlug}}}>
+      <SentryAppLink to={{url: `/issues/${item.id}/`, query: {project: organizationSlug}}}>
         {item.metadata.type ?? '<unknown>'}
       </SentryAppLink>
     </span>
