@@ -18,7 +18,7 @@ export default function App() {
 
       // OrgConfig  -> See .env.example for defaults
       organizationSlug: import.meta.env.VITE_SENTRY_ORGANIZATION ?? 'sentry',
-      projectIdOrSlug: import.meta.env.VITE_SENTRY_PROJECT ?? 'internal',
+      projectIdOrSlug: import.meta.env.VITE_SENTRY_PROJECT ?? 'fake',
       environment: [import.meta.env.VITE_SENTRY_ENVIRONMENT],
 
       // RenderConfig
