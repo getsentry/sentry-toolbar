@@ -24,26 +24,26 @@ describe('getSentryApiUrl', () => {
       },
       'https://acme.sentry.io/api/0/',
     ],
-    [
-      'SaaS config: root, insert region',
-      {
-        sentryOrigin: 'https://sentry.io',
-        sentryRegion: 'us',
-        sentryApiPath: '/api/0/',
-        organizationSlug: 'acme',
-      },
-      'https://acme.sentry.io/region/us/api/0/',
-    ],
-    [
-      'SaaS config: subdomain, replace with region',
-      {
-        sentryOrigin: 'https://acme.sentry.io',
-        sentryRegion: 'us',
-        sentryApiPath: '/api/0/',
-        organizationSlug: 'acme',
-      },
-      'https://acme.sentry.io/region/us/api/0/',
-    ],
+    // [
+    //   'SaaS config: root, insert region',
+    //   {
+    //     sentryOrigin: 'https://sentry.io',
+    //     sentryRegion: 'us',
+    //     sentryApiPath: '/api/0/',
+    //     organizationSlug: 'acme',
+    //   },
+    //   'https://acme.sentry.io/region/us/api/0/',
+    // ],
+    // [
+    //   'SaaS config: subdomain, replace with region',
+    //   {
+    //     sentryOrigin: 'https://acme.sentry.io',
+    //     sentryRegion: 'us',
+    //     sentryApiPath: '/api/0/',
+    //     organizationSlug: 'acme',
+    //   },
+    //   'https://acme.sentry.io/region/us/api/0/',
+    // ],
     [
       'sentry devserver config',
       {

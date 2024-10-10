@@ -17,7 +17,7 @@ function isSaasOriginWithSubdomain(hostname: string) {
  * Given a configuration, we want to return the base URL for API calls
  */
 export function getSentryApiUrl(config: Configuration) {
-  const {organizationSlug, sentryOrigin, sentryRegion, sentryApiPath} = config;
+  const {organizationSlug, sentryOrigin, sentryApiPath} = config;
 
   const origin = getOrigin(sentryOrigin);
   if (!origin) {
@@ -27,11 +27,16 @@ export function getSentryApiUrl(config: Configuration) {
   const parts = [origin.protocol, '//'];
 
   if (isSaasOriginWithSubdomain(origin.hostname) || origin.hostname === 'sentry.io') {
-    if (sentryRegion) {
-      parts.push(`${organizationSlug}.sentry.io/region/${sentryRegion}`);
-    } else {
-      parts.push(`${organizationSlug}.sentry.io`);
-    }
+    // TODO: Wew should be setting cookies on sentry.io, not just the subdomain
+    // Then we'll be able to use the region subdomains for faster API requests
+    // But, for now org subdomains are fine.
+    parts.push(`${organizationSlug}.sentry.io`);
+
+    // if (sentryRegion) {
+    //   parts.push(`${sentryRegion}.sentry.io`);
+    // } else {
+    //   parts.push(`${organizationSlug}.sentry.io`);
+    // }
   } else {
     parts.push(origin.hostname);
   }
