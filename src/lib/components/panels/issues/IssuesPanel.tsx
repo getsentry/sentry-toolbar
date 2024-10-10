@@ -9,7 +9,7 @@ import ConfigContext from 'toolbar/context/ConfigContext';
 import type {Group} from 'toolbar/sentryApi/types/group';
 
 export default function IssuesPanel() {
-  const {organizationIdOrSlug} = useContext(ConfigContext);
+  const {organizationSlug} = useContext(ConfigContext);
   // const transactionName = useCurrentTransactionName();
   const queryResult = useInfiniteIssuesList({
     // query: `url:*${transactionName}`,
@@ -22,7 +22,7 @@ export default function IssuesPanel() {
   return (
     <section className="flex grow flex-col gap-1">
       <h1 className="flex flex-col border-b border-b-translucentGray-200 px-2 py-1">
-        <SentryAppLink to={{url: `/issues/`, query: {project: organizationIdOrSlug}}}>Issues</SentryAppLink>
+        <SentryAppLink to={{url: `/issues/`, query: {project: organizationSlug}}}>Issues</SentryAppLink>
       </h1>
 
       <div className="flex grow flex-col">

@@ -3,6 +3,7 @@ import {createContext, useCallback, useContext, useEffect, useRef, useState} fro
 import type {ReactNode} from 'react';
 import ConfigContext from 'toolbar/context/ConfigContext';
 import defaultConfig from 'toolbar/context/defaultConfig';
+import {getSentryWebUrl} from 'toolbar/sentryApi/urls';
 import ApiProxy, {type ProxyState} from 'toolbar/utils/ApiProxy';
 
 const ApiProxyStateContext = createContext<ProxyState>('connecting');
@@ -14,7 +15,7 @@ interface Props {
 
 export function ApiProxyContextProvider({children}: Props) {
   const config = useContext(ConfigContext);
-  const {debug, sentryOrigin, organizationIdOrSlug, projectIdOrSlug} = config;
+  const {debug, organizationSlug, projectIdOrSlug} = config;
 
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
@@ -41,19 +42,13 @@ export function ApiProxyContextProvider({children}: Props) {
     };
   }, [config, log]);
 
+  const frameSrc = `${getSentryWebUrl(config)}/toolbar/${organizationSlug}/${projectIdOrSlug}/iframe/?logging=${debug ? 1 : 0}`;
   const display = proxyState === 'logged-out' ? 'block' : 'none';
 
   return (
     <ApiProxyContext.Provider value={proxyRef.current}>
       <ApiProxyStateContext.Provider value={proxyState}>
-        <iframe
-          referrerPolicy="origin"
-          height="200"
-          width="400"
-          src={`${sentryOrigin}/toolbar/${organizationIdOrSlug}/${projectIdOrSlug}/iframe/?logging=1`}
-          style={{display}}
-          ref={iframeRef}
-        />
+        <iframe referrerPolicy="origin" height="200" width="400" src={frameSrc} style={{display}} ref={iframeRef} />
         {children}
       </ApiProxyStateContext.Provider>
     </ApiProxyContext.Provider>

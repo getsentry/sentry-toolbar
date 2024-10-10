@@ -12,12 +12,12 @@ export default function App() {
       // ConnectionConfig -> See .env.example for defaults
       sentryOrigin: import.meta.env.VITE_SENTRY_ORIGIN ?? 'http://localhost:8080',
       sentryRegion: import.meta.env.VITE_SENTRY_REGION ?? undefined,
-
+      sentryApiPath: import.meta.env.VITE_SENTRY_API_PATH ?? '/region/us/api/0',
       // FeatureFlagsConfig
       featureFlags: undefined,
 
       // OrgConfig  -> See .env.example for defaults
-      organizationIdOrSlug: import.meta.env.VITE_SENTRY_ORGANIZATION ?? 'sentry',
+      organizationSlug: import.meta.env.VITE_SENTRY_ORGANIZATION ?? 'sentry',
       projectIdOrSlug: import.meta.env.VITE_SENTRY_PROJECT ?? 'internal',
       environment: [import.meta.env.VITE_SENTRY_ENVIRONMENT],
 

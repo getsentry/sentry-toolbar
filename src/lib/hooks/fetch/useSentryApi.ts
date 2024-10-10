@@ -2,6 +2,7 @@ import qs from 'query-string';
 import {useContext, useMemo} from 'react';
 import {useApiProxyInstance} from 'toolbar/context/ApiProxyContext';
 import ConfigContext from 'toolbar/context/ConfigContext';
+import {getSentryApiUrl} from 'toolbar/sentryApi/urls';
 import type {ApiEndpointQueryKey, ApiResult} from 'toolbar/types/api';
 import parseLinkHeader from 'toolbar/utils/parseLinkHeader';
 import type {ParsedHeader} from 'toolbar/utils/parseLinkHeader';
@@ -26,15 +27,11 @@ interface InfiniteFetchParams extends FetchParams {
   pageParam: ParsedHeader;
 }
 
-const trailingBackslash = /\/$/;
-
 export default function useSentryApi<Data>() {
   const apiProxy = useApiProxyInstance();
-  const {sentryOrigin, sentryRegion} = useContext(ConfigContext);
+  const config = useContext(ConfigContext);
 
-  const origin = sentryOrigin.replace(trailingBackslash, '');
-  const region = sentryRegion !== undefined && sentryRegion !== '' ? `/region/${sentryRegion}` : '';
-  const apiOrigin = origin + region + '/api/0';
+  const apiOrigin = getSentryApiUrl(config);
 
   const fetchFn = useMemo(
     () =>

@@ -2,15 +2,15 @@ import type {Configuration} from 'toolbar/types/config';
 
 const defaultConfig: Configuration = {
   // ConnectionConfig
-  sentryOrigin: 'https://test.sentry.io',
+  sentryOrigin: 'https://sentry.io',
   sentryRegion: 'us',
-  sentryApiPath: '/api/0',
+  sentryApiPath: undefined,
 
   // FeatureFlagsConfig
   featureFlags: undefined,
 
   // OrgConfig
-  organizationSlug: 'test',
+  organizationSlug: '',
   projectIdOrSlug: '',
   environment: ['production'],
 

@@ -4,9 +4,9 @@ import useFetchSentryData from 'toolbar/hooks/fetch/useFetchSentryData';
 import {useOrganizationQuery} from 'toolbar/sentryApi/queryKeys';
 
 export default function SettingsPanel() {
-  const {organizationIdOrSlug} = useContext(ConfigContext);
+  const {organizationSlug} = useContext(ConfigContext);
   const {data, refetch} = useFetchSentryData({
-    ...useOrganizationQuery(String(organizationIdOrSlug)),
+    ...useOrganizationQuery(String(organizationSlug)),
     retry: false,
   });
 
