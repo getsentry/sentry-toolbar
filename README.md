@@ -61,6 +61,13 @@ In production you need to do two things to get the toolbar working:
 1. Add or dynamically inject `<script src="https://browser.sentry-cdn.com/sentry-toolbar/latest/toolbar.min.js">` into your app
 2. Call `window.SentryToolbar.init(initProps)` to setup a toolbar instance.
 
+```html
+<script src="https://browser.sentry-cdn.com/sentry-toolbar/latest/toolbar.min.js"></script>
+<script>
+  window.SentryToolbar.init({ ...});
+</script>
+```
+
 ### Deploy targets
 
 It's strongly recommended to think about what environments is your app deployed to, and of those which should have the toolbar available.
@@ -74,8 +81,8 @@ a) show the toolbar at all times during development
 b) show the toolbar only if a pizza employee is logged in to the production environment
 
 The code might look like this:
-```
-# example conditions to render the toolbar in different environments.
+```javascript
+// example conditions to render the toolbar in different environments.
 
 const env = process.env.SENTRY_ENVIRONMENT || 'development';
 const isEmployeeEmail = user.email.endsWith('@joshys-pizza.com')

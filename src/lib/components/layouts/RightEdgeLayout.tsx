@@ -9,7 +9,7 @@ interface Props {
 export default function RightEdgeLayout({children}: Props) {
   return (
     <Fragment>
-      <div className="pointer-events-none fixed inset-0 grid grid-cols-[1fr_max-content] items-center gap-[10px] [grid-template-areas:'main_nav']">
+      <div className="pointer-events-none fixed inset-0 z-debug grid grid-cols-[1fr_max-content] items-center gap-[10px] [grid-template-areas:'main_nav']">
         {children}
       </div>
     </Fragment>
