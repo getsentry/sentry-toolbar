@@ -22,7 +22,7 @@ export default function useInfiniteIssuesList({query}: Props) {
     ...useInfiniteIssueListQuery(String(organizationSlug), {
       query: {
         environment: Array.isArray(environment) ? environment : [environment],
-        project: project?.json.id,
+        project: project?.json?.id,
         query: `issue.category:[${IssueCategory.ERROR},${IssueCategory.PERFORMANCE}] status:${mailbox} ${query}`,
         statsPeriod: '14d',
       },
