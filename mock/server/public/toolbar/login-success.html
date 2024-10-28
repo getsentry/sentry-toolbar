@@ -7,24 +7,31 @@
   <body>
     <div>
       <p>You are logged in!</p>
-      <p>This window will automatically close after 3 seconds. If not then check the console for errors.</p>
+      <p>This window will automatically close after __DELAY_SEC__ seconds. If not then check the console for errors.</p>
       <button type="button" id="close-popup">Close Popup</button>
     </div>
 
     <script>
       (function() {
-        const delay = __DELAY__;
+        const delay = __DELAY_MS__;
+        const cookie = '';
+        const token = localStorage.getItem('token');
 
         document.getElementById('close-popup').addEventListener('click', () => {
           window.close();
         });
 
         if (window.opener) {
+          const origin = window.location.origin.endsWith('.sentry.io')
+            ? 'https://sentry.io'
+            : window.location.origin;
+
           window.opener.postMessage({
             source: 'sentry-toolbar',
             message: 'did-login',
-            token: localStorage.getItem('token'),
-          }, window.location.origin);
+            cookie,
+            token,
+          }, origin);
 
           if (delay && typeof delay === 'number') {
             setTimeout(() => {

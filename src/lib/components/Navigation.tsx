@@ -5,9 +5,11 @@ import type {MouseEvent} from 'react';
 import {NavLink, useLocation, useNavigate} from 'react-router-dom';
 import type {To} from 'react-router-dom';
 import IconIssues from 'toolbar/components/icon/IconIssues';
+import IconLock from 'toolbar/components/icon/IconLock';
 import IconPin from 'toolbar/components/icon/IconPin';
 import IconSentry from 'toolbar/components/icon/IconSentry';
 import IconSettings from 'toolbar/components/icon/IconSettings';
+import {useApiProxyInstance} from 'toolbar/context/ApiProxyContext';
 import ConfigContext from 'toolbar/context/ConfigContext';
 import useNavigationExpansion from 'toolbar/hooks/useNavigationExpansion';
 
@@ -42,6 +44,8 @@ export default function Navigation() {
   const {isExpanded, isPinned, setIsHovered, setIsPinned} = useNavigationExpansion();
   const {pathname} = useLocation();
   const navigate = useNavigate();
+  const apiProxy = useApiProxyInstance();
+
   const toPathOrHome = (to: To) => ({
     to,
     onClick: (e: MouseEvent) => {
@@ -73,6 +77,19 @@ export default function Navigation() {
           <NavLink {...toPathOrHome('/issues')} title="Issues" className={navItemClassName()}>
             <IconIssues size="sm" />
           </NavLink>
+
+          <hr className={navSeparator} />
+
+          <button
+            className={navItemClassName()}
+            onClick={() => {
+              const signal = new AbortController().signal; // TODO: nothing is cancellable with this signal
+              apiProxy.exec(signal, 'clear-authn', []);
+            }}
+            title="Logout"
+            aria-label="Logout">
+            <IconLock size="sm" isLocked={false} />
+          </button>
 
           <hr className={navSeparator} />
 
