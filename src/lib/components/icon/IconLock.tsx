@@ -3,7 +3,6 @@ import SVGIconBase from 'toolbar/components/icon/SVGIconBase';
 import type {SVGIconProps} from 'toolbar/components/icon/SVGIconBase';
 
 interface Props extends SVGIconProps {
-  isSolid?: boolean;
   isLocked?: boolean;
 }
 
