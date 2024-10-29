@@ -134,8 +134,8 @@
               return; // No-op without a $function to call
             }
 
-            Promise.resolve(messageDispatch[message.$function])
-              .apply(undefined, message.$args || [])
+            Promise.resolve(messageDispatch[message.$function]
+              .apply(undefined, message.$args || []))
               .then($result => port1.postMessage({ $id, $result }))
               .catch(error => port1.postMessage({ $id, $error: error }));
           });
