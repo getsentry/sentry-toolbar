@@ -62,11 +62,14 @@
           });
         }
 
+        function getCookieValue(cookie) {
+          return `${cookie}; domain=${window.location.hostname}; path=/; max-age=31536000; SameSite=none; partitioned; secure`;
+        }
+
         function saveAccessToken(data) {
           log('saveAccessToken', data)
           if (data.cookie) {
-            const value = `${data.cookie}; domain=${window.location.hostname}; path=/; max-age=31536000; SameSite=none; partitioned; secure`;
-            document.cookie = value
+            document.cookie = getCookieValue(data.cookie);
             log('Saved a cookie', document.cookie.indexOf(value) >= 0);
           }
           if (data.token) {
@@ -86,7 +89,7 @@
             'log': log,
             'request-authn': requestAuthn,
             'clear-authn': () => {
-              document.cookie = '';
+              document.cookie = getCookieValue(document.cookie.split('=').at(0) + '=');
               log('Cleared the current cookie');
               const accessToken = localStorage.removeItem('accessToken')
               log('Removed accessToken from localStorage');
