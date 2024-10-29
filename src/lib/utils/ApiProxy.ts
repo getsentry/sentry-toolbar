@@ -81,6 +81,7 @@ export default class ApiProxy {
   }
 
   private _handleWindowMessage = (event: MessageEvent) => {
+    console.log(event.origin, getSentryIFrameOrigin(this._config));
     if (event.origin !== getSentryIFrameOrigin(this._config) || event.data.source !== 'sentry-toolbar') {
       return; // Ignore other message sources
     }

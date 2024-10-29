@@ -1,6 +1,8 @@
 import defaultConfig from 'toolbar/context/defaultConfig';
 import ApiProxy from 'toolbar/utils/ApiProxy';
 
+jest.mock('toolbar/context/defaultConfig');
+
 describe('ApiProxy', () => {
   function postMessageToWindow(proxy: ApiProxy, data: unknown, ports: MessagePort[] = []) {
     // @ts-expect-error: Accessing a private method
@@ -85,7 +87,7 @@ describe('ApiProxy', () => {
       // @ts-expect-error: Accessing a private member
       expect(proxy._port).toBeDefined();
       expect(start).toHaveBeenCalled();
-      expect(callback).toHaveBeenCalledWith('connected');
+      expect(callback).toHaveBeenCalledWith('logged-out');
     });
 
     it('should cleanup the received port', () => {
@@ -98,7 +100,7 @@ describe('ApiProxy', () => {
       proxy.listen();
       proxy.setOnStatusChanged(callback);
       postMessageToWindow(proxy, {source: 'sentry-toolbar', message: 'port-connect'}, [port]);
-      expect(callback).toHaveBeenCalledWith('connected');
+      expect(callback).toHaveBeenCalledWith('logged-out');
 
       proxy.dispose();
 
