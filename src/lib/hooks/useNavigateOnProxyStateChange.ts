@@ -24,7 +24,7 @@ export default function useNavigateOnProxyStateChange() {
       case 'invalid-domain':
         navigate('/invalid-domain');
         break;
-      case 'connected':
+      case 'logged-in':
         if (match && unauthPaths.includes(match.pathname)) {
           navigate('/');
         }

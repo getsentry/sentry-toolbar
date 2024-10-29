@@ -65,7 +65,8 @@ app.get('/toolbar/:org/:project/iframe/', (req, res) => {
 });
 app.get('/toolbar/:org/:project/login-success/', requireAuth, (_req, res) => {
   res.render('toolbar/login-success.html', {
-    __DELAY__: 0,
+    __DELAY_SEC__: 0,
+    __DELAY_MS__: 0,
   });
 });
 

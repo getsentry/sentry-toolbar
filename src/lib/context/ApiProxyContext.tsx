@@ -5,7 +5,7 @@ import CenterLayout from 'toolbar/components/layouts/CenterLayout';
 import UnauthPill from 'toolbar/components/unauth/UnauthPill';
 import ConfigContext from 'toolbar/context/ConfigContext';
 import defaultConfig from 'toolbar/context/defaultConfig';
-import {getSentryWebUrl} from 'toolbar/sentryApi/urls';
+import {getSentryIFrameOrigin} from 'toolbar/sentryApi/urls';
 import ApiProxy, {type ProxyState} from 'toolbar/utils/ApiProxy';
 
 const ApiProxyStateContext = createContext<ProxyState>('connecting');
@@ -15,11 +15,12 @@ interface Props {
   children: ReactNode;
 }
 
+// If the iframe is visible, then we'll let ApiProxyContextProvider render the login button
+const VISIBLE_IFRAME = localStorage.getItem('sntry_tlbr__visible_iframe') ?? false;
+
 export function ApiProxyContextProvider({children}: Props) {
   const config = useContext(ConfigContext);
   const {debug, organizationSlug, projectIdOrSlug} = config;
-
-  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const log = useCallback(
     (...args: unknown[]) => {
@@ -44,25 +45,36 @@ export function ApiProxyContextProvider({children}: Props) {
     };
   }, [config, log]);
 
-  const frameSrc = `${getSentryWebUrl(config)}/toolbar/${organizationSlug}/${projectIdOrSlug}/iframe/?logging=${debug ? 1 : 0}`;
-  const display = proxyState === 'logged-out' ? 'block' : 'none';
+  const frameSrc = `${getSentryIFrameOrigin(config)}/toolbar/${organizationSlug}/${projectIdOrSlug}/iframe/?logging=${debug ? 1 : 0}`;
 
-  return (
-    <ApiProxyContext.Provider value={proxyRef.current}>
-      <ApiProxyStateContext.Provider value={proxyState}>
-        <div style={{display}}>
-          <CenterLayout>
-            <CenterLayout.MainArea>
-              <UnauthPill>
-                <iframe referrerPolicy="origin" height="40" width="80" src={frameSrc} ref={iframeRef} />
-              </UnauthPill>
-            </CenterLayout.MainArea>
-          </CenterLayout>
-        </div>
-        {children}
-      </ApiProxyStateContext.Provider>
-    </ApiProxyContext.Provider>
-  );
+  if (VISIBLE_IFRAME) {
+    const display = proxyState === 'logged-out' ? 'block' : 'none';
+    return (
+      <ApiProxyContext.Provider value={proxyRef.current}>
+        <ApiProxyStateContext.Provider value={proxyState}>
+          <div style={{display}}>
+            <CenterLayout>
+              <CenterLayout.MainArea>
+                <UnauthPill>
+                  <iframe referrerPolicy="origin" height="40" width="80" src={frameSrc} />
+                </UnauthPill>
+              </CenterLayout.MainArea>
+            </CenterLayout>
+          </div>
+          {children}
+        </ApiProxyStateContext.Provider>
+      </ApiProxyContext.Provider>
+    );
+  } else {
+    return (
+      <ApiProxyContext.Provider value={proxyRef.current}>
+        <ApiProxyStateContext.Provider value={proxyState}>
+          <iframe referrerPolicy="origin" height="0" width="0" src={frameSrc} className="hidden" />
+          {children}
+        </ApiProxyStateContext.Provider>
+      </ApiProxyContext.Provider>
+    );
+  }
 }
 
 /**

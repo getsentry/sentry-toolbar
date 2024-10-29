@@ -8,7 +8,7 @@ export default function useClearQueryCacheOnProxyStateChange() {
 
   useEffect(() => {
     // If the user becomes logged out then clear the query cache
-    if (proxyState !== 'connected') {
+    if (proxyState !== 'logged-in') {
       queryClient.clear();
     }
   }, [proxyState, queryClient]);

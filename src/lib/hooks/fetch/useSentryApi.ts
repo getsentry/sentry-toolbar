@@ -2,7 +2,7 @@ import qs from 'query-string';
 import {useContext, useMemo} from 'react';
 import {useApiProxyInstance} from 'toolbar/context/ApiProxyContext';
 import ConfigContext from 'toolbar/context/ConfigContext';
-import {getSentryApiUrl} from 'toolbar/sentryApi/urls';
+import {getSentryApiOrigin} from 'toolbar/sentryApi/urls';
 import type {ApiEndpointQueryKey, ApiResult} from 'toolbar/types/api';
 import parseLinkHeader from 'toolbar/utils/parseLinkHeader';
 import type {ParsedHeader} from 'toolbar/utils/parseLinkHeader';
@@ -31,7 +31,7 @@ export default function useSentryApi<Data>() {
   const apiProxy = useApiProxyInstance();
   const config = useContext(ConfigContext);
 
-  const apiOrigin = getSentryApiUrl(config);
+  const apiOrigin = getSentryApiOrigin(config);
 
   const fetchFn = useMemo(
     () =>

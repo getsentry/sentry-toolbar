@@ -1,7 +1,9 @@
 import defaultConfig from 'toolbar/context/defaultConfig';
 import ApiProxy from 'toolbar/utils/ApiProxy';
 
-describe('IFrameProxy', () => {
+jest.mock('toolbar/context/defaultConfig');
+
+describe('ApiProxy', () => {
   function postMessageToWindow(proxy: ApiProxy, data: unknown, ports: MessagePort[] = []) {
     // @ts-expect-error: Accessing a private method
     const handleWindowMessage = proxy._handleWindowMessage;
@@ -85,7 +87,7 @@ describe('IFrameProxy', () => {
       // @ts-expect-error: Accessing a private member
       expect(proxy._port).toBeDefined();
       expect(start).toHaveBeenCalled();
-      expect(callback).toHaveBeenCalledWith('connected');
+      expect(callback).toHaveBeenCalledWith('logged-out');
     });
 
     it('should cleanup the received port', () => {
@@ -98,7 +100,7 @@ describe('IFrameProxy', () => {
       proxy.listen();
       proxy.setOnStatusChanged(callback);
       postMessageToWindow(proxy, {source: 'sentry-toolbar', message: 'port-connect'}, [port]);
-      expect(callback).toHaveBeenCalledWith('connected');
+      expect(callback).toHaveBeenCalledWith('logged-out');
 
       proxy.dispose();
 
@@ -264,6 +266,7 @@ describe('IFrameProxy', () => {
       sendPortConnect(proxy);
 
       const promise = proxy.exec(new AbortController().signal, 'log', ['hello world']);
+      console.log(requestPostMessageSpy.mock.calls);
       expect(requestPostMessageSpy).toHaveBeenCalledWith(
         {$id: 1, message: {$function: 'log', $args: ['hello world']}},
         []

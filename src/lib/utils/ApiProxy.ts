@@ -1,10 +1,11 @@
+import {getSentryIFrameOrigin} from 'toolbar/sentryApi/urls';
 import type {Configuration} from 'toolbar/types/config';
 
 type Resolve = (value: unknown) => void;
 type Reject = (reason?: any) => void; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 type HandleStatusChange = (status: ProxyState) => void;
-export type ProxyState = 'connecting' | 'logged-out' | 'missing-project' | 'invalid-domain' | 'connected';
+export type ProxyState = 'connecting' | 'logged-out' | 'missing-project' | 'invalid-domain' | 'logged-in';
 
 export default class ApiProxy {
   /**
@@ -80,7 +81,8 @@ export default class ApiProxy {
   }
 
   private _handleWindowMessage = (event: MessageEvent) => {
-    if (event.origin !== this._config.sentryOrigin || event.data.source !== 'sentry-toolbar') {
+    console.log(event.origin, getSentryIFrameOrigin(this._config));
+    if (event.origin !== getSentryIFrameOrigin(this._config) || event.data.source !== 'sentry-toolbar') {
       return; // Ignore other message sources
     }
 
@@ -89,7 +91,7 @@ export default class ApiProxy {
       case 'logged-out': // fallthrough
       case 'missing-project': // fallthrough
       case 'invalid-domain': // fallthrough
-        this.disposePort();
+      case 'logged-in':
         this._updateStatus(event.data.message);
         break;
       case 'port-connect': {
@@ -102,7 +104,7 @@ export default class ApiProxy {
           this._port = port;
           port.addEventListener('message', this._handlePortMessage);
           port.start();
-          this._updateStatus('connected');
+          this._updateStatus('logged-out');
         } catch (error) {
           this.log('port-connect -> error', error);
         }
@@ -161,7 +163,11 @@ export default class ApiProxy {
     });
   };
 
-  public exec = (signal: AbortSignal, $function: 'log' | 'fetch', $args: unknown[]) => {
+  public exec = (
+    signal: AbortSignal,
+    $function: 'log' | 'request-authn' | 'clear-authn' | 'fetch',
+    $args: unknown[]
+  ) => {
     return this.postMessage(signal, {$function, $args});
   };
 }
