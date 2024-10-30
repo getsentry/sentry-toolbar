@@ -16,14 +16,15 @@ export default function useInfiniteIssuesList({query}: Props) {
     ...useProjectQuery(String(organizationSlug), String(projectIdOrSlug)),
   });
 
-  const mailbox = 'unresolved';
+  // Do not ask for `environment=`, it will return in zero results
+  const env = environment ? {environment: Array.isArray(environment) ? environment : [environment]} : {};
 
   return useFetchInfiniteSentryData({
     ...useInfiniteIssueListQuery(String(organizationSlug), {
       query: {
-        environment: Array.isArray(environment) ? environment : [environment],
+        ...env,
         project: project?.json?.id,
-        query: `issue.category:[${IssueCategory.ERROR},${IssueCategory.PERFORMANCE}] status:${mailbox} ${query}`,
+        query: `issue.category:[${IssueCategory.ERROR},${IssueCategory.PERFORMANCE}] status:unresolved ${query}`,
         statsPeriod: '14d',
       },
     }),
