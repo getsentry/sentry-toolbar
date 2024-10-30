@@ -13,9 +13,6 @@ import MissingProject from 'toolbar/components/unauth/MissingProject';
 import useClearQueryCacheOnProxyStateChange from 'toolbar/hooks/useClearQueryCacheOnProxyStateChange';
 import useNavigateOnProxyStateChange from 'toolbar/hooks/useNavigateOnProxyStateChange';
 
-// If the iframe is visible, then we'll let ApiProxyContextProvider render the login button
-const VISIBLE_IFRAME = localStorage.getItem('sntry_tlbr__visible_iframe') ?? false;
-
 export default function AppRouter() {
   useNavigateOnProxyStateChange();
   useClearQueryCacheOnProxyStateChange();
@@ -37,7 +34,7 @@ export default function AppRouter() {
             </CenterLayout>
           }>
           <Route path="/connecting" element={<Connecting />} />
-          <Route path="/login" element={VISIBLE_IFRAME ? null : <Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/missing-project" element={<MissingProject />} />
           <Route path="/invalid-domain" element={<InvalidDomain />} />
         </Route>
