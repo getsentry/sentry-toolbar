@@ -3,7 +3,7 @@
 /**
  * THIS IS A GENERATED FILE
  *
- * Run `generate:api-types` from the root of the reop to recreate it.
+ * Run `generate:api-types` from the root of the repo to recreate it.
  *
  * Some generated types have been manually modified to simplify things & let them
  * be valid typescript.
@@ -18,6 +18,7 @@ export interface RawGroup {
   permalink: string;
   logger?: string | null;
   level: string;
+  latestEventHasAttachments?: string | null;
   status: string;
   statusDetails: StatusDetails;
   substatus: string;

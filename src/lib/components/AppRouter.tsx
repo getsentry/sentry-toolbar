@@ -4,6 +4,7 @@ import DebugState from 'toolbar/components/DebugState';
 import CenterLayout from 'toolbar/components/layouts/CenterLayout';
 import RightEdgeLayout from 'toolbar/components/layouts/RightEdgeLayout';
 import Navigation from 'toolbar/components/Navigation';
+import FeedbackPanel from 'toolbar/components/panels/feedback/FeedbackPanel';
 import IssuesPanel from 'toolbar/components/panels/issues/IssuesPanel';
 import SettingsPanel from 'toolbar/components/panels/settings/SettingsPanel';
 import Connecting from 'toolbar/components/unauth/Connecting';
@@ -59,6 +60,7 @@ export default function AppRouter() {
             }>
             <Route path="/settings" element={<SettingsPanel />} />
             <Route path="/issues" element={<IssuesPanel />} />
+            <Route path="/feedback" element={<FeedbackPanel />} />
           </Route>
         </Route>
       </Route>
