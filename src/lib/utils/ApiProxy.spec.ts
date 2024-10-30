@@ -1,4 +1,5 @@
 import defaultConfig from 'toolbar/context/defaultConfig';
+import {getSentryIFrameOrigin} from 'toolbar/sentryApi/urls';
 import ApiProxy from 'toolbar/utils/ApiProxy';
 
 jest.mock('toolbar/context/defaultConfig');
@@ -8,7 +9,7 @@ describe('ApiProxy', () => {
     // @ts-expect-error: Accessing a private method
     const handleWindowMessage = proxy._handleWindowMessage;
     // @ts-expect-error: Accessing a private member
-    const expectedOrigin = proxy._config.sentryOrigin;
+    const expectedOrigin = getSentryIFrameOrigin(proxy._config);
     // @ts-expect-error: This is an incomplete mock
     handleWindowMessage({origin: expectedOrigin, data, ports});
   }

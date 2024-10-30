@@ -19,7 +19,7 @@ function isSaasOrigin(hostname: string) {
 /**
  * Given a configuration, we want to return the base URL for API calls
  */
-export function getSentryApiOrigin(config: Configuration) {
+export function getSentryApiBaseUrl(config: Configuration) {
   const {organizationSlug, sentryOrigin, sentryRegion, sentryApiPath} = config;
 
   const origin = getOrigin(sentryOrigin);
@@ -57,6 +57,9 @@ export function getSentryApiOrigin(config: Configuration) {
   return parts.join('');
 }
 
+/**
+ * Returns an origin with organization subdomain included, if SaaS is detected.
+ */
 export function getSentryWebOrigin(config: Configuration) {
   const {sentryOrigin, organizationSlug} = config;
 
@@ -70,15 +73,9 @@ export function getSentryWebOrigin(config: Configuration) {
   return sentryOrigin;
 }
 
+/**
+ * Defer to getSentryWebOrigin()
+ */
 export function getSentryIFrameOrigin(config: Configuration) {
-  const {sentryOrigin} = config;
-
-  const origin = getOrigin(sentryOrigin);
-  if (!origin) {
-    return sentryOrigin;
-  }
-  if (isSaasOrigin(origin.hostname)) {
-    return `https://sentry.io`;
-  }
-  return sentryOrigin;
+  return getSentryWebOrigin(config);
 }

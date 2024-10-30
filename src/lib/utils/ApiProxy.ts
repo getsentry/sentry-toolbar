@@ -120,7 +120,7 @@ export default class ApiProxy {
       return; // MessageEvent is malformed without an $id
     }
     if (!this._promiseMap.has($id)) {
-      this.log('message already handled', $id, Array.from(this._promiseMap.entries()));
+      this.log('message already handled', $id, {_promiseMap: Array.from(this._promiseMap.entries())});
       return; // Message was handled already?
     }
 
@@ -146,7 +146,11 @@ export default class ApiProxy {
     return new Promise((resolve, reject) => {
       const $id = ++this._sequence;
       this._promiseMap.set($id, [resolve, reject]);
-      this.log('port.postMessage() => ', {$id, message, transfer}, Array.from(this._promiseMap.entries()));
+      this.log(
+        'port.postMessage() => ',
+        {$id, message, transfer},
+        {_promiseMap: Array.from(this._promiseMap.entries())}
+      );
 
       signal.addEventListener(
         'abort',
