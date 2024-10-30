@@ -13,13 +13,14 @@ export default function App() {
       sentryOrigin: import.meta.env.VITE_SENTRY_ORIGIN ?? 'http://localhost:8080',
       sentryRegion: import.meta.env.VITE_SENTRY_REGION ?? undefined,
       sentryApiPath: import.meta.env.VITE_SENTRY_API_PATH ?? '/region/us/api/0',
+
       // FeatureFlagsConfig
       featureFlags: undefined,
 
       // OrgConfig  -> See .env.example for defaults
       organizationSlug: import.meta.env.VITE_SENTRY_ORGANIZATION ?? 'sentry',
       projectIdOrSlug: import.meta.env.VITE_SENTRY_PROJECT ?? 'fake',
-      environment: [import.meta.env.VITE_SENTRY_ENVIRONMENT],
+      environment: import.meta.env.VITE_SENTRY_ENVIRONMENT ? import.meta.env.VITE_SENTRY_ENVIRONMENT.split(',') : '',
 
       // RenderConfig
       domId: 'sentry-toolbar',
