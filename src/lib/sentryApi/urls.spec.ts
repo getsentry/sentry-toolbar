@@ -1,11 +1,11 @@
 import defaultConfig from 'toolbar/context/defaultConfig';
-import {getSentryApiOrigin, getSentryWebOrigin, getSentryIFrameOrigin} from 'toolbar/sentryApi/urls';
+import {getSentryApiBaseUrl, getSentryWebOrigin, getSentryIFrameOrigin} from 'toolbar/sentryApi/urls';
 import type {Configuration} from 'toolbar/types/config';
 
 type TestCase = [
   string,
   Partial<Configuration>,
-  {getSentryApiOrigin: string; getSentryWebOrigin: string; getSentryIFrameOrigin: string},
+  {getSentryApiBaseUrl: string; getSentryWebOrigin: string; getSentryIFrameOrigin: string},
 ];
 const testCases: TestCase[] = [
   [
@@ -17,9 +17,9 @@ const testCases: TestCase[] = [
       organizationSlug: 'acme',
     },
     {
-      getSentryApiOrigin: 'https://acme.sentry.io/api/0/',
+      getSentryApiBaseUrl: 'https://acme.sentry.io/api/0/',
       getSentryWebOrigin: 'https://acme.sentry.io',
-      getSentryIFrameOrigin: 'https://sentry.io',
+      getSentryIFrameOrigin: 'https://acme.sentry.io',
     },
   ],
   [
@@ -31,9 +31,9 @@ const testCases: TestCase[] = [
       organizationSlug: 'acme',
     },
     {
-      getSentryApiOrigin: 'https://acme.sentry.io/api/0/',
+      getSentryApiBaseUrl: 'https://acme.sentry.io/api/0/',
       getSentryWebOrigin: 'https://acme.sentry.io',
-      getSentryIFrameOrigin: 'https://sentry.io',
+      getSentryIFrameOrigin: 'https://acme.sentry.io',
     },
   ],
   [
@@ -45,9 +45,9 @@ const testCases: TestCase[] = [
       organizationSlug: 'acme',
     },
     {
-      getSentryApiOrigin: 'https://acme.sentry.io/region/us/api/0/',
+      getSentryApiBaseUrl: 'https://acme.sentry.io/region/us/api/0/',
       getSentryWebOrigin: 'https://acme.sentry.io',
-      getSentryIFrameOrigin: 'https://sentry.io',
+      getSentryIFrameOrigin: 'https://acme.sentry.io',
     },
   ],
   [
@@ -59,9 +59,9 @@ const testCases: TestCase[] = [
       organizationSlug: 'acme',
     },
     {
-      getSentryApiOrigin: 'https://acme.sentry.io/region/us/api/0/',
+      getSentryApiBaseUrl: 'https://acme.sentry.io/region/us/api/0/',
       getSentryWebOrigin: 'https://acme.sentry.io',
-      getSentryIFrameOrigin: 'https://sentry.io',
+      getSentryIFrameOrigin: 'https://acme.sentry.io',
     },
   ],
   [
@@ -73,7 +73,7 @@ const testCases: TestCase[] = [
       organizationSlug: 'acme',
     },
     {
-      getSentryApiOrigin: 'https://dev.getsentry.net:8000/api/0',
+      getSentryApiBaseUrl: 'https://dev.getsentry.net:8000/api/0',
       getSentryWebOrigin: 'https://dev.getsentry.net:8000',
       getSentryIFrameOrigin: 'https://dev.getsentry.net:8000',
     },
@@ -87,7 +87,7 @@ const testCases: TestCase[] = [
       organizationSlug: 'acme',
     },
     {
-      getSentryApiOrigin: 'https://dev.getsentry.net:8000/api/0',
+      getSentryApiBaseUrl: 'https://dev.getsentry.net:8000/api/0',
       getSentryWebOrigin: 'https://dev.getsentry.net:8000',
       getSentryIFrameOrigin: 'https://dev.getsentry.net:8000',
     },
@@ -101,16 +101,16 @@ const testCases: TestCase[] = [
       organizationSlug: 'acme',
     },
     {
-      getSentryApiOrigin: 'http://localhost:8080/api/0',
+      getSentryApiBaseUrl: 'http://localhost:8080/api/0',
       getSentryWebOrigin: 'http://localhost:8080',
       getSentryIFrameOrigin: 'http://localhost:8080',
     },
   ],
 ];
 
-describe('getSentryApiOrigin', () => {
+describe('getSentryApiBaseUrl', () => {
   it.each<TestCase>(testCases)('should get the correct url for api requests: %s', (_title, config, expected) => {
-    expect(getSentryApiOrigin({...defaultConfig, ...config})).toBe(expected.getSentryApiOrigin);
+    expect(getSentryApiBaseUrl({...defaultConfig, ...config})).toBe(expected.getSentryApiBaseUrl);
   });
 });
 

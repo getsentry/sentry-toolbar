@@ -2,7 +2,7 @@ import qs from 'query-string';
 import {useContext, useMemo} from 'react';
 import {useApiProxyInstance} from 'toolbar/context/ApiProxyContext';
 import ConfigContext from 'toolbar/context/ConfigContext';
-import {getSentryApiOrigin} from 'toolbar/sentryApi/urls';
+import {getSentryApiBaseUrl} from 'toolbar/sentryApi/urls';
 import type {ApiEndpointQueryKey, ApiResult} from 'toolbar/types/api';
 import parseLinkHeader from 'toolbar/utils/parseLinkHeader';
 import type {ParsedHeader} from 'toolbar/utils/parseLinkHeader';
@@ -31,12 +31,12 @@ export default function useSentryApi<Data>() {
   const apiProxy = useApiProxyInstance();
   const config = useContext(ConfigContext);
 
-  const apiOrigin = getSentryApiOrigin(config);
+  const apiBaseUrl = getSentryApiBaseUrl(config);
 
   const fetchFn = useMemo(
     () =>
       async ({/* signal, */ queryKey: [endpoint, options]}: FetchParams): Promise<ApiResult<Data>> => {
-        const url = qs.stringifyUrl({url: apiOrigin + endpoint, query: options?.query});
+        const url = qs.stringifyUrl({url: apiBaseUrl + endpoint, query: options?.query});
         const contentType = options?.payload ? {'Content-Type': 'application/json'} : {};
         const init = {
           body: options?.payload ? JSON.stringify(options?.payload) : undefined,
@@ -63,7 +63,7 @@ export default function useSentryApi<Data>() {
         }
         return apiResult;
       },
-    [apiOrigin, apiProxy]
+    [apiBaseUrl, apiProxy]
   );
 
   const fetchInfiniteFn = useMemo(

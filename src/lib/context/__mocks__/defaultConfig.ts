@@ -4,7 +4,7 @@ const defaultConfig: Configuration = {
   // ConnectionConfig
   sentryOrigin: 'https://sentry.io',
   sentryRegion: 'us',
-  sentryApiPath: undefined,
+  sentryApiPath: '/api/0',
 
   // FeatureFlagsConfig
   featureFlags: undefined,
