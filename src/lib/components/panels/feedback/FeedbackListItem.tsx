@@ -15,7 +15,6 @@ export default function FeedbackListItem({item}: {item: FeedbackIssueListItem}) 
   // const hasReplayId = feedbackHasReplay(item.id);
   const hasReplayId = true;
   const isFatal = ['crash_report_embed_form', 'user_report_envelope'].includes(item.metadata.source ?? '');
-  console.log(item);
   const hasAttachments = item.latestEventHasAttachments;
   const hasComments = item.numComments > 0;
 
