@@ -1,8 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import {createContext, useCallback, useContext, useEffect, useRef, useState} from 'react';
 import type {ReactNode} from 'react';
-import CenterLayout from 'toolbar/components/layouts/CenterLayout';
-import UnauthPill from 'toolbar/components/unauth/UnauthPill';
 import ConfigContext from 'toolbar/context/ConfigContext';
 import defaultConfig from 'toolbar/context/defaultConfig';
 import {getSentryIFrameOrigin} from 'toolbar/sentryApi/urls';
@@ -14,9 +12,6 @@ const ApiProxyContext = createContext<ApiProxy>(new ApiProxy(defaultConfig));
 interface Props {
   children: ReactNode;
 }
-
-// If the iframe is visible, then we'll let ApiProxyContextProvider render the login button
-const VISIBLE_IFRAME = localStorage.getItem('sntry_tlbr__visible_iframe') ?? false;
 
 export function ApiProxyContextProvider({children}: Props) {
   const config = useContext(ConfigContext);
@@ -47,34 +42,14 @@ export function ApiProxyContextProvider({children}: Props) {
 
   const frameSrc = `${getSentryIFrameOrigin(config)}/toolbar/${organizationSlug}/${projectIdOrSlug}/iframe/?logging=${debug ? 1 : 0}`;
 
-  if (VISIBLE_IFRAME) {
-    const display = proxyState === 'logged-out' ? 'block' : 'none';
-    return (
-      <ApiProxyContext.Provider value={proxyRef.current}>
-        <ApiProxyStateContext.Provider value={proxyState}>
-          <div style={{display}}>
-            <CenterLayout>
-              <CenterLayout.MainArea>
-                <UnauthPill>
-                  <iframe referrerPolicy="origin" height="40" width="80" src={frameSrc} />
-                </UnauthPill>
-              </CenterLayout.MainArea>
-            </CenterLayout>
-          </div>
-          {children}
-        </ApiProxyStateContext.Provider>
-      </ApiProxyContext.Provider>
-    );
-  } else {
-    return (
-      <ApiProxyContext.Provider value={proxyRef.current}>
-        <ApiProxyStateContext.Provider value={proxyState}>
-          <iframe referrerPolicy="origin" height="0" width="0" src={frameSrc} className="hidden" />
-          {children}
-        </ApiProxyStateContext.Provider>
-      </ApiProxyContext.Provider>
-    );
-  }
+  return (
+    <ApiProxyContext.Provider value={proxyRef.current}>
+      <ApiProxyStateContext.Provider value={proxyState}>
+        <iframe referrerPolicy="origin" height="0" width="0" src={frameSrc} className="hidden" />
+        {children}
+      </ApiProxyStateContext.Provider>
+    </ApiProxyContext.Provider>
+  );
 }
 
 /**

@@ -5,10 +5,6 @@
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
   </head>
   <body>
-    <form id="login-form">
-      <button type="submit">Log in</button>
-    </form>
-
     <script>
       (function() {
         const referrer = __REFERRER__;
@@ -33,15 +29,6 @@
             'sentry-toolbar-auth-popup',
             'popup=true,innerWidth=800,innerHeight=550,noopener=false'
           );
-        }
-
-        function setupLoginForm() {
-          log('setupLoginForm()');
-          const form = document.getElementById('login-form');
-          form.addEventListener('submit', submitEvent => {
-            submitEvent.preventDefault();
-            requestAuthn();
-          });
         }
 
         function sendStateMessage(state) {
@@ -163,7 +150,6 @@
         log('Init', { referrer, state });
 
         setupMessageChannel();
-        setupLoginForm();
         listenForLoginSuccess();
         // enum of: logged-out, missing-project, invalid-domain, logged-in
         sendStateMessage(state === 'success' ? 'logged-in' : state);
