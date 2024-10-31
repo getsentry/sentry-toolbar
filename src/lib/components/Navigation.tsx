@@ -6,6 +6,7 @@ import {NavLink, useLocation, useNavigate} from 'react-router-dom';
 import type {To} from 'react-router-dom';
 import IconIssues from 'toolbar/components/icon/IconIssues';
 import IconLock from 'toolbar/components/icon/IconLock';
+import IconMegaphone from 'toolbar/components/icon/IconMegaphone';
 import IconPin from 'toolbar/components/icon/IconPin';
 import IconSentry from 'toolbar/components/icon/IconSentry';
 import IconSettings from 'toolbar/components/icon/IconSettings';
@@ -76,6 +77,9 @@ export default function Navigation() {
           ) : null}
           <NavLink {...toPathOrHome('/issues')} title="Issues" className={navItemClassName()}>
             <IconIssues size="sm" />
+          </NavLink>
+          <NavLink {...toPathOrHome('/feedback')} title="User Feedback" className={navItemClassName()}>
+            <IconMegaphone size="sm" />
           </NavLink>
 
           <hr className={navSeparator} />

@@ -16,4 +16,25 @@ export enum IssueCategory {
 }
 
 export type Group = Overwrite<RawGroup, {issueCategory: IssueCategory}>;
+export type FeedbackIssueListItem = Overwrite<
+  RawGroup,
+  {
+    issueCategory: 'feedback';
+    issueType: 'feedback';
+    metadata: {
+      contact_email: null | string;
+      message: string;
+      name: string;
+      title: string;
+      value: string;
+      sdk?: {
+        name: string;
+        name_normalized: string;
+      };
+      source?: null | string;
+    };
+    owners: null | unknown;
+    project?: GroupProject;
+  }
+>;
 export type {GroupAssignedTo, GroupAvatar, GroupProject};
