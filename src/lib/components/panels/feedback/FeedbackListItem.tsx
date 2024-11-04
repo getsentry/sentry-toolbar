@@ -7,13 +7,14 @@ import IconImage from 'toolbar/components/icon/IconImage';
 import IconPlay from 'toolbar/components/icon/IconPlay';
 import SentryAppLink from 'toolbar/components/SentryAppLink';
 import ConfigContext from 'toolbar/context/ConfigContext';
+import useReplayCount from 'toolbar/hooks/useReplayCount';
 import type {FeedbackIssueListItem, GroupAssignedTo} from 'toolbar/sentryApi/types/group';
+import type {Organization} from 'toolbar/sentryApi/types/Organization';
 
 export default function FeedbackListItem({item}: {item: FeedbackIssueListItem}) {
   const {organizationSlug} = useContext(ConfigContext);
-  const {feedbackHasReplay: _feedbackHasReplay} = useReplayCountForFeedbacks(organizationSlug);
-  // const hasReplayId = feedbackHasReplay(item.id);
-  const hasReplayId = true;
+  const {feedbackHasReplay} = useReplayCountForFeedbacks(organizationSlug);
+  const hasReplayId = feedbackHasReplay(item.id);
   const isFatal = ['crash_report_embed_form', 'user_report_envelope'].includes(item.metadata.source ?? '');
   const hasAttachments = item.latestEventHasAttachments;
   const hasComments = item.numComments > 0;
@@ -72,16 +73,13 @@ function FeedbackAssignedTo({assignedTo}: {assignedTo: GroupAssignedTo | null | 
 }
 
 function useReplayCountForFeedbacks(organization: string | number) {
-  // const {hasOne, hasMany} = useReplayCount({
-  //   bufferLimit: 25,
-  //   dataSource: 'search_issues',
-  //   fieldName: 'issue.id',
-  //   organization: {slug: organization} as unknown,
-  //   statsPeriod: '90d',
-  // });
-
-  const hasOne = false;
-  const hasMany = false;
+  const {hasOne, hasMany} = useReplayCount({
+    bufferLimit: 25,
+    dataSource: 'search_issues',
+    fieldName: 'issue.id',
+    organization: {slug: organization} as Organization,
+    statsPeriod: '90d',
+  });
 
   return useMemo(
     () => ({
@@ -89,6 +87,6 @@ function useReplayCountForFeedbacks(organization: string | number) {
       feedbacksHaveReplay: hasMany,
       organization,
     }),
-    [hasMany, hasOne]
+    [hasMany, hasOne, organization]
   );
 }
