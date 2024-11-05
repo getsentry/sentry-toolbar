@@ -81,9 +81,21 @@ export default function useSentryApi<Data>() {
     [fetchFn]
   );
 
+  const fetchDataFn = useMemo(
+    () =>
+      ({queryKey: [endpoint, options], ...rest}: FetchParams): Promise<ApiResult<Data>> => {
+        return fetchFn({
+          queryKey: [endpoint, {...options}],
+          ...rest,
+        });
+      },
+    [fetchFn]
+  );
+
   return {
     fetchFn,
     fetchInfiniteFn,
+    fetchDataFn,
     getNextPageParam,
     getPreviousPageParam,
   };

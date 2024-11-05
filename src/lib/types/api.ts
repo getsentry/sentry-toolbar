@@ -11,6 +11,7 @@ export interface QueryKeyEndpointOptions<Headers = THeaders, Query = TQuery, Pay
   method?: APIRequestMethod;
   payload?: Payload;
   query?: Query;
+  host?: string;
 }
 
 // Prefix the key with a namespace, to avoid key collisions with other tanstack/query
