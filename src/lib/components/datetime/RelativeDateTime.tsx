@@ -5,7 +5,6 @@ export default function RelativeDateTime({date, suffix}: {date: Date; suffix: st
   return (
     <time dateTime={date.toISOString()}>
       {formatDistanceToNowStrict(date, {
-        addSuffix: true,
         roundingMethod: 'floor',
         locale: {
           formatDistance: (token: FormatDistanceToken, count: number) => {
