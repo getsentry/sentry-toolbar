@@ -27,13 +27,15 @@ export default function FeedbackListItem({item}: {item: FeedbackIssueListItem}) 
           <FeedbackDates firstSeen={item.firstSeen} />
         </div>
         <FeedbackMessage message={item.metadata.value} />
-        <div className="flex justify-between">
+        <div className="flex items-center justify-between">
           <FeedbackProject item={item} />
-          {hasComments ? <IconChat size="sm" /> : null}
-          {isFatal ? <IconFatal size="xs" color="red400" /> : null}
-          {hasReplayId ? <IconPlay size="xs" /> : null}
-          {hasAttachments ? <IconImage size="xs" /> : null}
-          <FeedbackAssignedTo assignedTo={item.assignedTo} />
+          <div className="flex flex-row justify-between gap-0.5">
+            {hasComments ? <IconChat size="xs" /> : null}
+            {isFatal ? <IconFatal size="xs" color="red400" /> : null}
+            {hasReplayId ? <IconPlay size="xs" /> : null}
+            {hasAttachments ? <IconImage size="xs" /> : null}
+            {item.assignedTo ? <FeedbackAssignedTo assignedTo={item.assignedTo} /> : null}
+          </div>
         </div>
       </div>
     </div>
@@ -55,7 +57,7 @@ function FeedbackType({item}: {item: FeedbackIssueListItem}) {
 function FeedbackDates({firstSeen}: {firstSeen: string}) {
   return (
     <span className="flex items-center gap-0.5 whitespace-nowrap text-xs text-gray-300">
-      <RelativeDateTime date={new Date(firstSeen)} />
+      <RelativeDateTime date={new Date(firstSeen)} suffix="ago" />
     </span>
   );
 }
@@ -69,7 +71,7 @@ function FeedbackProject({item}: {item: FeedbackIssueListItem}) {
 }
 
 function FeedbackAssignedTo({assignedTo}: {assignedTo: GroupAssignedTo | null | undefined}) {
-  return <span className="truncate">{assignedTo?.name.at(0)}</span>;
+  return <span className="truncate text-xs">{assignedTo?.name.at(0)}</span>;
 }
 
 function useReplayCountForFeedbacks(organization: string | number) {

@@ -24,6 +24,9 @@ export default function IssuesPanel() {
       <h1 className="flex flex-col border-b border-b-translucentGray-200 px-2 py-1">
         <SentryAppLink to={{url: `/issues/`, query: {project: organizationSlug}}}>Issues</SentryAppLink>
       </h1>
+      <div className="mx-1.5 flex flex-col gap-0.25 border-b border-b-translucentGray-200 py-0.75 text-sm font-bold text-gray-300">
+        <span>Unresolved issues related to this page</span>
+      </div>
 
       <div className="flex grow flex-col">
         <InfiniteListState

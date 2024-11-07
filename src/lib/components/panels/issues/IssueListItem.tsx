@@ -11,7 +11,10 @@ export default function IssueListItem({item}: {item: Group}) {
       <div className="flex flex-col gap-0.25 border-b border-b-translucentGray-200 py-0.75">
         <div className="flex justify-between">
           <IssueType item={item} />
-          <IssueSeenDates firstSeen={item.firstSeen} lastSeen={item.lastSeen} />
+          <IssueSeenDates
+            firstSeen={item.lifetime?.firstSeen || item.firstSeen}
+            lastSeen={item.lifetime?.lastSeen || item.lastSeen}
+          />
         </div>
         <IssueMessage message={item.metadata.value} />
         <div className="flex justify-between">
@@ -38,9 +41,9 @@ function IssueType({item}: {item: Group}) {
 function IssueSeenDates({firstSeen, lastSeen}: {firstSeen: string; lastSeen: string}) {
   return (
     <span className="flex items-center gap-0.5 whitespace-nowrap text-xs text-gray-300">
-      <RelativeDateTime date={new Date(lastSeen)} />
+      <RelativeDateTime date={new Date(lastSeen)} suffix="ago" />
       <span className="font-bold">·</span>
-      <RelativeDateTime date={new Date(firstSeen)} />
+      <RelativeDateTime date={new Date(firstSeen)} suffix="old" />
     </span>
   );
 }
@@ -54,5 +57,5 @@ function IssueProject({item}: {item: Group}) {
 }
 
 function IssueAssignedTo({assignedTo}: {assignedTo: GroupAssignedTo | null | undefined}) {
-  return <span className="truncate">{assignedTo?.name.at(0)}</span>;
+  return <span className="truncate text-xs">{assignedTo?.name.at(0)}</span>;
 }
