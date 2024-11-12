@@ -1,0 +1,64 @@
+{
+  "editor.tabSize": 2,
+  "files.exclude": {
+    "*.log": false,
+    "**/*.js.map": true,
+    "**/*.min.js": true,
+    "build": true,
+    "dist": true,
+    "htmlcov": true,
+    "model-manifest.json": true,
+    "node_modules": true,
+  },
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "search.followSymlinks": false,
+
+  "tailwindCSS.experimental.classRegex": [
+    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+    ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+  ],
+
+  "[javascript][typescript][javascriptreact][typescriptreact]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    },
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2
+  },
+
+  "[html][markdown]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    },
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+
+  "[json][yaml]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    },
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.detectIndentation": false,
+    "editor.formatOnSave": true,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+
+  // Exclude Specific Files from Auto-Imports
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "**/node_modules/@testing-library/*",
+    "**/node_modules/@tanstack/react-query",
+    "**/react-dom/test-utils/*"
+  ],
+  // Avoid relative imports
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "files.autoSave": "afterDelay",
+}
