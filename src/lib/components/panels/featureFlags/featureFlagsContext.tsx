@@ -38,7 +38,6 @@ const FeatureFlagContext = createContext<Context>({
 
 export function FeatureFlagsContextProvider({children}: {children: ReactNode}) {
   const {featureFlags} = useContext(ConfigContext);
-  console.log('flags from context', featureFlags);
 
   const [isDirty, setIsDirty] = useState(false);
   const [featureFlagMap, setFeatureFlagMap] = useState(() => featureFlags?.getFeatureFlagMap?.() ?? {});

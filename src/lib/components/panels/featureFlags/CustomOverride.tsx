@@ -9,8 +9,6 @@ export default function CustomOverride({setComponentActive}: {setComponentActive
   const [name, setName] = useState('');
   const [isActive, setIsActive] = useState(false);
 
-  console.log('name', name, name.length);
-
   return (
     <form
       className="grid grid-cols-[auto_max-content_max-content] items-center gap-1"
@@ -22,11 +20,7 @@ export default function CustomOverride({setComponentActive}: {setComponentActive
         setIsActive(false);
       }}>
       <input
-        className="h-[26px] min-h-[26px] w-full
-    resize-y rounded-md border
-    border-[#e0dce5] bg-white p-0.75 pl-1
-    text-xs
-    transition-[border,box-shadow] duration-100 focus:border-[#6c5fc7] focus:outline-none focus:ring-0"
+        className="h-[26px] w-full resize-y rounded-md border border-[#e0dce5] bg-white p-0.75 pl-1 text-xs transition-[border,box-shadow] duration-100 focus:border-[#6c5fc7] focus:outline-none focus:ring-0"
         placeholder="Flag name to override"
         value={name}
         onChange={e => setName(e.target.value.toLowerCase())}
@@ -40,18 +34,7 @@ export default function CustomOverride({setComponentActive}: {setComponentActive
         }}
       />
       <button
-        className="relative inline-block
-    h-[26px] min-h-[26px]
-    w-[28px]
-    rounded-md border
-    border-[#e0dce5] bg-white p-0.75
-    pl-[7px] text-xs
-    font-semibold opacity-65
-    shadow-none
-    transition-[background,border,box-shadow]
-    disabled:cursor-not-allowed
-    disabled:text-[#80708f]
-    "
+        className="relative inline-block h-[26px] w-[28px] rounded-md border border-[#e0dce5] bg-white p-0.75 pl-[7px] text-xs font-semibold opacity-65 transition-[background,border,box-shadow] disabled:cursor-not-allowed disabled:text-[#80708f]"
         type="submit"
         disabled={!name.length}>
         <IconAdd size="xs" />

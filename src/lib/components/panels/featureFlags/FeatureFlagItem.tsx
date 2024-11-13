@@ -6,8 +6,6 @@ import type {FeatureFlag} from 'toolbar/types/config';
 
 export default function FeatureFlagItem({flag}: {flag: FeatureFlag}) {
   const {featureFlags} = useContext(ConfigContext);
-  console.log('flag', flag);
-  console.log('featureFlags', featureFlags, featureFlags?.urlTemplate);
 
   return (
     <div className="flex flex-row justify-between gap-0.25 border-b border-b-translucentGray-200 py-1.5 text-sm">

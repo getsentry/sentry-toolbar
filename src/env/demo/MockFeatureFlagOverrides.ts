@@ -5,9 +5,9 @@ type OverrideState = Record<string, boolean>;
 
 const LOCALSTORAGE_KEY = 'feature-flag-overrides';
 
-let __SINGLETON: FeatureFlagOverrides | null = null;
+let __SINGLETON: MockFeatureFlagOverrides | null = null;
 
-export default class FeatureFlagOverrides {
+export default class MockFeatureFlagOverrides {
   /**
    * Return the same instance of FeatureFlagOverrides in each part of the app.
    *
@@ -15,7 +15,7 @@ export default class FeatureFlagOverrides {
    */
   public static singleton() {
     if (!__SINGLETON) {
-      __SINGLETON = new FeatureFlagOverrides();
+      __SINGLETON = new MockFeatureFlagOverrides();
     }
     return __SINGLETON;
   }
@@ -77,17 +77,8 @@ export default class FeatureFlagOverrides {
   /**
    * Return the effective featureFlags as a map, for the toolbar
    */
-  public getFeatureFlagMap(
-    orgSlug: string,
-    flags: Record<string, FlagValue>,
-    overrideFlags: Record<string, FlagValue>
-  ): FeatureFlagMap {
+  public getFeatureFlagMap(orgSlug: string, flags: Record<string, FlagValue>): FeatureFlagMap {
     const nonOverriddenFeatures = this._getNonOverriddenFeatures(orgSlug, flags);
-    for (const key in overrideFlags) {
-      if (typeof overrideFlags[key] === 'boolean') {
-        this.setStoredOverride(key, overrideFlags[key]);
-      }
-    }
 
     const overrides = this._getStoredOverrides();
 

@@ -39,7 +39,7 @@ export default function FeatureFlagsPanel() {
               <Filters setPrefilter={setPrefilter} prefilter={prefilter} setSearchTerm={setSearchTerm} />
             </div>
             <div>
-              <div className="px-2 py-1">
+              <div className="px-2">
                 <FlagTable searchTerm={searchTerm} prefilter={prefilter} />
               </div>
             </div>
@@ -54,7 +54,7 @@ function IsDirtyMessage() {
   const {isDirty} = useFeatureFlagsContext();
 
   return isDirty ? (
-    <div>
+    <div className="border-b border-b-translucentGray-200 px-2 py-1 text-sm text-gray-300">
       <span>Reload to see changes</span>
     </div>
   ) : (
@@ -74,12 +74,7 @@ function Filters({
   return (
     <div className="grid grid-cols-2 gap-1 px-2 py-1">
       <input
-        className="col-span-1  h-[26px] w-full resize-y rounded-md
-    border border-[#e0dce5]
-    bg-white p-0.75
-    text-xs text-[#3e3446]
-    shadow-[inset_0px_1px_2px_rgba(43,34,51,0.04)]
-    transition-[border,box-shadow] duration-100 focus:border-[#6c5fc7] focus:outline-none"
+        className="col-span-1  h-[26px] w-full resize-y rounded-md  border border-[#e0dce5] bg-white p-0.75 text-xs text-[#3e3446] transition-[border,box-shadow] duration-100 focus:border-[#6c5fc7] focus:outline-none"
         onChange={e => setSearchTerm(e.target.value.toLowerCase())}
         placeholder="Search"
       />
@@ -118,8 +113,6 @@ function Filters({
 function FlagTable({prefilter, searchTerm}: {prefilter: Prefilter; searchTerm: string}) {
   const {featureFlagMap, clearOverrides} = useFeatureFlagsContext();
 
-  console.log('map', featureFlagMap);
-
   const filtered = Object.fromEntries(
     Object.entries(featureFlagMap)?.filter(([name, {value, override}]) => {
       const overrideOnly = prefilter === 'overrides';
@@ -135,12 +128,13 @@ function FlagTable({prefilter, searchTerm}: {prefilter: Prefilter; searchTerm: s
       <div>{names?.map(name => <FeatureFlagItem key={name} flag={{name, ...filtered[name]}} />)}</div>
       {!names.length && <div>No flags to display</div>}
       {prefilter === 'overrides' && Boolean(names.length) && (
-        <div>
+        <div className="flex flex-col items-start py-1">
           <button
+            className="flex h-[28px] items-center justify-center self-stretch rounded-md border border-gray-200"
             onClick={() => {
               clearOverrides();
             }}>
-            <span>
+            <span className=" flex items-center justify-center gap-1 text-sm">
               <IconClose isCircled size="xs" /> Remove All
             </span>
           </button>
