@@ -4,6 +4,7 @@ import {Fragment, useContext} from 'react';
 import type {MouseEvent} from 'react';
 import {NavLink, useLocation, useNavigate} from 'react-router-dom';
 import type {To} from 'react-router-dom';
+import IconFlag from 'toolbar/components/icon/IconFlag';
 import IconIssues from 'toolbar/components/icon/IconIssues';
 import IconLock from 'toolbar/components/icon/IconLock';
 import IconMegaphone from 'toolbar/components/icon/IconMegaphone';
@@ -80,6 +81,9 @@ export default function Navigation() {
           </NavLink>
           <NavLink {...toPathOrHome('/feedback')} title="User Feedback" className={navItemClassName()}>
             <IconMegaphone size="sm" />
+          </NavLink>
+          <NavLink {...toPathOrHome('/featureFlags')} title="Feature Flags" className={navItemClassName()}>
+            <IconFlag size="sm" />
           </NavLink>
 
           <hr className={navSeparator} />

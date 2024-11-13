@@ -68,6 +68,7 @@ export interface RawOrganization {
   isDynamicallySampled: boolean;
   effectiveSampleRate: number;
   desiredSampleRate: number;
+  features: string[];
   teams?: TeamsEntity[] | null;
   projects?: ProjectsEntity[] | null;
 }

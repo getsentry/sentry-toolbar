@@ -1,9 +1,11 @@
 import 'toolbar/../env/demo/index.css';
 
 import {useEffect} from 'react';
+import SentryFlagpoleIntegration from 'toolbar/../env/demo/MockFeatureFlagIntegration';
 import * as SentryToolbar from 'toolbar/index';
 
 export default function App() {
+  const featureFlags = SentryFlagpoleIntegration(import.meta.env.VITE_SENTRY_ORGANIZATION ?? 'sentry');
   useEffect(() => {
     return SentryToolbar.init({
       // InitProps
@@ -15,7 +17,7 @@ export default function App() {
       sentryApiPath: import.meta.env.VITE_SENTRY_API_PATH ?? '/region/us/api/0',
 
       // FeatureFlagsConfig
-      featureFlags: undefined,
+      featureFlags: featureFlags,
 
       // OrgConfig  -> See .env.example for defaults
       organizationSlug: import.meta.env.VITE_SENTRY_ORGANIZATION ?? 'sentry',
@@ -30,7 +32,7 @@ export default function App() {
       // Debug
       debug: import.meta.env.VITE_SENTRY_TOOLBAR_DEBUG === 'true',
     });
-  }, []);
+  }, [featureFlags]);
 
   return <h1>Test App</h1>;
 }

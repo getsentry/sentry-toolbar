@@ -22,7 +22,9 @@ export default function FeedbackPanel() {
   return (
     <section className="flex grow flex-col">
       <h1 className="flex flex-col border-b border-b-translucentGray-200 px-2 py-1">
-        <SentryAppLink to={{url: `/feedback/`, query: {project: organizationSlug}}}>User Feedback</SentryAppLink>
+        <span className="font-medium">
+          <SentryAppLink to={{url: `/feedback/`, query: {project: organizationSlug}}}>User Feedback</SentryAppLink>
+        </span>
       </h1>
       <div className="mx-1.5 flex flex-col gap-0.25 border-b border-b-translucentGray-200 py-0.75 text-sm font-bold text-gray-300">
         <span>Unresolved feedback related to this page</span>
