@@ -1,11 +1,11 @@
 import 'toolbar/../env/demo/index.css';
 
 import {useEffect} from 'react';
-import SentryFlagpoleIntegration from 'toolbar/../env/demo/MockFeatureFlagIntegration';
+import MockFeatureFlagIntegration from 'toolbar/../env/demo/MockFeatureFlagIntegration';
 import * as SentryToolbar from 'toolbar/index';
 
 export default function App() {
-  const featureFlags = SentryFlagpoleIntegration(import.meta.env.VITE_SENTRY_ORGANIZATION ?? 'sentry');
+  const featureFlags = MockFeatureFlagIntegration(import.meta.env.VITE_SENTRY_ORGANIZATION ?? 'sentry');
   useEffect(() => {
     return SentryToolbar.init({
       // InitProps

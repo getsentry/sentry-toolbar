@@ -8,7 +8,7 @@ export default function FeatureFlagItem({flag}: {flag: FeatureFlag}) {
   const {featureFlags} = useContext(ConfigContext);
 
   return (
-    <div className="flex flex-row justify-between gap-0.25 border-b border-b-translucentGray-200 py-1.5 text-sm">
+    <div className="flex flex-row justify-between gap-0.25 border-b border-b-translucentGray-200 py-1.5">
       <div className="flex items-start">
         {featureFlags?.urlTemplate?.(flag.name) ? (
           <a href={featureFlags.urlTemplate(flag.name)} className="text-blue-400">

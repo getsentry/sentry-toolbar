@@ -35,13 +35,9 @@ export default function FeatureFlagsPanel() {
           )}
           <div>
             <IsDirtyMessage />
-            <div>
+            <div className="px-2 py-1 text-sm">
               <Filters setPrefilter={setPrefilter} prefilter={prefilter} setSearchTerm={setSearchTerm} />
-            </div>
-            <div>
-              <div className="px-2">
-                <FlagTable searchTerm={searchTerm} prefilter={prefilter} />
-              </div>
+              <FlagTable searchTerm={searchTerm} prefilter={prefilter} />
             </div>
           </div>
         </div>
@@ -72,9 +68,9 @@ function Filters({
   setSearchTerm: Dispatch<SetStateAction<string>>;
 }) {
   return (
-    <div className="grid grid-cols-2 gap-1 px-2 py-1">
+    <div className="grid grid-cols-2 gap-1 py-1">
       <input
-        className="col-span-1  h-[26px] w-full resize-y rounded-md  border border-[#e0dce5] bg-white p-0.75 text-xs text-[#3e3446] transition-[border,box-shadow] duration-100 focus:border-[#6c5fc7] focus:outline-none"
+        className="col-span-1 h-[26px] w-full resize-y rounded-md  border bg-white p-0.75 text-xs text-gray-400 transition-[border,box-shadow] duration-100 focus:border-purple-300 focus:outline-none"
         onChange={e => setSearchTerm(e.target.value.toLowerCase())}
         placeholder="Search"
       />
