@@ -64,6 +64,11 @@ interface OrgConfig {
   projectIdOrSlug: string | number;
 
   /**
+   * The project platform for which this website is associated
+   */
+  projectPlatform: string;
+
+  /**
    * The environment of this deployment
    */
   environment: string | string[];

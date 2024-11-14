@@ -1,3 +1,4 @@
+import {PlatformIcon} from 'platformicons';
 import {useContext} from 'react';
 import InfiniteListItems from 'toolbar/components/InfiniteListItems';
 import InfiniteListState from 'toolbar/components/InfiniteListState';
@@ -9,7 +10,7 @@ import ConfigContext from 'toolbar/context/ConfigContext';
 import type {FeedbackIssueListItem} from 'toolbar/sentryApi/types/group';
 
 export default function FeedbackPanel() {
-  const {organizationSlug} = useContext(ConfigContext);
+  const {organizationSlug, projectPlatform} = useContext(ConfigContext);
   // const transactionName = useCurrentTransactionName();
   const queryResult = useInfiniteFeedbackList({
     // query: `url:*${transactionName}`,
@@ -22,6 +23,7 @@ export default function FeedbackPanel() {
   return (
     <section className="flex grow flex-col">
       <h1 className="flex flex-col border-b border-b-translucentGray-200 px-2 py-1">
+        <PlatformIcon platform={projectPlatform}></PlatformIcon>
         <SentryAppLink to={{url: `/feedback/`, query: {project: organizationSlug}}}>User Feedback</SentryAppLink>
       </h1>
       <div className="mx-1.5 flex flex-col gap-0.25 border-b border-b-translucentGray-200 py-0.75 text-sm font-bold text-gray-300">

@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react';
 import hq from 'alias-hq';
 import {defineConfig} from 'vite';
 import dts from 'vite-plugin-dts';
-import { sentryVitePlugin } from "@sentry/vite-plugin";
+import {sentryVitePlugin} from '@sentry/vite-plugin';
 
 const {env} = process;
 env.NODE_ENV = env.NODE_ENV ?? 'development';

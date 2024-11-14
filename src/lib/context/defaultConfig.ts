@@ -13,6 +13,7 @@ const defaultConfig: Configuration = {
   organizationSlug: 'test',
   projectIdOrSlug: '',
   environment: ['production'],
+  projectPlatform: '',
 
   // RenderConfig
   placement: 'right-edge',

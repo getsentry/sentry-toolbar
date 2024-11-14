@@ -1,4 +1,5 @@
 import {cx} from 'cva';
+import {PlatformIcon} from 'platformicons';
 import {useContext} from 'react';
 import RelativeDateTime from 'toolbar/components/datetime/RelativeDateTime';
 import SentryAppLink from 'toolbar/components/SentryAppLink';
@@ -53,7 +54,13 @@ function IssueMessage({message}: {message: string | null | undefined}) {
 }
 
 function IssueProject({item}: {item: Group}) {
-  return <span className="truncate text-xs">{item.shortId}</span>;
+  const {projectPlatform} = useContext(ConfigContext);
+  return (
+    <span className="truncate text-xs">
+      <PlatformIcon platform={projectPlatform}></PlatformIcon>
+      {item.shortId}
+    </span>
+  );
 }
 
 function IssueAssignedTo({assignedTo}: {assignedTo: GroupAssignedTo | null | undefined}) {

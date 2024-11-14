@@ -1,4 +1,5 @@
 import {cx} from 'cva';
+import {PlatformIcon} from 'platformicons';
 import {useContext, useMemo} from 'react';
 import RelativeDateTime from 'toolbar/components/datetime/RelativeDateTime';
 import IconChat from 'toolbar/components/icon/IconChat';
@@ -67,7 +68,13 @@ function FeedbackMessage({message}: {message: string | null | undefined}) {
 }
 
 function FeedbackProject({item}: {item: FeedbackIssueListItem}) {
-  return <span className="truncate text-xs">{item.shortId}</span>;
+  const {projectPlatform} = useContext(ConfigContext);
+  return (
+    <span className="truncate text-xs">
+      <PlatformIcon platform={projectPlatform}></PlatformIcon>
+      {item.shortId}
+    </span>
+  );
 }
 
 function FeedbackAssignedTo({assignedTo}: {assignedTo: GroupAssignedTo | null | undefined}) {

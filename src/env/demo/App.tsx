@@ -21,6 +21,7 @@ export default function App() {
       organizationSlug: import.meta.env.VITE_SENTRY_ORGANIZATION ?? 'sentry',
       projectIdOrSlug: import.meta.env.VITE_SENTRY_PROJECT ?? 'fake',
       environment: import.meta.env.VITE_SENTRY_ENVIRONMENT ? import.meta.env.VITE_SENTRY_ENVIRONMENT.split(',') : '',
+      projectPlatform: import.meta.env.VITE_SENTRY_PLATFORM ?? 'default',
 
       // RenderConfig
       domId: 'sentry-toolbar',

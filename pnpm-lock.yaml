@@ -29,6 +29,9 @@ importers:
       framer-motion:
         specifier: ^11.7.0
         version: 11.7.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      platformicons:
+        specifier: ^7.0.1
+        version: 7.0.1(react@18.3.1)
       query-string:
         specifier: ^9.1.0
         version: 9.1.0
@@ -5372,6 +5375,11 @@ packages:
 
   pkg-types@1.2.0:
     resolution: {integrity: sha512-+ifYuSSqOQ8CqP4MbZA5hDpb97n3E8SVWdJe+Wms9kj745lmd3b7EZJiqvmLwAlmRfjrI7Hi5z3kdBJ93lFNPA==}
+
+  platformicons@7.0.1:
+    resolution: {integrity: sha512-M/aNCZw4RJ8yIhkFBFhoQtOYgvwn+99upggQYy7BSaQxKaGS3Yb5/c1qC8+lKqzWWMZ+uafFOpEK6jLFPIkpww==}
+    peerDependencies:
+      react: '*'
 
   polished@4.3.1:
     resolution: {integrity: sha512-OBatVyC/N7SCW/FaDHrSd+vn0o5cS855TOmYi4OkdWUMSJCET/xip//ch8xGUvtr3i44X9LVyWwQlRMTN3pwSA==}
@@ -13186,6 +13194,12 @@ snapshots:
       confbox: 0.1.7
       mlly: 1.7.1
       pathe: 1.1.2
+
+  platformicons@7.0.1(react@18.3.1):
+    dependencies:
+      '@types/node': 22.5.5
+      '@types/react': 18.3.3
+      react: 18.3.1
 
   polished@4.3.1:
     dependencies:
