@@ -5,6 +5,7 @@ import hq from 'alias-hq';
 import {defineConfig} from 'vite';
 import dts from 'vite-plugin-dts';
 import {sentryVitePlugin} from '@sentry/vite-plugin';
+import svgLoader from 'vite-svg-loader';
 
 const {env} = process;
 env.NODE_ENV = env.NODE_ENV ?? 'development';
@@ -22,6 +23,7 @@ export default defineConfig({
       sourcemaps: {disable: true},
       reactComponentAnnotation: {enabled: true},
     }),
+    svgLoader(),
   ],
   define: {
     'process.env.NODE_ENV': JSON.stringify(env.NODE_ENV),
