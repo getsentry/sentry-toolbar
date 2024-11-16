@@ -9,7 +9,8 @@ const project= 'javascript';
 const urls = {
   RawOrganization: `https://sentry.io/api/0/organizations/${org}/`,
   RawProject: `https://sentry.io/api/0/projects/${org}/${project}/`,
-  RawGroup: `https://sentry.io/api/0/organizations/${org}/issues/`
+  RawGroup: `https://sentry.io/api/0/organizations/${org}/issues/`,
+  RawMember: `https://sentry.io/api/0/projects/${org}/${project}/members/`
 }
 
 main().then(console.log).catch(console.error);

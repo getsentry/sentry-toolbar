@@ -6,14 +6,22 @@ import useInfiniteIssuesList from 'toolbar/components/panels/issues/useInfiniteI
 import Placeholder from 'toolbar/components/Placeholder';
 import SentryAppLink from 'toolbar/components/SentryAppLink';
 import ConfigContext from 'toolbar/context/ConfigContext';
+import useFetchSentryData from 'toolbar/hooks/fetch/useFetchSentryData';
+import {useMembersQuery, useTeamsQuery} from 'toolbar/sentryApi/queryKeys';
 import type {Group} from 'toolbar/sentryApi/types/group';
 
 export default function IssuesPanel() {
-  const {organizationSlug} = useContext(ConfigContext);
+  const {organizationSlug, projectIdOrSlug} = useContext(ConfigContext);
   // const transactionName = useCurrentTransactionName();
   const queryResult = useInfiniteIssuesList({
     // query: `url:*${transactionName}`,
     query: '',
+  });
+  const {data: members} = useFetchSentryData({
+    ...useMembersQuery(String(organizationSlug), String(projectIdOrSlug)),
+  });
+  const {data: teams} = useFetchSentryData({
+    ...useTeamsQuery(String(organizationSlug), String(projectIdOrSlug)),
   });
 
   const estimateSize = 89;
@@ -45,7 +53,9 @@ export default function IssuesPanel() {
           <InfiniteListItems<Group>
             estimateSize={() => estimateSize}
             queryResult={queryResult}
-            itemRenderer={(props: {item: Group}) => <IssueListItem {...props} />}
+            itemRenderer={(props: {item: Group}) => (
+              <IssueListItem {...props} members={members?.json} teams={teams?.json} />
+            )}
             emptyMessage={() => <p>No items to show</p>}
           />
         </InfiniteListState>

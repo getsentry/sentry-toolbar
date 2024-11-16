@@ -1,11 +1,22 @@
 import {cx} from 'cva';
 import {useContext} from 'react';
 import RelativeDateTime from 'toolbar/components/datetime/RelativeDateTime';
+import IssueAssignedTo from 'toolbar/components/panels/issues/IssueAssignedTo';
 import SentryAppLink from 'toolbar/components/SentryAppLink';
 import ConfigContext from 'toolbar/context/ConfigContext';
-import type {Group, GroupAssignedTo} from 'toolbar/sentryApi/types/group';
+import type {Group} from 'toolbar/sentryApi/types/group';
+import type Member from 'toolbar/sentryApi/types/Member';
+import type {OrganizationTeam} from 'toolbar/sentryApi/types/Organization';
 
-export default function IssueListItem({item}: {item: Group}) {
+export default function IssueListItem({
+  item,
+  members,
+  teams,
+}: {
+  item: Group;
+  members: Member[] | undefined;
+  teams: OrganizationTeam[] | undefined;
+}) {
   return (
     <div className="px-2">
       <div className="flex flex-col gap-0.25 border-b border-b-translucentGray-200 py-0.75">
@@ -19,7 +30,7 @@ export default function IssueListItem({item}: {item: Group}) {
         <IssueMessage message={item.metadata.value} />
         <div className="flex justify-between">
           <IssueProject item={item} />
-          <IssueAssignedTo assignedTo={item.assignedTo} />
+          <IssueAssignedTo assignedTo={item.assignedTo} teams={teams} members={members} />
         </div>
       </div>
     </div>
@@ -54,8 +65,4 @@ function IssueMessage({message}: {message: string | null | undefined}) {
 
 function IssueProject({item}: {item: Group}) {
   return <span className="truncate text-xs">{item.shortId}</span>;
-}
-
-function IssueAssignedTo({assignedTo}: {assignedTo: GroupAssignedTo | null | undefined}) {
-  return <span className="truncate text-xs">{assignedTo?.name.at(0)}</span>;
 }
