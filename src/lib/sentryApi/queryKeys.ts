@@ -1,7 +1,8 @@
 import type {QueryFunction} from '@tanstack/react-query';
 import useSentryApi from 'toolbar/hooks/fetch/useSentryApi';
 import type {FeedbackIssueListItem, Group} from 'toolbar/sentryApi/types/group';
-import type {Organization} from 'toolbar/sentryApi/types/Organization';
+import type Member from 'toolbar/sentryApi/types/Member';
+import type {Organization, OrganizationTeam} from 'toolbar/sentryApi/types/Organization';
 import type {Project} from 'toolbar/sentryApi/types/Project';
 import type {ApiEndpointQueryKey, ApiResult, QueryKeyEndpointOptions} from 'toolbar/types/api';
 import type {ParsedHeader} from 'toolbar/utils/parseLinkHeader';
@@ -24,6 +25,26 @@ export function useProjectQuery<Data = Project>(
 ): QueryKeyAndQueryFn<Data> {
   return {
     queryKey: [`/projects/${organizationSlug}/${projectIdOrSlug}/`, {query: {queryReferrer: 'devtoolbar'}}],
+    queryFn: useSentryApi<Data>().fetchFn,
+  };
+}
+
+export function useMembersQuery<Data = Member[]>(
+  organizationSlug: string,
+  projectIdOrSlug: string
+): QueryKeyAndQueryFn<Data> {
+  return {
+    queryKey: [`/projects/${organizationSlug}/${projectIdOrSlug}/members/`, {query: {queryReferrer: 'devtoolbar'}}],
+    queryFn: useSentryApi<Data>().fetchFn,
+  };
+}
+
+export function useTeamsQuery<Data = OrganizationTeam[]>(
+  organizationSlug: string,
+  projectIdOrSlug: string
+): QueryKeyAndQueryFn<Data> {
+  return {
+    queryKey: [`/projects/${organizationSlug}/${projectIdOrSlug}/teams/`, {query: {queryReferrer: 'devtoolbar'}}],
     queryFn: useSentryApi<Data>().fetchFn,
   };
 }

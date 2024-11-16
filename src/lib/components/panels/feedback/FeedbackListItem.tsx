@@ -1,5 +1,6 @@
 import {cx} from 'cva';
 import {useContext, useMemo} from 'react';
+import AssignedTo from 'toolbar/components/AssignedTo';
 import RelativeDateTime from 'toolbar/components/datetime/RelativeDateTime';
 import IconChat from 'toolbar/components/icon/IconChat';
 import IconFatal from 'toolbar/components/icon/IconFatal';
@@ -8,10 +9,19 @@ import IconPlay from 'toolbar/components/icon/IconPlay';
 import SentryAppLink from 'toolbar/components/SentryAppLink';
 import ConfigContext from 'toolbar/context/ConfigContext';
 import useReplayCount from 'toolbar/hooks/useReplayCount';
-import type {FeedbackIssueListItem, GroupAssignedTo} from 'toolbar/sentryApi/types/group';
-import type {Organization} from 'toolbar/sentryApi/types/Organization';
+import type {FeedbackIssueListItem} from 'toolbar/sentryApi/types/group';
+import type Member from 'toolbar/sentryApi/types/Member';
+import type {Organization, OrganizationTeam} from 'toolbar/sentryApi/types/Organization';
 
-export default function FeedbackListItem({item}: {item: FeedbackIssueListItem}) {
+export default function FeedbackListItem({
+  item,
+  teams,
+  members,
+}: {
+  item: FeedbackIssueListItem;
+  teams: OrganizationTeam[] | undefined;
+  members: Member[] | undefined;
+}) {
   const {organizationSlug} = useContext(ConfigContext);
   const {feedbackHasReplay} = useReplayCountForFeedbacks(organizationSlug);
   const hasReplayId = feedbackHasReplay(item.id);
@@ -29,12 +39,12 @@ export default function FeedbackListItem({item}: {item: FeedbackIssueListItem}) 
         <FeedbackMessage message={item.metadata.value} />
         <div className="flex items-center justify-between">
           <FeedbackProject item={item} />
-          <div className="flex flex-row justify-between gap-0.5">
+          <div className="flex flex-row items-center justify-between gap-0.5">
             {hasComments ? <IconChat size="xs" /> : null}
             {isFatal ? <IconFatal size="xs" color="red400" /> : null}
             {hasReplayId ? <IconPlay size="xs" /> : null}
             {hasAttachments ? <IconImage size="xs" /> : null}
-            {item.assignedTo ? <FeedbackAssignedTo assignedTo={item.assignedTo} /> : null}
+            {item.assignedTo ? <AssignedTo assignedTo={item.assignedTo} teams={teams} members={members} /> : null}
           </div>
         </div>
       </div>
@@ -68,10 +78,6 @@ function FeedbackMessage({message}: {message: string | null | undefined}) {
 
 function FeedbackProject({item}: {item: FeedbackIssueListItem}) {
   return <span className="truncate text-xs">{item.shortId}</span>;
-}
-
-function FeedbackAssignedTo({assignedTo}: {assignedTo: GroupAssignedTo | null | undefined}) {
-  return <span className="truncate text-xs">{assignedTo?.name.at(0)}</span>;
 }
 
 function useReplayCountForFeedbacks(organization: string | number) {
