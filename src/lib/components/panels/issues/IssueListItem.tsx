@@ -1,7 +1,7 @@
 import {cx} from 'cva';
 import {useContext} from 'react';
+import AssignedTo from 'toolbar/components/AssignedTo';
 import RelativeDateTime from 'toolbar/components/datetime/RelativeDateTime';
-import IssueAssignedTo from 'toolbar/components/panels/issues/IssueAssignedTo';
 import SentryAppLink from 'toolbar/components/SentryAppLink';
 import ConfigContext from 'toolbar/context/ConfigContext';
 import type {Group} from 'toolbar/sentryApi/types/group';
@@ -30,7 +30,7 @@ export default function IssueListItem({
         <IssueMessage message={item.metadata.value} />
         <div className="flex justify-between">
           <IssueProject item={item} />
-          <IssueAssignedTo assignedTo={item.assignedTo} teams={teams} members={members} />
+          <AssignedTo assignedTo={item.assignedTo} teams={teams} members={members} />
         </div>
       </div>
     </div>

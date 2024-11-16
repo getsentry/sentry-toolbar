@@ -6,14 +6,22 @@ import useInfiniteFeedbackList from 'toolbar/components/panels/feedback/useInfin
 import Placeholder from 'toolbar/components/Placeholder';
 import SentryAppLink from 'toolbar/components/SentryAppLink';
 import ConfigContext from 'toolbar/context/ConfigContext';
+import useFetchSentryData from 'toolbar/hooks/fetch/useFetchSentryData';
+import {useMembersQuery, useTeamsQuery} from 'toolbar/sentryApi/queryKeys';
 import type {FeedbackIssueListItem} from 'toolbar/sentryApi/types/group';
 
 export default function FeedbackPanel() {
-  const {organizationSlug} = useContext(ConfigContext);
+  const {organizationSlug, projectIdOrSlug} = useContext(ConfigContext);
   // const transactionName = useCurrentTransactionName();
   const queryResult = useInfiniteFeedbackList({
     // query: `url:*${transactionName}`,
     query: '',
+  });
+  const {data: members} = useFetchSentryData({
+    ...useMembersQuery(String(organizationSlug), String(projectIdOrSlug)),
+  });
+  const {data: teams} = useFetchSentryData({
+    ...useTeamsQuery(String(organizationSlug), String(projectIdOrSlug)),
   });
 
   const estimateSize = 89;
@@ -45,7 +53,9 @@ export default function FeedbackPanel() {
           <InfiniteListItems<FeedbackIssueListItem>
             estimateSize={() => estimateSize}
             queryResult={queryResult}
-            itemRenderer={(props: {item: FeedbackIssueListItem}) => <FeedbackListItem {...props} />}
+            itemRenderer={(props: {item: FeedbackIssueListItem}) => (
+              <FeedbackListItem {...props} teams={teams?.json} members={members?.json} />
+            )}
             emptyMessage={() => <p>No items to show</p>}
           />
         </InfiniteListState>

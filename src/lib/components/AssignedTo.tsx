@@ -3,7 +3,7 @@ import type {GroupAssignedTo} from 'toolbar/sentryApi/types/group';
 import type Member from 'toolbar/sentryApi/types/Member';
 import type {OrganizationTeam} from 'toolbar/sentryApi/types/Organization';
 
-export default function IssueAssignedTo({
+export default function AssignedTo({
   assignedTo,
   teams,
   members,
