@@ -1,7 +1,8 @@
 import {forwardRef} from 'react';
 import SVGIconBase from 'toolbar/components/icon/SVGIconBase';
 import type {SVGIconProps} from 'toolbar/components/icon/SVGIconBase';
-const IconMegaphone = forwardRef<SVGSVGElement, SVGIconProps>((props, ref) => {
+
+const IconMegaphone = forwardRef<SVGSVGElement, SVGIconProps>(function IconMegaphone(props, ref) {
   return (
     <SVGIconBase {...props} ref={ref}>
       <path d="M12.53,12H9.92a.8.8,0,0,1-.42-.13L6.44,9.76H.76A.75.75,0,0,1,0,9V3A.75.75,0,0,1,.76,2.2H6.44L9.5.13A.8.8,0,0,1,9.92,0h2.61a.76.76,0,0,1,.75.75V11.21A.76.76,0,0,1,12.53,12Zm-2.38-1.5h1.63v-9H10.15L7.09,3.57a.77.77,0,0,1-.42.13H1.51V8.26H6.67a.77.77,0,0,1,.42.13Z" />
@@ -10,7 +11,5 @@ const IconMegaphone = forwardRef<SVGSVGElement, SVGIconProps>((props, ref) => {
     </SVGIconBase>
   );
 });
-
-IconMegaphone.displayName = 'IconMegaphone';
 
 export default IconMegaphone;

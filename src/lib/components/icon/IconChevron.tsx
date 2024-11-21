@@ -14,8 +14,10 @@ const iconDirections = {
   left: '270',
 };
 
-// eslint-disable-next-line react/prop-types
-const IconChevron = forwardRef<SVGSVGElement, Props>(({isCircled = false, direction = 'up', ...props}, ref) => {
+const IconChevron = forwardRef<SVGSVGElement, Props>(function IconChevron(
+  {isCircled = false, direction = 'up', ...props}: Props,
+  ref
+) {
   return (
     <SVGIconBase
       {...props}
@@ -33,7 +35,5 @@ const IconChevron = forwardRef<SVGSVGElement, Props>(({isCircled = false, direct
     </SVGIconBase>
   );
 });
-
-IconChevron.displayName = 'IconChevron';
 
 export default IconChevron;
