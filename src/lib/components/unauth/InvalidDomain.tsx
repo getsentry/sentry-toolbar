@@ -1,5 +1,9 @@
 import UnauthPill from 'toolbar/components/unauth/UnauthPill';
 
 export default function InvalidDomain() {
-  return <UnauthPill>The domain is invalid or not configured</UnauthPill>;
+  return (
+    <UnauthPill>
+      <span className="p-1">The domain is invalid or not configured</span>
+    </UnauthPill>
+  );
 }

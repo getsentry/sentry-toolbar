@@ -5,5 +5,9 @@ import ConfigContext from 'toolbar/context/ConfigContext';
 export default function Connecting() {
   const {sentryOrigin} = useContext(ConfigContext);
 
-  return <UnauthPill>Connecting to {sentryOrigin}...</UnauthPill>;
+  return (
+    <UnauthPill>
+      <span className="p-1">Connecting to {sentryOrigin}...</span>
+    </UnauthPill>
+  );
 }
