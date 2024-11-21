@@ -2,7 +2,7 @@ import {forwardRef} from 'react';
 import SVGIconBase from 'toolbar/components/icon/SVGIconBase';
 import type {SVGIconProps} from 'toolbar/components/icon/SVGIconBase';
 
-const IconImage = forwardRef<SVGSVGElement, SVGIconProps>((props, ref) => {
+const IconImage = forwardRef<SVGSVGElement, SVGIconProps>(function IconImage(props, ref) {
   return (
     <SVGIconBase {...props} ref={ref}>
       <path d="M4.37 7.32a2.06 2.06 0 1 1 2.06-2 2.05 2.05 0 0 1-2.06 2Zm0-2.61a.56.56 0 1 0 0 1.12.56.56 0 0 0 0-1.12Z" />
@@ -10,7 +10,5 @@ const IconImage = forwardRef<SVGSVGElement, SVGIconProps>((props, ref) => {
     </SVGIconBase>
   );
 });
-
-IconImage.displayName = 'IconImage';
 
 export default IconImage;
