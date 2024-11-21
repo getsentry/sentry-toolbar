@@ -7,15 +7,15 @@ import Placeholder from 'toolbar/components/Placeholder';
 import SentryAppLink from 'toolbar/components/SentryAppLink';
 import ConfigContext from 'toolbar/context/ConfigContext';
 import useFetchSentryData from 'toolbar/hooks/fetch/useFetchSentryData';
+import useCurrentSentryTransactionName from 'toolbar/hooks/useCurrentSentryTransactionName';
 import {useMembersQuery, useTeamsQuery} from 'toolbar/sentryApi/queryKeys';
 import type {Group} from 'toolbar/sentryApi/types/group';
 
 export default function IssuesPanel() {
   const {organizationSlug, projectIdOrSlug} = useContext(ConfigContext);
-  // const transactionName = useCurrentTransactionName();
+  const transactionName = useCurrentSentryTransactionName();
   const queryResult = useInfiniteIssuesList({
-    // query: `url:*${transactionName}`,
-    query: '',
+    query: transactionName ? `url:${transactionName}` : '',
   });
   const {data: members} = useFetchSentryData({
     ...useMembersQuery(String(organizationSlug), String(projectIdOrSlug)),
