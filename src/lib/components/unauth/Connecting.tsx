@@ -7,7 +7,7 @@ export default function Connecting() {
 
   return (
     <UnauthPill>
-      <span className="p-1">Connecting to {sentryOrigin}...</span>
+      <span className="py-1">Connecting to {sentryOrigin}...</span>
     </UnauthPill>
   );
 }

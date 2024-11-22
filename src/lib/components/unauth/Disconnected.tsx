@@ -7,7 +7,7 @@ export default function Disconnected() {
 
   return (
     <UnauthPill>
-      <span className="p-1">Unable to connect to {sentryOrigin}</span>
+      <span className="py-1">Unable to connect to {sentryOrigin}</span>
     </UnauthPill>
   );
 }

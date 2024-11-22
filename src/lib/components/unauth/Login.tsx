@@ -1,20 +1,62 @@
-import {useCallback} from 'react';
+import {cx} from 'cva';
+import {useCallback, useRef, useState} from 'react';
 import UnauthPill from 'toolbar/components/unauth/UnauthPill';
 import {useApiProxyInstance} from 'toolbar/context/ApiProxyContext';
+
+const POPUP_MESSAGE_DELAY_MS = 3_000;
+
+const buttonClass = cx('rounded-full p-1 hover:bg-gray-500 hover:underline');
 
 export default function Login() {
   const apiProxy = useApiProxyInstance();
 
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+
+  const timeoutRef = useRef<null | number>(null);
+  const [showPopupBlockerMessage, setShowPopupBlockerMessage] = useState(false);
+
+  const resetState = useCallback(() => {
+    setIsLoggingIn(false);
+    setShowPopupBlockerMessage(false);
+    if (timeoutRef.current) {
+      window.clearTimeout(timeoutRef.current);
+    }
+  }, []);
+
   const openPopup = useCallback(() => {
+    setIsLoggingIn(true);
+
     const signal = new AbortController().signal;
     apiProxy.exec(signal, 'request-authn', []);
+
+    // start timer, after a sec ask about popups
+    if (timeoutRef.current) {
+      window.clearTimeout(timeoutRef.current);
+    }
+    timeoutRef.current = window.setTimeout(() => {
+      setShowPopupBlockerMessage(true);
+    }, POPUP_MESSAGE_DELAY_MS);
   }, [apiProxy]);
 
   return (
     <UnauthPill>
-      <button className="rounded-full p-1 hover:bg-gray-500 hover:underline" onClick={openPopup}>
-        Login to Sentry
-      </button>
+      <div className="flex-col">
+        {isLoggingIn ? (
+          <div className="flex gap-0.25">
+            <span className="py-1">Logging in...</span>
+            <button className={buttonClass} onClick={resetState}>
+              reset
+            </button>
+          </div>
+        ) : (
+          <button className={buttonClass} onClick={openPopup}>
+            Login to Sentry
+          </button>
+        )}
+        {showPopupBlockerMessage ? (
+          <div className="py-1">Don&apos;t see the login popup? Check your popup blocker</div>
+        ) : null}
+      </div>
     </UnauthPill>
   );
 }
