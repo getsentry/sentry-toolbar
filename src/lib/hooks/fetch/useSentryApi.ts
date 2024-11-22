@@ -59,6 +59,9 @@ export default function useSentryApi<Data>() {
           if (apiResult.status === 401) {
             apiProxy.setState('logged-out');
           }
+          if (apiResult.status === 502 || apiResult.status === 503 || apiResult.status === 504) {
+            apiProxy.setState('disconnected');
+          }
           throw apiResult;
         }
         return apiResult;

@@ -9,6 +9,7 @@ import FeedbackPanel from 'toolbar/components/panels/feedback/FeedbackPanel';
 import IssuesPanel from 'toolbar/components/panels/issues/IssuesPanel';
 import SettingsPanel from 'toolbar/components/panels/settings/SettingsPanel';
 import Connecting from 'toolbar/components/unauth/Connecting';
+import Disconnected from 'toolbar/components/unauth/Disconnected';
 import InvalidDomain from 'toolbar/components/unauth/InvalidDomain';
 import Login from 'toolbar/components/unauth/Login';
 import MissingProject from 'toolbar/components/unauth/MissingProject';
@@ -35,6 +36,7 @@ export default function AppRouter() {
               </CenterLayout.MainArea>
             </CenterLayout>
           }>
+          <Route path="/disconnected" element={<Disconnected />} />
           <Route path="/connecting" element={<Connecting />} />
           <Route path="/login" element={<Login />} />
           <Route path="/missing-project" element={<MissingProject />} />

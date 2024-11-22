@@ -12,6 +12,9 @@ export default function useNavigateOnProxyStateChange() {
 
   useEffect(() => {
     switch (proxyState) {
+      case 'disconnected':
+        navigate('/disconnected');
+        break;
       case 'connecting':
         navigate('/connecting');
         break;

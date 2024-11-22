@@ -2,12 +2,12 @@ import {useContext} from 'react';
 import UnauthPill from 'toolbar/components/unauth/UnauthPill';
 import ConfigContext from 'toolbar/context/ConfigContext';
 
-export default function Connecting() {
+export default function Disconnected() {
   const {sentryOrigin} = useContext(ConfigContext);
 
   return (
     <UnauthPill>
-      <span className="py-1">Connecting to {sentryOrigin}...</span>
+      <span className="py-1">Unable to connect to {sentryOrigin}</span>
     </UnauthPill>
   );
 }

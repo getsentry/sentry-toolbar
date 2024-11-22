@@ -1,3 +1,4 @@
+import {cx} from 'cva';
 import {type UrlObject} from 'query-string';
 import qs from 'query-string';
 import {useContext, type MouseEvent} from 'react';
@@ -7,9 +8,12 @@ interface Props {
   children: React.ReactNode;
   to: UrlObject;
   onClick?: (event: MouseEvent) => void;
+  className?: string;
 }
 
-export default function SentryAppLink({children, to, onClick}: Props) {
+const linkClass = cx('text-blue-400 hover:underline');
+
+export default function SentryAppLink({children, className, to, onClick}: Props) {
   const {sentryOrigin} = useContext(ConfigContext);
 
   const url = qs.stringifyUrl({
@@ -18,7 +22,7 @@ export default function SentryAppLink({children, to, onClick}: Props) {
   });
 
   return (
-    <a href={url} onClick={onClick} rel="noreferrer noopener" target="_blank" className="text-blue-400">
+    <a href={url} onClick={onClick} rel="noreferrer noopener" target="_blank" className={className ?? linkClass}>
       {children}
     </a>
   );

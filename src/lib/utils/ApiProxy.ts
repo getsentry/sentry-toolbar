@@ -5,7 +5,13 @@ type Resolve = (value: unknown) => void;
 type Reject = (reason?: any) => void; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 type HandleStatusChange = (status: ProxyState) => void;
-export type ProxyState = 'connecting' | 'logged-out' | 'missing-project' | 'invalid-domain' | 'logged-in';
+export type ProxyState =
+  | 'disconnected'
+  | 'connecting'
+  | 'logged-out'
+  | 'missing-project'
+  | 'invalid-domain'
+  | 'logged-in';
 
 export default class ApiProxy {
   /**
