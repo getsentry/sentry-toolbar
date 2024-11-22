@@ -24,9 +24,10 @@ type QueryOptions<QueryFnData, SelectFnData> = Overwrite<
   }>
 >;
 
-export default function useFetchInfiniteSentryData<QueryFnData, SelectFnData = InfiniteData<ApiResult<QueryFnData>>>(
-  props: QueryOptions<QueryFnData, SelectFnData>
-) {
+export default function useFetchInfiniteSentryData<
+  QueryFnData,
+  SelectFnData = InfiniteData<ApiResult<QueryFnData>, ParsedHeader>,
+>(props: QueryOptions<QueryFnData, SelectFnData>) {
   const {fetchInfiniteFn, getNextPageParam, getPreviousPageParam} = useSentryApi<QueryFnData>();
 
   const infiniteQueryResult = useInfiniteQuery<
