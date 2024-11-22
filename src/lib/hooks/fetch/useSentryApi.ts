@@ -96,6 +96,7 @@ export default function useSentryApi<Data>() {
     fetchFn,
     fetchInfiniteFn,
     fetchDataFn,
+    initialPageParam: undefined,
     getNextPageParam,
     getPreviousPageParam,
   };

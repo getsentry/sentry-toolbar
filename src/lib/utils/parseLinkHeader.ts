@@ -1,8 +1,10 @@
-export interface ParsedHeader {
-  cursor: string;
-  href: string;
-  results: boolean | null;
-}
+export type ParsedHeader =
+  | undefined
+  | {
+      cursor: string;
+      href: string;
+      results: boolean | null;
+    };
 
 export default function parseLinkHeader(header: string | null): Record<string, ParsedHeader> {
   if (header === null || header === '') {
