@@ -5,6 +5,7 @@ interface Props {
   isActive: boolean;
   onClick: (event: MouseEvent) => void;
   size: 'sm' | 'lg';
+  id?: string;
 }
 
 const btnClassName = cva(
@@ -56,9 +57,9 @@ const nubClassName = cva(['absolute', 'rounded-full', 'transition'], {
   },
 });
 
-export default function SwitchButton({isActive, onClick, size}: Props) {
+export default function SwitchButton({isActive, onClick, size, ...props}: Props) {
   return (
-    <button className={btnClassName({size})} onClick={onClick}>
+    <button {...props} className={btnClassName({size})} onClick={onClick}>
       <span className={nubClassName({isActive, size})} />
     </button>
   );

@@ -25,13 +25,21 @@ function clearLocalStorage() {
 }
 
 /**
- * An example FeatureFlagMonkeyPatchServiceFactory
+ * An example FeatureFlagAdapter
  *
- * There are 4 methods to implement in order to create a FeatureFlagMonkeyPatchService:
+ * There are 4 methods to implement in order to create a FeatureFlagAdapter:
  * - `getOverrides() => FlagOverrides`
  * - `setOverride(name: string, value: FlagValue) -> void`
  * - `clear() -> void`
  * - `urlTemplate(name: string) -> string`
+ *
+ * When implementing the methods, you could choose to push overrides into your
+ * feature flag provider whenever `setOverride` is called... then refresh the
+ * parts of your app that depend on that flag.
+ * Another approach is to read from `getOverrides()` when the app loads. In this
+ * demo class the strategy is localStorage, we could monkey patch our flag
+ * provider to read from there so overridden flags are available after the app
+ * is reloaded.
  */
 export default function MockFeatureFlagIntegration(): FeatureFlagAdapter {
   //
@@ -56,7 +64,6 @@ export default function MockFeatureFlagIntegration(): FeatureFlagAdapter {
       `https://github.com/search?q=repo%3Agetsentry%2Fsentry-options-automator+OR+repo%3Agetsentry%2Fsentry+${name}&type=code`,
 
     setOverride: (name: string, value: FlagValue) => {
-      // only boolean flags in sentry
       if (typeof value === 'boolean') {
         try {
           const prev = getLocalStorage();

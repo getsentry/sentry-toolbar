@@ -37,11 +37,12 @@ function FlagValueBooleanInput({name, flag}: {name: string; flag: FlagOverrides[
   const {setOverride} = useFeatureFlagsContext();
 
   const [isActive, setIsActive] = useState(flag.override !== undefined ? Boolean(flag.override) : Boolean(flag.value));
-
+  const id = `toggle-${name}`;
   return (
-    <label htmlFor={`toggle-${name}`} className="flex items-center gap-1 text-xs">
+    <label htmlFor={id} className="flex items-center gap-1 text-xs">
       <code>{String(isActive)}</code>
       <SwitchButton
+        id={id}
         size="sm"
         isActive={isActive}
         onClick={() => {

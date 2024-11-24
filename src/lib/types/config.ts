@@ -37,7 +37,7 @@ interface ConnectionConfig {
 
 interface FeatureFlagsConfig {
   /**
-   * Optional FeatureFlag integration.
+   * Optional FeatureFlag adapter, or other provider.
    */
   featureFlags?: undefined | FeatureFlagAdapter;
 }
