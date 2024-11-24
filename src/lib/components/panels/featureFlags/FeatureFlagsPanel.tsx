@@ -1,6 +1,8 @@
 import {cx} from 'cva';
 import {useContext, useState} from 'react';
+import ExternalLink from 'toolbar/components/base/ExternalLink';
 import IconChevron from 'toolbar/components/icon/IconChevron';
+import IconSettings from 'toolbar/components/icon/IconSettings';
 import CustomOverride from 'toolbar/components/panels/featureFlags/CustomOverride';
 import FeatureFlagFilters from 'toolbar/components/panels/featureFlags/FeatureFlagFilters';
 import {
@@ -35,10 +37,12 @@ function FeatureFlagConfigHelp() {
       <h1 className={cx(sectionBorder, sectionPadding, 'flex flex-row justify-between font-medium')}>
         <span>Feature Flags</span>
       </h1>
-      <div>
-        <h3>Feature flags aren&apos;t set up.</h3>
-        <p>
-          To view your feature flags in the Sentry Dev Toolbar, <a href="#">please read our docs</a>.
+      <div className={cx(sectionPadding, 'flex grow flex-col items-center justify-center gap-1')}>
+        <IconSettings size="xxl" />
+        <h3 className="text-sm text-gray-400">Feature flags aren&apos;t set up.</h3>
+        <p className="px-1 text-center text-xs text-gray-300">
+          To view your feature flags in the Sentry Dev Toolbar,{' '}
+          <ExternalLink to={{url: 'https://docs.sentry.io'}}>please read our docs</ExternalLink>.
         </p>
       </div>
     </section>
