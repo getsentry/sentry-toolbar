@@ -1,0 +1,29 @@
+import type {Meta, StoryObj} from '@storybook/react';
+import SwitchButton from 'toolbar/components/base/SwitchButton';
+
+const meta: Meta<typeof SwitchButton> = {
+  title: 'components/base/SwitchButton',
+  component: SwitchButton,
+  argTypes: {
+    size: {
+      control: 'select',
+      options: ['sm', 'lg'],
+    },
+    isActive: {
+      control: 'boolean',
+    },
+    children: {
+      control: 'text',
+    },
+  },
+};
+
+export default meta;
+type Story = StoryObj<typeof SwitchButton>;
+
+export const Default: Story = {
+  args: {
+    size: 'sm',
+    isActive: false,
+  },
+};

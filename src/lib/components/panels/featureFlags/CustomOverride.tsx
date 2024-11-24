@@ -1,40 +1,40 @@
-import {useState} from 'react';
+import {useCallback, useState} from 'react';
+import Input from 'toolbar/components/base/Input';
+import SwitchButton from 'toolbar/components/base/SwitchButton';
 import IconAdd from 'toolbar/components/icon/IconAdd';
-import {useFeatureFlagsContext} from 'toolbar/components/panels/featureFlags/featureFlagsContext';
-import SwitchButton from 'toolbar/components/SwitchButton';
 
-export default function CustomOverride({setComponentActive}: {setComponentActive: (value: boolean) => void}) {
-  const {setOverride} = useFeatureFlagsContext();
+interface Props {
+  onSubmit: (name: string, value: boolean) => void;
+}
 
+export default function CustomOverride({onSubmit}: Props) {
   const [name, setName] = useState('');
   const [isActive, setIsActive] = useState(false);
 
+  const resetForm = useCallback(() => {
+    setName('');
+    setIsActive(false);
+  }, []);
+
   return (
     <form
-      className="grid grid-cols-[auto_max-content_max-content] items-center gap-1"
+      className="relative grid grid-cols-[auto_max-content_max-content] items-center gap-1 text-sm tracking-[0.01rem]"
       onSubmit={e => {
         e.preventDefault();
-        setOverride(name, isActive);
-        setComponentActive(false);
-        setName('');
-        setIsActive(false);
+        resetForm();
+        onSubmit(name, isActive);
       }}>
-      <input
-        className="h-[26px] w-full resize-y rounded-md border bg-white p-0.75 pl-1 text-xs transition-[border,box-shadow] duration-100 focus:border-purple-300 focus:outline-none focus:ring-0"
-        placeholder="Flag name to override"
-        value={name}
-        onChange={e => setName(e.target.value.toLowerCase())}
-      />
+      <Input placeholder="Flag name to override" value={name} onChange={e => setName(e.target.value.toLowerCase())} />
       <SwitchButton
-        size="big"
         isActive={isActive}
         onClick={e => {
           e.preventDefault();
           setIsActive(!isActive);
         }}
+        size="lg"
       />
       <button
-        className="relative inline-block h-[26px] w-[28px] rounded-md border bg-white p-0.75 pl-[7px] text-xs font-semibold transition-[background,border,box-shadow] disabled:cursor-not-allowed disabled:opacity-65"
+        className="relative inline-block rounded-md border bg-white p-0.75 text-xs font-semibold transition-[background,border,box-shadow] disabled:cursor-not-allowed disabled:opacity-65"
         type="submit"
         disabled={!name.length}>
         <IconAdd size="xs" />

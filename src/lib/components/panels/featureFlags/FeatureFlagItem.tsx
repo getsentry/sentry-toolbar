@@ -1,51 +1,52 @@
 import {useContext, useState} from 'react';
+import SwitchButton from 'toolbar/components/base/SwitchButton';
 import {useFeatureFlagsContext} from 'toolbar/components/panels/featureFlags/featureFlagsContext';
-import SwitchButton from 'toolbar/components/SwitchButton';
 import ConfigContext from 'toolbar/context/ConfigContext';
-import type {FeatureFlag} from 'toolbar/types/config';
+import type {FlagOverrides} from 'toolbar/types/featureFlags';
 
-export default function FeatureFlagItem({flag}: {flag: FeatureFlag}) {
+export default function FeatureFlagItem({name, flag}: {name: string; flag: FlagOverrides[string]}) {
   const {featureFlags} = useContext(ConfigContext);
 
   return (
     <div className="flex flex-row justify-between gap-0.25 border-b border-b-translucentGray-200 py-1.5">
       <div className="flex items-start">
-        {featureFlags?.urlTemplate?.(flag.name) ? (
-          <a href={featureFlags.urlTemplate(flag.name)} className="text-blue-400">
-            {flag.name}
+        {featureFlags?.urlTemplate?.(name) ? (
+          <a href={featureFlags.urlTemplate(name)} className="text-blue-400">
+            {name}
           </a>
         ) : (
-          <span>{flag.name}</span>
+          <span>{name}</span>
         )}
       </div>
       <div className="">
-        <FlagValueInput flag={flag} />
+        <FlagValueInput name={name} flag={flag} />
       </div>
     </div>
   );
 }
 
-function FlagValueInput({flag}: {flag: FeatureFlag}) {
+function FlagValueInput({name, flag}: {name: string; flag: FlagOverrides[string]}) {
   if (typeof flag.value === 'boolean' || flag.override === true || flag.override === false) {
-    return <FlagValueBooleanInput flag={flag} />;
+    return <FlagValueBooleanInput name={name} flag={flag} />;
   }
 
   return <code>{flag.override !== undefined ? String(flag.override) : String(flag.value)}</code>;
 }
 
-function FlagValueBooleanInput({flag}: {flag: FeatureFlag}) {
+function FlagValueBooleanInput({name, flag}: {name: string; flag: FlagOverrides[string]}) {
   const {setOverride} = useFeatureFlagsContext();
 
   const [isActive, setIsActive] = useState(flag.override !== undefined ? Boolean(flag.override) : Boolean(flag.value));
-
+  const id = `toggle-${name}`;
   return (
-    <label htmlFor={`toggle-${flag.name}`} className="flex items-center gap-1 text-xs">
+    <label htmlFor={id} className="flex items-center gap-1 text-xs">
       <code>{String(isActive)}</code>
       <SwitchButton
+        id={id}
         size="sm"
         isActive={isActive}
         onClick={() => {
-          setOverride(flag.name, !isActive);
+          setOverride(name, !isActive);
           setIsActive(!isActive);
         }}></SwitchButton>
     </label>

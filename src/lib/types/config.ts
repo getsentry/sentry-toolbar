@@ -1,4 +1,5 @@
 import type SentrySDK from '@sentry/types';
+import type {FeatureFlagAdapter} from 'toolbar/types/featureFlags';
 
 interface ConnectionConfig {
   /**
@@ -34,28 +35,11 @@ interface ConnectionConfig {
   sentryApiPath: string | undefined;
 }
 
-export type FlagValue = boolean | string | number | undefined;
-export type FeatureFlagMap = Record<string, {override: FlagValue; value: FlagValue}>;
-export interface FeatureFlag {
-  name: string;
-  override?: FlagValue;
-  value?: FlagValue;
-}
 interface FeatureFlagsConfig {
   /**
-   * Optional FeatureFlag adapter fields.
+   * Optional FeatureFlag adapter, or other provider.
    */
-  featureFlags?: undefined | FeatureFlagProvider;
-}
-
-/**
- * TODO: change or finalize this interface.
- */
-export interface FeatureFlagProvider {
-  clearOverrides?: () => void;
-  getFeatureFlagMap?: () => FeatureFlagMap;
-  setOverrideValue?: (name: string, override: FlagValue) => void;
-  urlTemplate?: (name: string) => string | undefined;
+  featureFlags?: undefined | FeatureFlagAdapter;
 }
 
 interface OrgConfig {
