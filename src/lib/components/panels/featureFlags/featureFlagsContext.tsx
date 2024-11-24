@@ -1,18 +1,13 @@
-import type {ReactNode} from 'react';
+import type {Dispatch, ReactNode, SetStateAction} from 'react';
 import {createContext, useCallback, useContext, useState} from 'react';
-import ConfigContext from 'toolbar/context/ConfigContext';
-import type {FeatureFlagMap, FlagValue} from 'toolbar/types/config';
+import type {Prefilter} from 'toolbar/components/panels/featureFlags/FeatureFlagsPanel';
+import type {FeatureFlagAdapter, FlagOverrides, FlagValue} from 'toolbar/types/featureFlags';
 
 interface Context {
   /**
    * Call through to the user-supplied clearOverrides() function to reset override state.
    */
   clearOverrides: () => void;
-
-  /**
-   * The map of effective feature flags.
-   */
-  featureFlagMap: FeatureFlagMap;
 
   /**
    * Whether the state of overridden flags has changed in this session. After
@@ -22,43 +17,105 @@ interface Context {
   isDirty: boolean;
 
   /**
+   * Whether we're showing all flags, or only overridden ones
+   */
+  prefilter: Prefilter;
+
+  /**
+   * What flag names to search/filter for.
+   *
+   * The filter is case-insensitive, with partial name matching.
+   */
+  searchTerm: string;
+
+  /**
    * Set an override. Marks the state as dirty.
    *
    * Setting an override back to default will not un-mark the dirty flag.
    */
   setOverride: (name: string, value: FlagValue) => void;
+
+  /**
+   * Set whether to show & filter by all flags, or only overridden ones
+   */
+  setPrefilter: Dispatch<SetStateAction<Prefilter>>;
+
+  /**
+   * Set the search term for flags.
+   *
+   * Flags are compared case-insensitively
+   */
+  setSearchTerm: Dispatch<SetStateAction<string>>;
+
+  /**
+   * The rows that match both the prefilter, and the search term.
+   */
+  visibleRows: [string, FlagOverrides[string]][];
 }
 
 const FeatureFlagContext = createContext<Context>({
   clearOverrides: () => {},
-  featureFlagMap: {},
   isDirty: false,
+  prefilter: 'all',
+  searchTerm: '',
   setOverride: () => {},
+  setPrefilter: () => {},
+  setSearchTerm: () => {},
+  visibleRows: [],
 });
 
-export function FeatureFlagsContextProvider({children}: {children: ReactNode}) {
-  const {featureFlags} = useContext(ConfigContext);
+interface Props {
+  children: ReactNode;
+  featureFlags: FeatureFlagAdapter;
+}
+
+export function FeatureFlagsContextProvider({children, featureFlags}: Props) {
+  const [featureFlagOverrides, setFeatureFlagOverrides] = useState<FlagOverrides>(
+    () => featureFlags.getOverrides?.() ?? {}
+  );
 
   const [isDirty, setIsDirty] = useState(false);
-  const [featureFlagMap, setFeatureFlagMap] = useState(() => featureFlags?.getFeatureFlagMap?.() ?? {});
+  const [searchTerm, setSearchTerm] = useState('');
+  const [prefilter, setPrefilter] = useState<Prefilter>('all');
+
+  const refresh = useCallback(() => {
+    setIsDirty(true);
+    setFeatureFlagOverrides(featureFlags.getOverrides?.() ?? {});
+  }, [featureFlags]);
 
   const setOverride = useCallback(
     (name: string, value: FlagValue) => {
-      featureFlags?.setOverrideValue?.(name, value);
-      setIsDirty(true);
-      setFeatureFlagMap(featureFlags?.getFeatureFlagMap?.() ?? {});
+      featureFlags.setOverride?.(name, value);
+      refresh();
     },
-    [featureFlags]
+    [featureFlags, refresh]
   );
 
   const clearOverrides = useCallback(() => {
-    featureFlags?.clearOverrides?.();
-    setIsDirty(true);
-    setFeatureFlagMap(featureFlags?.getFeatureFlagMap?.() ?? {});
-  }, [featureFlags]);
+    featureFlags.clearOverrides?.();
+    refresh();
+  }, [featureFlags, refresh]);
+
+  const visibleRows = Object.entries(featureFlagOverrides).filter(([name, flag]) => {
+    const {value, override} = flag;
+    const overrideOnly = prefilter === 'overrides';
+    const isOverridden = override !== undefined && value !== override;
+    const matchesSearch = name.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase());
+    return overrideOnly ? isOverridden && matchesSearch : matchesSearch;
+  });
 
   return (
-    <FeatureFlagContext.Provider value={{isDirty, featureFlagMap, setOverride, clearOverrides}}>
+    <FeatureFlagContext.Provider
+      value={{
+        clearOverrides,
+        isDirty,
+        prefilter,
+        searchTerm,
+        setOverride,
+        setPrefilter,
+        setSearchTerm,
+        visibleRows,
+      }}>
       {children}
     </FeatureFlagContext.Provider>
   );
