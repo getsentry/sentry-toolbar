@@ -17,5 +17,6 @@ export default function useCurrentSentryTransactionName() {
     return () => {};
   }, [client]);
 
+  console.log({transactionName, searchTerm: transactionToSearchTerm(transactionName)});
   return transactionToSearchTerm(transactionName);
 }
