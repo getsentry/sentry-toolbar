@@ -4,7 +4,7 @@ import FeatureFlagItem from 'toolbar/components/panels/featureFlags/FeatureFlagI
 import {useFeatureFlagsContext} from 'toolbar/components/panels/featureFlags/featureFlagsContext';
 
 export default function FeatureFlagTable() {
-  const {clearOverrides, prefilter, visibleRows} = useFeatureFlagsContext();
+  const {clearOverrides, prefilter, urlTemplate, visibleRows} = useFeatureFlagsContext();
 
   if (!visibleRows.length) {
     return <div>No flags to display</div>;
@@ -14,7 +14,7 @@ export default function FeatureFlagTable() {
     <Fragment>
       <div>
         {visibleRows.map(([name, flag]) => (
-          <FeatureFlagItem key={name} name={name} flag={flag} />
+          <FeatureFlagItem key={name} name={name} flag={flag} url={urlTemplate?.(name)} />
         ))}
       </div>
 

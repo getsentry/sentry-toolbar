@@ -1,4 +1,3 @@
-import type SentrySDK from '@sentry/types';
 import type {FeatureFlagAdapter} from 'toolbar/types/featureFlags';
 
 interface ConnectionConfig {
@@ -83,8 +82,10 @@ interface RenderConfig {
   theme?: 'system' | 'dark' | 'light';
 }
 
-export interface Configuration extends ConnectionConfig, FeatureFlagsConfig, OrgConfig, RenderConfig {
-  SentrySDK?: typeof SentrySDK;
-  trackAnalytics?: (props: {eventKey: string; eventName: string}) => void;
+interface DebugConfig {
   debug?: boolean;
+}
+
+export interface Configuration extends ConnectionConfig, FeatureFlagsConfig, OrgConfig, RenderConfig, DebugConfig {
+  trackAnalytics?: (props: {eventKey: string; eventName: string}) => void;
 }

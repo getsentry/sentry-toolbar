@@ -1,22 +1,20 @@
-import {useContext, useState} from 'react';
+import {useState} from 'react';
+import ExternalLink from 'toolbar/components/base/ExternalLink';
 import SwitchButton from 'toolbar/components/base/SwitchButton';
 import {useFeatureFlagsContext} from 'toolbar/components/panels/featureFlags/featureFlagsContext';
-import ConfigContext from 'toolbar/context/ConfigContext';
-import type {FlagOverrides} from 'toolbar/types/featureFlags';
+import type {FeatureFlagAdapter, FlagOverrides} from 'toolbar/types/featureFlags';
 
-export default function FeatureFlagItem({name, flag}: {name: string; flag: FlagOverrides[string]}) {
-  const {featureFlags} = useContext(ConfigContext);
+interface Props {
+  name: string;
+  flag: FlagOverrides[string];
+  url: ReturnType<NonNullable<FeatureFlagAdapter['urlTemplate']>>;
+}
 
+export default function FeatureFlagItem({name, flag, url}: Props) {
   return (
     <div className="flex flex-row justify-between gap-0.25 border-b border-b-translucentGray-200 py-1.5">
       <div className="flex items-start">
-        {featureFlags?.urlTemplate?.(name) ? (
-          <a href={featureFlags.urlTemplate(name)} className="text-blue-400">
-            {name}
-          </a>
-        ) : (
-          <span>{name}</span>
-        )}
+        {url ? <ExternalLink to={{url}}>{name}</ExternalLink> : <span>{name}</span>}
       </div>
       <div className="">
         <FlagValueInput name={name} flag={flag} />

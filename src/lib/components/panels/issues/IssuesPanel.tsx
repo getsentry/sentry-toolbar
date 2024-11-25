@@ -34,7 +34,7 @@ export default function IssuesPanel() {
           <SentryAppLink to={{url: `/issues/`, query: {project: organizationSlug}}}>Issues</SentryAppLink>
         </span>
       </h1>
-      <div className="mx-1.5 flex flex-col gap-0.25 border-b border-b-translucentGray-200 py-0.75 text-sm font-bold text-gray-300">
+      <div className="flex flex-col gap-0.25 border-b border-b-translucentGray-200 px-2 py-0.75 text-sm text-gray-300">
         <span>Unresolved issues related to this page</span>
       </div>
 
@@ -56,7 +56,7 @@ export default function IssuesPanel() {
             itemRenderer={(props: {item: Group}) => (
               <IssueListItem {...props} members={members?.json} teams={teams?.json} />
             )}
-            emptyMessage={() => <p>No items to show</p>}
+            emptyMessage={() => <p className="px-2 py-1 text-sm text-gray-400">No items to show</p>}
           />
         </InfiniteListState>
       </div>

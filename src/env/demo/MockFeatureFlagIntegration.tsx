@@ -62,7 +62,6 @@ export default function MockFeatureFlagIntegration(): FeatureFlagAdapter {
     },
     urlTemplate: (name: string) =>
       `https://github.com/search?q=repo%3Agetsentry%2Fsentry-options-automator+OR+repo%3Agetsentry%2Fsentry+${name}&type=code`,
-
     setOverride: (name: string, value: FlagValue) => {
       if (typeof value === 'boolean') {
         try {
