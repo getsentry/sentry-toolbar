@@ -136,7 +136,7 @@ function MyReactApp() {
       theme: 'light',
 
       // Debug
-      debug: false,
+      debug: 'false',
     }
   });
 

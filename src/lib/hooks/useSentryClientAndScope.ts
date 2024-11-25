@@ -22,18 +22,10 @@ type WindowWithSentry = Window & {
 
 export default function useSentryClientAndScope() {
   const sentryCarrier = (window as WindowWithSentry).__SENTRY__;
-  const sentryScope = sentryCarrier && getSentryScope(sentryCarrier);
-  const sentryClient = sentryCarrier && getSentryClient(sentryCarrier);
+  const scope = sentryCarrier && getSentryScope(sentryCarrier);
+  const client = sentryCarrier && getSentryClient(sentryCarrier);
 
-  if (!sentryScope || !sentryClient) {
-    // using console log for now, will change this when moving to dev tool bar repo
-
-    console.log(
-      "Couldn't find a Sentry SDK scope or client. Make sure you're using a Sentry SDK with version 7.x or 8.x"
-    );
-  }
-
-  return {scope: sentryScope, client: sentryClient};
+  return {scope, client};
 }
 
 /**

@@ -1,13 +1,16 @@
 import {cx} from 'cva';
-import {useCallback, useRef, useState} from 'react';
+import {useCallback, useContext, useRef, useState} from 'react';
 import UnauthPill from 'toolbar/components/unauth/UnauthPill';
 import {useApiProxyInstance} from 'toolbar/context/ApiProxyContext';
+import ConfigContext from 'toolbar/context/ConfigContext';
+import {DebugTarget} from 'toolbar/types/config';
 
 const POPUP_MESSAGE_DELAY_MS = 3_000;
 
 const buttonClass = cx('rounded-full p-1 hover:bg-gray-500 hover:underline');
 
 export default function Login() {
+  const {debug} = useContext(ConfigContext);
   const apiProxy = useApiProxyInstance();
 
   const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -27,7 +30,8 @@ export default function Login() {
     setIsLoggingIn(true);
 
     const signal = new AbortController().signal;
-    apiProxy.exec(signal, 'request-authn', []);
+
+    apiProxy.exec(signal, 'request-authn', debug?.includes(DebugTarget.LOGIN_SUCCESS) ? [] : [3000]);
 
     // start timer, after a sec ask about popups
     if (timeoutRef.current) {
@@ -36,7 +40,7 @@ export default function Login() {
     timeoutRef.current = window.setTimeout(() => {
       setShowPopupBlockerMessage(true);
     }, POPUP_MESSAGE_DELAY_MS);
-  }, [apiProxy]);
+  }, [apiProxy, debug]);
 
   return (
     <UnauthPill>

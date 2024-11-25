@@ -29,7 +29,7 @@ export default function App() {
       theme: 'light',
 
       // Debug
-      debug: import.meta.env.VITE_SENTRY_TOOLBAR_DEBUG === 'true',
+      debug: import.meta.env.VITE_SENTRY_TOOLBAR_DEBUG,
     });
   }, []);
 

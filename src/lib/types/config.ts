@@ -82,8 +82,25 @@ interface RenderConfig {
   theme?: 'system' | 'dark' | 'light';
 }
 
+export enum DebugTarget {
+  LOGGING = 'logging',
+  LOGIN_SUCCESS = 'login-success',
+  SETTINGS = 'settings',
+  STATE = 'state',
+}
 interface DebugConfig {
-  debug?: boolean;
+  /**
+   * You can set debugging to a comma-separated string containing
+   * different levels of debugging to enable.
+   *
+   * Set to "all" to enable everything.
+   *
+   * The list of different topics is:
+   * - `logging`
+   * - `login-success`
+   * - `state`
+   */
+  debug?: DebugTarget[];
 }
 
 export interface Configuration extends ConnectionConfig, FeatureFlagsConfig, OrgConfig, RenderConfig, DebugConfig {

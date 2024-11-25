@@ -4,6 +4,7 @@ import type {ReactNode} from 'react';
 import ConfigContext from 'toolbar/context/ConfigContext';
 import defaultConfig from 'toolbar/context/defaultConfig';
 import {getSentryIFrameOrigin} from 'toolbar/sentryApi/urls';
+import {DebugTarget} from 'toolbar/types/config';
 import ApiProxy, {type ProxyState} from 'toolbar/utils/ApiProxy';
 
 const ApiProxyStateContext = createContext<ProxyState>('connecting');
@@ -19,7 +20,7 @@ export function ApiProxyContextProvider({children}: Props) {
 
   const log = useCallback(
     (...args: unknown[]) => {
-      if (debug) {
+      if (debug?.includes(DebugTarget.LOGGING)) {
         console.log('<ApiProxyContextProvider>', ...args);
       }
     },

@@ -1,5 +1,5 @@
 import {getSentryIFrameOrigin} from 'toolbar/sentryApi/urls';
-import type {Configuration} from 'toolbar/types/config';
+import {DebugTarget, type Configuration} from 'toolbar/types/config';
 
 type Resolve = (value: unknown) => void;
 type Reject = (reason?: any) => void; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -47,7 +47,7 @@ export default class ApiProxy {
   }
 
   private log(...args: unknown[]) {
-    if (this._config.debug) {
+    if (this._config.debug?.includes(DebugTarget.LOGGING)) {
       console.log('ApiProxy', ...args);
     }
   }
