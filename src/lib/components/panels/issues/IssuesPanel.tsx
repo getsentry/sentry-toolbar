@@ -15,7 +15,7 @@ export default function IssuesPanel() {
   const {organizationSlug, projectIdOrSlug} = useContext(ConfigContext);
   const transactionName = useCurrentSentryTransactionName();
   const queryResult = useInfiniteIssuesList({
-    query: transactionName ? `url:${transactionName}` : '',
+    query: transactionName ? `transaction:${transactionName}` : '',
   });
   const {data: members} = useFetchSentryData({
     ...useMembersQuery(String(organizationSlug), String(projectIdOrSlug)),
