@@ -13,15 +13,6 @@ interface ConnectionConfig {
   sentryOrigin: string;
 
   /**
-   * The region of the sentry organization when hosted on Sentry Cloud.`
-   *
-   * Valid values: `"us"` or `"de"`
-   *
-   * Only applies if you're using Sentry Cloud on `sentry.io` as your sentry origin.
-   */
-  sentryRegion: string | undefined;
-
-  /**
    * The path prefix for the api endpoints.
    *
    * Example: `/api/0`
