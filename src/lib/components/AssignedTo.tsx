@@ -64,7 +64,6 @@ function hashIdentifier(identifier: string) {
 }
 
 function getAvatarColor(identifier: string | undefined): Color {
-  console.log(identifier);
   // Gray if the identifier is not set
   if (identifier === undefined) {
     return '#847a8c' as Color;

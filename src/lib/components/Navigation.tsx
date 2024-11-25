@@ -14,6 +14,7 @@ import IconSettings from 'toolbar/components/icon/IconSettings';
 import {useApiProxyInstance} from 'toolbar/context/ApiProxyContext';
 import ConfigContext from 'toolbar/context/ConfigContext';
 import useNavigationExpansion from 'toolbar/hooks/useNavigationExpansion';
+import {DebugTarget} from 'toolbar/types/config';
 
 const navClassName = cx(['flex flex-col items-center gap-1 p-1']);
 
@@ -71,7 +72,7 @@ export default function Navigation() {
         <Fragment>
           <hr className={navSeparator} />
 
-          {debug ? (
+          {debug?.includes(DebugTarget.SETTINGS) ? (
             <NavLink {...toPathOrHome('/settings')} title="Settings" className={navItemClassName({})}>
               <IconSettings size="sm" />
             </NavLink>

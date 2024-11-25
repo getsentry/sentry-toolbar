@@ -267,7 +267,6 @@ describe('ApiProxy', () => {
       sendPortConnect(proxy);
 
       const promise = proxy.exec(new AbortController().signal, 'log', ['hello world']);
-      console.log(requestPostMessageSpy.mock.calls);
       expect(requestPostMessageSpy).toHaveBeenCalledWith(
         {$id: 1, message: {$function: 'log', $args: ['hello world']}},
         []
