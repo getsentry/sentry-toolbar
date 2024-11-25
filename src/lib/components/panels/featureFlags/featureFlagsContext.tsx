@@ -48,6 +48,11 @@ interface Context {
   setSearchTerm: Dispatch<SetStateAction<string>>;
 
   /**
+   * The URL Template implementation that was passed in
+   */
+  urlTemplate: FeatureFlagAdapter['urlTemplate'];
+
+  /**
    * The rows that match both the prefilter, and the search term.
    */
   visibleRows: [string, FlagOverrides[string]][];
@@ -61,6 +66,7 @@ const FeatureFlagContext = createContext<Context>({
   setOverride: () => {},
   setPrefilter: () => {},
   setSearchTerm: () => {},
+  urlTemplate: () => undefined,
   visibleRows: [],
 });
 
@@ -114,6 +120,7 @@ export function FeatureFlagsContextProvider({children, featureFlags}: Props) {
         setOverride,
         setPrefilter,
         setSearchTerm,
+        urlTemplate: featureFlags.urlTemplate,
         visibleRows,
       }}>
       {children}
