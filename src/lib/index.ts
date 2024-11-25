@@ -29,7 +29,7 @@ function hydrateDebug(debug: InitConfig['debug']): Configuration['debug'] {
   const parts = debug?.split(',');
   const debugTargets = Object.values(DebugTarget);
 
-  if (parts.includes('all')) {
+  if (parts.includes('all') || parts.includes('true')) {
     return debugTargets;
   }
 
