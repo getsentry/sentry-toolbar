@@ -9,10 +9,9 @@ type TestCase = [
 ];
 const testCases: TestCase[] = [
   [
-    'SaaS config: root only, no region',
+    'SaaS config: root',
     {
       sentryOrigin: 'https://sentry.io',
-      sentryRegion: undefined,
       sentryApiPath: '/api/0/',
       organizationSlug: 'acme',
     },
@@ -23,43 +22,14 @@ const testCases: TestCase[] = [
     },
   ],
   [
-    'SaaS config: subdomain, no region',
+    'SaaS config: subdomain',
     {
       sentryOrigin: 'https://acme.sentry.io',
-      sentryRegion: undefined,
       sentryApiPath: '/api/0/',
       organizationSlug: 'acme',
     },
     {
       getSentryApiBaseUrl: 'https://acme.sentry.io/api/0/',
-      getSentryWebOrigin: 'https://acme.sentry.io',
-      getSentryIFrameOrigin: 'https://acme.sentry.io',
-    },
-  ],
-  [
-    'SaaS config: root, insert region',
-    {
-      sentryOrigin: 'https://sentry.io',
-      sentryRegion: 'us',
-      sentryApiPath: '/api/0/',
-      organizationSlug: 'acme',
-    },
-    {
-      getSentryApiBaseUrl: 'https://acme.sentry.io/region/us/api/0/',
-      getSentryWebOrigin: 'https://acme.sentry.io',
-      getSentryIFrameOrigin: 'https://acme.sentry.io',
-    },
-  ],
-  [
-    'SaaS config: subdomain, replace with region',
-    {
-      sentryOrigin: 'https://acme.sentry.io',
-      sentryRegion: 'us',
-      sentryApiPath: '/api/0/',
-      organizationSlug: 'acme',
-    },
-    {
-      getSentryApiBaseUrl: 'https://acme.sentry.io/region/us/api/0/',
       getSentryWebOrigin: 'https://acme.sentry.io',
       getSentryIFrameOrigin: 'https://acme.sentry.io',
     },
@@ -68,21 +38,6 @@ const testCases: TestCase[] = [
     'sentry devserver config',
     {
       sentryOrigin: 'https://dev.getsentry.net:8000',
-      sentryRegion: undefined,
-      sentryApiPath: '/api/0',
-      organizationSlug: 'acme',
-    },
-    {
-      getSentryApiBaseUrl: 'https://dev.getsentry.net:8000/api/0',
-      getSentryWebOrigin: 'https://dev.getsentry.net:8000',
-      getSentryIFrameOrigin: 'https://dev.getsentry.net:8000',
-    },
-  ],
-  [
-    'sentry devserver config with region configured',
-    {
-      sentryOrigin: 'https://dev.getsentry.net:8000',
-      sentryRegion: 'us',
       sentryApiPath: '/api/0',
       organizationSlug: 'acme',
     },
@@ -96,7 +51,6 @@ const testCases: TestCase[] = [
     'yarn dev:standalone config',
     {
       sentryOrigin: 'http://localhost:8080',
-      sentryRegion: undefined,
       sentryApiPath: '/api/0',
       organizationSlug: 'acme',
     },
