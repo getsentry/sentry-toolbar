@@ -16,7 +16,7 @@ export default function ExternalLink({children, className, to, onClick}: Props) 
   const url = qs.stringifyUrl(to);
 
   return (
-    <a href={url} onClick={onClick} rel="noreferrer noopener" target="_blank" className={className ?? linkClass}>
+    <a href={url} onClick={onClick} rel="noreferrer noopener" target="_blank" className={cx(linkClass, className)}>
       {children}
     </a>
   );
