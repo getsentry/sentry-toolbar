@@ -68,7 +68,7 @@ function FeedbackType({item}: {item: FeedbackIssueListItem}) {
 function FeedbackDates({firstSeen}: {firstSeen: string}) {
   return (
     <span className="flex items-center gap-0.5 whitespace-nowrap text-xs text-gray-300">
-      <RelativeDateTime date={new Date(firstSeen)} suffix="ago" />
+      <RelativeDateTime date={new Date(firstSeen)} />
     </span>
   );
 }
