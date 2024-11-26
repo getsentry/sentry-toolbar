@@ -1,6 +1,10 @@
-import PlatformIconBase from 'toolbar/components/icon/PlatformIconBase';
+import {cva} from 'cva';
+import type {HTMLAttributes} from 'react';
+import {forwardRef} from 'react';
 import * as PlatformIconProxy from 'toolbar/components/icon/PlatformIconProxy';
 import type {IconProps} from 'toolbar/components/icon/types';
+import {iconSizes} from 'toolbar/components/icon/types';
+import {useIconDefaultsContext} from 'toolbar/context/IconDefaultsContext';
 
 const PLATFORM_TO_ICON: Record<string, keyof typeof PlatformIconProxy> = {
   amazon: 'amazon',
@@ -234,18 +238,39 @@ const PLATFORM_TO_ICON: Record<string, keyof typeof PlatformIconProxy> = {
   // Please add them where they belong alphabetically
 } as const;
 
-interface Props extends IconProps {
+interface Props extends IconProps, HTMLAttributes<typeof HTMLElement> {
   platform: keyof typeof PLATFORM_TO_ICON;
+  isLoading?: boolean;
 }
 
-export default function PlatformIcon({platform, ...iconProps}: Props) {
+const wrapperClass = cva('relative bg-surface-100', {
+  variants: {
+    isLoading: {
+      true: 'rounded-sm',
+      false: '',
+    },
+  },
+});
+
+const PlatformIcon = forwardRef<HTMLDivElement, Props>(function PlatformIcon(
+  {platform, isLoading, ...iconProps}: Props,
+  ref
+) {
+  const {size: providedSize = 'sm', ...rest} = useIconDefaultsContext(iconProps);
+  const size = iconSizes[providedSize];
+
   const iconName = PLATFORM_TO_ICON[platform] ?? '_default';
   const Icon = PlatformIconProxy[iconName];
   return (
-    <PlatformIconBase {...iconProps}>
-      <Icon />
-    </PlatformIconBase>
+    <div
+      {...rest}
+      className={wrapperClass({isLoading})}
+      style={{width: size, height: size, ...iconProps.style}}
+      ref={ref}>
+      {isLoading ? null : <Icon />}
+    </div>
   );
-}
+});
+export default PlatformIcon;
 
 export const PLATFORMS = Object.keys(PLATFORM_TO_ICON);
