@@ -6,6 +6,7 @@ import IconChat from 'toolbar/components/icon/IconChat';
 import IconFatal from 'toolbar/components/icon/IconFatal';
 import IconImage from 'toolbar/components/icon/IconImage';
 import IconPlay from 'toolbar/components/icon/IconPlay';
+import ProjectIcon from 'toolbar/components/project/ProjectIcon';
 import SentryAppLink from 'toolbar/components/SentryAppLink';
 import ConfigContext from 'toolbar/context/ConfigContext';
 import useReplayCount from 'toolbar/hooks/useReplayCount';
@@ -77,7 +78,14 @@ function FeedbackMessage({message}: {message: string | null | undefined}) {
 }
 
 function FeedbackProject({item}: {item: FeedbackIssueListItem}) {
-  return <span className="truncate text-xs">{item.shortId}</span>;
+  const {organizationSlug, projectIdOrSlug} = useContext(ConfigContext);
+
+  return (
+    <div className="flex flex-row items-center gap-0.5">
+      <ProjectIcon size="xs" organizationSlug={organizationSlug} projectIdOrSlug={projectIdOrSlug} />
+      <span className="truncate text-xs">{item.shortId}</span>;
+    </div>
+  );
 }
 
 function useReplayCountForFeedbacks(organization: string | number) {

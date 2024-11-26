@@ -2,6 +2,7 @@ import {cx} from 'cva';
 import {useContext} from 'react';
 import AssignedTo from 'toolbar/components/AssignedTo';
 import RelativeDateTime from 'toolbar/components/datetime/RelativeDateTime';
+import ProjectIcon from 'toolbar/components/project/ProjectIcon';
 import SentryAppLink from 'toolbar/components/SentryAppLink';
 import ConfigContext from 'toolbar/context/ConfigContext';
 import type {Group} from 'toolbar/sentryApi/types/group';
@@ -30,7 +31,7 @@ export default function IssueListItem({
         <IssueMessage message={item.metadata.value} />
         <div className="flex justify-between">
           <IssueProject item={item} />
-          <AssignedTo assignedTo={item.assignedTo} teams={teams} members={members} />
+          {item.assignedTo ? <AssignedTo assignedTo={item.assignedTo} teams={teams} members={members} /> : null}
         </div>
       </div>
     </div>
@@ -64,5 +65,12 @@ function IssueMessage({message}: {message: string | null | undefined}) {
 }
 
 function IssueProject({item}: {item: Group}) {
-  return <span className="truncate text-xs">{item.shortId}</span>;
+  const {organizationSlug, projectIdOrSlug} = useContext(ConfigContext);
+
+  return (
+    <div className="flex flex-row items-center gap-0.5">
+      <ProjectIcon size="xs" organizationSlug={organizationSlug} projectIdOrSlug={projectIdOrSlug} />
+      <span className="truncate text-xs">{item.shortId}</span>
+    </div>
+  );
 }

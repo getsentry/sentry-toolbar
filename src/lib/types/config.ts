@@ -36,7 +36,7 @@ interface OrgConfig {
   /**
    * The organization that users should login to
    */
-  organizationSlug: string | number;
+  organizationSlug: string;
 
   /**
    * The project for which this website is associated
