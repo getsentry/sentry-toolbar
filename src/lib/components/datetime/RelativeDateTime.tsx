@@ -1,14 +1,14 @@
-import type {FormatDistanceToken} from 'date-fns';
+import type {Locale} from 'date-fns';
 import {formatDistanceToNowStrict} from 'date-fns/formatDistanceToNowStrict';
 import {useCallback, useEffect, useRef} from 'react';
 
 interface Props {
   date: Date;
-  suffix: string;
+  locale?: Locale;
   updateInterval?: 'second' | 'minute' | 'hour';
 }
 
-export default function RelativeDateTime({date, suffix, updateInterval}: Props) {
+export default function RelativeDateTime({date, locale, updateInterval}: Props) {
   const elem = useRef<HTMLTimeElement>(null);
 
   const timeout = useRef<number | null>(null);
@@ -17,22 +17,10 @@ export default function RelativeDateTime({date, suffix, updateInterval}: Props) 
     () =>
       formatDistanceToNowStrict(date, {
         roundingMethod: 'floor',
-        locale: {
-          formatDistance: (token: FormatDistanceToken, count: number) => {
-            const formatMap: Partial<Record<FormatDistanceToken, string>> = {
-              xSeconds: `${count}s ${suffix}`,
-              xMinutes: `${count}min ${suffix}`,
-              xHours: `${count}hr ${suffix}`,
-              xDays: `${count}d ${suffix}`,
-              xWeeks: `${count}w ${suffix}`,
-              xMonths: `${count}mo ${suffix}`,
-              xYears: `${count}y ${suffix}`,
-            };
-            return formatMap[token] || `${count}d`;
-          },
-        },
+        addSuffix: true,
+        locale,
       }),
-    [date, suffix]
+    [date, locale]
   );
 
   useEffect(() => {
@@ -55,7 +43,7 @@ export default function RelativeDateTime({date, suffix, updateInterval}: Props) 
     };
   }, [date, getDistance, updateInterval]);
 
-  return <time ref={elem} dateTime={date.toISOString()} dangerouslySetInnerHTML={{__html: getDistance()}}></time>;
+  return <time ref={elem} dateTime={date.toISOString()} dangerouslySetInnerHTML={{__html: getDistance()}} />;
 }
 
 enum DurationInMS {

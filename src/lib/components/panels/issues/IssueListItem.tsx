@@ -8,6 +8,7 @@ import ConfigContext from 'toolbar/context/ConfigContext';
 import type {Group} from 'toolbar/sentryApi/types/group';
 import type Member from 'toolbar/sentryApi/types/Member';
 import type {OrganizationTeam} from 'toolbar/sentryApi/types/Organization';
+import {localeTimeAgeAbbr} from 'toolbar/utils/locale';
 
 export default function IssueListItem({
   item,
@@ -53,9 +54,9 @@ function IssueType({item}: {item: Group}) {
 function IssueSeenDates({firstSeen, lastSeen}: {firstSeen: string; lastSeen: string}) {
   return (
     <span className="flex items-center gap-0.5 whitespace-nowrap text-xs text-gray-300">
-      <RelativeDateTime date={new Date(lastSeen)} suffix="ago" />
+      <RelativeDateTime date={new Date(lastSeen)} />
       <span className="font-bold">·</span>
-      <RelativeDateTime date={new Date(firstSeen)} suffix="old" />
+      <RelativeDateTime date={new Date(firstSeen)} locale={localeTimeAgeAbbr} />
     </span>
   );
 }

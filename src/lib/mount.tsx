@@ -1,12 +1,16 @@
+import {setDefaultOptions} from 'date-fns';
 import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
 import AppRouter from 'toolbar/components/AppRouter';
 import Providers from 'toolbar/context/Providers';
 import styles from 'toolbar/index.css?inline'; // returned as a string
 import type {Configuration} from 'toolbar/types/config';
+import {localeTimeRelativeAbbr} from 'toolbar/utils/locale';
 
 export default function mount(rootNode: HTMLElement, config: Configuration) {
   const {host, reactMount, portalMount} = buildDom(config);
+
+  setDefaultOptions({locale: localeTimeRelativeAbbr});
 
   const cleanup = setColorScheme(reactMount, config.theme ?? 'system');
 
