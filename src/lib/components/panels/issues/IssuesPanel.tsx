@@ -1,4 +1,5 @@
 import {useContext} from 'react';
+import PlatformIcon from 'toolbar/components/icon/PlatformIcon';
 import InfiniteListItems from 'toolbar/components/InfiniteListItems';
 import InfiniteListState from 'toolbar/components/InfiniteListState';
 import IssueListItem from 'toolbar/components/panels/issues/IssueListItem';
@@ -8,11 +9,16 @@ import SentryAppLink from 'toolbar/components/SentryAppLink';
 import ConfigContext from 'toolbar/context/ConfigContext';
 import useFetchSentryData from 'toolbar/hooks/fetch/useFetchSentryData';
 import useCurrentSentryTransactionName from 'toolbar/hooks/useCurrentSentryTransactionName';
-import {useMembersQuery, useTeamsQuery} from 'toolbar/sentryApi/queryKeys';
+import {useMembersQuery, useTeamsQuery, useProjectQuery} from 'toolbar/sentryApi/queryKeys';
 import type {Group} from 'toolbar/sentryApi/types/group';
 
 export default function IssuesPanel() {
   const {organizationSlug, projectIdOrSlug} = useContext(ConfigContext);
+
+  const {data: project, isSuccess: projectIsSuccess} = useFetchSentryData({
+    ...useProjectQuery(String(organizationSlug), String(projectIdOrSlug)),
+  });
+
   const transactionName = useCurrentSentryTransactionName();
   const queryResult = useInfiniteIssuesList({
     query: transactionName ? `transaction:${transactionName}` : '',
@@ -29,10 +35,13 @@ export default function IssuesPanel() {
 
   return (
     <section className="flex grow flex-col">
-      <h1 className="flex flex-col border-b border-b-translucentGray-200 px-2 py-1">
-        <span className="font-medium">
-          <SentryAppLink to={{url: `/issues/`, query: {project: organizationSlug}}}>Issues</SentryAppLink>
-        </span>
+      <h1 className="border-b border-b-translucentGray-200 px-2 py-1">
+        <SentryAppLink
+          className="flex flex-row items-center gap-1 font-medium"
+          to={{url: `/issues/`, query: {project: organizationSlug}}}>
+          <PlatformIcon isLoading={!projectIsSuccess} platform={project?.json.platform ?? 'default'} size="sm" />
+          Issues
+        </SentryAppLink>
       </h1>
       <div className="flex flex-col gap-0.25 border-b border-b-translucentGray-200 px-2 py-0.75 text-sm text-gray-300">
         <span>Unresolved issues related to this page</span>

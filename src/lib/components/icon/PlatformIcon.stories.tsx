@@ -14,6 +14,14 @@ const meta: Meta<typeof PlatformIcon> = {
       control: 'select',
       options: Object.keys(iconSizes),
     },
+    isLoading: {
+      control: 'boolean',
+    },
+  },
+  args: {
+    platform: 'default',
+    size: 'sm',
+    isLoading: false,
   },
 };
 
@@ -54,6 +62,33 @@ Sizes.decorators = [
         {Object.keys(iconSizes).map(size => (
           <span key={size}>
             <PlatformIcon {...Sizes.args} size={size} />
+            {size}
+          </span>
+        ))}
+      </div>
+    );
+  },
+];
+
+export const IsLoading: Story = {
+  argTypes: {
+    isLoading: {
+      control: 'boolean',
+      default: true,
+    },
+  },
+  args: {
+    isLoading: true,
+  },
+};
+
+IsLoading.decorators = [
+  () => {
+    return (
+      <div className="flex flex-row flex-wrap gap-1">
+        {Object.keys(iconSizes).map(size => (
+          <span key={size}>
+            <PlatformIcon {...IsLoading.args} size={size} />
             {size}
           </span>
         ))}
