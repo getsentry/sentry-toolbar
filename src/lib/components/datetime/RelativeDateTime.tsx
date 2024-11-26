@@ -36,14 +36,14 @@ export default function RelativeDateTime({date, suffix, updateInterval}: Props) 
   );
 
   useEffect(() => {
-    const updateDuration = intervalToTimeout(updateInterval ?? getRecommendedInterval(date));
+    const timeoutDuration = intervalToTimeout(updateInterval ?? getRecommendedInterval(date));
     const createTimeout = () =>
       window.setTimeout(() => {
         if (elem.current) {
           elem.current.innerText = getDistance();
         }
         timeout.current = createTimeout();
-      }, updateDuration);
+      }, timeoutDuration);
 
     timeout.current = createTimeout();
 
