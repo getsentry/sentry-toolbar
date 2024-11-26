@@ -43,7 +43,7 @@ export default function RelativeDateTime({date, locale, updateInterval}: Props) 
     };
   }, [date, getDistance, updateInterval]);
 
-  return <time ref={elem} dateTime={date.toISOString()} dangerouslySetInnerHTML={{__html: getDistance()}}></time>;
+  return <time ref={elem} dateTime={date.toISOString()} dangerouslySetInnerHTML={{__html: getDistance()}} />;
 }
 
 enum DurationInMS {
