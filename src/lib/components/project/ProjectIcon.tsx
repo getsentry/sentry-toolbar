@@ -1,3 +1,4 @@
+import {Tooltip, TooltipContent, TooltipTrigger} from 'toolbar/components/base/tooltip/Tooltip';
 import PlatformIcon from 'toolbar/components/icon/PlatformIcon';
 import useFetchSentryData from 'toolbar/hooks/fetch/useFetchSentryData';
 import {useProjectQuery} from 'toolbar/sentryApi/queryKeys';
@@ -13,5 +14,12 @@ export default function ProjectIcon({size, organizationSlug, projectIdOrSlug}: P
     ...useProjectQuery(String(organizationSlug), String(projectIdOrSlug)),
   });
 
-  return <PlatformIcon size={size} isLoading={!isSuccess} platform={data?.json.platform ?? 'default'} />;
+  return (
+    <Tooltip>
+      <TooltipTrigger>
+        <PlatformIcon size={size} isLoading={!isSuccess} platform={data?.json.platform ?? 'default'} />
+      </TooltipTrigger>
+      <TooltipContent>{data?.json.name}</TooltipContent>
+    </Tooltip>
+  );
 }

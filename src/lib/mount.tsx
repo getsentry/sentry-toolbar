@@ -12,7 +12,10 @@ export default function mount(rootNode: HTMLElement, config: Configuration) {
 
   setDefaultOptions({locale: localeTimeRelativeAbbr});
 
-  const cleanup = setColorScheme(reactMount, config.theme ?? 'system');
+  const cleanup = [
+    setColorScheme(reactMount, config.theme ?? 'system'),
+    setColorScheme(portalMount, config.theme ?? 'system'),
+  ];
 
   const reactRoot = createRoot(reactMount);
   reactRoot.render(
@@ -22,17 +25,18 @@ export default function mount(rootNode: HTMLElement, config: Configuration) {
       </Providers>
     </StrictMode>
   );
-
-  rootNode.appendChild(host);
-
-  return () => {
-    cleanup();
-    host.remove();
-
+  cleanup.push(() => {
     // `setTimeout` helps to avoid "Attempted to synchronously unmount a root while React was already rendering."
     setTimeout(() => {
       reactRoot.unmount();
     }, 0);
+  });
+
+  rootNode.appendChild(host);
+  cleanup.push(() => host.remove());
+
+  return () => {
+    cleanup.forEach(fn => fn());
   };
 }
 
@@ -54,6 +58,8 @@ function buildDom(config: Configuration) {
 
   const portalMount = DOCUMENT.createElement('div');
   portalMount.dataset.name = 'portal-mount';
+  // We can use tailwind classes because tailwind will read all `src/**/*/.tsx` files
+  portalMount.className = 'relative z-portal';
   shadow.appendChild(portalMount);
 
   return {host, reactMount, portalMount};
