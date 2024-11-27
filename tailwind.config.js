@@ -1,6 +1,3 @@
-/* eslint-disable filename-export/match-default-export */
-// const defaultTheme = require('tailwindcss/defaultTheme');
-
 /** @type {import('tailwindcss').Config} */
 const tailwind_config = {
   content: ['./index.html', './src/**/*.tsx'],
@@ -12,7 +9,9 @@ const tailwind_config = {
 
       zIndex: {
         initial: 1,
-        debug: 9999,
+        debug: 9_999,
+        portal: 10_000,
+        tooltip: 10_001,
       },
 
       icon: {

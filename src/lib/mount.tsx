@@ -8,11 +8,13 @@ import type {Configuration} from 'toolbar/types/config';
 import {localeTimeRelativeAbbr} from 'toolbar/utils/locale';
 
 export default function mount(rootNode: HTMLElement, config: Configuration) {
+  const cleanup: (() => void)[] = [];
   const {host, reactMount, portalMount} = buildDom(config);
 
   setDefaultOptions({locale: localeTimeRelativeAbbr});
 
-  const cleanup = setColorScheme(reactMount, config.theme ?? 'system');
+  cleanup.push(setColorScheme(reactMount, config.theme ?? 'system'));
+  cleanup.push(setColorScheme(portalMount, config.theme ?? 'system'));
 
   const reactRoot = createRoot(reactMount);
   reactRoot.render(
@@ -22,17 +24,16 @@ export default function mount(rootNode: HTMLElement, config: Configuration) {
       </Providers>
     </StrictMode>
   );
+  cleanup.push(() =>
+    // `setTimeout` helps to avoid "Attempted to synchronously unmount a root while React was already rendering."
+    setTimeout(() => reactRoot.unmount(), 0)
+  );
 
   rootNode.appendChild(host);
+  cleanup.push(() => host.remove());
 
   return () => {
-    cleanup();
-    host.remove();
-
-    // `setTimeout` helps to avoid "Attempted to synchronously unmount a root while React was already rendering."
-    setTimeout(() => {
-      reactRoot.unmount();
-    }, 0);
+    cleanup.forEach(fn => fn());
   };
 }
 
@@ -54,6 +55,8 @@ function buildDom(config: Configuration) {
 
   const portalMount = DOCUMENT.createElement('div');
   portalMount.dataset.name = 'portal-mount';
+  // We can use tailwind classes because tailwind will read all `src/**/*/.tsx` files
+  portalMount.className = 'relative z-portal';
   shadow.appendChild(portalMount);
 
   return {host, reactMount, portalMount};
