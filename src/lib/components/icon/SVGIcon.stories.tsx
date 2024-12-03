@@ -1,4 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/react';
+import type {ComponentProps} from 'react';
 import IconAdd from 'toolbar/components/icon/IconAdd';
 import IconChat from 'toolbar/components/icon/IconChat';
 import IconChevron from 'toolbar/components/icon/IconChevron';
@@ -15,6 +16,7 @@ import IconQuestion from 'toolbar/components/icon/IconQuestion';
 import IconSentry from 'toolbar/components/icon/IconSentry';
 import IconSettings from 'toolbar/components/icon/IconSettings';
 import SVGIconBase from 'toolbar/components/icon/SVGIconBase';
+import type {IconProps} from 'toolbar/components/icon/types';
 import {iconSizes} from 'toolbar/components/icon/types';
 
 const icons = {
@@ -39,10 +41,6 @@ const meta: Meta<typeof SVGIconBase> = {
   title: 'Components/icon/SVGIconBase',
   component: SVGIconBase,
   argTypes: {
-    platform: {
-      control: 'select',
-      options: Object.keys(icons),
-    },
     size: {
       control: 'select',
       options: Object.keys(iconSizes),
@@ -65,7 +63,7 @@ All.decorators = [
       <div className="grid grid-flow-row gap-1">
         {Object.entries(icons).map(([name, Icon]) => (
           <span key={name}>
-            <Icon {...All.args} />
+            <Icon {...(All.args as ComponentProps<typeof Icon>)} direction={undefined} />
             {name}
           </span>
         ))}
@@ -84,7 +82,7 @@ Sizes.decorators = [
       <div className="flex flex-row flex-wrap gap-1">
         {Object.keys(iconSizes).map(size => (
           <span key={size}>
-            <IconAdd {...Sizes.args} size={size} />
+            <IconAdd {...Sizes.args} size={size as IconProps['size']} />
             {size}
           </span>
         ))}

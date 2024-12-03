@@ -1,7 +1,9 @@
 import {cva} from 'cva';
+import type {ReactNode} from 'react';
 
 interface Props {
   size: 'mini' | 'normal';
+  children?: ReactNode;
 }
 
 const spinnerClassName = cva(
@@ -19,6 +21,6 @@ const spinnerClassName = cva(
   }
 );
 
-export default function Loading({size = 'normal'}: Props) {
-  return <div className={spinnerClassName({size})} />;
+export default function Loading({children, size = 'normal'}: Props) {
+  return <div className={spinnerClassName({size})}>{children}</div>;
 }

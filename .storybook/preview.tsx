@@ -35,7 +35,7 @@ const preview: Preview = {
     ),
     (Story, {parameters: {storage}}) => {
       Object.entries(storage || {}).forEach(([key, value]) => {
-        localStorage.setItem(key, value);
+        localStorage.setItem(key, String(value));
       });
       return <Story />;
     },

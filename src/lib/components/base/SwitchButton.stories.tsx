@@ -12,9 +12,6 @@ const meta: Meta<typeof SwitchButton> = {
     isActive: {
       control: 'boolean',
     },
-    children: {
-      control: 'text',
-    },
   },
 };
 
