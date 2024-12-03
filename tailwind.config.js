@@ -11,7 +11,8 @@ const tailwind_config = {
         initial: 1,
         debug: 9_999,
         portal: 10_000,
-        tooltip: 10_001,
+        menu: 10_001,
+        tooltip: 10_002,
       },
 
       icon: {
