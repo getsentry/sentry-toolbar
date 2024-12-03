@@ -1,5 +1,6 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import PlatformIcon, {PLATFORMS} from 'toolbar/components/icon/PlatformIcon';
+import type {IconProps} from 'toolbar/components/icon/types';
 import {iconSizes} from 'toolbar/components/icon/types';
 
 const meta: Meta<typeof PlatformIcon> = {
@@ -51,7 +52,7 @@ All.decorators = [
 
 export const Sizes: Story = {
   args: {
-    platform: 'git',
+    platform: 'git' as const,
   },
 };
 
@@ -61,7 +62,11 @@ Sizes.decorators = [
       <div className="flex flex-row flex-wrap gap-1">
         {Object.keys(iconSizes).map(size => (
           <span key={size}>
-            <PlatformIcon {...Sizes.args} size={size} />
+            <PlatformIcon
+              {...Sizes.args}
+              platform={Sizes.args?.platform ?? 'default'}
+              size={size as IconProps['size']}
+            />
             {size}
           </span>
         ))}
@@ -88,7 +93,11 @@ IsLoading.decorators = [
       <div className="flex flex-row flex-wrap gap-1">
         {Object.keys(iconSizes).map(size => (
           <span key={size}>
-            <PlatformIcon {...IsLoading.args} size={size} />
+            <PlatformIcon
+              {...IsLoading.args}
+              platform={Sizes.args?.platform ?? 'default'}
+              size={size as IconProps['size']}
+            />
             {size}
           </span>
         ))}
