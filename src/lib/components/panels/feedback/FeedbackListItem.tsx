@@ -27,7 +27,6 @@ export default function FeedbackListItem({
   const {feedbackHasReplay} = useReplayCountForFeedbacks(organizationSlug);
   const hasReplayId = feedbackHasReplay(item.id);
   const isFatal = ['crash_report_embed_form', 'user_report_envelope'].includes(item.metadata.source ?? '');
-  const hasAttachments = item.latestEventHasAttachments;
   const hasComments = item.numComments > 0;
 
   return (
@@ -44,8 +43,8 @@ export default function FeedbackListItem({
             {hasComments ? <IconChat size="xs" /> : null}
             {isFatal ? <IconFatal size="xs" color="red400" /> : null}
             {hasReplayId ? <IconPlay size="xs" /> : null}
-            {hasAttachments ? <IconImage size="xs" /> : null}
-            {item.assignedTo ? <AssignedTo assignedTo={item.assignedTo} teams={teams} members={members} /> : null}
+            {item.latestEventHasAttachments ? <IconImage size="xs" /> : null}
+            <AssignedTo assignedTo={item.assignedTo} teams={teams} members={members} />
           </div>
         </div>
       </div>

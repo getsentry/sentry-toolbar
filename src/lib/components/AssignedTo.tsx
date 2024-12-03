@@ -1,40 +1,67 @@
-import {Fragment} from 'react';
+import {cx} from 'cva';
+import {Tooltip, TooltipTrigger, TooltipContent} from 'toolbar/components/base/tooltip/Tooltip';
 import type {GroupAssignedTo} from 'toolbar/sentryApi/types/group';
 import type Member from 'toolbar/sentryApi/types/Member';
 import type {OrganizationTeam} from 'toolbar/sentryApi/types/Organization';
 
+const initialsClassName = cx('flex size-2 items-center justify-center truncate text-[8px] text-white');
+
 export default function AssignedTo({
   assignedTo,
-  teams,
+  teams: _teams,
   members,
 }: {
   assignedTo: GroupAssignedTo | null | undefined;
   teams: OrganizationTeam[] | undefined;
   members: Member[] | undefined;
 }) {
-  const teamAvatar = teams?.filter(t => t.id === assignedTo?.id)[0]?.avatar;
-  const userAvatar = members?.filter(m => m.user?.id === assignedTo?.id)[0]?.user?.avatar;
-  const avatarUrl =
-    userAvatar?.avatarType === 'gravatar' || userAvatar?.avatarType === 'upload' ? userAvatar?.avatarUrl : undefined;
+  if (!assignedTo) {
+    return (
+      <Tooltip>
+        <TooltipTrigger>
+          <span className="flex size-2 rounded-full border bg-surface-100" />
+        </TooltipTrigger>
+        <TooltipContent>Unassigned</TooltipContent>
+      </Tooltip>
+    );
+  }
 
-  return (
-    <Fragment>
-      {avatarUrl ? (
-        <img className="size-2 rounded-full object-cover" src={avatarUrl} />
-      ) : (
-        assignedTo && (
+  if (assignedTo.type === 'user') {
+    const userAvatar = members?.filter(m => m.user?.id === assignedTo.id)[0]?.user?.avatar;
+    const displayName = assignedTo.name;
+    const userAvatarUrl =
+      userAvatar?.avatarType === 'gravatar' || userAvatar?.avatarType === 'upload' ? userAvatar?.avatarUrl : undefined;
+
+    return (
+      <Tooltip initialOpen>
+        <TooltipTrigger>
+          {userAvatarUrl ? (
+            <img className="size-2 rounded-full object-cover" src={userAvatarUrl} />
+          ) : (
+            <span
+              className={cx(initialsClassName, 'rounded-full')}
+              style={{backgroundColor: getAvatarColor(assignedTo.name)}}>
+              {getAvatarInitials(assignedTo.name)}
+            </span>
+          )}
+        </TooltipTrigger>
+        <TooltipContent>Assigned to {displayName}</TooltipContent>
+      </Tooltip>
+    );
+  } else if (assignedTo.type === 'team') {
+    return (
+      <Tooltip>
+        <TooltipTrigger>
           <span
-            className="flex size-2 items-center justify-center truncate text-[8px] text-white"
-            style={{
-              backgroundColor: getAvatarColor(assignedTo?.email || assignedTo?.name),
-              borderRadius: teamAvatar ? '3px' : '9999px',
-            }}>
-            <text>{getAvatarInitials(assignedTo?.name)}</text>
+            className={cx(initialsClassName, 'rounded-[3px]')}
+            style={{backgroundColor: getAvatarColor(assignedTo.name)}}>
+            {getAvatarInitials(assignedTo.name)}
           </span>
-        )
-      )}
-    </Fragment>
-  );
+        </TooltipTrigger>
+        <TooltipContent>Assigned to {`#${assignedTo.name}`}</TooltipContent>
+      </Tooltip>
+    );
+  }
 }
 
 const COLORS = [

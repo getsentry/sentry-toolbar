@@ -32,7 +32,7 @@ export default function IssueListItem({
         <IssueMessage message={item.metadata.value} />
         <div className="flex justify-between">
           <IssueProject item={item} />
-          {item.assignedTo ? <AssignedTo assignedTo={item.assignedTo} teams={teams} members={members} /> : null}
+          <AssignedTo assignedTo={item.assignedTo} teams={teams} members={members} />
         </div>
       </div>
     </div>
