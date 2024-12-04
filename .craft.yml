@@ -21,3 +21,11 @@ targets:
       - path: /sentry-toolbar/latest/
         metadata:
           cacheControl: 'public, max-age=60'
+
+  - name: commit-on-git-repository
+    id: getsentry/sentry-toolbar
+    archive: /^sentry-toolbar.tgz$/
+    repositoryUrl: https://github.com/getsentry/sentry-toolbar.git
+    stripComponents: 1
+    branch: main
+    createTag: true
