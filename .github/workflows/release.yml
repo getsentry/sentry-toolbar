@@ -9,7 +9,7 @@ on:
       force:
         description: Force a release even when there are release-blockers (optional)
         required: false
-        default: 'false'
+        default: false
 
 jobs:
   release:
