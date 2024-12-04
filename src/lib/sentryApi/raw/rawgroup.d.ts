@@ -3,7 +3,7 @@
 /**
  * THIS IS A GENERATED FILE
  *
- * Run `generate:api-types` from the root of the repo to recreate it.
+ * Run `pnpm generate:api-types` from the root of the repo to recreate it.
  *
  * Some generated types have been manually modified to simplify things & let them
  * be valid typescript.
