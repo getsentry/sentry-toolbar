@@ -1,6 +1,8 @@
 import {cx} from 'cva';
+import type {ReactElement} from 'react';
 import {useContext, useMemo} from 'react';
 import AssignedTo from 'toolbar/components/AssignedTo';
+import {Tooltip, TooltipTrigger, TooltipContent} from 'toolbar/components/base/tooltip/Tooltip';
 import RelativeDateTime from 'toolbar/components/datetime/RelativeDateTime';
 import IconChat from 'toolbar/components/icon/IconChat';
 import IconFatal from 'toolbar/components/icon/IconFatal';
@@ -40,10 +42,12 @@ export default function FeedbackListItem({
         <div className="flex items-center justify-between">
           <FeedbackProject item={item} />
           <div className="flex flex-row items-center justify-between gap-0.5">
-            {hasComments ? <IconChat size="xs" /> : null}
-            {isFatal ? <IconFatal size="xs" color="red400" /> : null}
-            {hasReplayId ? <IconPlay size="xs" /> : null}
-            {item.latestEventHasAttachments ? <IconImage size="xs" /> : null}
+            {hasComments ? <IconWithTooltip icon={<IconChat size="xs" />} title="Has Activity" /> : null}
+            {isFatal ? <IconWithTooltip icon={<IconFatal size="xs" color="red400" />} title="Linked Error" /> : null}
+            {hasReplayId ? <IconWithTooltip icon={<IconPlay size="xs" />} title="Linked Replay" /> : null}
+            {item.latestEventHasAttachments ? (
+              <IconWithTooltip icon={<IconImage size="xs" />} title="Has Screenshot" />
+            ) : null}
             <AssignedTo assignedTo={item.assignedTo} teams={teams} members={members} />
           </div>
         </div>
@@ -84,6 +88,15 @@ function FeedbackProject({item}: {item: FeedbackIssueListItem}) {
       <ProjectIcon size="xs" organizationSlug={organizationSlug} projectIdOrSlug={projectIdOrSlug} />
       <span className="truncate text-xs">{item.shortId}</span>;
     </div>
+  );
+}
+
+function IconWithTooltip({icon, title}: {icon: ReactElement; title: string}) {
+  return (
+    <Tooltip>
+      <TooltipTrigger>{icon}</TooltipTrigger>
+      <TooltipContent>{title}</TooltipContent>
+    </Tooltip>
   );
 }
 
