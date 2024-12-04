@@ -7,7 +7,7 @@ on:
         description: Version to release
         required: true
       force:
-        description: Force a release even when there are release-blockers (optional, set to non-empty string)
+        description: Force a release even when there are release-blockers (empty string == false)
         required: false
 
 jobs:
