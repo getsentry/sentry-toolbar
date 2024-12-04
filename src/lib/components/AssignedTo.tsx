@@ -33,7 +33,7 @@ export default function AssignedTo({
       userAvatar?.avatarType === 'gravatar' || userAvatar?.avatarType === 'upload' ? userAvatar?.avatarUrl : undefined;
 
     return (
-      <Tooltip initialOpen>
+      <Tooltip>
         <TooltipTrigger>
           {userAvatarUrl ? (
             <img className="size-2 rounded-full object-cover" src={userAvatarUrl} />

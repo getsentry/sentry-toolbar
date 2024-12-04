@@ -1,5 +1,6 @@
 import type {FormatDistanceFn, FormatDistanceFnOptions, FormatDistanceToken} from 'date-fns';
 import {enUS} from 'date-fns/locale/en-US';
+import type User from 'toolbar/sentryApi/types/User';
 
 const distanceUnitAbbr: Record<FormatDistanceToken, string> = {
   lessThanXSeconds: '{{count}}s',
@@ -44,4 +45,17 @@ export const localeTimeRelativeAbbr = {
 export const localeTimeAgeAbbr = {
   ...enUS,
   formatDistance: makeFormatDistance(distanceUnitAbbr, 'in {{distance}}', '{{distance}} old'),
+};
+
+export const localeDataTimeFormatter = (
+  user: User | undefined,
+  {dateStyle = 'long', timeStyle = 'medium'}: Pick<Intl.DateTimeFormatOptions, 'dateStyle' | 'timeStyle'>
+) => {
+  const show24hTime = user?.options.clock24Hours ?? false;
+  return new Intl.DateTimeFormat(user?.options.language ?? 'en', {
+    dateStyle,
+    timeStyle,
+    hour12: !show24hTime,
+    timeZone: user?.options.timezone,
+  });
 };

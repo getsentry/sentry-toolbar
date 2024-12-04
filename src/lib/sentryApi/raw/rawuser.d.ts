@@ -9,21 +9,7 @@
  * be valid typescript.
  */
 
-export interface RawMember {
-  id: string;
-  email: string;
-  name: string;
-  user?: User | null;
-  orgRole: string;
-  pending: boolean;
-  expired: boolean;
-  dateCreated: string;
-  inviteStatus: string;
-  inviterName?: string | null;
-  role: string;
-  roleName: string;
-}
-export interface User {
+export interface RawUser {
   id: string;
   name: string;
   username: string;
@@ -40,7 +26,10 @@ export interface User {
   isStaff: boolean;
   experiments: Experiments;
   emails?: EmailsEntity[] | null;
+  options: Options;
+  flags: Flags;
   avatar: Avatar;
+  identities?: IdentitiesEntity[] | null;
 }
 export interface Experiments {}
 export interface EmailsEntity {
@@ -48,8 +37,36 @@ export interface EmailsEntity {
   email: string;
   is_verified: boolean;
 }
+export interface Options {
+  theme: string;
+  language: string;
+  stacktraceOrder: number;
+  defaultIssueEvent: string;
+  timezone: string;
+  clock24Hours: boolean;
+  prefersIssueDetailsStreamlinedUI: boolean;
+}
+export interface Flags {
+  newsletter_consent_prompt: boolean;
+}
 export interface Avatar {
   avatarType: string;
-  avatarUuid?: string | null;
-  avatarUrl?: string | null;
+  avatarUuid: string;
+  avatarUrl: string;
+}
+export interface IdentitiesEntity {
+  id: string;
+  name: string;
+  organization: Organization;
+  provider: Provider;
+  dateSynced: string;
+  dateVerified: string;
+}
+export interface Organization {
+  slug: string;
+  name: string;
+}
+export interface Provider {
+  id: string;
+  name: string;
 }

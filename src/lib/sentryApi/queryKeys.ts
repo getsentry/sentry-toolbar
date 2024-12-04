@@ -4,6 +4,7 @@ import type {FeedbackIssueListItem, Group} from 'toolbar/sentryApi/types/group';
 import type Member from 'toolbar/sentryApi/types/Member';
 import type {Organization, OrganizationTeam} from 'toolbar/sentryApi/types/Organization';
 import type {Project} from 'toolbar/sentryApi/types/Project';
+import type User from 'toolbar/sentryApi/types/User';
 import type {ApiEndpointQueryKey, QueryKeyEndpointOptions} from 'toolbar/types/api';
 
 export function useOrganizationQuery<Data = Organization>(organizationSlug: string) {
@@ -18,6 +19,14 @@ export function useProjectQuery<Data = Project>(organizationSlug: string, projec
   const {fetchFn} = useSentryApi<Data>();
   return queryOptions({
     queryKey: [`/projects/${organizationSlug}/${projectIdOrSlug}/`, {query: {queryReferrer: 'devtoolbar'}}],
+    queryFn: fetchFn,
+  });
+}
+
+export function useUserQuery<Data = User>(userId: number | 'me') {
+  const {fetchFn} = useSentryApi<Data>();
+  return queryOptions({
+    queryKey: [`/users/${userId}/`, {query: {queryReferrer: 'devtoolbar'}}],
     queryFn: fetchFn,
   });
 }

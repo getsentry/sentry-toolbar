@@ -1,6 +1,10 @@
 import type {Locale} from 'date-fns';
 import {formatDistanceToNowStrict} from 'date-fns/formatDistanceToNowStrict';
 import {useCallback, useEffect, useRef} from 'react';
+import {Tooltip, TooltipContent, TooltipTrigger} from 'toolbar/components/base/tooltip/Tooltip';
+import useFetchSentryData from 'toolbar/hooks/fetch/useFetchSentryData';
+import {useUserQuery} from 'toolbar/sentryApi/queryKeys';
+import {localeDataTimeFormatter} from 'toolbar/utils/locale';
 
 interface Props {
   date: Date;
@@ -10,8 +14,9 @@ interface Props {
 
 export default function RelativeDateTime({date, locale, updateInterval}: Props) {
   const elem = useRef<HTMLTimeElement>(null);
-
   const timeout = useRef<number | null>(null);
+
+  const {data: me} = useFetchSentryData(useUserQuery('me'));
 
   const getDistance = useCallback(
     () =>
@@ -43,7 +48,14 @@ export default function RelativeDateTime({date, locale, updateInterval}: Props) 
     };
   }, [date, getDistance, updateInterval]);
 
-  return <time ref={elem} dateTime={date.toISOString()} dangerouslySetInnerHTML={{__html: getDistance()}} />;
+  return (
+    <Tooltip>
+      <TooltipTrigger>
+        <time ref={elem} dateTime={date.toISOString()} dangerouslySetInnerHTML={{__html: getDistance()}} />
+      </TooltipTrigger>
+      <TooltipContent>{localeDataTimeFormatter(me?.json, {}).format(date)}</TooltipContent>
+    </Tooltip>
+  );
 }
 
 enum DurationInMS {
