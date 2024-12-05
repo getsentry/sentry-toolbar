@@ -34,7 +34,7 @@ export default function FeedbackPanel() {
       <h1 className="border-b border-b-translucentGray-200 px-2 py-1">
         <SentryAppLink
           className="flex flex-row items-center gap-1 font-medium"
-          to={{url: `/issues/`, query: {project: organizationSlug}}}>
+          to={{url: `/feedback/`, query: {project: organizationSlug}}}>
           <ProjectIcon size="sm" organizationSlug={organizationSlug} projectIdOrSlug={projectIdOrSlug} />
           Feedback
         </SentryAppLink>
