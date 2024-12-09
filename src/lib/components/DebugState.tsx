@@ -9,7 +9,6 @@ export default function DebugState() {
   const {debug} = useContext(ConfigContext);
 
   const location = useLocation();
-  console.log(debug?.includes(DebugTarget.STATE));
   return (
     <div className="fixed bottom-0 left-0 z-debug">
       {debug?.includes(DebugTarget.STATE) ? (
