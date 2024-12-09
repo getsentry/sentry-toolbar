@@ -98,7 +98,7 @@
     "eslint": "9.11.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-filename-export": "^1.0.4",
-    "eslint-plugin-import": "2.30.0",
+    "eslint-plugin-import": "2.31.0",
     "eslint-plugin-no-relative-import-paths": "^1.5.5",
     "eslint-plugin-prettier": "5.2.1",
     "eslint-plugin-react": "7.35.0",
