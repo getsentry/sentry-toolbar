@@ -26,28 +26,85 @@ Basically what gets built is:
 
 ```mermaid
 sequenceDiagram
-  participant browser (main)
-  participant browser (iframe)
-  participant browser (popup)
-  participant NPM package
-  participant CDN
-  browser (main)->>NPM package: include
-  NPM package->>CDN: GET js sdk
-  CDN-->>browser (main): js sdk
-  browser (main)->>browser (iframe): iframe.src=/organizations/<org>/toolbar/iframe/ && window.append(iframe)
-  browser (main)->>browser (iframe): postMessage(MessageChannel port2)
-  browser (iframe)->>browser (iframe): listen to MessageChannel port
-  browser (main)->>browser (iframe): proxyFetch("GET /api/0/organizations/<org>/")
-  browser (iframe)-->>browser (main): <response>
-  alt response is 401
-  browser (main)->>browser (popup): open(/organizations/<org>/toolbar/login-success/)
-  browser (popup)->>browser (popup): login
-  browser (popup)-->>browser (main): postMessage(login-success)
-  browser (main)->>browser (iframe): reload
-  else
-  
+  participant SDK as SDK
+  participant iframe as /iframe
+  participant login as /login
+
+  autonumber
+  SDK ->> SDK: init()
+  rect rgba(0, 0, 200, 0.1)
+    SDK ->>+ iframe: document.append()
+    iframe ->> iframe: window.addEventListener('message')
+    iframe ->>- SDK: window.parent.postMessage(state)
   end
+  alt logged-out
+    rect rgba(0, 0, 200, 0.1)
+        SDK ->>+ iframe: iframe.postMessage('request-auth')
+        iframe ->>+ login: window.open('/login')
+        login ->>- iframe: window.opener.postMessage(cookie)
+        iframe --> iframe: document.cookies.set(cookie)
+        iframe ->>- iframe: window.location.reload()
+    end
+
+    rect rgba(0, 0, 200, 0.1)
+        SDK ->>+ iframe: iframe.postMessage('reload')
+        iframe ->>- iframe: window.location.reload()
+    end
+  else invalid-project & invalid-domain
+    rect rgba(0, 0, 200, 0.1)
+        SDK ->>+ iframe: iframe.postMessage('logout')
+        iframe ->> iframe: del document.cookies
+        iframe ->>- iframe: window.location.reload()
+    end
+
+    rect rgba(0, 0, 200, 0.1)
+        SDK ->>+ iframe: iframe.postMessage('reload')
+        iframe ->>- iframe: window.location.reload()
+    end
+  else logged-in
+    rect rgba(0, 0, 200, 0.1)
+        iframe ->> SDK: window.parent.postMessage('port-connect', port)
+    end
+
+    rect rgba(0, 0, 200, 0.1)
+        SDK ->>+ iframe: iframe.postMessage('logout')
+        iframe ->> iframe: document.cookies.clear()
+        iframe ->>- iframe: window.location.reload()
+    end
+
+    rect rgba(0, 0, 200, 0.1)
+        SDK ->>+ iframe: iframe.postMessage('reload')
+        iframe ->>- iframe: window.location.reload()
+    end
+
+    rect rgba(0, 0, 200, 0.1)
+        SDK ->>+ iframe: port.postMessage(req)
+        iframe ->>- SDK: port.postMessage(resp)
+    end
+  end
+
 ```
+
+```mermaid
+flowchart TB
+    pageLoad((Page load)) --> checkState{State?}
+    checkState -- logged-out --> listen
+    checkState -- missing-proj & invalid-config --> listen
+    checkState -- logged-in --> port(setupMessageChannel) --> listen
+    listen(window.addEventListener) --> sendState(sendStateMessage)
+
+    window.handleMessage((window.handleMessage)) --> saveAccessToken --> window.reload
+
+    port.handleMessage((port.handleMessage)) --> checkPortMessage{function?}
+    checkPortMessage -- request-authn --> window.open --depends on window.addEventListener--> replyPortMessage
+    checkPortMessage -- clear-authn --> clearCookie(document.cookie = '') --cookie is set to empty string--> replyPortMessage
+    checkPortMessage -- fetch --> fetch(fetch w/ domain & cookie) --reply with fetch result--> replyPortMessage
+    replyPortMessage(port1.postMessage)
+```
+
+---
+
+## Previously
 
 The setup flow is basically:
 1. JS: Create an iframe element
