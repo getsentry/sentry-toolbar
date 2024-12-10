@@ -5,6 +5,7 @@ import hydrateConfig from 'toolbar/utils/hydrateConfig';
 // Public facing types:
 export type InitConfig = iInitConfig;
 export type Cleanup = () => void;
+export type {FeatureFlagAdapter, FlagMap, FlagValue} from 'toolbar/types/featureFlags';
 
 // Public functions:
 export function init(initConfig: InitConfig): Cleanup {

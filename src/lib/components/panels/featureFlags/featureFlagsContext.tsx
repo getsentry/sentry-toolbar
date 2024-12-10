@@ -1,13 +1,20 @@
 import type {Dispatch, ReactNode, SetStateAction} from 'react';
 import {createContext, useCallback, useContext, useState} from 'react';
 import type {Prefilter} from 'toolbar/components/panels/featureFlags/FeatureFlagsPanel';
-import type {FeatureFlagAdapter, FlagOverrides, FlagValue} from 'toolbar/types/featureFlags';
+import type {FeatureFlagAdapter, FlagMap, FlagValue} from 'toolbar/types/featureFlags';
 
 interface Context {
+  overridesFingerprint: string;
+
   /**
    * Call through to the user-supplied clearOverrides() function to reset override state.
    */
   clearOverrides: () => void;
+
+  /**
+   * All the original flags from the Provider
+   */
+  flags: FlagMap;
 
   /**
    * Whether the state of overridden flags has changed in this session. After
@@ -15,6 +22,11 @@ interface Context {
    * consistent experience.
    */
   isDirty: boolean;
+
+  /**
+   * Overridden flags from the adapter
+   */
+  overrides: FlagMap;
 
   /**
    * Whether we're showing all flags, or only overridden ones
@@ -55,19 +67,22 @@ interface Context {
   /**
    * The rows that match both the prefilter, and the search term.
    */
-  visibleRows: [string, FlagOverrides[string]][];
+  visibleFlagNames: string[];
 }
 
 const FeatureFlagContext = createContext<Context>({
+  overridesFingerprint: '',
   clearOverrides: () => {},
+  flags: {},
   isDirty: false,
+  overrides: {},
   prefilter: 'all',
   searchTerm: '',
   setOverride: () => {},
   setPrefilter: () => {},
   setSearchTerm: () => {},
   urlTemplate: () => undefined,
-  visibleRows: [],
+  visibleFlagNames: [],
 });
 
 interface Props {
@@ -76,9 +91,10 @@ interface Props {
 }
 
 export function FeatureFlagsContextProvider({children, featureFlags}: Props) {
-  const [featureFlagOverrides, setFeatureFlagOverrides] = useState<FlagOverrides>(
-    () => featureFlags.getOverrides?.() ?? {}
-  );
+  const flags = featureFlags.getFlagMap();
+  const overrides = featureFlags.getOverrides();
+
+  const [overridesFingerprint, setOverrideFingerprint] = useState<string>(() => JSON.stringify(overrides));
 
   const [isDirty, setIsDirty] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -86,12 +102,12 @@ export function FeatureFlagsContextProvider({children, featureFlags}: Props) {
 
   const refresh = useCallback(() => {
     setIsDirty(true);
-    setFeatureFlagOverrides(featureFlags.getOverrides?.() ?? {});
+    setOverrideFingerprint(JSON.stringify(featureFlags.getOverrides()));
   }, [featureFlags]);
 
   const setOverride = useCallback(
     (name: string, value: FlagValue) => {
-      featureFlags.setOverride?.(name, value);
+      featureFlags.setOverride(name, value);
       refresh();
     },
     [featureFlags, refresh]
@@ -102,26 +118,26 @@ export function FeatureFlagsContextProvider({children, featureFlags}: Props) {
     refresh();
   }, [featureFlags, refresh]);
 
-  const visibleRows = Object.entries(featureFlagOverrides).filter(([name, flag]) => {
-    const {value, override} = flag;
-    const overrideOnly = prefilter === 'overrides';
-    const isOverridden = override !== undefined && value !== override;
-    const matchesSearch = name.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase());
-    return overrideOnly ? isOverridden && matchesSearch : matchesSearch;
-  });
+  const overrideOnly = prefilter === 'overrides';
+  const visibleFlagNames = overrideOnly
+    ? Object.keys(overrides)
+    : Array.from(new Set([...Object.keys(overrides), ...Object.keys(flags)]));
 
   return (
     <FeatureFlagContext.Provider
       value={{
+        overridesFingerprint,
         clearOverrides,
+        flags,
         isDirty,
+        overrides,
         prefilter,
         searchTerm,
         setOverride,
         setPrefilter,
         setSearchTerm,
         urlTemplate: featureFlags.urlTemplate,
-        visibleRows,
+        visibleFlagNames,
       }}>
       {children}
     </FeatureFlagContext.Provider>
