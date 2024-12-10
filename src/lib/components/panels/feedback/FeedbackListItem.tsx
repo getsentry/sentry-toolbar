@@ -86,7 +86,7 @@ function FeedbackProject({item}: {item: FeedbackIssueListItem}) {
   return (
     <div className="flex flex-row items-center gap-0.5">
       <ProjectIcon size="xs" organizationSlug={organizationSlug} projectIdOrSlug={projectIdOrSlug} />
-      <span className="truncate text-xs">{item.shortId}</span>;
+      <span className="truncate text-xs">{item.shortId}</span>
     </div>
   );
 }
