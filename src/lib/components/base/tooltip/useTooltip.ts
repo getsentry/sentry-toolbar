@@ -12,13 +12,14 @@ import {
   arrow,
 } from '@floating-ui/react';
 import type {Placement} from '@floating-ui/react';
+import type {MutableRefObject} from 'react';
 import {useMemo, useRef, useState} from 'react';
 
 interface TooltipOptions {
   initialOpen?: boolean;
   placement?: Placement;
   open?: boolean;
-  onOpenChange?: (open: boolean) => void;
+  onOpenChange?: (isOpen: boolean) => void;
 }
 
 export default function useTooltip({
@@ -26,7 +27,12 @@ export default function useTooltip({
   placement = 'top',
   open: controlledOpen,
   onOpenChange: setControlledOpen,
-}: TooltipOptions = {}) {
+}: TooltipOptions = {}): {
+  arrowRef: MutableRefObject<null>;
+  open: boolean;
+  setOpen: (isOpen: boolean) => void;
+} & ReturnType<typeof useInteractions> &
+  ReturnType<typeof useFloating> {
   const [uncontrolledOpen, setUncontrolledOpen] = useState(initialOpen);
 
   const open = controlledOpen ?? uncontrolledOpen;
