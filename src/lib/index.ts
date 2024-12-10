@@ -39,4 +39,5 @@ function hydrateDebug(debug: InitConfig['debug']): Configuration['debug'] {
       enabled.push(target);
     }
   });
+  return enabled;
 }
