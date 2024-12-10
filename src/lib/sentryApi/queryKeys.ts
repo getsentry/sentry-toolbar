@@ -55,7 +55,15 @@ export function useInfiniteIssueListQuery<Data = Group[]>(organizationSlug: stri
   return infiniteQueryOptions({
     queryKey: [
       `/organizations/${organizationSlug}/issues/`,
-      {...options, query: {limit: 25, queryReferrer: 'devtoolbar', shortIdLookup: 0, ...options.query}},
+      {
+        ...options,
+        query: {
+          limit: 25,
+          shortIdLookup: 0,
+          ...options.query,
+          queryReferrer: 'devtoolbar',
+        },
+      },
     ] as ApiEndpointQueryKey,
     queryFn: fetchInfiniteFn,
     getNextPageParam,
@@ -71,7 +79,15 @@ export function useInfiniteFeedbackListQuery<Data = FeedbackIssueListItem[]>(
   return infiniteQueryOptions({
     queryKey: [
       `/organizations/${organizationSlug}/issues/`,
-      {...options, query: {limit: 25, queryReferrer: 'devtoolbar', shortIdLookup: 0, ...options.query}},
+      {
+        ...options,
+        query: {
+          limit: 25,
+          shortIdLookup: 0,
+          ...options.query,
+          queryReferrer: 'devtoolbar',
+        },
+      },
     ] as ApiEndpointQueryKey,
     queryFn: fetchInfiniteFn,
     getNextPageParam,
