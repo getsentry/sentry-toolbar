@@ -10,9 +10,9 @@ export default function DebugState() {
 
   const location = useLocation();
   return (
-    <div className="fixed bottom-0 left-0 z-debug">
-      <div className="bg-gray-100 p-1 text-black">
-        {debug?.includes(DebugTarget.STATE) ? (
+    <div>
+      {debug?.includes(DebugTarget.STATE) ? (
+        <div className="fixed bottom-0 left-0 z-debug bg-gray-100 p-1 text-black">
           <pre>
             {JSON.stringify(
               {
@@ -23,8 +23,8 @@ export default function DebugState() {
               2
             )}
           </pre>
-        ) : null}
-      </div>
+        </div>
+      ) : null}
     </div>
   );
 }
