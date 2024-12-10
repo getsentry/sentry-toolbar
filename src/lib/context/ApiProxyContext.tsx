@@ -46,13 +46,20 @@ export function ApiProxyContextProvider({children}: Props) {
     };
   }, [config, log]);
 
+  useEffect(() => {
+    if (proxyState !== lastProxyState) {
+      proxyRef.current.disposePort();
+    }
+  });
+
   const frameSrc = `${getSentryIFrameOrigin(config)}/toolbar/${organizationSlug}/${projectIdOrSlug}/iframe/?logging=${enableLogging ? 1 : 0}`;
 
+  log('Render with state', {proxyState});
   return (
     <ApiProxyContext.Provider value={proxyRef.current}>
       <ApiProxyStateContext.Provider value={proxyState}>
         <iframe
-          key={lastProxyState}
+          key={proxyState}
           referrerPolicy="origin"
           height="0"
           width="0"

@@ -75,11 +75,11 @@ export default class ApiProxy {
   public dispose() {
     this._log('dispose()');
     window.removeEventListener('message', this._handleWindowMessage);
-    this._disposePort();
+    this.disposePort();
     this.setState('connecting');
   }
 
-  private _disposePort() {
+  public disposePort() {
     this._log('disposePort()');
     this._port?.removeEventListener('message', this._handlePortMessage);
     this._port?.close();
@@ -108,7 +108,6 @@ export default class ApiProxy {
       case 'invalid-domain': // fallthrough
       case 'logged-in': // fallthrough
       case 'stale':
-        this._disposePort();
         this.setState(event.data.message);
         break;
       case 'port-connect': {
