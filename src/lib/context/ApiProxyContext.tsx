@@ -3,12 +3,13 @@ import {createContext, useCallback, useContext, useEffect, useRef, useState} fro
 import type {ReactNode} from 'react';
 import ConfigContext from 'toolbar/context/ConfigContext';
 import defaultConfig from 'toolbar/context/defaultConfig';
+import usePrevious from 'toolbar/hooks/usePrevious';
 import {getSentryIFrameOrigin} from 'toolbar/sentryApi/urls';
 import {DebugTarget} from 'toolbar/types/config';
 import ApiProxy, {type ProxyState} from 'toolbar/utils/ApiProxy';
 
 const ApiProxyStateContext = createContext<ProxyState>('connecting');
-const ApiProxyContext = createContext<ApiProxy>(new ApiProxy(defaultConfig));
+const ApiProxyContext = createContext<ApiProxy>(new ApiProxy(defaultConfig, {current: null}));
 
 interface Props {
   children: ReactNode;
@@ -17,18 +18,22 @@ interface Props {
 export function ApiProxyContextProvider({children}: Props) {
   const config = useContext(ConfigContext);
   const {debug, organizationSlug, projectIdOrSlug} = config;
+  const enableLogging = debug?.includes(DebugTarget.LOGGING);
+
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
   const log = useCallback(
     (...args: unknown[]) => {
-      if (debug?.includes(DebugTarget.LOGGING)) {
+      if (enableLogging) {
         console.log('<ApiProxyContextProvider>', ...args);
       }
     },
-    [debug]
+    [enableLogging]
   );
 
-  const proxyRef = useRef<ApiProxy>(new ApiProxy(config));
+  const proxyRef = useRef<ApiProxy>(ApiProxy.singleton(config, iframeRef));
   const [proxyState, setProxyState] = useState<ProxyState>('connecting');
+  const lastProxyState = usePrevious(proxyState);
 
   useEffect(() => {
     proxyRef.current.listen();
@@ -41,12 +46,20 @@ export function ApiProxyContextProvider({children}: Props) {
     };
   }, [config, log]);
 
-  const frameSrc = `${getSentryIFrameOrigin(config)}/toolbar/${organizationSlug}/${projectIdOrSlug}/iframe/?logging=${debug ? 1 : 0}`;
+  const frameSrc = `${getSentryIFrameOrigin(config)}/toolbar/${organizationSlug}/${projectIdOrSlug}/iframe/?logging=${enableLogging ? 1 : 0}`;
 
   return (
     <ApiProxyContext.Provider value={proxyRef.current}>
       <ApiProxyStateContext.Provider value={proxyState}>
-        <iframe referrerPolicy="origin" height="0" width="0" src={frameSrc} className="hidden" />
+        <iframe
+          key={lastProxyState}
+          referrerPolicy="origin"
+          height="0"
+          width="0"
+          src={frameSrc}
+          className="hidden"
+          ref={iframeRef}
+        />
         {children}
       </ApiProxyStateContext.Provider>
     </ApiProxyContext.Provider>

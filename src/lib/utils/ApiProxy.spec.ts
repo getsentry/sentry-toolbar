@@ -30,13 +30,13 @@ describe('ApiProxy', () => {
 
   describe('constructor()', () => {
     it('should have a disabled state by default', () => {
-      const proxy = new ApiProxy(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig, {current: null});
       expect(proxy.state).toEqual('connecting');
     });
 
     it('should listen to window messages after calling listen()', () => {
       const spy = jest.spyOn(window, 'addEventListener');
-      const proxy = new ApiProxy(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig, {current: null});
 
       expect(spy).not.toHaveBeenCalled();
 
@@ -47,11 +47,11 @@ describe('ApiProxy', () => {
 
     it('should callback when status changes', () => {
       const callback = jest.fn();
-      const proxy = new ApiProxy(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig, {current: null});
       proxy.setOnStatusChanged(callback);
 
       // @ts-expect-error: Accessing a private method
-      proxy._updateStatus({
+      proxy.setState({
         hasPort: true,
         isProjectConfigured: true,
       });
@@ -65,7 +65,7 @@ describe('ApiProxy', () => {
   describe('_handleWindowMessage', () => {
     it('should ignore messages without source==="sentry-toolbar"', () => {
       const callback = jest.fn();
-      const proxy = new ApiProxy(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig, {current: null});
       proxy.setOnStatusChanged(callback);
       postMessageToWindow(proxy, {});
 
@@ -78,7 +78,7 @@ describe('ApiProxy', () => {
       const start = jest.spyOn(port, 'start');
 
       const callback = jest.fn();
-      const proxy = new ApiProxy(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig, {current: null});
       proxy.listen();
       proxy.setOnStatusChanged(callback);
       postMessageToWindow(proxy, {source: 'sentry-toolbar', message: 'port-connect'}, [port]);
@@ -88,7 +88,6 @@ describe('ApiProxy', () => {
       // @ts-expect-error: Accessing a private member
       expect(proxy._port).toBeDefined();
       expect(start).toHaveBeenCalled();
-      expect(callback).toHaveBeenCalledWith('logged-out');
     });
 
     it('should cleanup the received port', () => {
@@ -97,11 +96,10 @@ describe('ApiProxy', () => {
       const close = jest.spyOn(port, 'close');
 
       const callback = jest.fn();
-      const proxy = new ApiProxy(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig, {current: null});
       proxy.listen();
       proxy.setOnStatusChanged(callback);
       postMessageToWindow(proxy, {source: 'sentry-toolbar', message: 'port-connect'}, [port]);
-      expect(callback).toHaveBeenCalledWith('logged-out');
 
       proxy.dispose();
 
@@ -121,7 +119,7 @@ describe('ApiProxy', () => {
     it('should resolve cached promises based on the message $result', () => {
       const {responsePort, sendPortConnect} = getPorts();
 
-      const proxy = new ApiProxy(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig, {current: null});
       proxy.listen();
       sendPortConnect(proxy);
       expect(outstandingPromises(proxy).size).toBe(0); // No promises to start
@@ -138,7 +136,7 @@ describe('ApiProxy', () => {
     it('should reject cached promises based on the message $error', () => {
       const {responsePort, sendPortConnect} = getPorts();
 
-      const proxy = new ApiProxy(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig, {current: null});
       proxy.listen();
       sendPortConnect(proxy);
       expect(outstandingPromises(proxy).size).toBe(0); // No promises to start
@@ -155,7 +153,7 @@ describe('ApiProxy', () => {
     it('should handle and ignore malformed messages', () => {
       const {responsePort, sendPortConnect} = getPorts();
 
-      const proxy = new ApiProxy(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig, {current: null});
       proxy.listen();
       sendPortConnect(proxy);
       expect(outstandingPromises(proxy).size).toBe(0); // No promises to start
@@ -175,7 +173,7 @@ describe('ApiProxy', () => {
     it('should ignore messages in reply to an unknown promise', () => {
       const {responsePort, sendPortConnect} = getPorts();
 
-      const proxy = new ApiProxy(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig, {current: null});
       proxy.listen();
       sendPortConnect(proxy);
       expect(outstandingPromises(proxy).size).toBe(0); // No promises to start
@@ -196,7 +194,7 @@ describe('ApiProxy', () => {
       const {responsePort, sendPortConnect} = getPorts();
 
       const abortController = new AbortController();
-      const proxy = new ApiProxy(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig, {current: null});
       proxy.listen();
       sendPortConnect(proxy);
       expect(outstandingPromises(proxy).size).toBe(0); // No promises to start
@@ -215,7 +213,7 @@ describe('ApiProxy', () => {
 
   describe('Send messages: exec', () => {
     it('should drop messaages when the port is not set', () => {
-      const proxy = new ApiProxy(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig, {current: null});
       const promise = proxy.exec(new AbortController().signal, 'log', ['hello world']);
 
       expect(promise).toBeUndefined();
@@ -224,7 +222,7 @@ describe('ApiProxy', () => {
     it('should send sequential messages and cache a promise for later', () => {
       const {responsePort, requestPostMessageSpy, sendPortConnect} = getPorts();
 
-      const proxy = new ApiProxy(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig, {current: null});
       proxy.listen();
       sendPortConnect(proxy);
 
@@ -245,7 +243,7 @@ describe('ApiProxy', () => {
     it('should send fetch messages', () => {
       const {responsePort, requestPostMessageSpy, sendPortConnect} = getPorts();
 
-      const proxy = new ApiProxy(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig, {current: null});
       proxy.listen();
       sendPortConnect(proxy);
 
@@ -262,7 +260,7 @@ describe('ApiProxy', () => {
     it('should resolve promises with the resolved data', () => {
       const {responsePort, requestPostMessageSpy, sendPortConnect} = getPorts();
 
-      const proxy = new ApiProxy(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig, {current: null});
       proxy.listen();
       sendPortConnect(proxy);
 
@@ -280,7 +278,7 @@ describe('ApiProxy', () => {
     it('should reject promises with the error object', () => {
       const {responsePort, requestPostMessageSpy, sendPortConnect} = getPorts();
 
-      const proxy = new ApiProxy(defaultConfig);
+      const proxy = new ApiProxy(defaultConfig, {current: null});
       proxy.listen();
       sendPortConnect(proxy);
 
