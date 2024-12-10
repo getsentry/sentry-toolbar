@@ -97,3 +97,9 @@ interface DebugConfig {
 export interface Configuration extends ConnectionConfig, FeatureFlagsConfig, OrgConfig, RenderConfig, DebugConfig {
   trackAnalytics?: (props: {eventKey: string; eventName: string}) => void;
 }
+
+export interface InitConfig extends Omit<Configuration, 'debug'> {
+  mountPoint?: HTMLElement | (() => HTMLElement);
+
+  debug: undefined | string;
+}
