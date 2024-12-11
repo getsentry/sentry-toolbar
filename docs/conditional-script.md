@@ -119,7 +119,6 @@ function MyReactApp() {
 
       // ConnectionConfig
       sentryOrigin: 'https://sentry.sentry.io',
-      sentryApiPath: '/api/0',
 
       // FeatureFlagsConfig
       featureFlags: undefined,

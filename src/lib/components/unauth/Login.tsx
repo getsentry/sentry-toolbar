@@ -11,6 +11,8 @@ const buttonClass = cx('rounded-full p-1 hover:bg-gray-500 hover:underline');
 
 export default function Login() {
   const {debug} = useContext(ConfigContext);
+  const debugLoginSuccess = debug?.includes(DebugTarget.LOGIN_SUCCESS);
+
   const apiProxy = useApiProxyInstance();
 
   const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -29,9 +31,7 @@ export default function Login() {
   const openPopup = useCallback(() => {
     setIsLoggingIn(true);
 
-    const signal = new AbortController().signal;
-
-    apiProxy.exec(signal, 'request-authn', debug?.includes(DebugTarget.LOGIN_SUCCESS) ? [] : [3000]);
+    apiProxy.login(debugLoginSuccess ? undefined : 3000);
 
     // start timer, after a sec ask about popups
     if (timeoutRef.current) {
@@ -40,7 +40,7 @@ export default function Login() {
     timeoutRef.current = window.setTimeout(() => {
       setShowPopupBlockerMessage(true);
     }, POPUP_MESSAGE_DELAY_MS);
-  }, [apiProxy, debug]);
+  }, [apiProxy, debugLoginSuccess]);
 
   return (
     <UnauthPill>

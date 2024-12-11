@@ -1,8 +1,6 @@
 import qs from 'query-string';
-import {useContext, useMemo} from 'react';
+import {useMemo} from 'react';
 import {useApiProxyInstance} from 'toolbar/context/ApiProxyContext';
-import ConfigContext from 'toolbar/context/ConfigContext';
-import {getSentryApiBaseUrl} from 'toolbar/sentryApi/urls';
 import type {ApiEndpointQueryKey, ApiResult} from 'toolbar/types/api';
 import parseLinkHeader from 'toolbar/utils/parseLinkHeader';
 import type {ParsedHeader} from 'toolbar/utils/parseLinkHeader';
@@ -29,14 +27,11 @@ interface InfiniteFetchParams extends FetchParams {
 
 export default function useSentryApi<Data>() {
   const apiProxy = useApiProxyInstance();
-  const config = useContext(ConfigContext);
-
-  const apiBaseUrl = getSentryApiBaseUrl(config);
 
   const fetchFn = useMemo(
     () =>
       async ({/* signal, */ queryKey: [endpoint, options]}: FetchParams): Promise<ApiResult<Data>> => {
-        const url = qs.stringifyUrl({url: apiBaseUrl + endpoint, query: options?.query});
+        const path = qs.stringifyUrl({url: endpoint, query: options?.query});
         const contentType = options?.payload ? {'Content-Type': 'application/json'} : {};
         const init = {
           body: options?.payload ? JSON.stringify(options?.payload) : undefined,
@@ -49,7 +44,7 @@ export default function useSentryApi<Data>() {
         };
 
         const signal = new AbortController().signal; // TODO: nothing is cancellable with this signal
-        const response = (await apiProxy.exec(signal, 'fetch', [url, init])) as Omit<ApiResult, 'json'>;
+        const response = (await apiProxy.exec(signal, 'fetch', [path, init])) as Omit<ApiResult, 'json'>;
         const apiResult = {
           ...response,
           json: tryJsonParse(response.text),
@@ -66,7 +61,7 @@ export default function useSentryApi<Data>() {
         }
         return apiResult;
       },
-    [apiBaseUrl, apiProxy]
+    [apiProxy]
   );
 
   const fetchInfiniteFn = useMemo(

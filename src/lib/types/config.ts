@@ -11,18 +11,6 @@ interface ConnectionConfig {
    * Must not have a trailing backslash.
    */
   sentryOrigin: string;
-
-  /**
-   * The path prefix for the api endpoints.
-   *
-   * Example: `/api/0`
-   *
-   * Must not have a trailing backslash.
-   *
-   * You could write API_PATH=/region/us/api/0, and leave REGION blank but
-   * that's discouraged because it's not as clear as using the individual vars.
-   */
-  sentryApiPath: string | undefined;
 }
 
 interface FeatureFlagsConfig {

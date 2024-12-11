@@ -9,7 +9,6 @@ function mockInitConfig(overrides: Partial<InitConfig>): InitConfig {
     organizationSlug: '',
     placement: 'right-edge',
     projectIdOrSlug: '',
-    sentryApiPath: undefined,
     sentryOrigin: '',
     ...overrides,
   };
@@ -26,7 +25,6 @@ describe('hydrateConfig', () => {
       organizationSlug: '',
       placement: 'right-edge',
       projectIdOrSlug: '',
-      sentryApiPath: undefined,
       sentryOrigin: '',
     });
   });
