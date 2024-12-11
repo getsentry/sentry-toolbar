@@ -8,16 +8,16 @@ import ProjectIcon from 'toolbar/components/project/ProjectIcon';
 import SentryAppLink from 'toolbar/components/SentryAppLink';
 import ConfigContext from 'toolbar/context/ConfigContext';
 import useFetchSentryData from 'toolbar/hooks/fetch/useFetchSentryData';
+import useCurrentSentryTransactionName from 'toolbar/hooks/useCurrentSentryTransactionName';
 import {useMembersQuery, useTeamsQuery} from 'toolbar/sentryApi/queryKeys';
 import type {FeedbackIssueListItem} from 'toolbar/sentryApi/types/group';
 
 export default function FeedbackPanel() {
   const {organizationSlug, projectIdOrSlug} = useContext(ConfigContext);
 
-  // const transactionName = useCurrentSentryTransactionName();
+  const transactionName = useCurrentSentryTransactionName();
   const queryResult = useInfiniteFeedbackList({
-    // query: transactionName ? `transaction:${transactionName}` : '',
-    query: '',
+    query: transactionName ? `transaction:${transactionName}` : '',
   });
   const {data: members} = useFetchSentryData({
     ...useMembersQuery(String(organizationSlug), String(projectIdOrSlug)),
