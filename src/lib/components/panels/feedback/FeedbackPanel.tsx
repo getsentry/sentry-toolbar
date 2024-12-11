@@ -17,7 +17,7 @@ export default function FeedbackPanel() {
 
   const transactionName = useCurrentSentryTransactionName();
   const queryResult = useInfiniteFeedbackList({
-    query: transactionName ? `url:${transactionName}` : '',
+    query: transactionName ? `url:*${transactionName}` : '',
   });
   const {data: members} = useFetchSentryData({
     ...useMembersQuery(String(organizationSlug), String(projectIdOrSlug)),
