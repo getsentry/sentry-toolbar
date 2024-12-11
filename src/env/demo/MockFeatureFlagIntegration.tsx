@@ -1,10 +1,8 @@
-import type {FeatureFlagAdapter, FlagOverrides, FlagValue} from 'toolbar/types/featureFlags';
-
-type OverrideState = Record<string, boolean>;
+import type {FeatureFlagAdapter, FlagMap, FlagValue} from 'toolbar/types/featureFlags';
 
 const LOCALSTORAGE_KEY = 'feature-flag-overrides';
 
-function getLocalStorage(): Record<string, boolean> {
+function getLocalStorage(): FlagMap {
   try {
     return JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY) ?? '{}');
   } catch {
@@ -12,7 +10,7 @@ function getLocalStorage(): Record<string, boolean> {
   }
 }
 
-function setLocalStorage(overrides: Record<string, boolean>) {
+function setLocalStorage(overrides: FlagMap) {
   try {
     localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(overrides));
   } catch {
@@ -27,52 +25,48 @@ function clearLocalStorage() {
 /**
  * An example FeatureFlagAdapter
  *
- * There are 4 methods to implement in order to create a FeatureFlagAdapter:
- * - `getOverrides() => FlagOverrides`
- * - `setOverride(name: string, value: FlagValue) -> void`
- * - `clear() -> void`
- * - `urlTemplate(name: string) -> string`
+ * There are 5 methods to implement in order to create a FeatureFlagAdapter:
+ * - `getFlagMap() => FlagMap`
+ * - `getOverrides() => FlagMap`
+ * - `setOverride(name: string, value: FlagValue) => void`
+ * - `clearOverrides() => void`
+ * - `urlTemplate(name: string) -> string | URL | undefined`
  *
- * When implementing the methods, you could choose to push overrides into your
- * feature flag provider whenever `setOverride` is called... then refresh the
- * parts of your app that depend on that flag.
- * Another approach is to read from `getOverrides()` when the app loads. In this
- * demo class the strategy is localStorage, we could monkey patch our flag
- * provider to read from there so overridden flags are available after the app
- * is reloaded.
+ * When implementing these methods, you have an option for when to push flag
+ * overrides into your feature flag provider. Flags could be pushed in either:
+ * - during pageload
+ * - immediatly whenever `setOverride` is called
+ *
+ * The first strategy is typically easier to manage, because you don't have to
+ * worry about re-rendering the parts of your app that depend on overridden
+ * flags, at pageload all components will be rendered anyway.
  */
 export default function MockFeatureFlagIntegration(): FeatureFlagAdapter {
-  //
+  // You would want to read these from your feature flag provider;
   const mockFlagsFromProvider = {
     'my-feature': true,
     'my-feature-2': true,
   };
 
   return {
-    getOverrides: (): FlagOverrides => {
-      const overrides: FlagOverrides = {};
-      for (const [name, value] of Object.entries(mockFlagsFromProvider)) {
-        overrides[name] = {value, override: undefined};
-      }
-
-      for (const [name, override] of Object.entries(getLocalStorage())) {
-        overrides[name] = {value: overrides[name]?.value, override};
-      }
-      return overrides;
+    getFlagMap(): FlagMap {
+      return mockFlagsFromProvider;
     },
-    urlTemplate: (name: string) =>
-      `https://github.com/search?q=repo%3Agetsentry%2Fsentry-options-automator+OR+repo%3Agetsentry%2Fsentry+${name}&type=code`,
-    setOverride: (name: string, value: FlagValue) => {
-      if (typeof value === 'boolean') {
-        try {
-          const prev = getLocalStorage();
-          const updated: OverrideState = {...prev, [name]: value};
-          setLocalStorage(updated);
-        } catch {
-          //
-        }
-      }
+    getOverrides(): FlagMap {
+      return getLocalStorage();
+    },
+    setOverride(name: string, value: FlagValue) {
+      const prev = getLocalStorage();
+      const updated: FlagMap = {...prev, [name]: value};
+      setLocalStorage(updated);
     },
     clearOverrides: clearLocalStorage,
+    urlTemplate: (name: string) => {
+      const searchParams = new URLSearchParams({
+        q: `repo:getsentry/sentry ${name}`,
+        type: 'code',
+      });
+      return new URL('/search?' + searchParams.toString(), 'https://github.com');
+    },
   };
 }

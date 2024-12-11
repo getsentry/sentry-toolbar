@@ -20,7 +20,7 @@ function isSaasOrigin(hostname: string) {
  * Returns an origin with organization subdomain included, if SaaS is detected.
  */
 export function getSentryWebOrigin(config: Configuration) {
-  const {sentryOrigin, organizationSlug} = config;
+  const {sentryOrigin = 'https://sentry.io', organizationSlug} = config;
 
   const origin = getOrigin(sentryOrigin);
   if (!origin) {
