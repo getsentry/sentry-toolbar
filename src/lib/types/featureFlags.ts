@@ -4,12 +4,12 @@ export interface FeatureFlagAdapter {
   /**
    * All known flag names and their evaluated values.
    */
-  getFlagMap: () => FlagMap;
+  getFlagMap: () => FlagMap | Promise<FlagMap>;
 
   /**
    * Any overridden or manually set flags and values.
    */
-  getOverrides: () => FlagMap;
+  getOverrides: () => FlagMap | Promise<FlagMap>;
 
   /**
    * Manually set a flag to be a specific value, overriding the evaluated value.

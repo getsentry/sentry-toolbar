@@ -41,7 +41,7 @@ function clearLocalStorage() {
  * worry about re-rendering the parts of your app that depend on overridden
  * flags, at pageload all components will be rendered anyway.
  */
-export default function MockFeatureFlagIntegration(): FeatureFlagAdapter {
+export default function MockFeatureFlagAdapter(): FeatureFlagAdapter {
   // You would want to read these from your feature flag provider;
   const mockFlagsFromProvider = {
     'my-feature': true,
@@ -49,11 +49,11 @@ export default function MockFeatureFlagIntegration(): FeatureFlagAdapter {
   };
 
   return {
-    getFlagMap(): FlagMap {
-      return mockFlagsFromProvider;
+    getFlagMap(): Promise<FlagMap> {
+      return Promise.resolve(mockFlagsFromProvider);
     },
-    getOverrides(): FlagMap {
-      return getLocalStorage();
+    getOverrides(): Promise<FlagMap> {
+      return Promise.resolve(getLocalStorage());
     },
     setOverride(name: string, value: FlagValue) {
       const prev = getLocalStorage();

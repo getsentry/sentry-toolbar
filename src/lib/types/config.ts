@@ -33,6 +33,8 @@ interface OrgConfig {
 
   /**
    * The environment of this deployment
+   *
+   * Default: `undefined`
    */
   environment?: undefined | string | string[];
 }
@@ -72,11 +74,12 @@ interface DebugConfig {
    * You can set debugging to a comma-separated string containing
    * different levels of debugging to enable.
    *
-   * Set to "all" to enable everything.
+   * Set to "all" to enable everything. Unknown strings will be silently ignored.
    *
    * The list of different topics is:
    * - `logging`
    * - `login-success`
+   * - `settings`
    * - `state`
    */
   debug?: DebugTarget[];

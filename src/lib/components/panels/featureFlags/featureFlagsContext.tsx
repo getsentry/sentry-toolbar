@@ -1,5 +1,5 @@
 import type {Dispatch, ReactNode, SetStateAction} from 'react';
-import {createContext, useCallback, useContext, useState} from 'react';
+import {createContext, useCallback, useContext, useEffect, useState} from 'react';
 import type {Prefilter} from 'toolbar/components/panels/featureFlags/FeatureFlagsPanel';
 import type {FeatureFlagAdapter, FlagMap, FlagValue} from 'toolbar/types/featureFlags';
 
@@ -91,8 +91,17 @@ interface Props {
 }
 
 export function FeatureFlagsContextProvider({children, featureFlags}: Props) {
-  const flags = featureFlags.getFlagMap();
-  const overrides = featureFlags.getOverrides();
+  const [flags, setFlags] = useState<FlagMap>({});
+  const flagsPromise = Promise.resolve(featureFlags.getFlagMap());
+  useEffect(() => {
+    flagsPromise.then(setFlags);
+  }, [flagsPromise]);
+
+  const [overrides, setOverrides] = useState<FlagMap>({});
+  const overridesPromise = Promise.resolve(featureFlags.getOverrides());
+  useEffect(() => {
+    overridesPromise.then(setOverrides);
+  }, [overridesPromise]);
 
   const [overridesFingerprint, setOverrideFingerprint] = useState<string>(() => JSON.stringify(overrides));
 
