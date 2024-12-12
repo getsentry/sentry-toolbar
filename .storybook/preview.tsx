@@ -5,7 +5,6 @@ import localStorage from 'toolbar/utils/localStorage';
 
 const baseConfig = {
   sentryOrigin: 'http://localhost:8080',
-  sentryApiPath: '/api/0',
 
   // FeatureFlagsConfig
   featureFlags: undefined,

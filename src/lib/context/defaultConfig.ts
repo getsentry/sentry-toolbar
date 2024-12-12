@@ -3,7 +3,6 @@ import type {Configuration} from 'toolbar/types/config';
 const defaultConfig: Configuration = {
   // ConnectionConfig
   sentryOrigin: 'https://test.sentry.io',
-  sentryApiPath: '/api/0',
 
   // FeatureFlagsConfig
   featureFlags: undefined,

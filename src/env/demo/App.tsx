@@ -12,7 +12,6 @@ export default function App() {
 
       // ConnectionConfig -> See .env.example for defaults
       sentryOrigin: import.meta.env.VITE_SENTRY_ORIGIN ?? 'http://localhost:8080',
-      sentryApiPath: import.meta.env.VITE_SENTRY_API_PATH ?? '/region/us/api/0',
 
       // FeatureFlagsConfig
       featureFlags: MockFeatureFlagIntegration(),

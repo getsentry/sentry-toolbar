@@ -85,7 +85,7 @@ export default function Navigation() {
 
         <hr className={menuSeparator} />
 
-        <MenuItem label="logout" onClick={() => apiProxy.exec(new AbortController().signal, 'clear-authn', [])}>
+        <MenuItem label="logout" onClick={() => apiProxy.logout()}>
           <div className={iconItemClass}>
             <IconLock size="sm" isLocked={false} />
             Logout
