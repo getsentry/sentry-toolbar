@@ -74,7 +74,7 @@ It's strongly recommended to think about what environments is your app deployed 
 
 In dev and staging environments, it's possible to unconditionally include the toolbar so all developers and testers can use the toolbar and link from the page they're looking at back to sentry.
 
-In production it's strongly recommended to conditionally inlude the toolbar `<script>` tag so that only developers of your app, or members of your sentry organization can see it. The specific code for this is something you'll need to write based on how your app works.
+In production it's strongly recommended to conditionally include the toolbar `<script>` tag so that only developers of your app, or members of your sentry organization can see it. The specific code for this is something you'll need to write based on how your app works.
 
 For example, if work at a company called Joshy's Pizza and need to be logged into the website to place an order. I add a condition like this to
 a) show the toolbar at all times during development
@@ -99,6 +99,26 @@ If the toolbar `<script>` is accidentally included on your site, and `SentryTool
 
 #### Conditionally inserting script tag
 
-It's possible to dynamically insert the script tag inside an SPA app, prior to calling `SentryToolbar.init()`, so that only users who are elegible . See docs/conditional-script.md for example code. This will help reduce network traffic for your users because they do not have the credentials needed to login
+It's possible to dynamically insert the script tag inside an SPA app, prior to calling `SentryToolbar.init()`, so that only users who are eligible . See docs/conditional-script.md for example code. This will help reduce network traffic for your users because they do not have the credentials needed to login
 
 This example code will be eventually implemented as an NPM package, but for now it's something to be done manually.
+
+### Injecting the toolbar into a site
+
+To inject the toolbar into 'random' sites, use this snippet:
+
+Configure and paste the following into the console:
+
+1.
+```javascript
+var s = document.createElement('script');
+s.src = "https://browser.sentry-cdn.com/sentry-toolbar/latest/toolbar.min.js";
+document.head.appendChild(s);
+```
+2.
+```javascript
+window.SentryToolbar.init({ ... });
+```
+
+To view feature flags, you would need to set your feature flag configuration before you initialize the toolbar.
+Also remember to edit the Project Settings > Dev Toolbar in sentry.io to allow the domain that the webapp uses!
