@@ -105,9 +105,7 @@ This example code will be eventually implemented as an NPM package, but for now 
 
 ### Injecting the toolbar into a site
 
-To inject the toolbar into 'random' sites, use this snippet:
-
-Configure and paste the following into the console:
+To inject the toolbar into 'random' sites, configure and paste the following snippets into the console:
 
 1.
 ```javascript
