@@ -120,5 +120,5 @@ document.head.appendChild(s);
 window.SentryToolbar.init({ ... });
 ```
 
-To view feature flags, you would need to set your feature flag configuration before you initialize the toolbar.
+To view feature flags, you will need to set your feature flag configuration before you initialize the toolbar.
 Also remember to edit the Project Settings > Developer Toolbar in sentry.io to allow the domain that the webapp uses!
