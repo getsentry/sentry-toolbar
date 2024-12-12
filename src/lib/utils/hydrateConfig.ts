@@ -4,8 +4,19 @@ import {DebugTarget, type Configuration} from 'toolbar/types/config';
 export default function hydrateConfig({mountPoint, ...config}: InitConfig): Configuration {
   return {
     ...config,
+    placement: hydratePlacement(config.placement),
     debug: hydrateDebug(config.debug),
   };
+}
+
+function hydratePlacement(placement: undefined | string): NonNullable<Configuration['placement']> {
+  switch (placement) {
+    case 'bottom-right-corner':
+      return 'bottom-right-corner';
+    case 'right-edge':
+    default:
+      return 'right-edge';
+  }
 }
 
 function hydrateDebug(debug: InitConfig['debug']): Configuration['debug'] {

@@ -10,12 +10,11 @@ interface Props {
 const layoutClass = cva(
   [
     "pointer-events-none fixed inset-0 z-debug grid grid-cols-[1fr_max-content] gap-2 p-2 [grid-template-areas:'main_nav']",
-    'items-center', // items-center is the default config, when `right-edge` or something unknown is passed in
   ],
   {
     variants: {
       placement: {
-        'right-edge': [],
+        'right-edge': ['items-center'],
         'bottom-right-corner': ['items-end'],
       },
     },
