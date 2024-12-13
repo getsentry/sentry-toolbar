@@ -118,7 +118,7 @@ function MyReactApp() {
       mountPoint: document.body,
 
       // ConnectionConfig
-      sentryOrigin: 'https://sentry.sentry.io',
+      sentryOrigin: 'https://sentry.io',
 
       // FeatureFlagsConfig
       featureFlags: undefined,
