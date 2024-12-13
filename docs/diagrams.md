@@ -77,43 +77,4 @@ flowchart TB
     port.handleMessage --> checkPortMessage{"messageEvent.data.message.$function?"}
     checkPortMessage -- fetch --> fetch("fetch w/ domain & cookie")
     fetch -- reply with fetch result --> replyPortMessage
-
-```
-
----
-
-## Previously
-
-The setup flow is basically:
-1. JS: Create an iframe element
-  - Create a MessageChannel for the iframe
-  - Listen to the MessageChannel port, resolve proxy promises based on sequence id
-  - Listen to `onload` event from iframe
-    - iframe.postMessage(port-init) to send the MessageChannel port into the iframe
-    - send a test request to `/api/organizations` to check auth status
-    - If auth check returns 401
-      - await login() flow
-1. JS: Set iframe src to be `/organizations/<org>/toolbar/iframe/`
-  - PY: This python view the referer header against an allow-list stored in org-settings on sentry.io
-  - PY: If the referer is allowed:
-    - Return the iframe page
-    - JS: listen to "port-init" message from iframe host
-      - accept MessageChannel port reference
-      - listen to new port reference
-        - run messages through the messageDispatchMap
-        - postMessage() results or error
-  - Else:
-    - Return 401, something that prevents the `onload` from firing
-
-## SDK State
-
-```mermaid
-stateDiagram-v2
-  [*] --> await_load_iframe
-  await_load_iframe --> await_check_auth
-  await_check_auth --> auth_true
-  await_check_auth --> await_login
-  await_login --> auth_true
-  auth_true --> await_login
-  auth_true --> [*]
 ```
