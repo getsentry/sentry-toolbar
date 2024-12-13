@@ -1,27 +1,5 @@
 # Diagrams
 
-## Build System and artifacts
-
-The artifacts that we should produce for the toolbar, where they come from and where they get published to, are as follows.
-
-* Artifact names are demonstrative until the build system is actually constructed
-
-```mermaid
-sequenceDiagram
-  participant getsentry/sentry-toolbar
-  participant getsentry/sentry
-  participant NPM
-  participant CDN
-  getsentry/sentry-toolbar->>CDN: Compile & publish dist/index.iife.js
-  getsentry/sentry->>NPM: Compile & publish dist/npm.js (future)
-  NPM->>CDN: JS to inject <script> to load from CDN
-  getsentry/sentry->>getsentry/sentry: Public page: https://sentry.io/toolbar.html w/ js entrypoint webpack://toolbar-iframe.js
-```
-
-Basically what gets built is:
-1. From the getsentry/sentry-toolbar repo, one [entrypoint](https://github.com/getsentry/sentry-toolbar/blob/934d1bbc3d0022cace1167b262614c93b27b4d6f/vite.config.ts#L22-L35) currently called `index.iife.js`. This goes onto the CDN, and can be used by adding `<script src="<CDN>/toolbar/index.iife.js"/>` to the page (pending file renames, etc)
-2. From the getsentry/sentry repo, or anywhere really, we can build an NPM package that inserts the above `<script>` tag onto the page. Maybe a react-specific version too. [Sample code](https://github.com/getsentry/sentry-toolbar/blob/934d1bbc3d0022cace1167b262614c93b27b4d6f/docs/conditional-script.md) is available.
-
 ## Auth Flow
 
 ```mermaid
