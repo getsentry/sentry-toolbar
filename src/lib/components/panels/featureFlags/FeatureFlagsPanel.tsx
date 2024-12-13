@@ -42,7 +42,10 @@ function FeatureFlagConfigHelp() {
         <h3 className="text-sm text-gray-400">Feature flags aren&apos;t set up.</h3>
         <p className="px-1 text-center text-xs text-gray-300">
           To view your feature flags in the Sentry Dev Toolbar,{' '}
-          <ExternalLink to={{url: 'https://docs.sentry.io'}}>please read our docs</ExternalLink>.
+          <ExternalLink to={{url: 'https://docs.sentry.io/product/dev-toolbar/setup/#implement-feature-flag-adapter'}}>
+            please read our docs
+          </ExternalLink>
+          .
         </p>
       </div>
     </section>
