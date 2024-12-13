@@ -73,19 +73,33 @@ sequenceDiagram
 
 ```mermaid
 flowchart TB
-    pageLoad((Page load)) --> checkState{State?}
-    checkState -- logged-out --> listen
-    checkState -- missing-proj & invalid-config --> listen
-    checkState -- logged-in --> port(setupMessageChannel) --> listen
-    listen(window.addEventListener) --> sendState(sendStateMessage)
+    pageLoad(("Page load")) --> listenLogin("window.addEventListener(handleLoginWindowMessage)")
+    listenLogin --> listenParent("window.addEventListener(handleParentWindowMessage)")
+    listenParent --> sendState("sendStateMessage(state)")
+    
+    sendState --> checkState{"State?"}
+    checkState -- "missing-proj & invalid-config" --> wait(("END"))
+    checkState -- "logged-in" --> getPort("getMessagePort()")
+    getPort --> parentPost["parent.postMessage(port-connect, referrer)"]
 
-    window.handleMessage((window.handleMessage)) --> saveAccessToken --> window.reload
+    listenLogin -. _enables_ .- window.handleLogin(("window.handleMessage<br/>(loginWindowMessageDispatch)"))
+    window.handleLogin --> originIsSame{"messageEvent.origin === document.location.origin"}
+    originIsSame -- true --> checkLoginMessage{"messageEvent.data.message?"}
+    checkLoginMessage -- "did-login" --> saveAccessToken["save cookie/access token"]
+    saveAccessToken --> opener.postMessage1["opener.postMessage('stale')"]
 
-    port.handleMessage((port.handleMessage)) --> checkPortMessage{function?}
-    checkPortMessage -- request-authn --> window.open --depends on window.addEventListener--> replyPortMessage
-    checkPortMessage -- clear-authn --> clearCookie(document.cookie = '') --cookie is set to empty string--> replyPortMessage
-    checkPortMessage -- fetch --> fetch(fetch w/ domain & cookie) --reply with fetch result--> replyPortMessage
-    replyPortMessage(port1.postMessage)
+    listenParent -. _enables_ .- window.handleParent(("window.handleMessage<br/>(handleParentWindowMessage)"))
+    window.handleParent --> originIsReferrer{"messageEvent.origin === referrer?"}
+    originIsReferrer -- true --> checkParentMessage{"messageEvent.data.message?"}
+    checkParentMessage -- "request-login" --> window.open["window.open"]    
+    checkParentMessage -- "requets-logout" --> clearCookie{"document.cookie = ''"}
+    clearCookie --> opener.postMessage2["opener.postMessage('stale')"]
+    
+    parentPost -- enables --> port.handleMessage(("port.handleMessage"))
+    port.handleMessage --> checkPortMessage{"messageEvent.data.message.$function?"}
+    checkPortMessage -- fetch --> fetch("fetch w/ domain & cookie")
+    fetch -- reply with fetch result --> replyPortMessage
+
 ```
 
 ---
