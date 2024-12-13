@@ -34,55 +34,41 @@ sequenceDiagram
   SDK ->> SDK: init()
   rect rgba(0, 0, 200, 0.1)
     SDK ->>+ iframe: document.append()
-    iframe ->> iframe: window.addEventListener('message')
+    iframe ->> iframe: window.addEventListener('message', handleLoginWindowMessage) 
+    iframe ->> iframe: window.addEventListener('message', handleParentWindowMessage) 
     iframe ->>- SDK: window.parent.postMessage(state)
+    SDK ->> SDK: disposePort()
   end
-  alt logged-out
+
+  alt state=logged-out
     rect rgba(0, 0, 200, 0.1)
-        SDK ->>+ iframe: iframe.postMessage('request-auth')
-        iframe ->>+ login: window.open('/login')
-        login ->>- iframe: window.opener.postMessage(cookie)
-        iframe --> iframe: document.cookies.set(cookie)
-        iframe ->>- iframe: window.location.reload()
+      SDK ->>+ iframe: iframe.contentWindow.postMessage('request-login')
+      iframe ->>+ login: window.open('/login')
+      login ->>- iframe: window.opener.postMessage('did-login', cookie)
+      iframe --> iframe: document.cookies.set(cookie)
+      iframe ->>- SDK: window.parent.postMessage('stale')
+      SDK ->> SDK: disposePort()
+      SDK -->> iframe: re-render
     end
 
+  else state=invalid-project || state=invalid-domain || state=logged-in
     rect rgba(0, 0, 200, 0.1)
-        SDK ->>+ iframe: iframe.postMessage('reload')
-        iframe ->>- iframe: window.location.reload()
-    end
-  else invalid-project & invalid-domain
-    rect rgba(0, 0, 200, 0.1)
-        SDK ->>+ iframe: iframe.postMessage('logout')
+        SDK ->>+ iframe: iframe.contentWindow.postMessage('request-logout')
         iframe ->> iframe: del document.cookies
-        iframe ->>- iframe: window.location.reload()
+        iframe ->>- SDK: window.parent.postMessage('stale')
+        SDK ->> SDK: disposePort()
+        SDK -->> iframe: re-render
+    end 
+  else state=logged-in
+    rect rgba(0, 0, 200, 0.1)
+      iframe ->> SDK: window.parent.postMessage('port-connect', port)
     end
 
     rect rgba(0, 0, 200, 0.1)
-        SDK ->>+ iframe: iframe.postMessage('reload')
-        iframe ->>- iframe: window.location.reload()
-    end
-  else logged-in
-    rect rgba(0, 0, 200, 0.1)
-        iframe ->> SDK: window.parent.postMessage('port-connect', port)
-    end
-
-    rect rgba(0, 0, 200, 0.1)
-        SDK ->>+ iframe: iframe.postMessage('logout')
-        iframe ->> iframe: document.cookies.clear()
-        iframe ->>- iframe: window.location.reload()
-    end
-
-    rect rgba(0, 0, 200, 0.1)
-        SDK ->>+ iframe: iframe.postMessage('reload')
-        iframe ->>- iframe: window.location.reload()
-    end
-
-    rect rgba(0, 0, 200, 0.1)
-        SDK ->>+ iframe: port.postMessage(req)
-        iframe ->>- SDK: port.postMessage(resp)
+      SDK ->>+ iframe: port.postMessage(req)
+      iframe ->>- SDK: port.postMessage(resp)
     end
   end
-
 ```
 
 ```mermaid
