@@ -105,7 +105,7 @@ This example code will be eventually implemented as an NPM package, but for now 
 
 ### Injecting the toolbar into a site
 
-To inject the toolbar into 'random' sites, configure and paste the following snippets into the console:
+To temporarily inject the toolbar into your own sites, configure and paste the following snippets into the console:
 
 1.
 ```javascript
@@ -118,5 +118,4 @@ document.head.appendChild(s);
 window.SentryToolbar.init({ ... });
 ```
 
-To view feature flags, you will need to set your feature flag configuration before you initialize the toolbar.
-Also remember to edit the Project Settings > Developer Toolbar in sentry.io to allow the domain that the webapp uses!
+To view feature flags, you will need to set your feature flag configuration before you initialize the toolbar. Also, remember to edit the Project Settings > Developer Toolbar in sentry.io to allow the domain that the web app uses!
