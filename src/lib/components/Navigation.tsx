@@ -15,6 +15,7 @@ import IconSettings from 'toolbar/components/icon/IconSettings';
 import {useApiProxyInstance} from 'toolbar/context/ApiProxyContext';
 import ConfigContext from 'toolbar/context/ConfigContext';
 import useNavigationExpansion from 'toolbar/hooks/useNavigationExpansion';
+import useSpotlightOverlay from 'toolbar/hooks/useSpotlightOverlay';
 import {DebugTarget} from 'toolbar/types/config';
 
 const navClassName = cx(['flex', 'flex-col', 'gap-1', 'p-1', 'items-center']);
@@ -49,6 +50,8 @@ export default function Navigation() {
   const {pathname} = useLocation();
   const navigate = useNavigate();
   const apiProxy = useApiProxyInstance();
+
+  const {showSpotlight, hideSpotlight} = useSpotlightOverlay();
 
   const toPathOrHome = (to: To) => ({
     to,
@@ -106,6 +109,9 @@ export default function Navigation() {
           <NavLink {...toPathOrHome('/featureFlags')} title="Feature Flags" className={navItemClassName}>
             <IconFlag size="sm" />
           </NavLink>
+          <button onClick={showSpotlight()} className={navItemClassName}>
+            <IconFlag size="sm" />
+          </button>
         </Fragment>
       ) : null}
     </motion.div>

@@ -14,6 +14,9 @@ importers:
       '@sentry/types':
         specifier: ^8.30.0
         version: 8.30.0
+      '@spotlightjs/overlay':
+        specifier: ^2.9.0
+        version: 2.9.0
       '@tanstack/react-query':
         specifier: ^5.56.2
         version: 5.56.2(react@18.3.1)
@@ -2325,6 +2328,9 @@ packages:
 
   '@sinonjs/fake-timers@10.3.0':
     resolution: {integrity: sha512-V4BG07kuYSUkTCSBHG8G8TNhM+F19jXFWnQtzj+we8DrkpSBCee9Z3Ms8yiGer/dlmhe35/Xdgyo3/0rQKg7YA==}
+
+  '@spotlightjs/overlay@2.9.0':
+    resolution: {integrity: sha512-toZW0hmFgx51yiEkz2+csXiwKWSBzFF1VD0JmEHdQrD76+n3YfEmkVxUqqmcB/s8vC32i/9ti0QQRbQzjACbow==}
 
   '@storybook/addon-actions@8.2.7':
     resolution: {integrity: sha512-wDnMGGmaogAForkNncfCx8BEDiwxeK8zC0lj8HkRPUuH6vTr81U5RIb12Wa2TnnNKLKMFAtyPSnofHf3OAfzZQ==}
@@ -9819,6 +9825,8 @@ snapshots:
   '@sinonjs/fake-timers@10.3.0':
     dependencies:
       '@sinonjs/commons': 3.0.1
+
+  '@spotlightjs/overlay@2.9.0': {}
 
   '@storybook/addon-actions@8.2.7(storybook@8.3.2)':
     dependencies:

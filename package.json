@@ -58,6 +58,7 @@
   "dependencies": {
     "@floating-ui/react": "^0.26.24",
     "@sentry/types": "^8.30.0",
+    "@spotlightjs/overlay": "^2.9.0",
     "@tanstack/react-query": "^5.56.2",
     "@tanstack/react-virtual": "^3.10.8",
     "cva": "npm:class-variance-authority@^0.7.0",
