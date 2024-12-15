@@ -10,14 +10,16 @@ import ConfigContext from 'toolbar/context/ConfigContext';
 import useFetchSentryData from 'toolbar/hooks/fetch/useFetchSentryData';
 import useCurrentSentryTransactionName from 'toolbar/hooks/useCurrentSentryTransactionName';
 import {useMembersQuery, useTeamsQuery} from 'toolbar/sentryApi/queryKeys';
-import type {Group} from 'toolbar/sentryApi/types/group';
+import {IssueCategory, type Group} from 'toolbar/sentryApi/types/group';
 
 export default function IssuesPanel() {
   const {organizationSlug, projectIdOrSlug} = useContext(ConfigContext);
 
   const transactionName = useCurrentSentryTransactionName();
   const queryResult = useInfiniteIssuesList({
-    query: transactionName ? `transaction:${transactionName}` : '',
+    query: transactionName
+      ? `is:unresolved issue.category:[${IssueCategory.ERROR},${IssueCategory.PERFORMANCE},${IssueCategory.REPLAY}] transaction:${transactionName}`
+      : '',
   });
   const {data: members} = useFetchSentryData({
     ...useMembersQuery(String(organizationSlug), String(projectIdOrSlug)),

@@ -3,7 +3,6 @@ import ConfigContext from 'toolbar/context/ConfigContext';
 import useFetchInfiniteSentryData from 'toolbar/hooks/fetch/useFetchInfiniteSentryData';
 import useFetchSentryData from 'toolbar/hooks/fetch/useFetchSentryData';
 import {useInfiniteIssueListQuery, useProjectQuery} from 'toolbar/sentryApi/queryKeys';
-import {IssueCategory} from 'toolbar/sentryApi/types/group';
 
 interface Props {
   query: string;
@@ -24,7 +23,7 @@ export default function useInfiniteIssuesList({query}: Props) {
       query: {
         ...env,
         project: project?.json?.id,
-        query: `issue.category:[${IssueCategory.ERROR},${IssueCategory.PERFORMANCE}] status:unresolved ${query}`,
+        query,
         statsPeriod: '14d',
       },
     }),

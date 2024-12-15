@@ -36,7 +36,7 @@ interface OrgConfig {
    *
    * Default: `undefined`
    */
-  environment?: undefined | string | string[];
+  environment: string[];
 }
 
 interface RenderConfig {
@@ -87,8 +87,11 @@ interface DebugConfig {
 
 export interface Configuration extends ConnectionConfig, FeatureFlagsConfig, OrgConfig, RenderConfig, DebugConfig {}
 
-export interface InitConfig extends Omit<Configuration, 'debug'> {
+export interface InitConfig extends Omit<Configuration, 'debug' | 'environment'> {
   mountPoint?: undefined | HTMLElement | (() => HTMLElement);
+
+  // Override environment, because it will be hydrated intentionally.
+  environment?: undefined | string | string[];
 
   // Override debug, because it will be hydrated intentionally.
   debug?: undefined | string;

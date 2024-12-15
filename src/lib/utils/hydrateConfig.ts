@@ -4,9 +4,15 @@ import {DebugTarget, type Configuration} from 'toolbar/types/config';
 export default function hydrateConfig({mountPoint, ...config}: InitConfig): Configuration {
   return {
     ...config,
+    environment: hydrateEnvironment(config.environment),
     placement: hydratePlacement(config.placement),
     debug: hydrateDebug(config.debug),
   };
+}
+
+function hydrateEnvironment(environment: undefined | string | string[]): string[] {
+  const envArray = Array.isArray(environment) ? environment : [environment];
+  return envArray.filter((env): env is string => typeof env === 'string' && env !== '');
 }
 
 function hydratePlacement(placement: undefined | string): NonNullable<Configuration['placement']> {
