@@ -57,12 +57,12 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.26.24",
+    "@headlessui/react": "^2.2.0",
     "@sentry/types": "^8.30.0",
     "@tanstack/react-query": "^5.56.2",
     "@tanstack/react-virtual": "^3.10.8",
     "cva": "npm:class-variance-authority@^0.7.0",
     "date-fns": "^4.1.0",
-    "framer-motion": "^11.7.0",
     "platformicons": "^7.0.1",
     "query-string": "^9.1.0",
     "react": "^18.3.1",
