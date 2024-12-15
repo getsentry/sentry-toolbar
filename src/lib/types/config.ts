@@ -4,18 +4,18 @@ interface ConnectionConfig {
   /**
    * The origin where sentry can be found
    *
-   * For example: `"https://acme.sentry.io"`
+   * Default: `"https://acme.sentry.io"`
    *
    * Must include: protocol, domain & port (if non-standard).
    * May include a url path if sentry is not hosted at the domain root.
    * Must not have a trailing backslash.
    */
-  sentryOrigin: string;
+  sentryOrigin?: undefined | string;
 }
 
 interface FeatureFlagsConfig {
   /**
-   * Optional FeatureFlag adapter, or other provider.
+   * Optional FeatureFlagAdapter instance
    */
   featureFlags?: undefined | FeatureFlagAdapter;
 }
@@ -23,18 +23,24 @@ interface FeatureFlagsConfig {
 interface OrgConfig {
   /**
    * The organization that users should login to
+   *
+   * Required
    */
   organizationSlug: string;
 
   /**
    * The project for which this website is associated
+   *
+   * Required
    */
   projectIdOrSlug: string | number;
 
   /**
    * The environment of this deployment
+   *
+   * Default: `undefined`
    */
-  environment: string | string[];
+  environment: string[];
 }
 
 interface RenderConfig {
@@ -45,20 +51,20 @@ interface RenderConfig {
    *
    * You can select the div like this: `document.getElementById('sentry-toolbar')`
    */
-  domId?: string;
+  domId?: undefined | string;
 
   /**
    * Where to render the toolbar on the screen.
    *
    * Default: `"right-edge"`
    */
-  placement: 'right-edge' | 'bottom-right-corner';
+  placement?: undefined | 'right-edge' | 'bottom-right-corner';
 
   /**
    * Whether to use dark mode, or light
    * Defaults to 'system' which defers to `prefers-color-scheme`
    */
-  theme?: 'system' | 'dark' | 'light';
+  theme?: undefined | 'system' | 'dark' | 'light';
 }
 
 export enum DebugTarget {
@@ -72,22 +78,25 @@ interface DebugConfig {
    * You can set debugging to a comma-separated string containing
    * different levels of debugging to enable.
    *
-   * Set to "all" to enable everything.
+   * Set to "all" to enable everything. Unknown strings will be silently ignored.
    *
    * The list of different topics is:
    * - `logging`
    * - `login-success`
+   * - `settings`
    * - `state`
    */
   debug?: DebugTarget[];
 }
 
-export interface Configuration extends ConnectionConfig, FeatureFlagsConfig, OrgConfig, RenderConfig, DebugConfig {
-  trackAnalytics?: (props: {eventKey: string; eventName: string}) => void;
-}
+export interface Configuration extends ConnectionConfig, FeatureFlagsConfig, OrgConfig, RenderConfig, DebugConfig {}
 
-export interface InitConfig extends Omit<Configuration, 'debug'> {
-  mountPoint?: HTMLElement | (() => HTMLElement);
+export interface InitConfig extends Omit<Configuration, 'debug' | 'environment'> {
+  mountPoint?: undefined | HTMLElement | (() => HTMLElement);
 
-  debug: undefined | string;
+  // Override environment, because it will be hydrated intentionally.
+  environment?: undefined | string | string[];
+
+  // Override debug, because it will be hydrated intentionally.
+  debug?: undefined | string;
 }

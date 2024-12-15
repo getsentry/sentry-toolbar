@@ -18,14 +18,48 @@ describe('hydrateConfig', () => {
   it('should return all Configuration fields, without the extra InitConfig stuff', () => {
     const initConfig = mockInitConfig({});
 
-    const config = hydrateConfig(initConfig);
-    expect(config).toEqual({
+    expect(hydrateConfig(initConfig)).toEqual({
       debug: [],
-      environment: '',
+      environment: [],
       organizationSlug: '',
       placement: 'right-edge',
       projectIdOrSlug: '',
       sentryOrigin: '',
+    });
+  });
+
+  describe('.environment', () => {
+    it('should convert undefined into an empty array', () => {
+      expect(hydrateConfig(mockInitConfig({environment: undefined})).environment).toEqual([]);
+
+      const {environment, ...configWithoutEnv} = mockInitConfig({environment: undefined});
+      expect(hydrateConfig(configWithoutEnv).environment).toEqual([]);
+    });
+
+    it('should convert the empty string, and falsy stuff into an empty array', () => {
+      expect(hydrateConfig(mockInitConfig({environment: ''})).environment).toEqual([]);
+      // @ts-expect-error Explicit check with non-typesafe values
+      expect(hydrateConfig(mockInitConfig({environment: 0})).environment).toEqual([]);
+      // @ts-expect-error Explicit check with non-typesafe values
+      expect(hydrateConfig(mockInitConfig({environment: 123})).environment).toEqual([]);
+      // @ts-expect-error Explicit check with non-typesafe values
+      expect(hydrateConfig(mockInitConfig({environment: false})).environment).toEqual([]);
+      // @ts-expect-error Explicit check with non-typesafe values
+      expect(hydrateConfig(mockInitConfig({environment: null})).environment).toEqual([]);
+      // @ts-expect-error Explicit check with non-typesafe values
+      expect(hydrateConfig(mockInitConfig({environment: false})).environment).toEqual([]);
+    });
+
+    it('should convert strings into an array', () => {
+      expect(hydrateConfig(mockInitConfig({environment: 'production'})).environment).toEqual(['production']);
+    });
+
+    it('should filter arrays for string values only', () => {
+      expect(hydrateConfig(mockInitConfig({environment: ['', '1', '']})).environment).toEqual(['1']);
+      expect(
+        // @ts-expect-error Explicit check with non-typesafe values
+        hydrateConfig(mockInitConfig({environment: [false, undefined, null, 123, {}, 'staging']})).environment
+      ).toEqual(['staging']);
     });
   });
 

@@ -1,8 +1,9 @@
+import {useContext} from 'react';
 import {Fragment} from 'react/jsx-runtime';
 import {Routes, Route, Outlet} from 'react-router-dom';
 import DebugState from 'toolbar/components/DebugState';
 import CenterLayout from 'toolbar/components/layouts/CenterLayout';
-import RightEdgeLayout from 'toolbar/components/layouts/RightEdgeLayout';
+import EdgeLayout from 'toolbar/components/layouts/EdgeLayout';
 import Navigation from 'toolbar/components/Navigation';
 import FeatureFlagsPanel from 'toolbar/components/panels/featureFlags/FeatureFlagsPanel';
 import FeedbackPanel from 'toolbar/components/panels/feedback/FeedbackPanel';
@@ -13,12 +14,15 @@ import Disconnected from 'toolbar/components/unauth/Disconnected';
 import InvalidDomain from 'toolbar/components/unauth/InvalidDomain';
 import Login from 'toolbar/components/unauth/Login';
 import MissingProject from 'toolbar/components/unauth/MissingProject';
+import ConfigContext from 'toolbar/context/ConfigContext';
 import useClearQueryCacheOnProxyStateChange from 'toolbar/hooks/useClearQueryCacheOnProxyStateChange';
 import useNavigateOnProxyStateChange from 'toolbar/hooks/useNavigateOnProxyStateChange';
 
 export default function AppRouter() {
   useNavigateOnProxyStateChange();
   useClearQueryCacheOnProxyStateChange();
+
+  const {placement} = useContext(ConfigContext);
   return (
     <Routes>
       <Route
@@ -45,18 +49,18 @@ export default function AppRouter() {
         <Route
           path="/"
           element={
-            <RightEdgeLayout>
-              <RightEdgeLayout.NavArea>
+            <EdgeLayout placement={placement}>
+              <EdgeLayout.NavArea>
                 <Navigation />
-              </RightEdgeLayout.NavArea>
+              </EdgeLayout.NavArea>
               <Outlet />
-            </RightEdgeLayout>
+            </EdgeLayout>
           }>
           <Route
             element={
-              <RightEdgeLayout.MainArea>
+              <EdgeLayout.MainArea>
                 <Outlet />
-              </RightEdgeLayout.MainArea>
+              </EdgeLayout.MainArea>
             }>
             <Route path="/settings" element={<SettingsPanel />} />
             <Route path="/issues" element={<IssuesPanel />} />

@@ -1,7 +1,7 @@
 import 'toolbar/../env/demo/index.css';
 
 import {useEffect} from 'react';
-import MockFeatureFlagIntegration from 'toolbar/../env/demo/MockFeatureFlagIntegration';
+import MockFeatureFlagAdapter from 'toolbar/../env/demo/MockFeatureFlagAdapter';
 import * as SentryToolbar from 'toolbar/index';
 
 export default function App() {
@@ -14,7 +14,7 @@ export default function App() {
       sentryOrigin: import.meta.env.VITE_SENTRY_ORIGIN ?? 'http://localhost:8080',
 
       // FeatureFlagsConfig
-      featureFlags: MockFeatureFlagIntegration(),
+      featureFlags: MockFeatureFlagAdapter(),
 
       // OrgConfig  -> See .env.example for defaults
       organizationSlug: import.meta.env.VITE_SENTRY_ORGANIZATION ?? 'sentry',

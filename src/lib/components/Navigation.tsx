@@ -17,7 +17,7 @@ import ConfigContext from 'toolbar/context/ConfigContext';
 import useNavigationExpansion from 'toolbar/hooks/useNavigationExpansion';
 import {DebugTarget} from 'toolbar/types/config';
 
-const navClassName = cx(['flex', 'flex-col', 'items-center', 'gap-1', 'p-1']);
+const navClassName = cx(['flex', 'flex-col', 'gap-1', 'p-1', 'items-center']);
 
 const navSeparator = cx(['m-0', 'w-full', 'border-translucentGray-200']);
 const menuSeparator = cx(['mx-1', 'my-0.5']);

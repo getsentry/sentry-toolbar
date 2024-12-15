@@ -62,7 +62,7 @@ function FeatureFlagEditor() {
       <h1 className={cx(sectionBorder, sectionPadding, 'flex flex-row justify-between font-medium')}>
         <span>Feature Flags</span>
         <button
-          className="flex items-center gap-0.5 text-sm text-purple-400"
+          className="flex cursor-pointer items-center gap-0.5 text-sm text-purple-400 hover:underline"
           aria-label="Override Flag"
           title="Override Flag"
           onClick={() => setShowAddFlag(!showAddFlag)}>
