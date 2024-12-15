@@ -18,7 +18,7 @@ import ConfigContext from 'toolbar/context/ConfigContext';
 import useNavigationExpansion from 'toolbar/hooks/useNavigationExpansion';
 import {DebugTarget} from 'toolbar/types/config';
 
-const navClassName = cx(['flex', 'flex-col', 'gap-1', 'p-1', 'items-center']);
+const navClassName = cx(['flex', 'flex-col', 'gap-1', 'items-center']);
 
 const navSeparator = cx(['m-0', 'w-full', 'border-translucentGray-200']);
 const menuSeparator = cx(['mx-1', 'my-0.5']);
@@ -62,7 +62,10 @@ export default function Navigation() {
   });
 
   return (
-    <div className={navClassName} onMouseOver={() => setIsHovered(true)} onMouseOut={() => setIsHovered(false)}>
+    <div
+      className={cx(navClassName, 'p-1')}
+      onMouseOver={() => setIsHovered(true)}
+      onMouseOut={() => setIsHovered(false)}>
       <Tooltip>
         <TooltipTrigger asChild>
           <Menu className={cx(navItemClassName, 'p-0')} trigger={<IconSentry size="sm" />} placement="left-start">
@@ -96,7 +99,7 @@ export default function Navigation() {
       </Tooltip>
 
       <Transition show={isExpanded}>
-        <div className="transition duration-300 ease-in data-[closed]:opacity-0">
+        <div className={cx(navClassName, 'p-0 transition duration-300 ease-in data-[closed]:opacity-0')}>
           <hr className={navSeparator} />
 
           <Tooltip>
