@@ -26,17 +26,17 @@ function hydratePlacement(placement: undefined | string): NonNullable<Configurat
 }
 
 function hydrateDebug(debug: InitConfig['debug']): Configuration['debug'] {
-  if (debug === undefined || debug === 'false' || debug === '') {
+  if (!debug || debug === 'false') {
     return [];
   }
-  const parts = debug?.split(',').map(part => part.trim());
+  const parts = debug.split(',').map(part => part.trim());
   const debugTargets = Object.values(DebugTarget);
 
   if (parts.includes('all') || parts.includes('true')) {
     return debugTargets;
   }
 
-  const enabled: NonNullable<Configuration['debug']> = [];
+  const enabled: Configuration['debug'] = [];
   debugTargets.forEach(target => {
     if (parts.includes(target)) {
       enabled.push(target);

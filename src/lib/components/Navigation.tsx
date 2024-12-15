@@ -77,11 +77,11 @@ export default function Navigation() {
               </div>
             </MenuItem>
 
-            {debug?.includes(DebugTarget.SETTINGS) ? (
+            {debug.includes(DebugTarget.SETTINGS) ? (
               <MenuItem label="settings" onClick={() => navigate(pathname === '/settings' ? '/' : '/settings')}>
                 <div className={iconItemClass}>
                   <IconSettings size="sm" />
-                  Settings
+                  Init Config
                 </div>
               </MenuItem>
             ) : null}

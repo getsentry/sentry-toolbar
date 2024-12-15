@@ -15,6 +15,9 @@ const defaultConfig: Configuration = {
   // RenderConfig
   placement: 'right-edge',
   domId: 'sentry-toolbar',
+
+  // DebugConfig
+  debug: [],
 };
 
 export default defaultConfig;

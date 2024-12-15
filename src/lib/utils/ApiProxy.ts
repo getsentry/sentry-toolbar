@@ -59,7 +59,7 @@ export default class ApiProxy {
   }
 
   private _log(...args: unknown[]) {
-    if (this._config.debug?.includes(DebugTarget.LOGGING)) {
+    if (this._config.debug.includes(DebugTarget.LOGGING)) {
       console.log('ApiProxy', ...args);
     }
   }

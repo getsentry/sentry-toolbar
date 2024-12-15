@@ -86,7 +86,7 @@ interface DebugConfig {
    * - `settings`
    * - `state`
    */
-  debug?: DebugTarget[];
+  debug: DebugTarget[];
 }
 
 export interface Configuration extends ConnectionConfig, FeatureFlagsConfig, OrgConfig, RenderConfig, DebugConfig {}
