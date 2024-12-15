@@ -81,7 +81,7 @@ export default function Navigation() {
               <MenuItem label="settings" onClick={() => navigate(pathname === '/settings' ? '/' : '/settings')}>
                 <div className={iconItemClass}>
                   <IconSettings size="sm" />
-                  JSON Settings
+                  Init Config
                 </div>
               </MenuItem>
             ) : null}
