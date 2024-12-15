@@ -11,7 +11,7 @@ const buttonClass = cx('rounded-full p-1 hover:bg-gray-500 hover:underline');
 
 export default function Login() {
   const {debug} = useContext(ConfigContext);
-  const debugLoginSuccess = debug?.includes(DebugTarget.LOGIN_SUCCESS);
+  const debugLoginSuccess = debug.includes(DebugTarget.LOGIN_SUCCESS);
 
   const apiProxy = useApiProxyInstance();
 

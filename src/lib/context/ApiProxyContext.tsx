@@ -18,7 +18,7 @@ interface Props {
 export function ApiProxyContextProvider({children}: Props) {
   const config = useContext(ConfigContext);
   const {debug, organizationSlug, projectIdOrSlug} = config;
-  const enableLogging = debug?.includes(DebugTarget.LOGGING);
+  const enableLogging = debug.includes(DebugTarget.LOGGING);
 
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 

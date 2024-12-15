@@ -74,7 +74,7 @@ export default function Navigation() {
           </div>
         </MenuItem>
 
-        {debug?.includes(DebugTarget.SETTINGS) ? (
+        {debug.includes(DebugTarget.SETTINGS) ? (
           <MenuItem label="settings" onClick={() => navigate('/settings')}>
             <div className={iconItemClass}>
               <IconSettings size="sm" />
