@@ -4,7 +4,7 @@ interface ConnectionConfig {
   /**
    * The origin where sentry can be found
    *
-   * For example: `"https://acme.sentry.io"`
+   * Default: `"https://acme.sentry.io"`
    *
    * Must include: protocol, domain & port (if non-standard).
    * May include a url path if sentry is not hosted at the domain root.
@@ -15,7 +15,7 @@ interface ConnectionConfig {
 
 interface FeatureFlagsConfig {
   /**
-   * Optional FeatureFlag adapter, or other provider.
+   * Optional FeatureFlagAdapter instance
    */
   featureFlags?: undefined | FeatureFlagAdapter;
 }
@@ -23,11 +23,15 @@ interface FeatureFlagsConfig {
 interface OrgConfig {
   /**
    * The organization that users should login to
+   *
+   * Required
    */
   organizationSlug: string;
 
   /**
    * The project for which this website is associated
+   *
+   * Required
    */
   projectIdOrSlug: string | number;
 
