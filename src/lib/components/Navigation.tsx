@@ -5,6 +5,7 @@ import type {MouseEvent} from 'react';
 import {NavLink, useLocation, useNavigate} from 'react-router-dom';
 import type {To} from 'react-router-dom';
 import {Menu, MenuItem} from 'toolbar/components/base/menu/Menu';
+import {Tooltip, TooltipTrigger, TooltipContent} from 'toolbar/components/base/tooltip/Tooltip';
 import IconFlag from 'toolbar/components/icon/IconFlag';
 import IconIssues from 'toolbar/components/icon/IconIssues';
 import IconLock from 'toolbar/components/icon/IconLock';
@@ -66,46 +67,68 @@ export default function Navigation() {
       className={navClassName}
       onMouseOver={() => setIsHovered(true)}
       onMouseOut={() => setIsHovered(false)}>
-      <Menu className={cx(navItemClassName, 'p-0')} trigger={<IconSentry size="sm" />} placement="left-start">
-        <MenuItem label="pin" onClick={() => setIsPinned(!isPinned)}>
-          <div className={iconItemClass}>
-            <IconPin size="sm" isSolid={isPinned} />
-            {isPinned ? 'Un-Pin' : 'Pin'}
-          </div>
-        </MenuItem>
+      <Tooltip>
+        <TooltipTrigger>
+          <Menu className={cx(navItemClassName, 'p-0')} trigger={<IconSentry size="sm" />} placement="left-start">
+            <MenuItem label="pin" onClick={() => setIsPinned(!isPinned)}>
+              <div className={iconItemClass}>
+                <IconPin size="sm" isSolid={isPinned} />
+                {isPinned ? 'Un-Pin' : 'Pin'}
+              </div>
+            </MenuItem>
 
-        {debug?.includes(DebugTarget.SETTINGS) ? (
-          <MenuItem label="settings" onClick={() => navigate('/settings')}>
-            <div className={iconItemClass}>
-              <IconSettings size="sm" />
-              Settings
-            </div>
-          </MenuItem>
-        ) : null}
+            {debug?.includes(DebugTarget.SETTINGS) ? (
+              <MenuItem label="settings" onClick={() => navigate('/settings')}>
+                <div className={iconItemClass}>
+                  <IconSettings size="sm" />
+                  Settings
+                </div>
+              </MenuItem>
+            ) : null}
 
-        <hr className={menuSeparator} />
+            <hr className={menuSeparator} />
 
-        <MenuItem label="logout" onClick={() => apiProxy.logout()}>
-          <div className={iconItemClass}>
-            <IconLock size="sm" isLocked={false} />
-            Logout
-          </div>
-        </MenuItem>
-      </Menu>
+            <MenuItem label="logout" onClick={() => apiProxy.logout()}>
+              <div className={iconItemClass}>
+                <IconLock size="sm" isLocked={false} />
+                Logout
+              </div>
+            </MenuItem>
+          </Menu>
+        </TooltipTrigger>
+        <TooltipContent>More options</TooltipContent>
+      </Tooltip>
 
       {isExpanded ? (
         <Fragment>
           <hr className={navSeparator} />
 
-          <NavLink {...toPathOrHome('/issues')} title="Issues" className={navItemClassName}>
-            <IconIssues size="sm" />
-          </NavLink>
-          <NavLink {...toPathOrHome('/feedback')} title="User Feedback" className={navItemClassName}>
-            <IconMegaphone size="sm" />
-          </NavLink>
-          <NavLink {...toPathOrHome('/featureFlags')} title="Feature Flags" className={navItemClassName}>
-            <IconFlag size="sm" />
-          </NavLink>
+          <Tooltip>
+            <TooltipTrigger>
+              <NavLink {...toPathOrHome('/issues')} className={navItemClassName}>
+                <IconIssues size="sm" />
+              </NavLink>
+            </TooltipTrigger>
+            <TooltipContent>Issues</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger>
+              <NavLink {...toPathOrHome('/feedback')} className={navItemClassName}>
+                <IconMegaphone size="sm" />
+              </NavLink>
+            </TooltipTrigger>
+            <TooltipContent>User Feedback</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger>
+              <NavLink {...toPathOrHome('/featureFlags')} className={navItemClassName}>
+                <IconFlag size="sm" />
+              </NavLink>
+            </TooltipTrigger>
+            <TooltipContent>Feature Flags</TooltipContent>
+          </Tooltip>
         </Fragment>
       ) : null}
     </motion.div>
