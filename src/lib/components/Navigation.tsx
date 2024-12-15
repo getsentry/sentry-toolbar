@@ -1,6 +1,6 @@
+import {Transition} from '@headlessui/react';
 import {cx} from 'cva';
-import {motion} from 'framer-motion';
-import {Fragment, useContext} from 'react';
+import {useContext} from 'react';
 import type {MouseEvent} from 'react';
 import {NavLink, useLocation, useNavigate} from 'react-router-dom';
 import type {To} from 'react-router-dom';
@@ -62,13 +62,9 @@ export default function Navigation() {
   });
 
   return (
-    <motion.div
-      layout="position"
-      className={navClassName}
-      onMouseOver={() => setIsHovered(true)}
-      onMouseOut={() => setIsHovered(false)}>
+    <div className={navClassName} onMouseOver={() => setIsHovered(true)} onMouseOut={() => setIsHovered(false)}>
       <Tooltip>
-        <TooltipTrigger>
+        <TooltipTrigger asChild>
           <Menu className={cx(navItemClassName, 'p-0')} trigger={<IconSentry size="sm" />} placement="left-start">
             <MenuItem label="pin" onClick={() => setIsPinned(!isPinned)}>
               <div className={iconItemClass}>
@@ -99,12 +95,12 @@ export default function Navigation() {
         <TooltipContent>More options</TooltipContent>
       </Tooltip>
 
-      {isExpanded ? (
-        <Fragment>
+      <Transition show={isExpanded}>
+        <div className="transition duration-300 ease-in data-[closed]:opacity-0">
           <hr className={navSeparator} />
 
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
               <NavLink {...toPathOrHome('/issues')} className={navItemClassName}>
                 <IconIssues size="sm" />
               </NavLink>
@@ -113,7 +109,7 @@ export default function Navigation() {
           </Tooltip>
 
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
               <NavLink {...toPathOrHome('/feedback')} className={navItemClassName}>
                 <IconMegaphone size="sm" />
               </NavLink>
@@ -122,15 +118,15 @@ export default function Navigation() {
           </Tooltip>
 
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
               <NavLink {...toPathOrHome('/featureFlags')} className={navItemClassName}>
                 <IconFlag size="sm" />
               </NavLink>
             </TooltipTrigger>
             <TooltipContent>Feature Flags</TooltipContent>
           </Tooltip>
-        </Fragment>
-      ) : null}
-    </motion.div>
+        </div>
+      </Transition>
+    </div>
   );
 }
