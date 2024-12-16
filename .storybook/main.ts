@@ -17,10 +17,6 @@ const main: StorybookConfig = {
   typescript: {
     reactDocgen: 'react-docgen-typescript',
   },
-  previewBody: body => `
-    ${body}
-    <script>document.body.dataset.theme = 'light';</script>
-  `,
 };
 
 export default main;
