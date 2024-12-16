@@ -6,6 +6,7 @@ import Providers from 'toolbar/context/Providers';
 import styles from 'toolbar/index.css?inline'; // returned as a string
 import type {Configuration} from 'toolbar/types/config';
 import {localeTimeRelativeAbbr} from 'toolbar/utils/locale';
+import setColorScheme from 'toolbar/utils/setColorScheme';
 
 export default function mount(rootNode: HTMLElement, config: Configuration) {
   const cleanup: (() => void)[] = [];
@@ -60,24 +61,4 @@ function buildDom(config: Configuration) {
   shadow.appendChild(portalMount);
 
   return {host, reactMount, portalMount};
-}
-
-function setColorScheme(host: HTMLDivElement, theme: 'system' | 'light' | 'dark') {
-  if (theme === 'light' || theme === 'dark') {
-    host.dataset.theme = theme;
-    return () => {};
-  } else {
-    if (!window.matchMedia) {
-      host.dataset.theme = 'light';
-      return () => {};
-    } else {
-      const match = window.matchMedia('(prefers-color-scheme: dark)');
-      host.dataset.theme = match.matches ? 'dark' : 'light';
-      const onChange = () => {
-        setColorScheme(host, 'system');
-      };
-      match.addEventListener('change', onChange);
-      return () => match.removeEventListener('change', onChange);
-    }
-  }
 }
