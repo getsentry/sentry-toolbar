@@ -4,6 +4,7 @@ import {DebugTarget, type Configuration} from 'toolbar/types/config';
 export default function hydrateConfig({mountPoint, ...config}: InitConfig): Configuration {
   return {
     ...config,
+    sentryOrigin: config.sentryOrigin ? String(config.sentryOrigin) : 'https://sentry.io',
     environment: hydrateEnvironment(config.environment),
     placement: hydratePlacement(config.placement),
     debug: hydrateDebug(config.debug),
