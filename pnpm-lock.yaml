@@ -30,8 +30,8 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0
       platformicons:
-        specifier: ^7.0.1
-        version: 7.0.1(react@18.3.1)
+        specifier: ^7.0.2
+        version: 7.0.2(react@18.3.1)
       query-string:
         specifier: ^9.1.0
         version: 9.1.0
@@ -5626,8 +5626,8 @@ packages:
   pkg-types@1.2.0:
     resolution: {integrity: sha512-+ifYuSSqOQ8CqP4MbZA5hDpb97n3E8SVWdJe+Wms9kj745lmd3b7EZJiqvmLwAlmRfjrI7Hi5z3kdBJ93lFNPA==}
 
-  platformicons@7.0.1:
-    resolution: {integrity: sha512-M/aNCZw4RJ8yIhkFBFhoQtOYgvwn+99upggQYy7BSaQxKaGS3Yb5/c1qC8+lKqzWWMZ+uafFOpEK6jLFPIkpww==}
+  platformicons@7.0.2:
+    resolution: {integrity: sha512-wow9EGJ45egkhe5+Qu7do9jZ9sXEg3W7YCp3UJ9f3XL5TsUjCOq9qglrHvn9yKisagHMeQ/CWg7sHUWLrswvZA==}
     peerDependencies:
       react: '*'
 
@@ -13755,7 +13755,7 @@ snapshots:
       mlly: 1.7.1
       pathe: 1.1.2
 
-  platformicons@7.0.1(react@18.3.1):
+  platformicons@7.0.2(react@18.3.1):
     dependencies:
       '@types/node': 22.5.5
       '@types/react': 18.3.3
