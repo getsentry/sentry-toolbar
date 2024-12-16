@@ -154,8 +154,8 @@ importers:
         specifier: 3.17.4
         version: 3.17.4(tailwindcss@3.4.7(ts-node@10.9.2(@types/node@22.5.5)(typescript@5.7.2)))
       generate-react-cli:
-        specifier: 8.4.8
-        version: 8.4.8
+        specifier: 8.4.9
+        version: 8.4.9
       husky:
         specifier: 9.1.4
         version: 9.1.4
@@ -4274,8 +4274,8 @@ packages:
   functions-have-names@1.2.3:
     resolution: {integrity: sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==}
 
-  generate-react-cli@8.4.8:
-    resolution: {integrity: sha512-qFLBXdRLcdwrCw8KSAv20ThX7bxerug/oDaA3QG9HmG0fVWmX0DpkwtPr7GVXOnwG17KYMkC10fLaIVsIXXqTA==}
+  generate-react-cli@8.4.9:
+    resolution: {integrity: sha512-Rk3G9uXoFRDU8vi/xlHQm3d7iE6dos9ofcjsqzAaTwbSE6k1UnwrSD9UEpJjuhH9Nk/A5yDogXUHkwShitobkA==}
     engines: {node: '>=10.x', npm: '>= 6.x'}
     hasBin: true
 
@@ -4546,8 +4546,8 @@ packages:
     resolution: {integrity: sha512-JG3eIAj5V9CwcGvuOmoo6LB9kbAYT8HXffUl6memuszlwDC/qvFAJw49XJ5NROSFNPxp3iQg1GqkFhaY/CR0IA==}
     engines: {node: '>=8.0.0'}
 
-  inquirer@9.3.4:
-    resolution: {integrity: sha512-Hp6meNSDzp+Oc9JNUUlYsK81dxaPrrBRa7H/s3+yebCDRJe4UNKYSkEUZoIcuKJjNipBLPKsuc7BvO6tLzo/KA==}
+  inquirer@9.3.7:
+    resolution: {integrity: sha512-LJKFHCSeIRq9hanN14IlOtPSTe3lNES7TYDTE2xxdAy1LS5rYphajK1qtwvj3YmQXvvk0U2Vbmcni8P9EIQW9w==}
     engines: {node: '>=18'}
 
   internal-slot@1.0.7:
@@ -12201,14 +12201,14 @@ snapshots:
 
   functions-have-names@1.2.3: {}
 
-  generate-react-cli@8.4.8:
+  generate-react-cli@8.4.9:
     dependencies:
       chalk: 5.3.0
       commander: 12.1.0
       deep-keys: 0.5.0
       dotenv: 16.4.5
       fs-extra: 11.2.0
-      inquirer: 9.3.4
+      inquirer: 9.3.7
       lodash: 4.17.21
       replace: 1.2.2
 
@@ -12479,7 +12479,7 @@ snapshots:
       strip-ansi: 6.0.1
       through: 2.3.8
 
-  inquirer@9.3.4:
+  inquirer@9.3.7:
     dependencies:
       '@inquirer/figures': 1.0.6
       ansi-escapes: 4.3.2
