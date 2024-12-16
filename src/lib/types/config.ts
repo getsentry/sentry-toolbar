@@ -4,13 +4,13 @@ interface ConnectionConfig {
   /**
    * The origin where sentry can be found
    *
-   * Default: `"https://acme.sentry.io"`
+   * Default: `"https://sentry.io"`
    *
    * Must include: protocol, domain & port (if non-standard).
    * May include a url path if sentry is not hosted at the domain root.
    * Must not have a trailing backslash.
    */
-  sentryOrigin?: undefined | string;
+  sentryOrigin: string;
 }
 
 interface FeatureFlagsConfig {
@@ -91,8 +91,10 @@ interface DebugConfig {
 
 export interface Configuration extends ConnectionConfig, FeatureFlagsConfig, OrgConfig, RenderConfig, DebugConfig {}
 
-export interface InitConfig extends Omit<Configuration, 'debug' | 'environment'> {
+export interface InitConfig extends Omit<Configuration, 'sentryOrigin' | 'environment' | 'debug'> {
   mountPoint?: undefined | HTMLElement | (() => HTMLElement);
+
+  sentryOrigin?: undefined | string;
 
   // Override environment, because it will be hydrated intentionally.
   environment?: undefined | string | string[];

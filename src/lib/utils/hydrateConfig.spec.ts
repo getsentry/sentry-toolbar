@@ -9,7 +9,7 @@ function mockInitConfig(overrides: Partial<InitConfig>): InitConfig {
     organizationSlug: '',
     placement: 'right-edge',
     projectIdOrSlug: '',
-    sentryOrigin: '',
+    sentryOrigin: undefined,
     ...overrides,
   };
 }
@@ -24,7 +24,27 @@ describe('hydrateConfig', () => {
       organizationSlug: '',
       placement: 'right-edge',
       projectIdOrSlug: '',
-      sentryOrigin: '',
+      sentryOrigin: 'https://sentry.io',
+    });
+  });
+
+  describe('.sentryOrigin', () => {
+    it('should convert undefined and empty string to the default value', () => {
+      expect(hydrateConfig(mockInitConfig({sentryOrigin: undefined})).sentryOrigin).toEqual('https://sentry.io');
+      expect(hydrateConfig(mockInitConfig({sentryOrigin: ''})).sentryOrigin).toEqual('https://sentry.io');
+    });
+
+    it('should accept whatever string is passed in', () => {
+      expect(hydrateConfig(mockInitConfig({sentryOrigin: 'example.com'})).sentryOrigin).toEqual('example.com');
+      expect(hydrateConfig(mockInitConfig({sentryOrigin: 'example.com:8080'})).sentryOrigin).toEqual(
+        'example.com:8080'
+      );
+      expect(hydrateConfig(mockInitConfig({sentryOrigin: 'http://example.com'})).sentryOrigin).toEqual(
+        'http://example.com'
+      );
+      expect(hydrateConfig(mockInitConfig({sentryOrigin: 'http://example.com:8080'})).sentryOrigin).toEqual(
+        'http://example.com:8080'
+      );
     });
   });
 
