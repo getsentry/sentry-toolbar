@@ -2,6 +2,7 @@ import {type UrlObject} from 'query-string';
 import {useContext, type MouseEvent} from 'react';
 import ExternalLink from 'toolbar/components/base/ExternalLink';
 import ConfigContext from 'toolbar/context/ConfigContext';
+import {getSentryWebOrigin} from 'toolbar/sentryApi/urls';
 
 interface Props {
   children: React.ReactNode;
@@ -11,12 +12,12 @@ interface Props {
 }
 
 export default function SentryAppLink({children, className, to, onClick}: Props) {
-  const {sentryOrigin} = useContext(ConfigContext);
+  const config = useContext(ConfigContext);
 
   return (
     <ExternalLink
       to={{
-        url: `${sentryOrigin}${to.url}`,
+        url: `${getSentryWebOrigin(config)}${to.url}`,
         query: to.query,
       }}
       onClick={onClick}
