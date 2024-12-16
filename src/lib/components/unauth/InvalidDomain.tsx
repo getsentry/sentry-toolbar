@@ -3,7 +3,6 @@ import {useContext} from 'react';
 import SentryAppLink from 'toolbar/components/SentryAppLink';
 import UnauthPill from 'toolbar/components/unauth/UnauthPill';
 import ConfigContext from 'toolbar/context/ConfigContext';
-import {getSentryWebOrigin} from 'toolbar/sentryApi/urls';
 
 const buttonClass = cx('rounded-full text-white p-1 hover:bg-gray-500 hover:underline');
 
@@ -18,7 +17,7 @@ export default function InvalidDomain() {
         <SentryAppLink
           className={buttonClass}
           to={{
-            url: `${getSentryWebOrigin(config)}/settings/projects/${projectIdOrSlug}/toolbar/`,
+            url: `/settings/projects/${projectIdOrSlug}/toolbar/`,
           }}>
           Configure project
         </SentryAppLink>
