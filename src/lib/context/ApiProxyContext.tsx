@@ -52,7 +52,7 @@ export function ApiProxyContextProvider({children}: Props) {
     }
   });
 
-  const frameSrc = `${getSentryIFrameOrigin(config)}/toolbar/${organizationSlug}/${projectIdOrSlug}/iframe/?logging=${enableLogging ? 1 : 0}`;
+  const frameSrc = `${getSentryIFrameOrigin(config)}/toolbar/${organizationSlug}/${projectIdOrSlug}/iframe/?logging=${enableLogging ? '1' : ''}`;
 
   log('Render with state', {proxyState});
   return (
