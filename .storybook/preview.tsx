@@ -3,6 +3,7 @@ import '../src/lib/index.css';
 import Providers from 'toolbar/context/Providers';
 import type {Configuration} from 'toolbar/types/config';
 import localStorage from 'toolbar/utils/localStorage';
+import setColorScheme from 'toolbar/utils/setColorScheme';
 
 const baseConfig: Configuration = {
   sentryOrigin: 'http://localhost:8080',
@@ -26,11 +27,10 @@ const baseConfig: Configuration = {
 
 const preview: Preview = {
   decorators: [
-    (Story, {parameters: {theme}}) => (
-      <div data-theme={theme} style={{background: theme === 'dark' ? 'var(--white)' : undefined}}>
-        <Story />
-      </div>
-    ),
+    (Story, {parameters: {config}}) => {
+      setColorScheme(document.body, config.theme);
+      return <Story />;
+    },
     (Story, {parameters: {config}}) => (
       <Providers config={config} portalMount={document.body}>
         <Story />
@@ -50,7 +50,6 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
-    theme: 'light',
     config: baseConfig,
   },
 };

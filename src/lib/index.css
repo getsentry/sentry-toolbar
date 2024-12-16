@@ -64,10 +64,10 @@
     --white: #1d1127;
 
     /* Surface */
-    --surface100: '#18121c';
-    --surface-200: '#1a141f';
-    --surface-300: '#241d2a';
-    --surface-400: '#2c2433';
+    --surface100: #18121c;
+    --surface-200: #1a141f;
+    --surface-300: #241d2a;
+    --surface-400: #2c2433;
 
     /* Translucent */
     --translucent-gray-200: rgb(218 184 245 / 16%);
