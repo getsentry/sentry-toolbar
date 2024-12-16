@@ -40,7 +40,7 @@
     "dev": "run-p dev:server dev:watch",
     "clean:lib": "rm -rf dist",
     "build:lib": "vite build",
-    "tgz:lib": "rm -f ./dist/sentry-toolbar.tgz && tar -cvzf ./sentry-toolbar.tgz ./dist && mv ./sentry-toolbar.tgz ./dist/sentry-toolbar.tgz",
+    "tgz:lib": "rm -f ./sentry-toolbar.tgz && tar -cvzf ./sentry-toolbar.tgz ./dist",
     "build": "run-s clean:lib build:lib tgz:lib",
     "lint:code": "eslint --report-unused-disable-directives",
     "fix:code": "run-s 'lint:code --fix'",
