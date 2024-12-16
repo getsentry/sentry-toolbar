@@ -3,11 +3,13 @@ import {useContext} from 'react';
 import SentryAppLink from 'toolbar/components/SentryAppLink';
 import UnauthPill from 'toolbar/components/unauth/UnauthPill';
 import ConfigContext from 'toolbar/context/ConfigContext';
+import {getSentryWebOrigin} from 'toolbar/sentryApi/urls';
 
-const buttonClass = cx('rounded-full p-1 hover:bg-gray-500 hover:underline');
+const buttonClass = cx('rounded-full text-white p-1 hover:bg-gray-500 hover:underline');
 
 export default function InvalidDomain() {
-  const {projectIdOrSlug} = useContext(ConfigContext);
+  const config = useContext(ConfigContext);
+  const {projectIdOrSlug} = config;
 
   return (
     <UnauthPill>
@@ -16,7 +18,7 @@ export default function InvalidDomain() {
         <SentryAppLink
           className={buttonClass}
           to={{
-            url: `/settings/projects/${projectIdOrSlug}/toolbar/`,
+            url: `${getSentryWebOrigin(config)}/settings/projects/${projectIdOrSlug}/toolbar/`,
           }}>
           Configure project
         </SentryAppLink>
