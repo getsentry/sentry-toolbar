@@ -1,9 +1,10 @@
 import type {Preview} from '@storybook/react';
 import '../src/lib/index.css';
 import Providers from 'toolbar/context/Providers';
+import type {Configuration} from 'toolbar/types/config';
 import localStorage from 'toolbar/utils/localStorage';
 
-const baseConfig = {
+const baseConfig: Configuration = {
   sentryOrigin: 'http://localhost:8080',
 
   // FeatureFlagsConfig
@@ -18,6 +19,9 @@ const baseConfig = {
   domId: 'sentry-toolbar',
   placement: 'right-edge',
   theme: 'system',
+
+  // DebugConfig
+  debug: [],
 };
 
 const preview: Preview = {
