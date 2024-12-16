@@ -30,9 +30,11 @@ function hydrateDebug(debug: InitConfig['debug']): Configuration['debug'] {
   if (!debug || debug === 'false') {
     return [];
   }
-  const parts = debug.split(',').map(part => part.trim());
   const debugTargets = Object.values(DebugTarget);
-
+  if (debug === true) {
+    return debugTargets;
+  }
+  const parts = debug.split(',').map(part => part.trim());
   if (parts.includes('all') || parts.includes('true')) {
     return debugTargets;
   }

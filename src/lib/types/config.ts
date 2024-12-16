@@ -100,5 +100,5 @@ export interface InitConfig extends Omit<Configuration, 'sentryOrigin' | 'enviro
   environment?: undefined | string | string[];
 
   // Override debug, because it will be hydrated intentionally.
-  debug?: undefined | string;
+  debug?: undefined | string | boolean;
 }

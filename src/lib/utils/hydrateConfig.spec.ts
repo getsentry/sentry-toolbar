@@ -90,11 +90,13 @@ describe('hydrateConfig', () => {
       expect(hydrateConfig(mockInitConfig({debug: ''})).debug).toEqual([]);
     });
 
-    it('should convert "all" and "true" to enable everything', () => {
-      expect(hydrateConfig(mockInitConfig({debug: 'all'})).debug).toEqual(Object.values(DebugTarget));
-      expect(hydrateConfig(mockInitConfig({debug: 'true'})).debug).toEqual(Object.values(DebugTarget));
-      expect(hydrateConfig(mockInitConfig({debug: 'logging,true,state'})).debug).toEqual(Object.values(DebugTarget));
-      expect(hydrateConfig(mockInitConfig({debug: 'all,true,foo,bar'})).debug).toEqual(Object.values(DebugTarget));
+    it('should convert `"all"`, `"true"` and `true` to enable everything', () => {
+      const allTargets = Object.values(DebugTarget);
+      expect(hydrateConfig(mockInitConfig({debug: 'all'})).debug).toEqual(allTargets);
+      expect(hydrateConfig(mockInitConfig({debug: 'true'})).debug).toEqual(allTargets);
+      expect(hydrateConfig(mockInitConfig({debug: true})).debug).toEqual(allTargets);
+      expect(hydrateConfig(mockInitConfig({debug: 'logging,true,state'})).debug).toEqual(allTargets);
+      expect(hydrateConfig(mockInitConfig({debug: 'all,true,foo,bar'})).debug).toEqual(allTargets);
     });
 
     it('should convert a comma separated list of targets to their enum values', () => {
