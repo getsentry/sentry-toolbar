@@ -106,7 +106,7 @@
     "eslint-plugin-react-refresh": "0.4.9",
     "eslint-plugin-storybook": "0.11.1",
     "eslint-plugin-tailwindcss": "3.17.4",
-    "generate-react-cli": "8.4.8",
+    "generate-react-cli": "8.4.9",
     "husky": "9.1.4",
     "identity-obj-proxy": "3.0.0",
     "is-ci": "3.0.1",
