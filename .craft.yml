@@ -3,6 +3,9 @@ github:
   repo: sentry-toolbar
 preReleaseCommand: bash bin/bump-version.sh
 targets:
+  - name: github
+    tagPrefix: v
+
   # Versioned CDN Bundle Target
   - name: gcs
     id: 'browser-cdn-bundles'
