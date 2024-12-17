@@ -66,11 +66,3 @@ jobs:
           name: ${{ github.sha }}
           path: |
             ${{ github.workspace }}/dist/**
-
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: sentry-toolbar.tgz
-          path: |
-            ${{ github.workspace }}/sentry-toolbar.tgz
-          overwrite: true
