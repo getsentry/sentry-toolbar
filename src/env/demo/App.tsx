@@ -24,7 +24,7 @@ export default function App() {
       // RenderConfig
       domId: 'sentry-toolbar',
       placement: 'right-edge',
-      theme: 'light',
+      theme: 'system',
 
       // Debug
       debug: import.meta.env.VITE_SENTRY_TOOLBAR_DEBUG,

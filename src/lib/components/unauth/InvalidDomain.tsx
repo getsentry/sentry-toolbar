@@ -4,7 +4,7 @@ import SentryAppLink from 'toolbar/components/SentryAppLink';
 import UnauthPill from 'toolbar/components/unauth/UnauthPill';
 import ConfigContext from 'toolbar/context/ConfigContext';
 
-const buttonClass = cx('rounded-full text-white p-1 hover:bg-gray-500 hover:underline');
+const buttonClass = cx('rounded-full text-white-raw p-1 hover:bg-gray-500 hover:underline');
 
 export default function InvalidDomain() {
   const config = useContext(ConfigContext);
