@@ -10,9 +10,10 @@ export npm_config_git_tag_version=false
 npm version "${NEW_VERSION}"
 
 cat << EOF > ./src/lib/version.ts
+// Do Not Edit. This file is auto-generated.
 /**
  * @preserve
- * Toolbar Version: $NEW_VERSION
+ * Sentry Dev Toolbar Version: $NEW_VERSION
  */
 const version = '$NEW_VERSION';
 export default version;
