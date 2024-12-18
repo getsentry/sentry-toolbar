@@ -7,7 +7,7 @@ import {DebugTarget} from 'toolbar/types/config';
 
 const POPUP_MESSAGE_DELAY_MS = 3_000;
 
-const buttonClass = cx('rounded-full p-1 hover:bg-gray-500 hover:underline');
+const buttonClass = cx('rounded-full text-white-raw p-1 hover:bg-gray-500 hover:underline');
 
 export default function Login() {
   const {debug} = useContext(ConfigContext);
