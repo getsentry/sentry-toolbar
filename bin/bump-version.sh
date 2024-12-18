@@ -8,3 +8,12 @@ NEW_VERSION="${2}"
 # Do not tag and commit changes made by "npm version"
 export npm_config_git_tag_version=false
 npm version "${NEW_VERSION}"
+
+cat << EOF > ./src/lib/version.ts
+/**
+ * @preserve
+ * Toolbar Version: $NEW_VERSION
+ */
+const version = '$NEW_VERSION';
+export default version;
+EOF
