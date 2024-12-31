@@ -1,10 +1,10 @@
-github:
-  owner: getsentry
-  repo: sentry-toolbar
+changelog: CHANGELOG.md
+changelogPolicy: auto
 preReleaseCommand: bash bin/bump-version.sh
 targets:
   - name: github
-    tagPrefix: v
+    previewReleases: true
+    tagOnly: false
 
   # Versioned CDN Bundle Target
   - name: gcs

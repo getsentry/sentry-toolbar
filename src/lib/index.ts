@@ -1,6 +1,7 @@
 import mount from 'toolbar/mount';
 import type {InitConfig as iInitConfig} from 'toolbar/types/config';
 import hydrateConfig from 'toolbar/utils/hydrateConfig';
+import version from 'toolbar/version';
 
 // Public facing types:
 export type InitConfig = iInitConfig;
@@ -13,4 +14,8 @@ export function init(initConfig: InitConfig): Cleanup {
   const root = typeof mountPoint === 'function' ? mountPoint() : mountPoint;
 
   return mount(root ?? document.body, hydrateConfig(initConfig));
+}
+
+export function getVersion() {
+  return version;
 }
