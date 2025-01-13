@@ -70,7 +70,7 @@
     "react-router-dom": "^6.26.2"
   },
   "devDependencies": {
-    "@eslint/compat": "1.1.1",
+    "@eslint/compat": "1.2.5",
     "@eslint/eslintrc": "3.1.0",
     "@eslint/js": "9.16.0",
     "@sentry/vite-plugin": "^2.22.4",
