@@ -1,3 +1,4 @@
+import OpenFeatureAdapter from 'toolbar/adapters/OpenFeatureAdapter';
 import mount from 'toolbar/mount';
 import type {InitConfig as iInitConfig} from 'toolbar/types/config';
 import hydrateConfig from 'toolbar/utils/hydrateConfig';
@@ -19,3 +20,5 @@ export function init(initConfig: InitConfig): Cleanup {
 export function getVersion() {
   return version;
 }
+
+export {OpenFeatureAdapter};
