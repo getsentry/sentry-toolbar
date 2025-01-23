@@ -1,0 +1,39 @@
+{
+  "$schema": "https://flagd.dev/schema/v0/flags.json",
+  "flags": {
+    "show-welcome-banner": {
+      "state": "ENABLED",
+      "variants": {
+        "on": true,
+        "off": false
+      },
+      "defaultVariant": "on"
+    },
+    "enable-antigravity": {
+      "state": "ENABLED",
+      "variants": {
+        "on": true,
+        "off": false
+      },
+      "defaultVariant": "off"
+    },
+    "background-color": {
+      "state": "ENABLED",
+      "variants": {
+        "red": "#FF0000",
+        "blue": "#0000FF",
+        "green": "#00FF00",
+        "yellow": "#FFFF00"
+      },
+      "defaultVariant": "red"
+    },
+    "motd": {
+      "state": "ENABLED",
+      "variants": {
+        "welcome": "Welcome to the app!\nThis is a really long message to test line wrapping and all kinds of things like that.",
+        "maintenance": "This app is down for routine maintenance"
+      },
+      "defaultVariant": "welcome"
+    }
+  }
+}

@@ -24,10 +24,11 @@ const noopStorage: Storage = {
   },
 };
 
+const STORAGE_TEST_KEY = PREFIX + 'storage_check';
+
 // Returns a storage wrapper by trying to perform a single storage op.
 // This asserts that storage is both available and that it can be used.
 // See https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
-const STORAGE_TEST_KEY = 'sentry';
 function createStorage(getStorage: () => Storage): Storage {
   try {
     const storage = getStorage();
