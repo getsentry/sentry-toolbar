@@ -18,6 +18,9 @@ export default function InvalidDomain() {
           className={buttonClass}
           to={{
             url: `/settings/projects/${projectIdOrSlug}/toolbar/`,
+            query: {
+              domain: window.location.host,
+            },
           }}>
           Configure project
         </SentryAppLink>
