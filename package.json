@@ -95,7 +95,7 @@
     "@vitejs/plugin-react": "4.3.1",
     "@yelo/rollup-node-external": "1.0.1",
     "alias-hq": "6.2.3",
-    "eslint": "9.11.0",
+    "eslint": "9.19.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-filename-export": "^1.0.4",
     "eslint-plugin-import": "2.31.0",
