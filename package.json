@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "@sentry/toolbar",
-  "version": "0.0.1",
+  "version": "1.0.0-beta.8",
   "author": "Sentry",
   "license": "MIT",
   "description": "Sentry Toolbar",
