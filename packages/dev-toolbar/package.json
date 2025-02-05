@@ -1,0 +1,66 @@
+{
+  "private": false,
+  "name": "@sentry/dev-toolbar",
+  "version": "0.1.0",
+  "author": "Sentry",
+  "license": "MIT",
+  "description": "React Hook to load and init the @sentry/toolbar",
+  "homepage": "https://github.com/getsentry/sentry-toolbar",
+  "keywords": [
+    "sentry"
+  ],
+  "bugs": {
+    "url": "https://github.com/getsentry/sentry-toolbar/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:getsentry/sentry-toolbar.git"
+  },
+  "engines": {
+    "node": ">=18",
+    "npm": "USE PNPM",
+    "pnpm": ">=9",
+    "yarn": "USE PNPM"
+  },
+  "volta": {
+    "node": "20.4.0",
+    "pnpm": "9.7.0"
+  },
+  "type": "module",
+  "browser": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "typings": "./dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
+  "scripts": {
+    "dev:watch": "nodemon --exec 'rm -rf ./vite.config.ts.timestamp-* && pnpm build:lib' --ext ts,tsx --ignore dist/",
+    "dev": "vite",
+    "build:lib": "vite build",
+    "build": "pnpm build:lib",
+    "lint:code": "eslint --report-unused-disable-directives",
+    "fit:code": "lint:code --fix",
+    "lint:types": "tsc --pretty --noEmit"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@openfeature/web-sdk": "^1.4.0",
+    "@sentry/vite-plugin": "^2.22.4",
+    "@types/react": "^19.0.10",
+    "alias-hq": "6.2.3",
+    "ts-node": "10.9.2",
+    "typescript": "5.7.2",
+    "vite": "5.4.7",
+    "vite-plugin-dts": "4.0.1"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  }
+}

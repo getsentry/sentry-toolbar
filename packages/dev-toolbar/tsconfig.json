@@ -13,7 +13,6 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
 
     /* Linting */
     "strict": true,
@@ -27,7 +26,6 @@
       "toolbar/*": ["./src/lib/*"],
     }
   },
-  "include": [".storybook/*", "src/**/*.ts", "src/**/*.tsx", "templates/**/*.ts", "templates/**/*.tsx"],
-  "exclude": [],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["src/**/*.ts", "vite.config.ts"],
+  "exclude": []
 }

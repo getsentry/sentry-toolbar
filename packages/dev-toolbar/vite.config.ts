@@ -1,11 +1,9 @@
 import {resolve} from 'path';
 
 import {sentryVitePlugin} from '@sentry/vite-plugin';
+import hq from 'alias-hq';
 import {defineConfig} from 'vite';
 import dts from 'vite-plugin-dts';
-import hq from 'alias-hq';
-import react from '@vitejs/plugin-react';
-import svgr from "vite-plugin-svgr";
 
 const {env} = process;
 env.NODE_ENV = env.NODE_ENV ?? 'development';
@@ -16,15 +14,10 @@ export default defineConfig({
     alias: hq.get('rollup'),
   },
   plugins: [
-    react(),
-    dts({rollupTypes: true, exclude: ['**/*.stories.(ts|tsx)']}),
+    dts({rollupTypes: true}),
     sentryVitePlugin({
       telemetry: false,
       sourcemaps: {disable: true},
-      reactComponentAnnotation: {enabled: true},
-    }),
-    svgr({
-      include: '**/*.svg',
     }),
   ],
   define: {
@@ -33,19 +26,12 @@ export default defineConfig({
   build: {
     sourcemap: true,
     lib: {
-      entry: resolve(__dirname, 'src/lib/index.ts'),
-      name: 'SentryToolbar',
-      formats: ['iife'],
-      // Implement a custom filename to remove the `iife` suffix
-      fileName: (format, entryName) => 'toolbar.min.js',
+      entry: resolve(__dirname, 'src/index.ts'),
+      fileName: 'index',
+      formats: ['es'],
     },
     rollupOptions: {
-      output: {
-        intro: () => {
-          return 'exports = window.SentryToolbar || {};';
-        },
-      },
-      context: 'window',
+      external: ['react', 'react-dom', 'react/jsx-runtime'],
     },
   },
   css: {

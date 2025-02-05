@@ -193,7 +193,7 @@ const eslint_config = [
       '*/*.{js,jsx,ts,tsx}',
       '**/setupTests.ts',
       '**/*.stories.*',
-      '*.config.{js,ts}',
+      '**/*.config.{js,ts}',
     ],
     plugins: {
       import: pluginImport,

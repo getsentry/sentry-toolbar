@@ -9,19 +9,15 @@
   "keywords": [
     "sentry"
   ],
-  "type": "module",
-  "files": [
-    "dist"
-  ],
-  "main": "./dist/index.umd.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "sideEffects": false,
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.umd.cjs"
-    }
+  "bugs": {
+    "url": "https://github.com/getsentry/sentry-toolbar/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:getsentry/sentry-toolbar.git"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "engines": {
     "node": ">=18",
@@ -32,6 +28,19 @@
   "volta": {
     "node": "22.5.1",
     "pnpm": "9.7.0"
+  },
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.umd.cjs"
+    }
   },
   "scripts": {
     "dev:standalone": "vite",
