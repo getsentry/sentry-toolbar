@@ -24,3 +24,8 @@ targets:
       - path: /sentry-toolbar/latest/
         metadata:
           cacheControl: 'public, max-age=60'
+
+  # NPM package Target
+  - name: npm
+    id: '@sentry/toolbar'
+    includeNames: /^sentry-toolbar-\d.*\.tgz$/

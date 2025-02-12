@@ -60,9 +60,13 @@ jobs:
       - name: Build
         run: pnpm run build
 
+      - name: Pack Tarball
+        run: pnpm pack
+
       - name: Archive artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ${{ github.sha }}
           path: |
             ${{ github.workspace }}/dist/**
+            ${{ github.workspace }}/**/*.tgz
