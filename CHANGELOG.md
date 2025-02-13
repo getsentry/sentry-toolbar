@@ -1,4 +1,11 @@
 
+## 1.0.0-beta.9
+
+### Various fixes & improvements
+
+- fix: replacing organizationSlug with projectIdOrSlug where its needed (#209) by @nikolovlazar
+- fix: Set tooltip trigger cursor to `default` (#203) by @ryan953
+
 ## 1.0.0-beta.8
 
 ### Various fixes & improvements
