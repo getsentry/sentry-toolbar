@@ -1,5 +1,5 @@
-export * from 'toolbar/../../packages/dev-toolbar/src/types';
+export * from './types';
 
-import useSentryToolbar from 'toolbar/../../packages/dev-toolbar/src/useSentryToolbar';
+import useSentryToolbar from './useSentryToolbar';
 
 export {useSentryToolbar};

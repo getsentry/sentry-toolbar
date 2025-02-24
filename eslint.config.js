@@ -185,6 +185,20 @@ const eslint_config = [
       ],
     },
   },
+  /* Allow relative imports for the packages/dev-toolbar folder */
+  {
+    files: ['packages/dev-toolbar/**/*.{js,ts,jsx,tsx}'],
+    plugins: {
+      'no-relative-import-paths': pluginNoRelativeImportPaths,
+    },
+    rules: {
+      /**
+       * Enforce absolute imports within src/lib/*
+       * https://www.npmjs.com/package/eslint-plugin-no-relative-import-paths
+       */
+      'no-relative-import-paths/no-relative-import-paths': ['off'],
+    },
+  },
   /* Allow devDependencies imports for tests and config files */
   {
     files: [

@@ -46,7 +46,7 @@
     "build:lib": "vite build",
     "build": "pnpm build:lib",
     "lint:code": "eslint --report-unused-disable-directives",
-    "fit:code": "lint:code --fix",
+    "fix:code": "lint:code --fix",
     "lint:types": "tsc --pretty --noEmit"
   },
   "dependencies": {},
