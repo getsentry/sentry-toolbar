@@ -1,6 +1,7 @@
 import {useEffect} from 'react';
-import lazyLoadToolbar from 'toolbar/../../packages/dev-toolbar/src/lazyLoadToolbar';
-import type {SentryToolbar} from 'toolbar/../../packages/dev-toolbar/src/types';
+
+import lazyLoadToolbar from './lazyLoadToolbar';
+import type {SentryToolbar} from './types';
 
 type InitArgs = Parameters<SentryToolbar['init']>[0];
 

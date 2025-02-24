@@ -26,5 +26,5 @@ targets:
           cacheControl: 'public, max-age=60'
   # NPM package target
   - name: npm
-    id: @sentry/dev-toolbar
-    includeNames: ^sentry-dev-toolbar-\d.*\.tgz$/
+    id: @sentry/developer-toolbar
+    includeNames: ^sentry-developer-toolbar-\d.*\.tgz$/

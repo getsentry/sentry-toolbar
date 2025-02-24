@@ -1,4 +1,4 @@
-import type {FeatureFlagAdapter} from 'toolbar/../../packages/dev-toolbar/src/types/featureFlags';
+import type {FeatureFlagAdapter} from './featureFlags';
 
 interface ConnectionConfig {
   /**
