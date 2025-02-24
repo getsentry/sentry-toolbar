@@ -24,7 +24,7 @@ targets:
       - path: /sentry-toolbar/latest/
         metadata:
           cacheControl: 'public, max-age=60'
-
+  # NPM package target
   - name: npm
-    id: @sentry/react-usetoolbar
-    includeNames: /packages/sentry-toolbar-react/^sentry-react-usetoolbar-\d.*\.tgz$/
+    id: @sentry/dev-toolbar
+    includeNames: /packages/dev-toolbar/^sentry-dev-toolbar-\d.*\.tgz$/
