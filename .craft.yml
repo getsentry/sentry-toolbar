@@ -27,4 +27,4 @@ targets:
   # NPM package target
   - name: npm
     id: @sentry/dev-toolbar
-    includeNames: /packages/dev-toolbar/^sentry-dev-toolbar-\d.*\.tgz$/
+    includeNames: ^sentry-dev-toolbar-\d.*\.tgz$/
