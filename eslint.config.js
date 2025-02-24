@@ -192,10 +192,6 @@ const eslint_config = [
       'no-relative-import-paths': pluginNoRelativeImportPaths,
     },
     rules: {
-      /**
-       * Enforce absolute imports within src/lib/*
-       * https://www.npmjs.com/package/eslint-plugin-no-relative-import-paths
-       */
       'no-relative-import-paths/no-relative-import-paths': ['off'],
     },
   },
