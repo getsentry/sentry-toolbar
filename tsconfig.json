@@ -24,7 +24,7 @@
 
     /* Aliases */
     "paths": {
-      "toolbar/*": ["./src/lib/*"],
+      "toolbar/*": ["./src/lib/*"]
     }
   },
   "include": [".storybook/*", "src/**/*.ts", "src/**/*.tsx", "templates/**/*.ts", "templates/**/*.tsx"],
