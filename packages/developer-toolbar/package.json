@@ -49,12 +49,10 @@
     "fix:code": "lint:code --fix",
     "lint:types": "tsc --pretty --noEmit"
   },
-  "dependencies": {},
   "devDependencies": {
     "@openfeature/web-sdk": "^1.4.0",
     "@sentry/vite-plugin": "^2.22.4",
     "@types/react": "^19.0.10",
-    "alias-hq": "6.2.3",
     "ts-node": "10.9.2",
     "typescript": "5.7.2",
     "vite": "5.4.7",

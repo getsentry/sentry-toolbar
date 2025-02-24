@@ -20,11 +20,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,
-
-    /* Aliases */
-    "paths": {
-      "toolbar/*": ["./src/lib/*"],
-    }
   },
   "include": ["src/**/*.ts", "vite.config.ts"],
   "exclude": []
