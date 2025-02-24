@@ -16,9 +16,6 @@
     "type": "git",
     "url": "git@github.com:getsentry/sentry-toolbar.git"
   },
-  "publishConfig": {
-    "access": "public"
-  },
   "engines": {
     "node": ">=18",
     "npm": "USE PNPM",
