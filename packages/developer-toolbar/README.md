@@ -8,5 +8,5 @@ pnpm install
 pnpm build
 ```
 ```bash
-yarn add file:/Users/ryan/code/sentry-toolbar/packages/sentry-react-usetoolbar
+yarn add file:/Users/ryan/code/sentry-toolbar/packages/developer-toolbar
 ```
