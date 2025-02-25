@@ -61,7 +61,7 @@ jobs:
         run: pnpm run build
 
       - name: Pack NPM Tarball
-        working-directory: packages/sentry-react-usetoolbar
+        working-directory: packages/developer-toolbar
         run: pnpm build && pnpm pack --pack-destination dist
 
       - name: Archive artifacts
