@@ -28,11 +28,11 @@ importers:
         specifier: 5.7.2
         version: 5.7.2
       vite:
-        specifier: 5.4.7
-        version: 5.4.7(@types/node@22.13.4)
+        specifier: 5.4.12
+        version: 5.4.12(@types/node@22.13.4)
       vite-plugin-dts:
         specifier: 4.0.1
-        version: 4.0.1(@types/node@22.13.4)(rollup@4.34.8)(typescript@5.7.2)(vite@5.4.7(@types/node@22.13.4))
+        version: 4.0.1(@types/node@22.13.4)(rollup@4.34.8)(typescript@5.7.2)(vite@5.4.12(@types/node@22.13.4))
 
 packages:
 
@@ -1034,8 +1034,8 @@ packages:
       vite:
         optional: true
 
-  vite@5.4.7:
-    resolution: {integrity: sha512-5l2zxqMEPVENgvzTuBpHer2awaetimj2BGkhBPdnwKbPNOlHsODU+oiazEZzLK7KhAnOrO+XGYJYn4ZlUhDtDQ==}
+  vite@5.4.12:
+    resolution: {integrity: sha512-KwUaKB27TvWwDJr1GjjWthLMATbGEbeWYZIbGZ5qFIsgPP3vWzLu4cVooqhm5/Z2SPDUMjyPVjTztm5tYKwQxA==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -2037,7 +2037,7 @@ snapshots:
 
   v8-compile-cache-lib@3.0.1: {}
 
-  vite-plugin-dts@4.0.1(@types/node@22.13.4)(rollup@4.34.8)(typescript@5.7.2)(vite@5.4.7(@types/node@22.13.4)):
+  vite-plugin-dts@4.0.1(@types/node@22.13.4)(rollup@4.34.8)(typescript@5.7.2)(vite@5.4.12(@types/node@22.13.4)):
     dependencies:
       '@microsoft/api-extractor': 7.47.4(@types/node@22.13.4)
       '@rollup/pluginutils': 5.1.4(rollup@4.34.8)
@@ -2051,13 +2051,13 @@ snapshots:
       typescript: 5.7.2
       vue-tsc: 2.0.29(typescript@5.7.2)
     optionalDependencies:
-      vite: 5.4.7(@types/node@22.13.4)
+      vite: 5.4.12(@types/node@22.13.4)
     transitivePeerDependencies:
       - '@types/node'
       - rollup
       - supports-color
 
-  vite@5.4.7(@types/node@22.13.4):
+  vite@5.4.12(@types/node@22.13.4):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.5.3
