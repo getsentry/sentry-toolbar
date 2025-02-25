@@ -60,9 +60,14 @@ jobs:
       - name: Build
         run: pnpm run build
 
+      - name: Pack NPM Tarball
+        working-directory: packages/sentry-react-usetoolbar
+        run: pnpm build && pnpm pack --pack-destination dist
+
       - name: Archive artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ${{ github.sha }}
           path: |
             ${{ github.workspace }}/dist/**
+            ${{ github.workspace }}/**/dist/*.tgz

@@ -185,6 +185,16 @@ const eslint_config = [
       ],
     },
   },
+  /* Allow relative imports for the packages/developer-toolbar folder */
+  {
+    files: ['packages/developer-toolbar/**/*.{js,ts,jsx,tsx}'],
+    plugins: {
+      'no-relative-import-paths': pluginNoRelativeImportPaths,
+    },
+    rules: {
+      'no-relative-import-paths/no-relative-import-paths': ['off'],
+    },
+  },
   /* Allow devDependencies imports for tests and config files */
   {
     files: [
@@ -193,7 +203,7 @@ const eslint_config = [
       '*/*.{js,jsx,ts,tsx}',
       '**/setupTests.ts',
       '**/*.stories.*',
-      '*.config.{js,ts}',
+      '**/*.config.{js,ts}',
     ],
     plugins: {
       import: pluginImport,
