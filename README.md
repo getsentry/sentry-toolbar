@@ -15,7 +15,7 @@ Get the code and setup your env:
 - `pnpm install && pnpm prepare`
 
 To work on the NPM package:
-- `cd packages/developer-toolbar`
+- `cd packages/toolbar`
 - `pnpm install`
 
 #### Quickstart
@@ -49,7 +49,7 @@ A storybook is available by running: `pnpm start:docs` and is published to https
 
 #### Publishing
 
-To publish a new version of the toolbar follow the usual steps for craft. This will publish the Toolbar itself to the CDN, and also the `@sentry/developer-toolbar` npm package
+To publish a new version of the toolbar follow the usual steps for craft. This will publish the Toolbar itself to the CDN, and also the `@sentry/toolbar` npm package
 1. Run the [Release github action](https://github.com/getsentry/sentry-toolbar/actions/workflows/release.yml) and put in the version number you'd like to release.
     - To see the previous releases just look at the previous runs of that action.
 2. Check #proj-release-approval in slack, or visit https://github.com/getsentry/publish/issues to find the issue for this release.
@@ -73,10 +73,10 @@ In production you can load up the Toolbar via a script tag, and configure it:
 
 Or, if you're using React than you can install a package from NPM which will configure and inject the toolbar at once:
 ```bash
-npm add @sentry/developer-toolbar
+npm add @sentry/toolbar
 ```
 ```react
-import {useSentryToolbar} from '@sentry/developer-toolbar';
+import {useSentryToolbar} from '@sentry/toolbar';
 
 ...
 

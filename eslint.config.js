@@ -185,9 +185,9 @@ const eslint_config = [
       ],
     },
   },
-  /* Allow relative imports for the packages/developer-toolbar folder */
+  /* Allow relative imports for the packages/toolbar folder */
   {
-    files: ['packages/developer-toolbar/**/*.{js,ts,jsx,tsx}'],
+    files: ['packages/toolbar/**/*.{js,ts,jsx,tsx}'],
     plugins: {
       'no-relative-import-paths': pluginNoRelativeImportPaths,
     },
