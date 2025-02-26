@@ -1,6 +1,6 @@
 {
   "private": false,
-  "name": "@sentry/developer-toolbar",
+  "name": "@sentry/toolbar",
   "version": "0.1.0",
   "author": "Sentry",
   "license": "MIT",

@@ -1,5 +1,5 @@
 pnpm run lint-staged
 pnpm run lint:types
 
-cd packages/developer-toolbar
+cd packages/toolbar
 pnpm run lint:types
