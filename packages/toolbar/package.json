@@ -26,6 +26,9 @@
     "node": "20.4.0",
     "pnpm": "9.7.0"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "browser": "./dist/index.js",
   "module": "./dist/index.js",
