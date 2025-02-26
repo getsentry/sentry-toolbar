@@ -18,3 +18,6 @@ cat << EOF > ./src/lib/version.ts
 const version = '$NEW_VERSION';
 export default version;
 EOF
+
+cd packages/toolbar
+npm version "${NEW_VERSION}"
