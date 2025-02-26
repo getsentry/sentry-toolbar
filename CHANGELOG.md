@@ -1,4 +1,15 @@
 
+## 1.0.0-beta.10
+
+### Various fixes & improvements
+
+- fix: craft publish regexp should use valid syntax (#222) by @ryan953
+- fix: craft publish step should find the npm bundle (#221) by @ryan953
+- fix: Install dependencies before building npm package (#220) by @ryan953
+- fix: Use the correct package folder name (#219) by @ryan953
+- Update .craft.yml (#218) by @ryan953
+- feat: @sentry/dev-toolbar npm package (#207) by @ryan953
+
 ## 1.0.0-beta.9
 
 ### Various fixes & improvements
