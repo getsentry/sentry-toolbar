@@ -1,4 +1,17 @@
 
+## 1.0.0-beta.11
+
+### Various fixes & improvements
+
+- ref: Rename packages: @sentry/toolbar-core at the top, and @sentry/toolbar for npm (#223) by @ryan953
+- release: 1.0.0-beta.10 (95a87941) by @getsentry-bot
+- fix: craft publish regexp should use valid syntax (#222) by @ryan953
+- fix: craft publish step should find the npm bundle (#221) by @ryan953
+- fix: Install dependencies before building npm package (#220) by @ryan953
+- fix: Use the correct package folder name (#219) by @ryan953
+- Update .craft.yml (#218) by @ryan953
+- feat: @sentry/dev-toolbar npm package (#207) by @ryan953
+
 ## 1.0.0-beta.10
 
 ### Various fixes & improvements
