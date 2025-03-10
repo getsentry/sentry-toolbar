@@ -78,7 +78,7 @@
     "@eslint/compat": "1.1.1",
     "@eslint/eslintrc": "3.1.0",
     "@eslint/js": "9.16.0",
-    "@sentry/vite-plugin": "^2.22.4",
+    "@sentry/vite-plugin": "^3.2.2",
     "@storybook/addon-essentials": "8.2.7",
     "@storybook/addon-interactions": "8.3.2",
     "@storybook/addon-links": "8.3.2",
