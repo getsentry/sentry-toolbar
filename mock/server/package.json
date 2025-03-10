@@ -5,9 +5,7 @@
   "main": "index.js",
   "engines": {
     "node": ">=18",
-    "npm": "USE PNPM",
-    "pnpm": ">=9",
-    "yarn": "USE PNPM"
+    "pnpm": ">=9"
   },
   "volta": {
     "extends": "../../package.json"
