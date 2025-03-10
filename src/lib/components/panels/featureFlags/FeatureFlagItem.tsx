@@ -13,11 +13,11 @@ export default function FeatureFlagItem({name}: Props) {
 
   const url = String(urlTemplate?.(name) ?? '');
   return (
-    <div className="flex flex-row justify-between gap-1 border-b border-b-translucentGray-200 py-1.5">
-      <div className="flex items-start">
+    <div className="flex flex-row justify-between gap-1 overflow-hidden border-b border-b-translucentGray-200 py-1.5">
+      <div className="flex items-start whitespace-nowrap">
         {url ? <ExternalLink to={{url}}>{name}</ExternalLink> : <span>{name}</span>}
       </div>
-      <div>
+      <div className="truncate text-xs">
         <FlagValueInput name={name} value={flags[name]} override={overrides[name]} />
       </div>
     </div>
@@ -39,7 +39,7 @@ function FlagValueBooleanInput({name, value}: {name: string; value: boolean}) {
   const [isActive, setIsActive] = useState(value);
   const id = `toggle-${name}`;
   return (
-    <label htmlFor={id} className="flex cursor-pointer items-center gap-1 text-xs">
+    <label htmlFor={id} className="flex cursor-pointer items-center gap-1">
       <code>{String(isActive)}</code>
       <SwitchButton
         id={id}

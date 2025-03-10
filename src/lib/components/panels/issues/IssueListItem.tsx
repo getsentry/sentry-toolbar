@@ -1,7 +1,9 @@
 import {cx} from 'cva';
 import {useContext} from 'react';
 import AssignedTo from 'toolbar/components/AssignedTo';
+import {Tooltip, TooltipContent, TooltipTrigger} from 'toolbar/components/base/tooltip/Tooltip';
 import RelativeDateTime from 'toolbar/components/datetime/RelativeDateTime';
+import IconFlag from 'toolbar/components/icon/IconFlag';
 import ProjectIcon from 'toolbar/components/project/ProjectIcon';
 import SentryAppLink from 'toolbar/components/SentryAppLink';
 import ConfigContext from 'toolbar/context/ConfigContext';
@@ -32,7 +34,22 @@ export default function IssueListItem({
         <IssueMessage message={item.metadata.value} />
         <div className="flex justify-between">
           <IssueProject item={item} />
-          <AssignedTo assignedTo={item.assignedTo} teams={teams} members={members} />
+          <div className="flex items-center gap-1">
+            <Tooltip>
+              <TooltipTrigger>
+                <button
+                  className="cursor-pointer rounded-md border border-solid border-transparent p-0.5 text-gray-400 hover:border-current"
+                  onClick={() => {
+                    window.location.hash = '#mock-flags=POKEMART-NX';
+                    window.location.reload();
+                  }}>
+                  <IconFlag size="xs" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent>Reproduce this issue by overriding evaluated feature flags in the browser</TooltipContent>
+            </Tooltip>
+            <AssignedTo assignedTo={item.assignedTo} teams={teams} members={members} />
+          </div>
         </div>
       </div>
     </div>

@@ -58,7 +58,7 @@ function FeatureFlagEditor() {
   const [showAddFlag, setShowAddFlag] = useState(false);
 
   return (
-    <section className="flex grow flex-col">
+    <section className="flex max-w-[inherit] grow flex-col">
       <h1 className={cx(sectionBorder, sectionPadding, 'flex flex-row justify-between font-medium')}>
         <span>Feature Flags</span>
         <button
@@ -85,7 +85,16 @@ function FeatureFlagEditor() {
       ) : null}
 
       {isDirty ? (
-        <div className={cx(sectionBorder, sectionPadding, 'text-sm text-gray-300')}>Reload to see changes</div>
+        <div className={cx(sectionBorder, sectionPadding, 'text-sm text-gray-300')}>
+          <a
+            href="#"
+            onClick={e => {
+              e.preventDefault();
+              window.location.reload();
+            }}>
+            Reload to see changes
+          </a>
+        </div>
       ) : null}
 
       <div className={cx(sectionPadding, 'flex flex-col gap-1 text-sm')}>
