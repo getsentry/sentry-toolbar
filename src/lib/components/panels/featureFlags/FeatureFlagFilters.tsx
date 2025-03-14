@@ -1,3 +1,4 @@
+import Indicator from 'toolbar/components/base/Indicator';
 import Input from 'toolbar/components/base/Input';
 import SegmentedControl from 'toolbar/components/base/SegmentedControl';
 import {useFeatureFlagsContext} from 'toolbar/components/panels/featureFlags/featureFlagsContext';
@@ -8,18 +9,21 @@ interface Props {
 }
 
 export default function FeatureFlagFilters({defaultPrefilter}: Props) {
-  const {setPrefilter, setSearchTerm} = useFeatureFlagsContext();
+  const {overrides, setPrefilter, setSearchTerm} = useFeatureFlagsContext();
   return (
     <div className="grid grid-cols-2 gap-1">
       <Input className="col-span-1" onChange={e => setSearchTerm(e.target.value)} placeholder="Search" />
-      <SegmentedControl<Prefilter[]>
-        defaultSelected={defaultPrefilter}
-        options={{
-          all: {label: 'All'},
-          overrides: {label: 'Overrides'},
-        }}
-        onChange={value => setPrefilter(value)}
-      />
+      <div className="relative grid">
+        <SegmentedControl<Prefilter[]>
+          defaultSelected={defaultPrefilter}
+          options={{
+            all: {label: 'All'},
+            overrides: {label: 'Overrides'},
+          }}
+          onChange={value => setPrefilter(value)}
+        />
+        {Object.keys(overrides).length ? <Indicator position="top-right" variant="red" /> : null}
+      </div>
     </div>
   );
 }
