@@ -1,5 +1,6 @@
 import type {Dispatch, ReactNode, SetStateAction} from 'react';
 import {createContext, useCallback, useContext, useEffect, useState} from 'react';
+import FeatureFlagAdapterStub from 'toolbar/components/panels/featureFlags/FeatureFlagAdapterStub';
 import type {Prefilter} from 'toolbar/components/panels/featureFlags/FeatureFlagsPanel';
 import type {FeatureFlagAdapter, FlagMap, FlagValue} from 'toolbar/types/featureFlags';
 
@@ -87,10 +88,10 @@ const FeatureFlagContext = createContext<Context>({
 
 interface Props {
   children: ReactNode;
-  featureFlags: FeatureFlagAdapter;
+  featureFlags: undefined | FeatureFlagAdapter;
 }
 
-export function FeatureFlagsContextProvider({children, featureFlags}: Props) {
+export function FeatureFlagsContextProvider({children, featureFlags = FeatureFlagAdapterStub}: Props) {
   const [flags, setFlags] = useState<FlagMap>({});
   const flagsPromise = Promise.resolve(featureFlags.getFlagMap());
   useEffect(() => {

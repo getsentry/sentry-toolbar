@@ -4,6 +4,7 @@ import {useContext} from 'react';
 import type {MouseEvent} from 'react';
 import {NavLink, useLocation, useNavigate} from 'react-router-dom';
 import type {To} from 'react-router-dom';
+import Indicator from 'toolbar/components/base/Indicator';
 import {Menu, MenuItem} from 'toolbar/components/base/menu/Menu';
 import {Tooltip, TooltipTrigger, TooltipContent} from 'toolbar/components/base/tooltip/Tooltip';
 import IconFlag from 'toolbar/components/icon/IconFlag';
@@ -13,6 +14,7 @@ import IconMegaphone from 'toolbar/components/icon/IconMegaphone';
 import IconPin from 'toolbar/components/icon/IconPin';
 import IconSentry from 'toolbar/components/icon/IconSentry';
 import IconSettings from 'toolbar/components/icon/IconSettings';
+import {useFeatureFlagsContext} from 'toolbar/components/panels/featureFlags/featureFlagsContext';
 import {useApiProxyInstance} from 'toolbar/context/ApiProxyContext';
 import ConfigContext from 'toolbar/context/ConfigContext';
 import useNavigationExpansion from 'toolbar/hooks/useNavigationExpansion';
@@ -24,6 +26,7 @@ const navSeparator = cx(['m-0', 'w-full', 'border-translucentGray-200']);
 const menuSeparator = cx(['mx-1', 'my-0.5']);
 
 const navItemClassName = cx([
+  'relative',
   'flex',
   'flex-col',
   'rounded-md',
@@ -50,6 +53,8 @@ export default function Navigation() {
   const {pathname} = useLocation();
   const navigate = useNavigate();
   const apiProxy = useApiProxyInstance();
+
+  const {overrides} = useFeatureFlagsContext();
 
   const toPathOrHome = (to: To) => ({
     to,
@@ -123,6 +128,7 @@ export default function Navigation() {
           <Tooltip>
             <TooltipTrigger asChild>
               <NavLink {...toPathOrHome('/featureFlags')} className={navItemClassName}>
+                {Object.keys(overrides).length ? <Indicator position="top-right" variant="red" /> : null}
                 <IconFlag size="sm" />
               </NavLink>
             </TooltipTrigger>

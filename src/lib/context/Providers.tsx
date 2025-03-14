@@ -1,6 +1,7 @@
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {useMemo, type ReactNode} from 'react';
 import {MemoryRouter} from 'react-router-dom';
+import {FeatureFlagsContextProvider} from 'toolbar/components/panels/featureFlags/featureFlagsContext';
 import {ApiProxyContextProvider} from 'toolbar/context/ApiProxyContext';
 import ConfigContext from 'toolbar/context/ConfigContext';
 import PortalTargetContext from 'toolbar/context/PortalTargetContext';
@@ -18,7 +19,9 @@ export default function Providers({children, config, portalMount}: Props) {
       <PortalTargetContext.Provider value={portalMount}>
         <ApiProxyContextProvider>
           <QueryProvider>
-            <MemoryRouter future={{}}>{children}</MemoryRouter>
+            <MemoryRouter future={{}}>
+              <FeatureFlagsContextProvider featureFlags={config.featureFlags}>{children}</FeatureFlagsContextProvider>
+            </MemoryRouter>
           </QueryProvider>
         </ApiProxyContextProvider>
       </PortalTargetContext.Provider>

@@ -5,10 +5,7 @@ import IconChevron from 'toolbar/components/icon/IconChevron';
 import IconSettings from 'toolbar/components/icon/IconSettings';
 import CustomOverride from 'toolbar/components/panels/featureFlags/CustomOverride';
 import FeatureFlagFilters from 'toolbar/components/panels/featureFlags/FeatureFlagFilters';
-import {
-  FeatureFlagsContextProvider,
-  useFeatureFlagsContext,
-} from 'toolbar/components/panels/featureFlags/featureFlagsContext';
+import {useFeatureFlagsContext} from 'toolbar/components/panels/featureFlags/featureFlagsContext';
 import FeatureFlagTable from 'toolbar/components/panels/featureFlags/FeatureFlagTable';
 import ConfigContext from 'toolbar/context/ConfigContext';
 
@@ -20,15 +17,7 @@ const sectionBorder = cx('border-b border-b-translucentGray-200');
 export default function FeatureFlagsPanel() {
   const {featureFlags} = useContext(ConfigContext);
 
-  if (featureFlags) {
-    return (
-      <FeatureFlagsContextProvider featureFlags={featureFlags}>
-        <FeatureFlagEditor />
-      </FeatureFlagsContextProvider>
-    );
-  } else {
-    return <FeatureFlagConfigHelp />;
-  }
+  return featureFlags ? <FeatureFlagEditor /> : <FeatureFlagConfigHelp />;
 }
 
 function FeatureFlagConfigHelp() {
@@ -85,7 +74,14 @@ function FeatureFlagEditor() {
       ) : null}
 
       {isDirty ? (
-        <div className={cx(sectionBorder, sectionPadding, 'text-sm text-gray-300')}>Reload to see changes</div>
+        <a
+          href="#"
+          onClick={() => {
+            window.location.reload();
+          }}
+          className={cx(sectionBorder, sectionPadding, 'text-sm text-gray-300 hover:underline')}>
+          Reload to see changes
+        </a>
       ) : null}
 
       <div className={cx(sectionPadding, 'flex flex-col gap-1 text-sm')}>
