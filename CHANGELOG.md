@@ -1,4 +1,12 @@
 
+## 1.0.0-beta.12
+
+### Various fixes & improvements
+
+- feat(toolbar): Indicate when a FF override is in place (#233) by @ryan953
+- chore: Cleanup package.json engines field (#232) by @ryan953
+- fix: package.json engines config (#225) by @ryan953
+
 ## 1.0.0-beta.11
 
 ### Various fixes & improvements
