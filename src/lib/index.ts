@@ -1,13 +1,13 @@
 import OpenFeatureAdapter from 'toolbar/adapters/OpenFeatureAdapter';
+import type InitConfig from 'toolbar/init/InitConfig';
 import mount from 'toolbar/mount';
-import type {InitConfig as iInitConfig} from 'toolbar/types/config';
 import hydrateConfig from 'toolbar/utils/hydrateConfig';
 import version from 'toolbar/version';
 
 // Public facing types:
-export type InitConfig = iInitConfig;
+export type {InitConfig};
 export type Cleanup = () => void;
-export type {FeatureFlagAdapter, FlagMap, FlagValue} from 'toolbar/types/featureFlags';
+export type {FeatureFlagAdapter, FlagMap, FlagValue} from 'toolbar/init/featureFlagAdapter';
 
 // Public functions:
 export function init(initConfig: InitConfig): Cleanup {

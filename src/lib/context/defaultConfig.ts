@@ -1,4 +1,4 @@
-import type {Configuration} from 'toolbar/types/config';
+import type {Configuration} from 'toolbar/types/Configuration';
 
 const defaultConfig: Configuration = {
   // ConnectionConfig
@@ -13,8 +13,9 @@ const defaultConfig: Configuration = {
   environment: ['production'],
 
   // RenderConfig
-  placement: 'right-edge',
   domId: 'sentry-toolbar',
+  placement: 'right-edge',
+  theme: 'system',
 
   // DebugConfig
   debug: [],

@@ -3,7 +3,7 @@ import {useCallback, useContext, useRef, useState} from 'react';
 import UnauthPill from 'toolbar/components/unauth/UnauthPill';
 import {useApiProxyInstance} from 'toolbar/context/ApiProxyContext';
 import ConfigContext from 'toolbar/context/ConfigContext';
-import {DebugTarget} from 'toolbar/types/config';
+import {DebugTarget} from 'toolbar/types/Configuration';
 
 const POPUP_MESSAGE_DELAY_MS = 3_000;
 

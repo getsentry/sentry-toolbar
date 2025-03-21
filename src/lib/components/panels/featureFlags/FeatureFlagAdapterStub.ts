@@ -1,4 +1,4 @@
-import type {FeatureFlagAdapter} from 'toolbar/types/featureFlags';
+import type {FeatureFlagAdapter} from 'toolbar/init/featureFlagAdapter';
 
 const FeatureFlagAdapterStub: FeatureFlagAdapter = {
   getFlagMap: () => ({}),

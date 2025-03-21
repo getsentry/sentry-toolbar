@@ -4,7 +4,7 @@ import {createRoot} from 'react-dom/client';
 import AppRouter from 'toolbar/components/AppRouter';
 import Providers from 'toolbar/context/Providers';
 import styles from 'toolbar/index.css?inline'; // returned as a string
-import type {Configuration} from 'toolbar/types/config';
+import type {Configuration} from 'toolbar/types/Configuration';
 import {localeTimeRelativeAbbr} from 'toolbar/utils/locale';
 import setColorScheme from 'toolbar/utils/setColorScheme';
 
@@ -14,8 +14,8 @@ export default function mount(rootNode: HTMLElement, config: Configuration) {
 
   setDefaultOptions({locale: localeTimeRelativeAbbr});
 
-  cleanup.push(setColorScheme(reactMount, config.theme ?? 'system'));
-  cleanup.push(setColorScheme(portalMount, config.theme ?? 'system'));
+  cleanup.push(setColorScheme(reactMount, config.theme));
+  cleanup.push(setColorScheme(portalMount, config.theme));
 
   const reactRoot = createRoot(reactMount);
   reactRoot.render(
@@ -42,7 +42,7 @@ function buildDom(config: Configuration) {
   const DOCUMENT = document;
 
   const host = DOCUMENT.createElement('div');
-  host.id = config.domId ?? 'sentry-toolbar';
+  host.id = config.domId;
 
   const shadow = host.attachShadow({mode: 'open'});
 

@@ -1,5 +1,6 @@
 import {getSentryIFrameOrigin} from 'toolbar/sentryApi/urls';
-import {DebugTarget, type Configuration} from 'toolbar/types/config';
+import type {Configuration} from 'toolbar/types/Configuration';
+import {DebugTarget} from 'toolbar/types/Configuration';
 
 type Resolve = (value: unknown) => void;
 type Reject = (reason?: any) => void; // eslint-disable-line @typescript-eslint/no-explicit-any

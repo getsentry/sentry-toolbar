@@ -1,4 +1,4 @@
-import type {FeatureFlagAdapter, FlagMap, FlagValue} from 'toolbar/types/featureFlags';
+import type {FeatureFlagAdapter, FlagMap, FlagValue} from 'toolbar/init/featureFlagAdapter';
 
 const LOCALSTORAGE_KEY = 'feature-flag-overrides';
 

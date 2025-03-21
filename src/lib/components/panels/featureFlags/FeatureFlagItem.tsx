@@ -2,7 +2,7 @@ import {useState} from 'react';
 import ExternalLink from 'toolbar/components/base/ExternalLink';
 import SwitchButton from 'toolbar/components/base/SwitchButton';
 import {useFeatureFlagsContext} from 'toolbar/components/panels/featureFlags/featureFlagsContext';
-import type {FlagValue} from 'toolbar/types/featureFlags';
+import type {FlagValue} from 'toolbar/init/featureFlagAdapter';
 
 interface Props {
   name: string;
