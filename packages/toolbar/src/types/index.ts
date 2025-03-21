@@ -1,10 +1,10 @@
 import type {Provider} from '@openfeature/web-sdk';
 
-import type {InitConfig as iInitConfig} from './config';
+import type {InitConfig} from './config';
 import type {FeatureFlagAdapter} from './featureFlags';
 
 // Public facing types:
-export type InitConfig = iInitConfig;
+export type {InitConfig};
 export type Cleanup = () => void;
 export type {FeatureFlagAdapter, FlagMap, FlagValue} from './featureFlags';
 

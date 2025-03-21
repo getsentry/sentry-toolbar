@@ -1,4 +1,5 @@
-import {DebugTarget, type InitConfig} from 'toolbar/types/config';
+import type InitConfig from 'toolbar/init/InitConfig';
+import {DebugTarget} from 'toolbar/types/Configuration';
 import hydrateConfig from 'toolbar/utils/hydrateConfig';
 
 function mockInitConfig(overrides: Partial<InitConfig>): InitConfig {

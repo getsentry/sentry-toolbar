@@ -1,4 +1,4 @@
-import type {FlagMap} from 'toolbar/types/featureFlags';
+import type {FlagMap} from 'toolbar/init/featureFlagAdapter';
 import localStorage from 'toolbar/utils/localStorage';
 
 const LOCALSTORAGE_KEY = 'tlbr_flagOverrides';

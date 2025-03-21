@@ -1,6 +1,6 @@
 import {type Provider} from '@openfeature/web-sdk';
 import {getLocalStorage, clearLocalStorage, setLocalStorage} from 'toolbar/adapters/localStorage';
-import type {FeatureFlagAdapter, FlagMap, FlagValue} from 'toolbar/types/featureFlags';
+import type {FeatureFlagAdapter, FlagMap, FlagValue} from 'toolbar/init/featureFlagAdapter';
 
 interface Opts {
   provider: Provider;

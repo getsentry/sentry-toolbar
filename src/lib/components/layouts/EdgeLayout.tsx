@@ -1,7 +1,7 @@
 import {cva, cx} from 'cva';
 import {Fragment} from 'react';
 import type {ReactNode} from 'react';
-import type {Configuration} from 'toolbar/types/config';
+import type {Configuration} from 'toolbar/types/Configuration';
 
 interface Props {
   children: ReactNode;

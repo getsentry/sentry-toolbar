@@ -1,13 +1,16 @@
-import type {InitConfig} from 'toolbar/types/config';
-import {DebugTarget, type Configuration} from 'toolbar/types/config';
+import type InitConfig from 'toolbar/init/InitConfig';
+import type {Configuration} from 'toolbar/types/Configuration';
+import {DebugTarget} from 'toolbar/types/Configuration';
 
-export default function hydrateConfig({mountPoint, ...config}: InitConfig): Configuration {
+export default function hydrateConfig({mountPoint, ...initConfig}: InitConfig): Configuration {
   return {
-    ...config,
-    sentryOrigin: config.sentryOrigin ? String(config.sentryOrigin) : 'https://sentry.io',
-    environment: hydrateEnvironment(config.environment),
-    placement: hydratePlacement(config.placement),
-    debug: hydrateDebug(config.debug),
+    ...initConfig,
+    sentryOrigin: initConfig.sentryOrigin ? String(initConfig.sentryOrigin) : 'https://sentry.io',
+    environment: hydrateEnvironment(initConfig.environment),
+    domId: initConfig.domId ?? 'sentry-toolbar',
+    placement: hydratePlacement(initConfig.placement),
+    theme: initConfig.theme ?? 'system',
+    debug: hydrateDebug(initConfig.debug),
   };
 }
 
@@ -16,7 +19,7 @@ function hydrateEnvironment(environment: undefined | string | string[]): string[
   return envArray.filter((env): env is string => typeof env === 'string' && env !== '');
 }
 
-function hydratePlacement(placement: undefined | string): NonNullable<Configuration['placement']> {
+function hydratePlacement(placement: undefined | string): Configuration['placement'] {
   switch (placement) {
     case 'bottom-right-corner':
       return 'bottom-right-corner';

@@ -2,7 +2,7 @@ import type {Dispatch, ReactNode, SetStateAction} from 'react';
 import {createContext, useCallback, useContext, useEffect, useState} from 'react';
 import FeatureFlagAdapterStub from 'toolbar/components/panels/featureFlags/FeatureFlagAdapterStub';
 import type {Prefilter} from 'toolbar/components/panels/featureFlags/FeatureFlagsPanel';
-import type {FeatureFlagAdapter, FlagMap, FlagValue} from 'toolbar/types/featureFlags';
+import type {FeatureFlagAdapter, FlagMap, FlagValue} from 'toolbar/init/featureFlagAdapter';
 
 interface Context {
   overridesFingerprint: string;

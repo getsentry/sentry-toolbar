@@ -5,7 +5,7 @@ import ConfigContext from 'toolbar/context/ConfigContext';
 import defaultConfig from 'toolbar/context/defaultConfig';
 import usePrevious from 'toolbar/hooks/usePrevious';
 import {getSentryIFrameOrigin} from 'toolbar/sentryApi/urls';
-import {DebugTarget} from 'toolbar/types/config';
+import {DebugTarget} from 'toolbar/types/Configuration';
 import ApiProxy, {type ProxyState} from 'toolbar/utils/ApiProxy';
 
 const ApiProxyStateContext = createContext<ProxyState>('connecting');

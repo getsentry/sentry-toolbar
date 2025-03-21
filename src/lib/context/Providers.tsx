@@ -5,7 +5,7 @@ import {FeatureFlagsContextProvider} from 'toolbar/components/panels/featureFlag
 import {ApiProxyContextProvider} from 'toolbar/context/ApiProxyContext';
 import ConfigContext from 'toolbar/context/ConfigContext';
 import PortalTargetContext from 'toolbar/context/PortalTargetContext';
-import type {Configuration} from 'toolbar/types/config';
+import type {Configuration} from 'toolbar/types/Configuration';
 
 interface Props {
   children: ReactNode;

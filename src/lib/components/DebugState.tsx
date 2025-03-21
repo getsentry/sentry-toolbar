@@ -2,7 +2,7 @@ import {useContext} from 'react';
 import {useLocation} from 'react-router-dom';
 import {useApiProxyState} from 'toolbar/context/ApiProxyContext';
 import ConfigContext from 'toolbar/context/ConfigContext';
-import {DebugTarget} from 'toolbar/types/config';
+import {DebugTarget} from 'toolbar/types/Configuration';
 
 export default function DebugState() {
   const proxyState = useApiProxyState();

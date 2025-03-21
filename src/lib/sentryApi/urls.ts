@@ -1,4 +1,4 @@
-import type {Configuration} from 'toolbar/types/config';
+import type {Configuration} from 'toolbar/types/Configuration';
 
 function getOrigin(hostname: string) {
   try {

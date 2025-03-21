@@ -18,7 +18,7 @@ import {useFeatureFlagsContext} from 'toolbar/components/panels/featureFlags/fea
 import {useApiProxyInstance} from 'toolbar/context/ApiProxyContext';
 import ConfigContext from 'toolbar/context/ConfigContext';
 import useNavigationExpansion from 'toolbar/hooks/useNavigationExpansion';
-import {DebugTarget} from 'toolbar/types/config';
+import {DebugTarget} from 'toolbar/types/Configuration';
 
 const navClassName = cx(['flex', 'flex-col', 'gap-1', 'items-center']);
 
