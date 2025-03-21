@@ -21,11 +21,13 @@ describe('hydrateConfig', () => {
 
     expect(hydrateConfig(initConfig)).toEqual({
       debug: [],
+      domId: 'sentry-toolbar',
       environment: [],
       organizationSlug: '',
       placement: 'right-edge',
       projectIdOrSlug: '',
       sentryOrigin: 'https://sentry.io',
+      theme: 'system',
     });
   });
 
