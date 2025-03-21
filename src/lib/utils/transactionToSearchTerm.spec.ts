@@ -7,6 +7,7 @@ describe('transactionToSearchTerm', () => {
       searchTerm: '/alerts/rules/details/*/',
     },
     {transactionName: '/pokemon/[pokemonName]', searchTerm: '/pokemon/*'},
+    {transactionName: '/pokemon/[[pokemonName]]', searchTerm: '/pokemon/*'},
     {transactionName: '/replays/<id>/details/', searchTerm: '/replays/*/details/'},
     {
       transactionName: '/param/{id}/param2/key:value/',

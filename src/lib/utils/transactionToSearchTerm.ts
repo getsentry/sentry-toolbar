@@ -1,8 +1,9 @@
 // (:[^/:]+) matches `:param` used by React, Vue, Angular, Express, Ruby on Rails, Phoenix, Solid
 // (\[[^/\]]+\]) matches `[param]` used by Next.js, Nuxt.js, Svelte
+// (\[\[[^/\]]+\]\]) matches `[[param]]` used by SvelteKit
 // ({[^/}]+}) matches `{param}` used by ASP.NET Core, Laravel, Symfony
 // (<[^>/]+>) matches `<param>` used by Flask, Django
-const PARAMETERIZED_REGEX = /^((:[^/:]+)|(\[[^/\]]+\])|({[^/}]+})|(<[^>/]+>))$/;
+const PARAMETERIZED_REGEX = /^((:[^/:]+)|(\[[^/\]]+\])|(\[\[[^/\]]+\]\])|({[^/}]+})|(<[^>/]+>))$/;
 
 // Transaction name could contain the resolved URL instead of the route pattern
 // (ie: actual `id` instead of `:id`) so we match any param that is a number.
