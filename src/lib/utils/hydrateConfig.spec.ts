@@ -1,6 +1,7 @@
 import type InitConfig from 'toolbar/init/InitConfig';
 import {DebugTarget} from 'toolbar/types/Configuration';
 import hydrateConfig from 'toolbar/utils/hydrateConfig';
+import transactionToSearchTerm from 'toolbar/utils/transactionToSearchTerm';
 
 function mockInitConfig(overrides: Partial<InitConfig>): InitConfig {
   return {
@@ -28,6 +29,7 @@ describe('hydrateConfig', () => {
       projectIdOrSlug: '',
       sentryOrigin: 'https://sentry.io',
       theme: 'system',
+      transactionToSearchTerm,
     });
   });
 

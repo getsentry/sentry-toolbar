@@ -95,4 +95,21 @@ export interface InitConfig {
    * Set to "all" to enable everything. Unknown strings will be silently ignored.
    */
   debug?: undefined | string | boolean;
+
+  /**
+   * A custom hook to implement your own transaction name transform.
+   * The return from this method is used to search for Issues & Feedback (etc).
+   * ex: "Issues related to the current page"
+   *
+   * By default we assume the transaction names come from an auto-instrumented
+   * router library and will try to parse `/blog/:postid` into `/blog/*`.
+   * If you are setting a custom transaction name than you can reverse the naming
+   * convention here, or look at something like `window.location.path` and convert
+   * that into a search string directly.
+   *
+   * See: https://docs.sentry.io/platforms/javascript/enriching-events/transaction-name/
+   *
+   * Default: https://github.com/getsentry/sentry-toolbar/blob/main/src/lib/utils/transactionToSearchTerm.ts
+   */
+  transactionToSearchTerm?: undefined | ((transactionName: string) => string);
 }

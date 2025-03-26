@@ -1,9 +1,10 @@
 import type {StartSpanOptions} from '@sentry/types';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useContext} from 'react';
+import ConfigContext from 'toolbar/context/ConfigContext';
 import useSentryClientAndScope from 'toolbar/hooks/useSentryClientAndScope';
-import transactionToSearchTerm from 'toolbar/utils/transactionToSearchTerm';
 
 export default function useCurrentSentryTransactionName() {
+  const {transactionToSearchTerm} = useContext(ConfigContext);
   const {scope, client} = useSentryClientAndScope();
 
   const [transactionName, setTransactionName] = useState(scope?.getScopeData().transactionName ?? '');

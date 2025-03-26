@@ -1,6 +1,7 @@
 import type InitConfig from 'toolbar/init/InitConfig';
 import type {Configuration} from 'toolbar/types/Configuration';
 import {DebugTarget} from 'toolbar/types/Configuration';
+import transactionToSearchTerm from 'toolbar/utils/transactionToSearchTerm';
 
 export default function hydrateConfig({mountPoint, ...initConfig}: InitConfig): Configuration {
   return {
@@ -11,6 +12,7 @@ export default function hydrateConfig({mountPoint, ...initConfig}: InitConfig): 
     placement: hydratePlacement(initConfig.placement),
     theme: initConfig.theme ?? 'system',
     debug: hydrateDebug(initConfig.debug),
+    transactionToSearchTerm: initConfig.transactionToSearchTerm ?? transactionToSearchTerm,
   };
 }
 

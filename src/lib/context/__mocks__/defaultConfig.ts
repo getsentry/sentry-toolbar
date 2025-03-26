@@ -1,24 +1,10 @@
 import type {Configuration} from 'toolbar/types/Configuration';
+import hydrateConfig from 'toolbar/utils/hydrateConfig';
 
-const defaultConfig: Configuration = {
-  // ConnectionConfig
-  sentryOrigin: 'https://sentry.io',
-
-  // FeatureFlagsConfig
-  featureFlags: undefined,
-
-  // OrgConfig
+const defaultConfig: Configuration = hydrateConfig({
   organizationSlug: '',
   projectIdOrSlug: '',
   environment: ['production'],
-
-  // RenderConfig
-  domId: 'sentry-toolbar',
-  placement: 'right-edge',
-  theme: 'system',
-
-  // DebugConfig
-  debug: [],
-};
+});
 
 export default defaultConfig;

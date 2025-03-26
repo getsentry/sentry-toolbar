@@ -15,8 +15,7 @@ export enum DebugTarget {
  *
  * Therefore: there should not be many optional fields in this object.
  */
-export interface Configuration
-  extends Omit<InitConfig, 'mountPoint' | 'sentryOrigin' | 'environment' | 'domId' | 'placement' | 'theme' | 'debug'> {
+export interface Configuration extends Omit<InitConfig, 'mountPoint' | 'debug'> {
   sentryOrigin: NonNullable<InitConfig['sentryOrigin']>;
 
   environment: string[];
@@ -25,4 +24,5 @@ export interface Configuration
   placement: NonNullable<InitConfig['placement']>;
   theme: NonNullable<InitConfig['theme']>;
   debug: DebugTarget[];
+  transactionToSearchTerm: NonNullable<InitConfig['transactionToSearchTerm']>;
 }
