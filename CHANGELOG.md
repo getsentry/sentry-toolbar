@@ -1,4 +1,12 @@
 
+## 1.0.0-beta.13
+
+### Various fixes & improvements
+
+- feat: Allow overriding transactionToSearchTerm to power Issues On This Page (#243) by @ryan953
+- ref: Refactor InitConfig and Configuration types to simplify overrides (#240) by @ryan953
+- fix: Support Sveltekit optional params in transaction names (#239) by @ryan953
+
 ## 1.0.0-beta.12
 
 ### Various fixes & improvements
