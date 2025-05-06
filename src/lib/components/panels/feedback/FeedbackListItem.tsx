@@ -16,6 +16,8 @@ import type {FeedbackIssueListItem} from 'toolbar/sentryApi/types/group';
 import type Member from 'toolbar/sentryApi/types/Member';
 import type {Organization, OrganizationTeam} from 'toolbar/sentryApi/types/Organization';
 
+const FATAL_SOURCES = ['crash_report_embed_form', 'user_report_envelope', 'user_report_sentry_django_endpoint'];
+
 export default function FeedbackListItem({
   item,
   teams,
@@ -28,7 +30,7 @@ export default function FeedbackListItem({
   const {organizationSlug} = useContext(ConfigContext);
   const {feedbackHasReplay} = useReplayCountForFeedbacks(organizationSlug);
   const hasReplayId = feedbackHasReplay(item.id);
-  const isFatal = ['crash_report_embed_form', 'user_report_envelope'].includes(item.metadata.source ?? '');
+  const isFatal = FATAL_SOURCES.includes(item.metadata.source ?? '');
   const hasComments = item.numComments > 0;
 
   return (
