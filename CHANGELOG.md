@@ -1,4 +1,10 @@
 
+## 1.0.0-beta.14
+
+### Various fixes & improvements
+
+- fix: Remove `engines` field from package.json for easier installs (#246) by @ryan953
+
 ## 1.0.0-beta.13
 
 ### Various fixes & improvements
