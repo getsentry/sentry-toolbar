@@ -16,10 +16,6 @@
     "type": "git",
     "url": "git@github.com:getsentry/sentry-toolbar.git"
   },
-  "engines": {
-    "node": ">=18",
-    "pnpm": ">=9"
-  },
   "volta": {
     "node": "20.4.0",
     "pnpm": "9.7.0"
