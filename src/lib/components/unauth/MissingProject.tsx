@@ -1,10 +1,6 @@
-import {cx} from 'cva';
 import {useContext} from 'react';
-import SentryAppLink from 'toolbar/components/SentryAppLink';
-import UnauthPill from 'toolbar/components/unauth/UnauthPill';
+import UnauthPill, {UnauthPillAppLink} from 'toolbar/components/unauth/UnauthPill';
 import ConfigContext from 'toolbar/context/ConfigContext';
-
-const buttonClass = cx('rounded-full text-white-raw p-1 hover:bg-gray-500 hover:underline');
 
 export default function MissingProject() {
   const {projectIdOrSlug} = useContext(ConfigContext);
@@ -13,14 +9,13 @@ export default function MissingProject() {
     <UnauthPill>
       <div className="flex gap-0.25">
         <span className="py-1">Missing Project</span>
-        <SentryAppLink
-          className={buttonClass}
+        <UnauthPillAppLink
           to={{
             url: '/settings/projects/',
             query: {query: projectIdOrSlug},
           }}>
           Open project list
-        </SentryAppLink>
+        </UnauthPillAppLink>
       </div>
     </UnauthPill>
   );
