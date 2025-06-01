@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import {useEffect, useRef} from 'react';
 
 import lazyLoadToolbar from './lazyLoadToolbar';
 import type {SentryToolbar} from './types';
@@ -26,6 +26,7 @@ type Args =
     };
 
 export default function useSentryToolbar({cdn, enabled, initProps, version}: Args) {
+  const cachedInitProps = useRef<InitArgs | ((toolbar: SentryToolbar) => InitArgs)>(initProps);
   const url = cdn ?? versionToCdn(version);
 
   useEffect(() => {
@@ -37,14 +38,18 @@ export default function useSentryToolbar({cdn, enabled, initProps, version}: Arg
 
     let cleanup: () => void = () => {};
     lazyLoadToolbar(controller.signal, url).then(importedToolbar => {
-      cleanup = importedToolbar.init(typeof initProps === 'function' ? initProps(importedToolbar) : initProps);
+      cleanup = importedToolbar.init(
+        typeof cachedInitProps.current === 'function'
+          ? cachedInitProps.current(importedToolbar)
+          : cachedInitProps.current
+      );
     });
 
     return () => {
       controller.abort();
       cleanup();
     };
-  }, [enabled, url, initProps]);
+  }, [enabled, url]);
 }
 
 function versionToCdn(version = 'latest'): string {
