@@ -5,28 +5,29 @@ import type {SentryToolbar} from './types';
 
 type InitArgs = Parameters<SentryToolbar['init']>[0];
 
+type InitProps = InitArgs | ((toolbar: SentryToolbar) => InitArgs);
 type Args =
   | {
       cdn?: never;
       enabled?: boolean | undefined;
-      initProps: InitArgs | ((toolbar: SentryToolbar) => InitArgs);
+      initProps: InitProps;
       version: string;
     }
   | {
       cdn: string;
       enabled?: boolean | undefined;
-      initProps: InitArgs | ((toolbar: SentryToolbar) => InitArgs);
+      initProps: InitProps;
       version?: never;
     }
   | {
       cdn?: never;
       enabled?: boolean | undefined;
-      initProps: InitArgs | ((toolbar: SentryToolbar) => InitArgs);
+      initProps: InitProps;
       version?: never;
     };
 
 export default function useSentryToolbar({cdn, enabled, initProps, version}: Args) {
-  const cachedInitProps = useRef<InitArgs | ((toolbar: SentryToolbar) => InitArgs)>(initProps);
+  const initPropsRef = useRef<null | InitProps>(null);
   const url = cdn ?? versionToCdn(version);
 
   useEffect(() => {
@@ -34,14 +35,27 @@ export default function useSentryToolbar({cdn, enabled, initProps, version}: Arg
       return;
     }
 
+    if (initPropsRef.current === null) {
+      initPropsRef.current = initProps;
+    }
+  }, [enabled, initProps]);
+
+  useEffect(() => {
+    if (enabled === false || initPropsRef.current === null) {
+      return;
+    }
+
     const controller = new AbortController();
 
     let cleanup: () => void = () => {};
     lazyLoadToolbar(controller.signal, url).then(importedToolbar => {
+      // For TypeScript
+      if (initPropsRef.current === null) {
+        return;
+      }
+
       cleanup = importedToolbar.init(
-        typeof cachedInitProps.current === 'function'
-          ? cachedInitProps.current(importedToolbar)
-          : cachedInitProps.current
+        typeof initPropsRef.current === 'function' ? initPropsRef.current(importedToolbar) : initPropsRef.current
       );
     });
 
