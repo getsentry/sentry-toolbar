@@ -56,7 +56,7 @@ export default class ApiProxy {
     private _config: Configuration,
     private _iframe: {current: HTMLIFrameElement | null}
   ) {
-    this._log('instance created');
+    this._log('instance created', {iframe: this._iframe.current});
   }
 
   private _log(...args: unknown[]) {
@@ -188,6 +188,11 @@ export default class ApiProxy {
   };
 
   public login(delay_ms: number | undefined) {
+    if (!this._iframe.current) {
+      this._log('login() -> iframe is not mounted');
+      return;
+    }
+
     this._iframe.current?.contentWindow?.postMessage(
       {source: 'sentry-toolbar', message: 'request-login', delay_ms},
       getSentryIFrameOrigin(this._config)
@@ -195,6 +200,11 @@ export default class ApiProxy {
   }
 
   public logout() {
+    if (!this._iframe.current) {
+      this._log('logout() -> iframe is not mounted');
+      return;
+    }
+
     this._iframe.current?.contentWindow?.postMessage(
       {source: 'sentry-toolbar', message: 'request-logout'},
       getSentryIFrameOrigin(this._config)

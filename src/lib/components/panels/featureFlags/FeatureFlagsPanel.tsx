@@ -2,12 +2,15 @@ import {cx} from 'cva';
 import {useContext, useState} from 'react';
 import ExternalLink from 'toolbar/components/base/ExternalLink';
 import IconChevron from 'toolbar/components/icon/IconChevron';
+import IconClose from 'toolbar/components/icon/IconClose';
 import IconSettings from 'toolbar/components/icon/IconSettings';
+import InfiniteListItems from 'toolbar/components/InfiniteListItems';
 import CustomOverride from 'toolbar/components/panels/featureFlags/CustomOverride';
 import FeatureFlagFilters from 'toolbar/components/panels/featureFlags/FeatureFlagFilters';
+import FeatureFlagItem from 'toolbar/components/panels/featureFlags/FeatureFlagItem';
 import {useFeatureFlagsContext} from 'toolbar/components/panels/featureFlags/featureFlagsContext';
-import FeatureFlagTable from 'toolbar/components/panels/featureFlags/FeatureFlagTable';
 import ConfigContext from 'toolbar/context/ConfigContext';
+import type {ApiResult} from 'toolbar/types/api';
 
 export type Prefilter = 'all' | 'overrides';
 
@@ -42,9 +45,10 @@ function FeatureFlagConfigHelp() {
 }
 
 function FeatureFlagEditor() {
-  const {isDirty, setOverride} = useFeatureFlagsContext();
-
+  const {clearOverrides, isDirty, prefilter, setOverride, visibleFlagNames} = useFeatureFlagsContext();
   const [showAddFlag, setShowAddFlag] = useState(false);
+
+  const estimateSize = 46;
 
   return (
     <section className="flex grow flex-col">
@@ -61,15 +65,13 @@ function FeatureFlagEditor() {
       </h1>
 
       {showAddFlag ? (
-        <div className={cx(sectionBorder)}>
-          <div className={cx(sectionPadding, 'bg-translucentGray-100')}>
-            <CustomOverride
-              onSubmit={(name: string, value: boolean) => {
-                setShowAddFlag(false);
-                setOverride(name, value);
-              }}
-            />
-          </div>
+        <div className={cx(sectionBorder, sectionPadding, 'bg-translucentGray-100')}>
+          <CustomOverride
+            onSubmit={(name: string, value: boolean) => {
+              setShowAddFlag(false);
+              setOverride(name, value);
+            }}
+          />
         </div>
       ) : null}
 
@@ -79,14 +81,53 @@ function FeatureFlagEditor() {
           onClick={() => {
             window.location.reload();
           }}
-          className={cx(sectionBorder, sectionPadding, 'text-sm text-gray-300 hover:underline')}>
+          className={cx(sectionBorder, 'px-2 py-0.75', 'text-sm text-gray-300 hover:underline')}>
           Reload to see changes
         </a>
       ) : null}
 
-      <div className={cx(sectionPadding, 'flex flex-col gap-1 text-sm')}>
-        <FeatureFlagFilters defaultPrefilter={'all'} />
-        <FeatureFlagTable />
+      <div className={cx(sectionBorder, 'test-sm')}>
+        <div className={cx(sectionPadding, 'flex flex-row')}>
+          <FeatureFlagFilters defaultPrefilter={'all'} />
+        </div>
+
+        {prefilter === 'overrides' ? (
+          <div className={cx(sectionPadding, 'flex flex-col items-stretch')}>
+            <button
+              className="flex items-center justify-center gap-1 self-stretch rounded-md border border-gray-200 p-0.75 text-sm hover:bg-gray-100 hover:underline"
+              onClick={clearOverrides}>
+              <IconClose isCircled size="xs" />
+              <span>Reset All Overrides</span>
+            </button>
+          </div>
+        ) : null}
+      </div>
+
+      <div className="flex grow flex-col">
+        <InfiniteListItems<string>
+          estimateSize={() => estimateSize}
+          queryResult={{
+            data: {
+              pages: [
+                {
+                  ok: true,
+                  status: 200,
+                  statusText: 'OK',
+                  url: '',
+                  headers: {},
+                  text: '',
+                  json: visibleFlagNames,
+                } satisfies ApiResult<string[]>,
+              ],
+              pageParams: [[]],
+            },
+            hasNextPage: false,
+            isFetchingNextPage: false,
+            fetchNextPage: () => Promise.reject(),
+          }}
+          itemRenderer={(props: {item: string}) => <FeatureFlagItem {...props} name={props.item} />}
+          emptyMessage={() => <p className="px-2 py-1 text-sm text-gray-400">No flags to display</p>}
+        />
       </div>
     </section>
   );

@@ -27,6 +27,7 @@ export default function Login() {
   }, []);
 
   const openPopup = useCallback(() => {
+    console.log('openPopup', {timeoutRef, apiProxy});
     setIsLoggingIn(true);
 
     apiProxy.login(debugLoginSuccess ? undefined : 3000);
