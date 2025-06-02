@@ -13,7 +13,7 @@ export default function FeatureFlagItem({name}: Props) {
 
   const url = String(urlTemplate?.(name) ?? '');
   return (
-    <div className="flex flex-row justify-between gap-1 border-b border-b-translucentGray-200 py-1.5">
+    <div className="flex flex-row justify-between gap-1 border-b border-b-translucentGray-200 p-1.5">
       <div className="flex items-start">
         {url ? <ExternalLink to={{url}}>{name}</ExternalLink> : <span>{name}</span>}
       </div>

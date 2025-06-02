@@ -6,7 +6,10 @@ import type {ApiResult} from 'toolbar/types/api';
 
 interface Props<Data> {
   itemRenderer: ({item}: {item: Data}) => React.ReactNode;
-  queryResult: UseInfiniteQueryResult<InfiniteData<ApiResult<Data[]>>, Error>;
+  queryResult: Pick<
+    UseInfiniteQueryResult<InfiniteData<ApiResult<Data[]>>, Error>,
+    'data' | 'hasNextPage' | 'isFetchingNextPage' | 'fetchNextPage'
+  >;
   emptyMessage?: () => React.ReactNode;
   estimateSize?: () => number;
   loadingCompleteMessage?: () => React.ReactNode;
