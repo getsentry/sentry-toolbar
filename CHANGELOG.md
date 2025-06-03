@@ -1,4 +1,15 @@
 
+## 1.0.0-beta.15
+
+### Various fixes & improvements
+
+- feat: Update feature flag item padding to align with Issues & Feedback (#252) by @ryan953
+- fix: Feature Flag panel scrolling (#251) by @ryan953
+- wfix: Cache props for useSentryToolbar to avoid re-renders, when enabled is true (#250) by @ryan953
+- fix: Cache props for useSentryToolbar to avoid re-renders (#249) by @ryan953
+- fix: Fix :hover color for buttons inside the UnauthPill (#248) by @ryan953
+- feat(feedback): Display the crash report icon for django-endpoint feedbacks (#247) by @ryan953
+
 ## 1.0.0-beta.14
 
 ### Various fixes & improvements
