@@ -1,4 +1,5 @@
 import {useContext} from 'react';
+import {Tooltip, TooltipContent, TooltipTrigger} from 'toolbar/components/base/tooltip/Tooltip';
 import InfiniteListItems from 'toolbar/components/InfiniteListItems';
 import InfiniteListState from 'toolbar/components/InfiniteListState';
 import FeedbackListItem from 'toolbar/components/panels/feedback/FeedbackListItem';
@@ -16,9 +17,8 @@ export default function FeedbackPanel() {
   const {organizationSlug, projectIdOrSlug} = useContext(ConfigContext);
 
   const transactionName = useCurrentSentryTransactionName();
-  const queryResult = useInfiniteFeedbackList({
-    query: transactionName ? `url:*${transactionName}` : '',
-  });
+  const query = transactionName ? `url:*${transactionName}` : '';
+  const queryResult = useInfiniteFeedbackList({query});
   const {data: members} = useFetchSentryData({
     ...useMembersQuery(String(organizationSlug), String(projectIdOrSlug)),
   });
@@ -34,13 +34,18 @@ export default function FeedbackPanel() {
       <h1 className="border-b border-b-translucentGray-200 px-2 py-1">
         <SentryAppLink
           className="flex flex-row items-center gap-1 font-medium"
-          to={{url: `/feedback/`, query: {project: projectIdOrSlug}}}>
+          to={{url: `/feedback/`, query: {project: projectIdOrSlug, query}}}>
           <ProjectIcon size="sm" organizationSlug={organizationSlug} projectIdOrSlug={projectIdOrSlug} />
           Feedback
         </SentryAppLink>
       </h1>
-      <div className="flex flex-col gap-0.25 border-b border-b-translucentGray-200 px-2 py-0.75 text-sm text-gray-300">
-        <span>Unresolved feedback related to this page</span>
+      <div className="flex flex-row gap-0.25 border-b border-b-translucentGray-200 px-2 py-0.75 text-sm text-gray-300">
+        <Tooltip>
+          <TooltipTrigger>Unresolved feedback related to this page</TooltipTrigger>
+          <TooltipContent>
+            Searching for feedback where <code>url</code> is <code>{transactionName}</code>
+          </TooltipContent>
+        </Tooltip>
       </div>
 
       <div className="flex grow flex-col">
