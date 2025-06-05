@@ -1,4 +1,5 @@
 import {useContext} from 'react';
+import {Tooltip, TooltipContent, TooltipTrigger} from 'toolbar/components/base/tooltip/Tooltip';
 import InfiniteListItems from 'toolbar/components/InfiniteListItems';
 import InfiniteListState from 'toolbar/components/InfiniteListState';
 import IssueListItem from 'toolbar/components/panels/issues/IssueListItem';
@@ -16,11 +17,10 @@ export default function IssuesPanel() {
   const {organizationSlug, projectIdOrSlug} = useContext(ConfigContext);
 
   const transactionName = useCurrentSentryTransactionName();
-  const queryResult = useInfiniteIssuesList({
-    query: transactionName
-      ? `is:unresolved issue.category:[${IssueCategory.ERROR},${IssueCategory.PERFORMANCE},${IssueCategory.REPLAY}] transaction:${transactionName}`
-      : '',
-  });
+  const query = transactionName
+    ? `is:unresolved issue.category:[${IssueCategory.ERROR},${IssueCategory.PERFORMANCE},${IssueCategory.REPLAY}] transaction:${transactionName}`
+    : '';
+  const queryResult = useInfiniteIssuesList({query});
   const {data: members} = useFetchSentryData({
     ...useMembersQuery(String(organizationSlug), String(projectIdOrSlug)),
   });
@@ -36,13 +36,18 @@ export default function IssuesPanel() {
       <h1 className="border-b border-b-translucentGray-200 px-2 py-1">
         <SentryAppLink
           className="flex flex-row items-center gap-1 font-medium"
-          to={{url: `/issues/`, query: {project: projectIdOrSlug}}}>
+          to={{url: `/issues/`, query: {project: projectIdOrSlug, query}}}>
           <ProjectIcon size="sm" organizationSlug={organizationSlug} projectIdOrSlug={projectIdOrSlug} />
           Issues
         </SentryAppLink>
       </h1>
-      <div className="flex flex-col gap-0.25 border-b border-b-translucentGray-200 px-2 py-0.75 text-sm text-gray-300">
-        <span>Unresolved issues related to this page</span>
+      <div className="flex flex-row gap-0.25 border-b border-b-translucentGray-200 px-2 py-0.75 text-sm text-gray-300">
+        <Tooltip>
+          <TooltipTrigger>Unresolved issues related to this page</TooltipTrigger>
+          <TooltipContent>
+            Searching for issues where <code>url</code> is <code>{transactionName}</code>
+          </TooltipContent>
+        </Tooltip>
       </div>
 
       <div className="flex grow flex-col">
