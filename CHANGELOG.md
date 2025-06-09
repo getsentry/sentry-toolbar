@@ -1,4 +1,11 @@
 
+## 1.0.0-beta.16
+
+### Various fixes & improvements
+
+- build: Add cjs build output (#254) by @ryan953
+- feat: Add tooltips showing transaction name for Issues & Feedback (#253) by @ryan953
+
 ## 1.0.0-beta.15
 
 ### Various fixes & improvements
