@@ -8,6 +8,7 @@ import Navigation from 'toolbar/components/Navigation';
 import FeatureFlagsPanel from 'toolbar/components/panels/featureFlags/FeatureFlagsPanel';
 import FeedbackPanel from 'toolbar/components/panels/feedback/FeedbackPanel';
 import IssuesPanel from 'toolbar/components/panels/issues/IssuesPanel';
+import LogsPanel from 'toolbar/components/panels/logs/LogsPanel';
 import SettingsPanel from 'toolbar/components/panels/settings/SettingsPanel';
 import Connecting from 'toolbar/components/unauth/Connecting';
 import Disconnected from 'toolbar/components/unauth/Disconnected';
@@ -65,6 +66,7 @@ export default function AppRouter() {
             <Route path="/settings" element={<SettingsPanel />} />
             <Route path="/issues" element={<IssuesPanel />} />
             <Route path="/feedback" element={<FeedbackPanel />} />
+            <Route path="/logs" element={<LogsPanel />} />
             <Route path="/featureFlags" element={<FeatureFlagsPanel />} />
           </Route>
         </Route>

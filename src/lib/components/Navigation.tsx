@@ -10,6 +10,7 @@ import {Tooltip, TooltipTrigger, TooltipContent} from 'toolbar/components/base/t
 import IconFlag from 'toolbar/components/icon/IconFlag';
 import IconIssues from 'toolbar/components/icon/IconIssues';
 import IconLock from 'toolbar/components/icon/IconLock';
+import IconLogs from 'toolbar/components/icon/IconLogs';
 import IconMegaphone from 'toolbar/components/icon/IconMegaphone';
 import IconPin from 'toolbar/components/icon/IconPin';
 import IconSentry from 'toolbar/components/icon/IconSentry';
@@ -123,6 +124,15 @@ export default function Navigation() {
               </NavLink>
             </TooltipTrigger>
             <TooltipContent>User Feedback</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <NavLink {...toPathOrHome('/logs')} className={navItemClassName}>
+                <IconLogs size="sm" />
+              </NavLink>
+            </TooltipTrigger>
+            <TooltipContent>Logs</TooltipContent>
           </Tooltip>
 
           <Tooltip>

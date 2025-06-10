@@ -1,6 +1,7 @@
 import {queryOptions, infiniteQueryOptions} from '@tanstack/react-query';
 import useSentryApi from 'toolbar/hooks/fetch/useSentryApi';
 import type {FeedbackIssueListItem, Group} from 'toolbar/sentryApi/types/group';
+import type {LogEntry} from 'toolbar/sentryApi/types/log';
 import type Member from 'toolbar/sentryApi/types/Member';
 import type {Organization, OrganizationTeam} from 'toolbar/sentryApi/types/Organization';
 import type {Project} from 'toolbar/sentryApi/types/Project';
@@ -84,6 +85,44 @@ export function useInfiniteFeedbackListQuery<Data = FeedbackIssueListItem[]>(
         query: {
           limit: 25,
           shortIdLookup: 0,
+          ...options.query,
+          queryReferrer: 'devtoolbar',
+        },
+      },
+    ] as ApiEndpointQueryKey,
+    queryFn: fetchInfiniteFn,
+    getNextPageParam,
+    initialPageParam,
+  });
+}
+
+export function useInfiniteLogsListQuery<Data = LogEntry[]>(
+  organizationSlug: string,
+  options: QueryKeyEndpointOptions
+) {
+  const {fetchInfiniteFn, getNextPageParam, initialPageParam} = useSentryApi<Data>();
+  return infiniteQueryOptions({
+    queryKey: [
+      `/organizations/${organizationSlug}/events/`,
+      {
+        ...options,
+        query: {
+          dataset: 'ourlogs',
+          field: [
+            'sentry.item_id',
+            'project.id',
+            'trace',
+            'severity_number',
+            'severity',
+            'timestamp',
+            'tags[sentry.timestamp_precise,number]',
+            'sentry.observed_timestamp_nanos',
+            'message'
+          ],
+          per_page: 1000,
+          sort: '-timestamp',
+          statsPeriod: '24h',
+          referrer: 'api.explore.logs-table',
           ...options.query,
           queryReferrer: 'devtoolbar',
         },
