@@ -4,6 +4,7 @@ import {MemoryRouter} from 'react-router-dom';
 import {FeatureFlagsContextProvider} from 'toolbar/components/panels/featureFlags/featureFlagsContext';
 import {ApiProxyContextProvider} from 'toolbar/context/ApiProxyContext';
 import ConfigContext from 'toolbar/context/ConfigContext';
+import {HiddenAppProvider} from 'toolbar/context/HiddenAppContext';
 import PortalTargetContext from 'toolbar/context/PortalTargetContext';
 import type {Configuration} from 'toolbar/types/Configuration';
 
@@ -16,15 +17,17 @@ interface Props {
 export default function Providers({children, config, portalMount}: Props) {
   return (
     <ConfigContext.Provider value={config}>
-      <PortalTargetContext.Provider value={portalMount}>
-        <ApiProxyContextProvider>
-          <QueryProvider>
-            <MemoryRouter future={{}}>
-              <FeatureFlagsContextProvider featureFlags={config.featureFlags}>{children}</FeatureFlagsContextProvider>
-            </MemoryRouter>
-          </QueryProvider>
-        </ApiProxyContextProvider>
-      </PortalTargetContext.Provider>
+      <HiddenAppProvider>
+        <PortalTargetContext.Provider value={portalMount}>
+          <ApiProxyContextProvider>
+            <QueryProvider>
+              <MemoryRouter future={{}}>
+                <FeatureFlagsContextProvider featureFlags={config.featureFlags}>{children}</FeatureFlagsContextProvider>
+              </MemoryRouter>
+            </QueryProvider>
+          </ApiProxyContextProvider>
+        </PortalTargetContext.Provider>
+      </HiddenAppProvider>
     </ConfigContext.Provider>
   );
 }
