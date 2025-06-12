@@ -1,17 +1,18 @@
 import {Transition} from '@headlessui/react';
 import {cx} from 'cva';
-import {useContext} from 'react';
+import {Fragment, useContext} from 'react';
 import type {MouseEvent} from 'react';
 import {NavLink, useLocation, useNavigate} from 'react-router-dom';
 import type {To} from 'react-router-dom';
 import Indicator from 'toolbar/components/base/Indicator';
 import {Menu, MenuItem} from 'toolbar/components/base/menu/Menu';
 import {Tooltip, TooltipTrigger, TooltipContent} from 'toolbar/components/base/tooltip/Tooltip';
+import IconContract from 'toolbar/components/icon/IconContract';
+import IconExpand from 'toolbar/components/icon/IconExpand';
 import IconFlag from 'toolbar/components/icon/IconFlag';
 import IconIssues from 'toolbar/components/icon/IconIssues';
 import IconLock from 'toolbar/components/icon/IconLock';
 import IconMegaphone from 'toolbar/components/icon/IconMegaphone';
-import IconPin from 'toolbar/components/icon/IconPin';
 import IconSentry from 'toolbar/components/icon/IconSentry';
 import IconSettings from 'toolbar/components/icon/IconSettings';
 import {useFeatureFlagsContext} from 'toolbar/components/panels/featureFlags/featureFlagsContext';
@@ -45,7 +46,7 @@ const navItemClassName = cx([
   'aria-currentPage:border-current',
 ]);
 
-const iconItemClass = cx('flex grow gap-1');
+const menuItemClass = cx('flex grow gap-1');
 
 export default function Navigation() {
   const {debug} = useContext(ConfigContext);
@@ -74,29 +75,34 @@ export default function Navigation() {
       <Tooltip>
         <TooltipTrigger asChild>
           <Menu className={cx(navItemClassName, 'p-0')} trigger={<IconSentry size="sm" />} placement="left-start">
-            <MenuItem label="pin" onClick={() => setIsPinned(!isPinned)}>
-              <div className={iconItemClass}>
-                <IconPin size="sm" isSolid={isPinned} />
-                {isPinned ? 'Un-Pin' : 'Pin'}
-              </div>
-            </MenuItem>
-
             {debug.includes(DebugTarget.SETTINGS) ? (
-              <MenuItem label="settings" onClick={() => navigate(pathname === '/settings' ? '/' : '/settings')}>
-                <div className={iconItemClass}>
+              <Fragment>
+                <MenuItem
+                  className={menuItemClass}
+                  label="settings"
+                  onClick={() => navigate(pathname === '/settings' ? '/' : '/settings')}>
                   <IconSettings size="sm" />
                   Init Config
-                </div>
-              </MenuItem>
+                </MenuItem>
+                <hr className={menuSeparator} />
+              </Fragment>
             ) : null}
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <MenuItem className={menuItemClass} label="pin" onClick={() => setIsPinned(!isPinned)}>
+                  {isPinned ? <IconContract size="sm" /> : <IconExpand size="sm" />}
+                  {isPinned ? 'Contract' : 'Expand'}
+                </MenuItem>
+              </TooltipTrigger>
+              <TooltipContent>{isPinned ? 'Shrink to save space' : 'Expand to show all tools'}</TooltipContent>
+            </Tooltip>
 
             <hr className={menuSeparator} />
 
-            <MenuItem label="logout" onClick={() => apiProxy.logout()}>
-              <div className={iconItemClass}>
-                <IconLock size="sm" isLocked={false} />
-                Logout
-              </div>
+            <MenuItem className={menuItemClass} label="logout" onClick={() => apiProxy.logout()}>
+              <IconLock size="sm" isLocked={false} />
+              Logout
             </MenuItem>
           </Menu>
         </TooltipTrigger>

@@ -2,7 +2,7 @@ import {useEffect} from 'react';
 import {useNavigate, useMatch, useLocation} from 'react-router-dom';
 import {useApiProxyState} from 'toolbar/context/ApiProxyContext';
 
-const unauthPaths = ['/connecting', '/login', '/missing-project', '/invalid-domain'];
+const unauthPaths = ['/disconnected', '/connecting', '/login', '/missing-project', '/invalid-domain'];
 
 export default function useNavigateOnProxyStateChange() {
   const proxyState = useApiProxyState();
