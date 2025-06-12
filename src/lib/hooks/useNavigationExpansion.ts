@@ -1,6 +1,6 @@
 import {useEffect, useRef, useState} from 'react';
 import {useLocation} from 'react-router-dom';
-import useLocalStorage from 'toolbar/hooks/useLocalStorage';
+import {useLocalStorage} from 'toolbar/hooks/useStorage';
 
 export default function useNavigationExpansion() {
   const {pathname} = useLocation();
