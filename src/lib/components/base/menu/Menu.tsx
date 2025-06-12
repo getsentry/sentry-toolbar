@@ -58,8 +58,6 @@ const menuItemClassName = cx([
   'border-none',
   'flex',
   'focus:bg-translucentGray-100',
-  'items-center',
-  'justify-center',
   'm-0',
   'min-w-28',
   'outline-none',
@@ -270,7 +268,7 @@ export const MenuItem = forwardRef<HTMLButtonElement, MenuItemProps & ButtonHTML
         ref={useMergeRefs([item.ref, forwardedRef])}
         type="button"
         role="menuitem"
-        className={menuItemClassName}
+        className={cx(props.className, menuItemClassName)}
         tabIndex={isActive ? 0 : -1}
         disabled={disabled}
         {...menu.getItemProps({

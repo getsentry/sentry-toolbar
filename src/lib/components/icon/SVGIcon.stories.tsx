@@ -4,6 +4,8 @@ import IconAdd from 'toolbar/components/icon/IconAdd';
 import IconChat from 'toolbar/components/icon/IconChat';
 import IconChevron from 'toolbar/components/icon/IconChevron';
 import IconClose from 'toolbar/components/icon/IconClose';
+import IconContract from 'toolbar/components/icon/IconContract';
+import IconExpand from 'toolbar/components/icon/IconExpand';
 import IconFatal from 'toolbar/components/icon/IconFatal';
 import IconFlag from 'toolbar/components/icon/IconFlag';
 import IconImage from 'toolbar/components/icon/IconImage';
@@ -15,6 +17,7 @@ import IconPlay from 'toolbar/components/icon/IconPlay';
 import IconQuestion from 'toolbar/components/icon/IconQuestion';
 import IconSentry from 'toolbar/components/icon/IconSentry';
 import IconSettings from 'toolbar/components/icon/IconSettings';
+import IconShow from 'toolbar/components/icon/IconShow';
 import SVGIconBase from 'toolbar/components/icon/SVGIconBase';
 import type {IconProps} from 'toolbar/components/icon/types';
 import {iconSizes} from 'toolbar/components/icon/types';
@@ -24,6 +27,8 @@ const icons = {
   IconChat,
   IconChevron,
   IconClose,
+  IconContract,
+  IconExpand,
   IconFatal,
   IconFlag,
   IconImage,
@@ -35,6 +40,7 @@ const icons = {
   IconQuestion,
   IconSentry,
   IconSettings,
+  IconShow,
 };
 
 const meta: Meta<typeof SVGIconBase> = {
