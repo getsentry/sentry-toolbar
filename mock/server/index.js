@@ -61,10 +61,13 @@ app.get('/toolbar/:org/:project/iframe/', (req, res) => {
     __LOGGING__: 1,
     __ORGANIZATION_SLUG__: req.params.org,
     __PROJECT_ID_OR_SLUG__: req.params.project,
+    __ORGANIZATION_URL__: `https://${req.params.org}.sentry.io`,
+    __REGION_URL__: 'https://us.sentry.io',
   });
 });
 app.get('/toolbar/:org/:project/login-success/', requireAuth, (_req, res) => {
   res.render('toolbar/login-success.html', {
+    __ORGANIZATION_SLUG__: req.params.org,
     __DELAY_SEC__: 0,
     __DELAY_MS__: 0,
   });

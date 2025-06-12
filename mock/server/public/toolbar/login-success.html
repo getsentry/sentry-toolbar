@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Sentry - Login Success</title>
+    <title>Sentry - Login Success (mock)</title>
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
   </head>
   <body>
@@ -13,9 +13,17 @@
 
     <script>
       (function() {
+        const orgSlug = __ORGANIZATION_SLUG__;
         const delay = __DELAY_MS__;
         const cookie = '';
         const token = localStorage.getItem('token');
+
+        if (window.location.origin === 'https://sentry.io') {
+          // User was already logged in and didn't get a redirect to the
+          // subdomained origin. Do that redirect now.
+          window.location.replace(`https://${orgSlug}.sentry.io${window.location.pathname}${window.location.search}`);
+          return;
+        }
 
         document.getElementById('close-popup').addEventListener('click', () => {
           window.close();
