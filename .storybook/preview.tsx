@@ -3,8 +3,8 @@ import '../src/lib/index.css';
 import Providers from 'toolbar/context/Providers';
 import type {Configuration} from 'toolbar/types/Configuration';
 import hydrateConfig from 'toolbar/utils/hydrateConfig';
-import localStorage from 'toolbar/utils/localStorage';
 import setColorScheme from 'toolbar/utils/setColorScheme';
+import {localStorage} from 'toolbar/utils/storage';
 
 const baseConfig: Configuration = hydrateConfig({
   sentryOrigin: 'http://localhost:8080',

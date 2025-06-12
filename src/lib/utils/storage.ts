@@ -54,4 +54,5 @@ function createStorage(getStorage: () => Storage): Storage {
 }
 
 const localStorage = createStorage(() => window.localStorage);
-export default localStorage;
+const sessionStorage = createStorage(() => window.sessionStorage);
+export {localStorage, sessionStorage, noopStorage};
