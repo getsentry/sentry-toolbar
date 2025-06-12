@@ -1,5 +1,6 @@
 import {useCallback} from 'react';
 import {useState} from 'react';
+import {localStorage, sessionStorage} from 'toolbar/utils/storage';
 
 function getStorageValue<Data>(storage: Storage, key: string, initialValue: Data) {
   try {
@@ -11,7 +12,11 @@ function getStorageValue<Data>(storage: Storage, key: string, initialValue: Data
   }
 }
 
-export default function useStorage<Data>(storage: Storage, key: string, initialValue: Data) {
+export default function useStorage<Data>(
+  storage: Storage,
+  key: string,
+  initialValue: Data
+): [Data, (value: Data) => void] {
   const [storedValue, setStoredValue] = useState(() => getStorageValue(storage, key, initialValue));
 
   const setValue = useCallback(
@@ -28,10 +33,10 @@ export default function useStorage<Data>(storage: Storage, key: string, initialV
   return [storedValue, setValue];
 }
 
-export function useLocalStorage<Data>(key: string, initialValue: Data) {
+export function useLocalStorage<Data>(key: string, initialValue: Data): [Data, (value: Data) => void] {
   return useStorage<Data>(localStorage, key, initialValue);
 }
 
-export function useSessionStorage<Data>(key: string, initialValue: Data) {
+export function useSessionStorage<Data>(key: string, initialValue: Data): [Data, (value: Data) => void] {
   return useStorage<Data>(sessionStorage, key, initialValue);
 }

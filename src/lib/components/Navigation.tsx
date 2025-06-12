@@ -15,9 +15,11 @@ import IconLock from 'toolbar/components/icon/IconLock';
 import IconMegaphone from 'toolbar/components/icon/IconMegaphone';
 import IconSentry from 'toolbar/components/icon/IconSentry';
 import IconSettings from 'toolbar/components/icon/IconSettings';
+import IconShow from 'toolbar/components/icon/IconShow';
 import {useFeatureFlagsContext} from 'toolbar/components/panels/featureFlags/featureFlagsContext';
 import {useApiProxyInstance} from 'toolbar/context/ApiProxyContext';
 import ConfigContext from 'toolbar/context/ConfigContext';
+import {useHiddenAppContext} from 'toolbar/context/HiddenAppContext';
 import useNavigationExpansion from 'toolbar/hooks/useNavigationExpansion';
 import {DebugTarget} from 'toolbar/types/Configuration';
 
@@ -54,6 +56,7 @@ export default function Navigation() {
   const {pathname} = useLocation();
   const navigate = useNavigate();
   const apiProxy = useApiProxyInstance();
+  const [, setIsHidden] = useHiddenAppContext();
 
   const {overrides} = useFeatureFlagsContext();
 
@@ -96,6 +99,16 @@ export default function Navigation() {
                 </MenuItem>
               </TooltipTrigger>
               <TooltipContent>{isPinned ? 'Shrink to save space' : 'Expand to show all tools'}</TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <MenuItem className={menuItemClass} label="hide" onClick={() => setIsHidden(true)}>
+                  <IconShow size="sm" />
+                  Hide
+                </MenuItem>
+              </TooltipTrigger>
+              <TooltipContent>Hide the toolbar for the session. Open a new tab to see it again.</TooltipContent>
             </Tooltip>
 
             <hr className={menuSeparator} />
