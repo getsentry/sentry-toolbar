@@ -1,5 +1,4 @@
 import {cva, cx} from 'cva';
-import {Fragment} from 'react';
 import type {ReactNode} from 'react';
 import type {Configuration} from 'toolbar/types/Configuration';
 
@@ -25,11 +24,7 @@ const layoutClass = cva(
 );
 
 export default function EdgeLayout({children, placement}: Props & {placement: Configuration['placement']}) {
-  return (
-    <Fragment>
-      <div className={layoutClass({placement})}>{children}</div>
-    </Fragment>
-  );
+  return <div className={layoutClass({placement})}>{children}</div>;
 }
 
 const areaCss = cx(

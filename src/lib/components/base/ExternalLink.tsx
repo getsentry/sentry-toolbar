@@ -1,7 +1,8 @@
 import {cx} from 'cva';
 import {type UrlObject} from 'query-string';
 import qs from 'query-string';
-import {type MouseEvent} from 'react';
+import type {ForwardedRef} from 'react';
+import {forwardRef, type MouseEvent} from 'react';
 
 interface Props {
   children: React.ReactNode;
@@ -12,12 +13,23 @@ interface Props {
 
 const linkClass = cx('text-blue-400 hover:underline');
 
-export default function ExternalLink({children, className, to, onClick}: Props) {
+const ExternalLink = forwardRef(function ExternalLink(
+  {children, className, to, onClick}: Props,
+  ref: ForwardedRef<HTMLAnchorElement>
+) {
   const url = qs.stringifyUrl(to);
 
   return (
-    <a href={url} onClick={onClick} rel="noreferrer noopener" target="_blank" className={cx(linkClass, className)}>
+    <a
+      ref={ref}
+      href={url}
+      onClick={onClick}
+      rel="noreferrer noopener"
+      target="_blank"
+      className={cx(linkClass, className)}>
       {children}
     </a>
   );
-}
+});
+
+export default ExternalLink;
