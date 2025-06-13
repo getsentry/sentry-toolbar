@@ -1,4 +1,6 @@
 import {cx} from 'cva';
+import type {ForwardedRef} from 'react';
+import {forwardRef} from 'react';
 import {Tooltip, TooltipTrigger, TooltipContent} from 'toolbar/components/base/tooltip/Tooltip';
 import IconClose from 'toolbar/components/icon/IconClose';
 import IconSentry from 'toolbar/components/icon/IconSentry';
@@ -41,18 +43,26 @@ const buttonClass = cx(
   'rounded-full transition-all text-white-raw p-1 hover:text-black-raw hover:bg-white-raw hover:underline'
 );
 
-export function UnauthPillButton({children, ...props}: React.ComponentProps<'button'>) {
+const UnauthPillButton = forwardRef(function UnauthPillButton(
+  {children, ...props}: React.ComponentProps<'button'>,
+  ref: ForwardedRef<HTMLButtonElement>
+) {
   return (
-    <button {...props} className={cx(buttonClass, props.className)}>
+    <button {...props} ref={ref} className={cx(buttonClass, props.className)}>
       {children}
     </button>
   );
-}
+});
 
-export function UnauthPillAppLink({children, ...props}: React.ComponentProps<typeof SentryAppLink>) {
+const UnauthPillAppLink = forwardRef(function UnauthPillAppLink(
+  {children, ...props}: React.ComponentProps<typeof SentryAppLink>,
+  ref: ForwardedRef<HTMLAnchorElement>
+) {
   return (
-    <SentryAppLink {...props} className={cx(buttonClass, props.className)}>
+    <SentryAppLink {...props} ref={ref} className={cx(buttonClass, props.className)}>
       {children}
     </SentryAppLink>
   );
-}
+});
+
+export {UnauthPillButton, UnauthPillAppLink};
