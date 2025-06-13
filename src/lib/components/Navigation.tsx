@@ -16,9 +16,9 @@ import IconMegaphone from 'toolbar/components/icon/IconMegaphone';
 import IconSentry from 'toolbar/components/icon/IconSentry';
 import IconSettings from 'toolbar/components/icon/IconSettings';
 import IconShow from 'toolbar/components/icon/IconShow';
-import {useFeatureFlagsContext} from 'toolbar/components/panels/featureFlags/featureFlagsContext';
 import {useApiProxyInstance} from 'toolbar/context/ApiProxyContext';
 import ConfigContext from 'toolbar/context/ConfigContext';
+import {useFeatureFlagAdapterContext} from 'toolbar/context/FeatureFlagAdapterContext';
 import {useHiddenAppContext} from 'toolbar/context/HiddenAppContext';
 import useNavigationExpansion from 'toolbar/hooks/useNavigationExpansion';
 import {DebugTarget} from 'toolbar/types/Configuration';
@@ -58,7 +58,7 @@ export default function Navigation() {
   const apiProxy = useApiProxyInstance();
   const [, setIsHidden] = useHiddenAppContext();
 
-  const {overrides} = useFeatureFlagsContext();
+  const {overrides} = useFeatureFlagAdapterContext();
 
   const toPathOrHome = (to: To) => ({
     to,

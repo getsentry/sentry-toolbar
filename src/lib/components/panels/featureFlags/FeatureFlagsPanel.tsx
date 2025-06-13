@@ -1,5 +1,5 @@
 import {cx} from 'cva';
-import {useContext, useState} from 'react';
+import {useContext, useMemo, useState} from 'react';
 import ExternalLink from 'toolbar/components/base/ExternalLink';
 import IconChevron from 'toolbar/components/icon/IconChevron';
 import IconClose from 'toolbar/components/icon/IconClose';
@@ -8,8 +8,8 @@ import InfiniteListItems from 'toolbar/components/InfiniteListItems';
 import CustomOverride from 'toolbar/components/panels/featureFlags/CustomOverride';
 import FeatureFlagFilters from 'toolbar/components/panels/featureFlags/FeatureFlagFilters';
 import FeatureFlagItem from 'toolbar/components/panels/featureFlags/FeatureFlagItem';
-import {useFeatureFlagsContext} from 'toolbar/components/panels/featureFlags/featureFlagsContext';
 import ConfigContext from 'toolbar/context/ConfigContext';
+import {useFeatureFlagAdapterContext} from 'toolbar/context/FeatureFlagAdapterContext';
 import type {ApiResult} from 'toolbar/types/api';
 
 export type Prefilter = 'all' | 'overrides';
@@ -45,8 +45,17 @@ function FeatureFlagConfigHelp() {
 }
 
 function FeatureFlagEditor() {
-  const {clearOverrides, isDirty, prefilter, setOverride, visibleFlagNames} = useFeatureFlagsContext();
+  const {flagMap, overrides, clearOverrides, isDirty, setOverride} = useFeatureFlagAdapterContext();
+  const [prefilter, setPrefilter] = useState<Prefilter>('all');
+  const [searchTerm, setSearchTerm] = useState('');
   const [showAddFlag, setShowAddFlag] = useState(false);
+
+  const overrideOnly = prefilter === 'overrides';
+  const visibleFlagNames = useMemo(
+    () =>
+      overrideOnly ? Object.keys(overrides) : Array.from(new Set([...Object.keys(overrides), ...Object.keys(flagMap)])),
+    [flagMap, overrides, overrideOnly]
+  );
 
   const estimateSize = 46;
 
@@ -88,7 +97,12 @@ function FeatureFlagEditor() {
 
       <div className={cx(sectionBorder, 'test-sm')}>
         <div className={cx(sectionPadding, 'flex flex-row')}>
-          <FeatureFlagFilters defaultPrefilter={'all'} />
+          <FeatureFlagFilters
+            defaultPrefilter={prefilter}
+            setPrefilter={setPrefilter}
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+          />
         </div>
 
         {prefilter === 'overrides' ? (

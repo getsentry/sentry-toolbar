@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import ExternalLink from 'toolbar/components/base/ExternalLink';
 import SwitchButton from 'toolbar/components/base/SwitchButton';
-import {useFeatureFlagsContext} from 'toolbar/components/panels/featureFlags/featureFlagsContext';
+import {useFeatureFlagAdapterContext} from 'toolbar/context/FeatureFlagAdapterContext';
 import type {FlagValue} from 'toolbar/init/featureFlagAdapter';
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function FeatureFlagItem({name}: Props) {
-  const {flags, overrides, urlTemplate} = useFeatureFlagsContext();
+  const {flagMap, overrides, urlTemplate} = useFeatureFlagAdapterContext();
 
   const url = String(urlTemplate?.(name) ?? '');
   return (
@@ -19,7 +19,7 @@ export default function FeatureFlagItem({name}: Props) {
           {url ? <ExternalLink to={{url}}>{name}</ExternalLink> : <span>{name}</span>}
         </div>
         <div>
-          <FlagValueInput name={name} value={flags[name]} override={overrides[name]} />
+          <FlagValueInput name={name} value={flagMap[name]} override={overrides[name]} />
         </div>
       </div>
     </div>
@@ -36,7 +36,7 @@ function FlagValueInput({name, value, override}: {name: string; value: FlagValue
 }
 
 function FlagValueBooleanInput({name, value}: {name: string; value: boolean}) {
-  const {setOverride} = useFeatureFlagsContext();
+  const {setOverride} = useFeatureFlagAdapterContext();
 
   const [isActive, setIsActive] = useState(value);
   const id = `toggle-${name}`;
