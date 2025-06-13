@@ -24,7 +24,7 @@ import {
   useRole,
   useTypeahead,
 } from '@floating-ui/react';
-import {cva, cx} from 'cva';
+import {cx} from 'cva';
 import type {
   ButtonHTMLAttributes,
   MouseEvent,
@@ -36,13 +36,12 @@ import type {
   ReactElement,
 } from 'react';
 import {createContext, forwardRef, useContext, useEffect, useRef, useState} from 'react';
+import {twMerge} from 'tailwind-merge';
 import PortalTargetContext from 'toolbar/context/PortalTargetContext';
 
-const rootMenuClassName = cva(['rounded-lg', 'border', 'border-surface-400', 'p-0.5']);
-const menuClassName = cva([
+const baseTriggerClassName = cx(['rounded-lg', 'border-surface-400', 'p-0.5']);
+const baseMenuClassName = cx([
   'bg-surface-400',
-  'border-translucentGray-200',
-  'border',
   'max-w-60',
   'outline-none',
   'p-0.5',
@@ -53,9 +52,8 @@ const menuClassName = cva([
   'text-xs',
   'z-menu',
 ]);
-const menuItemClassName = cx([
+const baseMenuItemClassName = cx([
   'bg-transparent',
-  'border-none',
   'flex',
   'focus:bg-translucentGray-100',
   'm-0',
@@ -82,17 +80,28 @@ const MenuContext = createContext<{
   isOpen: false,
 });
 
+type TriggerFn = ({isOpen}: {isOpen: boolean}) => ReactElement;
+
 interface MenuProps {
-  trigger: ReactElement | string;
+  trigger: ReactElement | string | TriggerFn;
   children?: ReactNode;
   isOpen?: boolean;
   nested?: boolean;
   placement?: Placement | undefined;
+  menuClassName?: HTMLProps<HTMLDivElement>['className'];
 }
 
 export const MenuComponent = forwardRef<HTMLButtonElement, MenuProps & HTMLProps<HTMLButtonElement>>(
   function MenuComponent(
-    {children, isOpen: defaultIsOpen, label, placement, trigger, ...props}: MenuProps & HTMLProps<HTMLButtonElement>,
+    {
+      children,
+      isOpen: defaultIsOpen,
+      label,
+      placement,
+      trigger,
+      menuClassName,
+      ...props
+    }: MenuProps & HTMLProps<HTMLButtonElement>,
     forwardedRef
   ) {
     const portalTarget = useContext(PortalTargetContext);
@@ -195,7 +204,7 @@ export const MenuComponent = forwardRef<HTMLButtonElement, MenuProps & HTMLProps
           data-open={isOpen ? '' : undefined}
           data-nested={isNested ? '' : undefined}
           data-focus-inside={hasFocusInside ? '' : undefined}
-          className={isNested ? menuItemClassName : rootMenuClassName({className: props.className ?? ''})}
+          className={isNested ? baseMenuItemClassName : twMerge(baseTriggerClassName, props.className)}
           {...getReferenceProps(
             parent.getItemProps({
               ...props,
@@ -206,7 +215,7 @@ export const MenuComponent = forwardRef<HTMLButtonElement, MenuProps & HTMLProps
               },
             })
           )}>
-          {trigger}
+          {typeof trigger === 'function' ? trigger({isOpen}) : trigger}
           {isNested && (
             <span aria-hidden style={{marginLeft: 10, fontSize: 10}}>
               ▶
@@ -231,7 +240,7 @@ export const MenuComponent = forwardRef<HTMLButtonElement, MenuProps & HTMLProps
                   returnFocus={!isNested}>
                   <div
                     ref={refs.setFloating}
-                    className={menuClassName()}
+                    className={twMerge(baseMenuClassName, menuClassName)}
                     style={floatingStyles}
                     {...getFloatingProps()}>
                     {children}
@@ -268,7 +277,7 @@ export const MenuItem = forwardRef<HTMLButtonElement, MenuItemProps & ButtonHTML
         ref={useMergeRefs([item.ref, forwardedRef])}
         type="button"
         role="menuitem"
-        className={cx(props.className, menuItemClassName)}
+        className={twMerge(baseMenuItemClassName, props.className)}
         tabIndex={isActive ? 0 : -1}
         disabled={disabled}
         {...menu.getItemProps({
