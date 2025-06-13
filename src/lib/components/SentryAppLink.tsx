@@ -5,7 +5,7 @@ import ExternalLink from 'toolbar/components/base/ExternalLink';
 import ConfigContext from 'toolbar/context/ConfigContext';
 import {getSentryWebOrigin} from 'toolbar/sentryApi/urls';
 
-interface Props {
+export interface Props {
   children: React.ReactNode;
   to: UrlObject;
   onClick?: (event: MouseEvent) => void;

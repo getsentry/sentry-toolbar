@@ -53,6 +53,7 @@ const tailwind_config = {
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
+      inherit: 'inherit',
 
       white: {
         DEFAULT: 'var(--white)',

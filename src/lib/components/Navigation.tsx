@@ -7,6 +7,7 @@ import type {To} from 'react-router-dom';
 import Indicator from 'toolbar/components/base/Indicator';
 import {Menu, MenuItem} from 'toolbar/components/base/menu/Menu';
 import {Tooltip, TooltipTrigger, TooltipContent} from 'toolbar/components/base/tooltip/Tooltip';
+import IconClose from 'toolbar/components/icon/IconClose';
 import IconContract from 'toolbar/components/icon/IconContract';
 import IconExpand from 'toolbar/components/icon/IconExpand';
 import IconFlag from 'toolbar/components/icon/IconFlag';
@@ -15,7 +16,6 @@ import IconLock from 'toolbar/components/icon/IconLock';
 import IconMegaphone from 'toolbar/components/icon/IconMegaphone';
 import IconSentry from 'toolbar/components/icon/IconSentry';
 import IconSettings from 'toolbar/components/icon/IconSettings';
-import IconShow from 'toolbar/components/icon/IconShow';
 import {useApiProxyInstance} from 'toolbar/context/ApiProxyContext';
 import ConfigContext from 'toolbar/context/ConfigContext';
 import {useFeatureFlagAdapterContext} from 'toolbar/context/FeatureFlagAdapterContext';
@@ -48,7 +48,7 @@ const navItemClassName = cx([
   'aria-currentPage:border-current',
 ]);
 
-const menuItemClass = cx('flex grow gap-1');
+const menuItemClass = cx('flex grow gap-1 whitespace-nowrap');
 
 export default function Navigation() {
   const {debug} = useContext(ConfigContext);
@@ -77,7 +77,11 @@ export default function Navigation() {
       onMouseOut={() => setIsHovered(false)}>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Menu className={cx(navItemClassName, 'p-0')} trigger={<IconSentry size="sm" />} placement="left-start">
+          <Menu
+            className={cx(navItemClassName, 'p-1')}
+            menuClassName="border-translucentGray-200 border"
+            trigger={<IconSentry size="sm" />}
+            placement="left-start">
             {debug.includes(DebugTarget.SETTINGS) ? (
               <Fragment>
                 <MenuItem
@@ -104,11 +108,15 @@ export default function Navigation() {
             <Tooltip>
               <TooltipTrigger asChild>
                 <MenuItem className={menuItemClass} label="hide" onClick={() => setIsHidden(true)}>
-                  <IconShow size="sm" />
-                  Hide
+                  <IconClose size="sm" />
+                  Hide Toolbar
                 </MenuItem>
               </TooltipTrigger>
-              <TooltipContent>Hide the toolbar for the session. Open a new tab to see it again.</TooltipContent>
+              <TooltipContent className="whitespace-nowrap">
+                Hide the toolbar for the session.
+                <br />
+                Open a new tab to see it again.
+              </TooltipContent>
             </Tooltip>
 
             <hr className={menuSeparator} />

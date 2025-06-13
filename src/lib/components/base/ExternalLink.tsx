@@ -3,6 +3,7 @@ import {type UrlObject} from 'query-string';
 import qs from 'query-string';
 import type {ForwardedRef} from 'react';
 import {forwardRef, type MouseEvent} from 'react';
+import {twMerge} from 'tailwind-merge';
 
 interface Props {
   children: React.ReactNode;
@@ -26,7 +27,7 @@ const ExternalLink = forwardRef(function ExternalLink(
       onClick={onClick}
       rel="noreferrer noopener"
       target="_blank"
-      className={cx(linkClass, className)}>
+      className={twMerge(linkClass, className)}>
       {children}
     </a>
   );

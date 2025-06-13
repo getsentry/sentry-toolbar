@@ -12,6 +12,7 @@ import IconImage from 'toolbar/components/icon/IconImage';
 import IconIssues from 'toolbar/components/icon/IconIssues';
 import IconLock from 'toolbar/components/icon/IconLock';
 import IconMegaphone from 'toolbar/components/icon/IconMegaphone';
+import IconOpen from 'toolbar/components/icon/IconOpen';
 import IconPin from 'toolbar/components/icon/IconPin';
 import IconPlay from 'toolbar/components/icon/IconPlay';
 import IconQuestion from 'toolbar/components/icon/IconQuestion';
@@ -35,6 +36,7 @@ const icons = {
   IconIssues,
   IconLock,
   IconMegaphone,
+  IconOpen,
   IconPin,
   IconPlay,
   IconQuestion,
