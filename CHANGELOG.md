@@ -1,4 +1,17 @@
 
+## 1.0.0-beta.17
+
+### Various fixes & improvements
+
+- feat: Use a menu to provide links to Help and Hide when not logged in (#262) by @ryan953
+- fix: Rewrite FeatureFlagsContextProvider so state is not recomputed all the time (#261) by @ryan953
+- chore: Add nodemon as a dev dependency (#260) by @ryan953
+- fix: Add forward refs to all the unauth buttons and deps (#259) by @ryan953
+- Add the ability to hide the whole toolbar, making it fully intert (#258) by @ryan953
+- feat: Hide the "Connecting..." pill until after it 1s has passed (#255) by @ryan953
+- feat: Change "Pin" action to "Expand/Collapse" in the main menu (#257) by @ryan953
+- ref: Make localStorage util into generic local & session storage utils (#256) by @ryan953
+
 ## 1.0.0-beta.16
 
 ### Various fixes & improvements
