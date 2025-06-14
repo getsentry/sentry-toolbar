@@ -3,7 +3,7 @@ import {Fragment} from 'react/jsx-runtime';
 import {Routes, Route, Outlet} from 'react-router-dom';
 import DebugState from 'toolbar/components/DebugState';
 import CenterLayout from 'toolbar/components/layouts/CenterLayout';
-import EdgeLayout from 'toolbar/components/layouts/EdgeLayout';
+import EdgeLayout, {NavArea, MainArea} from 'toolbar/components/layouts/EdgeLayout';
 import Navigation from 'toolbar/components/Navigation';
 import FeatureFlagsPanel from 'toolbar/components/panels/featureFlags/FeatureFlagsPanel';
 import FeedbackPanel from 'toolbar/components/panels/feedback/FeedbackPanel';
@@ -50,17 +50,17 @@ export default function AppRouter() {
           path="/"
           element={
             <EdgeLayout placement={placement}>
-              <EdgeLayout.NavArea>
-                <Navigation />
-              </EdgeLayout.NavArea>
+              <NavArea placement={placement}>
+                <Navigation placement={placement} />
+              </NavArea>
               <Outlet />
             </EdgeLayout>
           }>
           <Route
             element={
-              <EdgeLayout.MainArea>
+              <MainArea placement={placement}>
                 <Outlet />
-              </EdgeLayout.MainArea>
+              </MainArea>
             }>
             <Route path="/settings" element={<SettingsPanel />} />
             <Route path="/issues" element={<IssuesPanel />} />

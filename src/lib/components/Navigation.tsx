@@ -1,5 +1,6 @@
+import type {Placement} from '@floating-ui/react';
 import {Transition} from '@headlessui/react';
-import {cx} from 'cva';
+import {cva, cx} from 'cva';
 import {Fragment, useContext} from 'react';
 import type {MouseEvent} from 'react';
 import {NavLink, useLocation, useNavigate} from 'react-router-dom';
@@ -7,6 +8,7 @@ import type {To} from 'react-router-dom';
 import Indicator from 'toolbar/components/base/Indicator';
 import {Menu, MenuItem} from 'toolbar/components/base/menu/Menu';
 import {Tooltip, TooltipTrigger, TooltipContent} from 'toolbar/components/base/tooltip/Tooltip';
+import IconChevron from 'toolbar/components/icon/IconChevron';
 import IconClose from 'toolbar/components/icon/IconClose';
 import IconContract from 'toolbar/components/icon/IconContract';
 import IconExpand from 'toolbar/components/icon/IconExpand';
@@ -21,9 +23,31 @@ import ConfigContext from 'toolbar/context/ConfigContext';
 import {useFeatureFlagAdapterContext} from 'toolbar/context/FeatureFlagAdapterContext';
 import {useHiddenAppContext} from 'toolbar/context/HiddenAppContext';
 import useNavigationExpansion from 'toolbar/hooks/useNavigationExpansion';
+import type {Configuration} from 'toolbar/types/Configuration';
 import {DebugTarget} from 'toolbar/types/Configuration';
+import parsePlacement from 'toolbar/utils/parsePlacement';
 
-const navClassName = cx(['flex', 'flex-col', 'gap-1', 'items-center']);
+const navClassName = cva(['flex', 'gap-1', 'items-center'], {
+  variants: {
+    placement: {
+      'top-left-corner': ['flex-row'],
+      'top-edge': ['flex-row'],
+      'top-right-corner': ['flex-row'],
+      'bottom-left-corner': ['flex-row'],
+      'bottom-edge': ['flex-row'],
+      'bottom-right-corner': ['flex-row'],
+      'left-top-corner': ['flex-col'],
+      'left-edge': ['flex-col'],
+      'left-bottom-corner': ['flex-col'],
+      'right-top-corner': ['flex-col'],
+      'right-edge': ['flex-col'],
+      'right-bottom-corner': ['flex-col'],
+    },
+  },
+  defaultVariants: {
+    placement: 'right-edge',
+  },
+});
 
 const navSeparator = cx(['m-0', 'w-full', 'border-translucentGray-200']);
 const menuSeparator = cx(['mx-1', 'my-0.5']);
@@ -31,7 +55,6 @@ const menuSeparator = cx(['mx-1', 'my-0.5']);
 const navItemClassName = cx([
   'relative',
   'flex',
-  'flex-col',
   'rounded-md',
   'p-1',
   'text-gray-400',
@@ -50,13 +73,14 @@ const navItemClassName = cx([
 
 const menuItemClass = cx('flex grow gap-1 whitespace-nowrap');
 
-export default function Navigation() {
-  const {debug} = useContext(ConfigContext);
+interface Props {
+  placement: Configuration['placement'];
+}
+
+export default function Navigation({placement}: Props) {
   const {isExpanded, isPinned, setIsHovered, setIsPinned} = useNavigationExpansion();
   const {pathname} = useLocation();
   const navigate = useNavigate();
-  const apiProxy = useApiProxyInstance();
-  const [, setIsHidden] = useHiddenAppContext();
 
   const {overrides} = useFeatureFlagAdapterContext();
 
@@ -70,69 +94,18 @@ export default function Navigation() {
     },
   });
 
+  const isHorizontal = placement.startsWith('top') || placement.startsWith('bottom');
+
   return (
     <div
-      className={cx(navClassName, 'p-1')}
+      className={cx(navClassName({placement}), 'p-1')}
       onMouseOver={() => setIsHovered(true)}
       onMouseOut={() => setIsHovered(false)}>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Menu
-            className={cx(navItemClassName, 'p-1')}
-            menuClassName="border-translucentGray-200 border"
-            trigger={<IconSentry size="sm" />}
-            placement="left-start">
-            {debug.includes(DebugTarget.SETTINGS) ? (
-              <Fragment>
-                <MenuItem
-                  className={menuItemClass}
-                  label="settings"
-                  onClick={() => navigate(pathname === '/settings' ? '/' : '/settings')}>
-                  <IconSettings size="sm" />
-                  Init Config
-                </MenuItem>
-                <hr className={menuSeparator} />
-              </Fragment>
-            ) : null}
-
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <MenuItem className={menuItemClass} label="pin" onClick={() => setIsPinned(!isPinned)}>
-                  {isPinned ? <IconContract size="sm" /> : <IconExpand size="sm" />}
-                  {isPinned ? 'Contract' : 'Expand'}
-                </MenuItem>
-              </TooltipTrigger>
-              <TooltipContent>{isPinned ? 'Shrink to save space' : 'Expand to show all tools'}</TooltipContent>
-            </Tooltip>
-
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <MenuItem className={menuItemClass} label="hide" onClick={() => setIsHidden(true)}>
-                  <IconClose size="sm" />
-                  Hide Toolbar
-                </MenuItem>
-              </TooltipTrigger>
-              <TooltipContent className="whitespace-nowrap">
-                Hide the toolbar for the session.
-                <br />
-                Open a new tab to see it again.
-              </TooltipContent>
-            </Tooltip>
-
-            <hr className={menuSeparator} />
-
-            <MenuItem className={menuItemClass} label="logout" onClick={() => apiProxy.logout()}>
-              <IconLock size="sm" isLocked={false} />
-              Logout
-            </MenuItem>
-          </Menu>
-        </TooltipTrigger>
-        <TooltipContent>More options</TooltipContent>
-      </Tooltip>
+      {isHorizontal ? null : <OptionsMenu placement={placement} isPinned={isPinned} setIsPinned={setIsPinned} />}
 
       <Transition show={isExpanded}>
-        <div className={cx(navClassName, 'p-0 transition duration-300 ease-in data-[closed]:opacity-0')}>
-          <hr className={navSeparator} />
+        <div className={cx(navClassName({placement}), 'p-0 transition duration-300 ease-in data-[closed]:opacity-0')}>
+          <hr className={cx(navSeparator, {hidden: isHorizontal})} />
 
           <Tooltip>
             <TooltipTrigger asChild>
@@ -163,6 +136,97 @@ export default function Navigation() {
           </Tooltip>
         </div>
       </Transition>
+
+      {isHorizontal ? <OptionsMenu placement={placement} isPinned={isPinned} setIsPinned={setIsPinned} /> : null}
     </div>
+  );
+}
+
+const triggerPlacement: Record<ReturnType<typeof parsePlacement>[0], Placement> = {
+  top: 'bottom-end',
+  bottom: 'top-end',
+  left: 'right-start',
+  right: 'left-start',
+};
+
+function OptionsMenu({
+  placement,
+  isPinned,
+  setIsPinned,
+}: {
+  placement: Configuration['placement'];
+  isPinned: boolean;
+  setIsPinned: (isPinned: boolean) => void;
+}) {
+  const {debug} = useContext(ConfigContext);
+  const {pathname} = useLocation();
+  const navigate = useNavigate();
+  const apiProxy = useApiProxyInstance();
+  const [, setIsHidden] = useHiddenAppContext();
+
+  const [major] = parsePlacement(placement);
+  const isHorizontal = ['top', 'bottom'].includes(major);
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Menu
+          className={cx(navItemClassName, 'p-1')}
+          menuClassName="border-translucentGray-200 border"
+          trigger={
+            isHorizontal ? (
+              ({isOpen}) => <IconChevron direction={isOpen ? 'right' : 'down'} size="sm" />
+            ) : (
+              <IconSentry size="sm" />
+            )
+          }
+          placement={triggerPlacement[major]}>
+          {debug.includes(DebugTarget.SETTINGS) ? (
+            <Fragment>
+              <MenuItem
+                className={menuItemClass}
+                label="settings"
+                onClick={() => navigate(pathname === '/settings' ? '/' : '/settings')}>
+                <IconSettings size="sm" />
+                Init Config
+              </MenuItem>
+              <hr className={cx(menuSeparator, {hidden: isHorizontal})} />
+            </Fragment>
+          ) : null}
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <MenuItem className={menuItemClass} label="pin" onClick={() => setIsPinned(!isPinned)}>
+                {isPinned ? <IconContract size="sm" /> : <IconExpand size="sm" />}
+                {isPinned ? 'Contract' : 'Expand'}
+              </MenuItem>
+            </TooltipTrigger>
+            <TooltipContent>{isPinned ? 'Shrink to save space' : 'Expand to show all tools'}</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <MenuItem className={menuItemClass} label="hide" onClick={() => setIsHidden(true)}>
+                <IconClose size="sm" />
+                Hide Toolbar
+              </MenuItem>
+            </TooltipTrigger>
+            <TooltipContent className="whitespace-nowrap">
+              Hide the toolbar for the session.
+              <br />
+              Open a new tab to see it again.
+            </TooltipContent>
+          </Tooltip>
+
+          <hr className={cx(menuSeparator, {hidden: isHorizontal})} />
+
+          <MenuItem className={menuItemClass} label="logout" onClick={() => apiProxy.logout()}>
+            <IconLock size="sm" isLocked={false} />
+            Logout
+          </MenuItem>
+        </Menu>
+      </TooltipTrigger>
+      <TooltipContent>More options</TooltipContent>
+    </Tooltip>
   );
 }
