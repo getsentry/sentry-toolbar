@@ -1,9 +1,8 @@
-import {useContext} from 'react';
 import UnauthPill, {UnauthPillAppLink} from 'toolbar/components/unauth/UnauthPill';
-import ConfigContext from 'toolbar/context/ConfigContext';
+import {useConfigContext} from 'toolbar/context/ConfigContext';
 
 export default function MissingProject() {
-  const {projectIdOrSlug} = useContext(ConfigContext);
+  const [{projectIdOrSlug}] = useConfigContext();
 
   return (
     <UnauthPill>

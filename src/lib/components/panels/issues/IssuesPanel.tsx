@@ -1,4 +1,3 @@
-import {useContext} from 'react';
 import {Tooltip, TooltipContent, TooltipTrigger} from 'toolbar/components/base/tooltip/Tooltip';
 import InfiniteListItems from 'toolbar/components/InfiniteListItems';
 import InfiniteListState from 'toolbar/components/InfiniteListState';
@@ -7,14 +6,14 @@ import useInfiniteIssuesList from 'toolbar/components/panels/issues/useInfiniteI
 import Placeholder from 'toolbar/components/Placeholder';
 import ProjectIcon from 'toolbar/components/project/ProjectIcon';
 import SentryAppLink from 'toolbar/components/SentryAppLink';
-import ConfigContext from 'toolbar/context/ConfigContext';
+import {useConfigContext} from 'toolbar/context/ConfigContext';
 import useFetchSentryData from 'toolbar/hooks/fetch/useFetchSentryData';
 import useCurrentSentryTransactionName from 'toolbar/hooks/useCurrentSentryTransactionName';
 import {useMembersQuery, useTeamsQuery} from 'toolbar/sentryApi/queryKeys';
 import {IssueCategory, type Group} from 'toolbar/sentryApi/types/group';
 
 export default function IssuesPanel() {
-  const {organizationSlug, projectIdOrSlug} = useContext(ConfigContext);
+  const [{organizationSlug, projectIdOrSlug}] = useConfigContext();
 
   const transactionName = useCurrentSentryTransactionName();
   const query = transactionName

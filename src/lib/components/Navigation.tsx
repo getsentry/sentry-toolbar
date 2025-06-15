@@ -1,6 +1,6 @@
 import {Transition} from '@headlessui/react';
 import {cx} from 'cva';
-import {Fragment, useContext} from 'react';
+import {Fragment} from 'react';
 import type {MouseEvent} from 'react';
 import {NavLink, useLocation, useNavigate} from 'react-router-dom';
 import type {To} from 'react-router-dom';
@@ -17,7 +17,7 @@ import IconMegaphone from 'toolbar/components/icon/IconMegaphone';
 import IconSentry from 'toolbar/components/icon/IconSentry';
 import IconSettings from 'toolbar/components/icon/IconSettings';
 import {useApiProxyInstance} from 'toolbar/context/ApiProxyContext';
-import ConfigContext from 'toolbar/context/ConfigContext';
+import {useConfigContext} from 'toolbar/context/ConfigContext';
 import {useFeatureFlagAdapterContext} from 'toolbar/context/FeatureFlagAdapterContext';
 import {useHiddenAppContext} from 'toolbar/context/HiddenAppContext';
 import useNavigationExpansion from 'toolbar/hooks/useNavigationExpansion';
@@ -51,7 +51,7 @@ const navItemClassName = cx([
 const menuItemClass = cx('flex grow gap-1 whitespace-nowrap');
 
 export default function Navigation() {
-  const {debug} = useContext(ConfigContext);
+  const [{debug}] = useConfigContext();
   const {isExpanded, isPinned, setIsHovered, setIsPinned} = useNavigationExpansion();
   const {pathname} = useLocation();
   const navigate = useNavigate();

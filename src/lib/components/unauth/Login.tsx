@@ -1,14 +1,14 @@
-import {useCallback, useContext, useRef, useState} from 'react';
+import {useCallback, useRef, useState} from 'react';
 import UnauthPill from 'toolbar/components/unauth/UnauthPill';
 import {UnauthPillButton} from 'toolbar/components/unauth/UnauthPill';
 import {useApiProxyInstance} from 'toolbar/context/ApiProxyContext';
-import ConfigContext from 'toolbar/context/ConfigContext';
+import {useConfigContext} from 'toolbar/context/ConfigContext';
 import {DebugTarget} from 'toolbar/types/Configuration';
 
 const POPUP_MESSAGE_DELAY_MS = 3_000;
 
 export default function Login() {
-  const {debug} = useContext(ConfigContext);
+  const [{debug}] = useConfigContext();
   const debugLoginSuccess = debug.includes(DebugTarget.LOGIN_SUCCESS);
 
   const apiProxy = useApiProxyInstance();

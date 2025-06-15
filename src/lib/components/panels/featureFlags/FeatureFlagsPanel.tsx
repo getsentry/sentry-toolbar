@@ -1,5 +1,5 @@
 import {cx} from 'cva';
-import {useContext, useMemo, useState} from 'react';
+import {useMemo, useState} from 'react';
 import ExternalLink from 'toolbar/components/base/ExternalLink';
 import IconChevron from 'toolbar/components/icon/IconChevron';
 import IconClose from 'toolbar/components/icon/IconClose';
@@ -8,7 +8,7 @@ import InfiniteListItems from 'toolbar/components/InfiniteListItems';
 import CustomOverride from 'toolbar/components/panels/featureFlags/CustomOverride';
 import FeatureFlagFilters from 'toolbar/components/panels/featureFlags/FeatureFlagFilters';
 import FeatureFlagItem from 'toolbar/components/panels/featureFlags/FeatureFlagItem';
-import ConfigContext from 'toolbar/context/ConfigContext';
+import {useConfigContext} from 'toolbar/context/ConfigContext';
 import {useFeatureFlagAdapterContext} from 'toolbar/context/FeatureFlagAdapterContext';
 import type {ApiResult} from 'toolbar/types/api';
 
@@ -18,7 +18,7 @@ const sectionPadding = cx('px-2 py-1');
 const sectionBorder = cx('border-b border-b-translucentGray-200');
 
 export default function FeatureFlagsPanel() {
-  const {featureFlags} = useContext(ConfigContext);
+  const [{featureFlags}] = useConfigContext();
 
   return featureFlags ? <FeatureFlagEditor /> : <FeatureFlagConfigHelp />;
 }

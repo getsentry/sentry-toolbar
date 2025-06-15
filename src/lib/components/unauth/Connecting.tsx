@@ -1,9 +1,9 @@
-import {useContext, useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import UnauthPill from 'toolbar/components/unauth/UnauthPill';
-import ConfigContext from 'toolbar/context/ConfigContext';
+import {useConfigContext} from 'toolbar/context/ConfigContext';
 
 export default function Connecting() {
-  const {sentryOrigin} = useContext(ConfigContext);
+  const [{sentryOrigin}] = useConfigContext();
 
   const [visible, setVisible] = useState(false);
   useEffect(() => {
