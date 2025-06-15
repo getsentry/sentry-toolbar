@@ -13,7 +13,6 @@ import Disconnected from 'toolbar/components/unauth/Disconnected';
 import InvalidDomain from 'toolbar/components/unauth/InvalidDomain';
 import Login from 'toolbar/components/unauth/Login';
 import MissingProject from 'toolbar/components/unauth/MissingProject';
-import {useConfigContext} from 'toolbar/context/ConfigContext';
 import useClearQueryCacheOnProxyStateChange from 'toolbar/hooks/useClearQueryCacheOnProxyStateChange';
 import useNavigateOnProxyStateChange from 'toolbar/hooks/useNavigateOnProxyStateChange';
 
@@ -21,7 +20,6 @@ export default function AppRouter() {
   useNavigateOnProxyStateChange();
   useClearQueryCacheOnProxyStateChange();
 
-  const [{placement}] = useConfigContext();
   return (
     <Routes>
       <Route
@@ -48,16 +46,16 @@ export default function AppRouter() {
         <Route
           path="/"
           element={
-            <EdgeLayout placement={placement}>
-              <NavArea placement={placement}>
-                <Navigation placement={placement} />
+            <EdgeLayout>
+              <NavArea>
+                <Navigation />
               </NavArea>
               <Outlet />
             </EdgeLayout>
           }>
           <Route
             element={
-              <MainArea placement={placement}>
+              <MainArea>
                 <Outlet />
               </MainArea>
             }>

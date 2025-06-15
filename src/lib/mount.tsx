@@ -10,7 +10,7 @@ import setColorScheme from 'toolbar/utils/setColorScheme';
 
 export default function mount(rootNode: HTMLElement, config: Configuration) {
   const cleanup: (() => void)[] = [];
-  const {host, reactMount, portalMount} = buildDom(config);
+  const {host, shadow, reactMount, portalMount} = buildDom(config);
 
   setDefaultOptions({locale: localeTimeRelativeAbbr});
 
@@ -20,7 +20,7 @@ export default function mount(rootNode: HTMLElement, config: Configuration) {
   const reactRoot = createRoot(reactMount);
   reactRoot.render(
     <StrictMode>
-      <Providers config={config} portalMount={portalMount}>
+      <Providers config={config} shadow={shadow} portalMount={portalMount}>
         <AppRouter />
       </Providers>
     </StrictMode>
@@ -60,5 +60,5 @@ function buildDom(config: Configuration) {
   portalMount.className = 'relative z-portal';
   shadow.appendChild(portalMount);
 
-  return {host, reactMount, portalMount};
+  return {host, shadow, reactMount, portalMount};
 }

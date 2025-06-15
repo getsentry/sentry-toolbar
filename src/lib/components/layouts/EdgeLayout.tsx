@@ -1,10 +1,9 @@
 import {cva, cx} from 'cva';
 import type {ReactNode} from 'react';
-import type {Configuration} from 'toolbar/types/Configuration';
+import {useConfigContext} from 'toolbar/context/ConfigContext';
 
 interface Props {
   children: ReactNode;
-  placement: Configuration['placement'];
 }
 
 const layoutClass = cva(['pointer-events-none fixed inset-0 z-debug grid gap-2 p-2  '], {
@@ -64,7 +63,8 @@ const mainAreaClass = cva(['pointer-events-auto', 'contain-layout', '[grid-area:
   },
 });
 
-export default function EdgeLayout({children, placement}: Props) {
+export default function EdgeLayout({children}: Props) {
+  const [{placement}] = useConfigContext();
   return <div className={layoutClass({placement})}>{children}</div>;
 }
 
@@ -72,14 +72,17 @@ const areaCss = cx(
   'flex rounded-xl border border-translucentGray-200 bg-white text-black shadow-lg shadow-shadow-heavy overscroll-contain'
 );
 
-export function NavArea({children, placement}: Props) {
+export function NavArea({children}: Props) {
+  const [{placement}] = useConfigContext();
   return (
     <div role="dialog" className={navAreaClass({placement})}>
       <div className={areaCss}>{children}</div>
     </div>
   );
 }
-export function MainArea({children, placement}: Props) {
+
+export function MainArea({children}: Props) {
+  const [{placement}] = useConfigContext();
   return (
     <div role="dialog" className={mainAreaClass({placement})}>
       <div className={cx('h-[90vh] max-h-[560px] w-[320px] max-w-[320px] contain-size', areaCss)}>{children}</div>

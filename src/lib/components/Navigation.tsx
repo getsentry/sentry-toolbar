@@ -73,11 +73,8 @@ const navItemClassName = cx([
 
 const menuItemClass = cx('flex grow gap-1 whitespace-nowrap');
 
-interface Props {
-  placement: Configuration['placement'];
-}
-
-export default function Navigation({placement}: Props) {
+export default function Navigation() {
+  const [{placement}] = useConfigContext();
   const {isExpanded, isPinned, setIsHovered, setIsPinned} = useNavigationExpansion();
   const {pathname} = useLocation();
   const navigate = useNavigate();
@@ -136,7 +133,6 @@ export default function Navigation({placement}: Props) {
           </Tooltip>
         </div>
       </Transition>
-
       {isHorizontal ? <OptionsMenu placement={placement} isPinned={isPinned} setIsPinned={setIsPinned} /> : null}
     </div>
   );

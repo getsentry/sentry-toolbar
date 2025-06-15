@@ -6,29 +6,33 @@ import {ConfigProvider} from 'toolbar/context/ConfigContext';
 import {FeatureFlagAdapterProvider} from 'toolbar/context/FeatureFlagAdapterContext';
 import {HiddenAppProvider} from 'toolbar/context/HiddenAppContext';
 import PortalTargetContext from 'toolbar/context/PortalTargetContext';
+import ShadowRootContext from 'toolbar/context/ShadowRootContext';
 import type {Configuration} from 'toolbar/types/Configuration';
 
 interface Props {
   children: ReactNode;
   config: Configuration;
   portalMount: HTMLElement;
+  shadow: ShadowRoot;
 }
 
-export default function Providers({children, config, portalMount}: Props) {
+export default function Providers({children, config, portalMount, shadow}: Props) {
   return (
-    <ConfigProvider config={config}>
-      <HiddenAppProvider>
-        <PortalTargetContext.Provider value={portalMount}>
-          <ApiProxyContextProvider>
-            <QueryProvider>
-              <MemoryRouter future={{}}>
-                <FeatureFlagAdapterProvider>{children}</FeatureFlagAdapterProvider>
-              </MemoryRouter>
-            </QueryProvider>
-          </ApiProxyContextProvider>
-        </PortalTargetContext.Provider>
-      </HiddenAppProvider>
-    </ConfigProvider>
+    <ShadowRootContext.Provider value={shadow}>
+      <ConfigProvider config={config}>
+        <HiddenAppProvider>
+          <PortalTargetContext.Provider value={portalMount}>
+            <ApiProxyContextProvider>
+              <QueryProvider>
+                <MemoryRouter future={{}}>
+                  <FeatureFlagAdapterProvider>{children}</FeatureFlagAdapterProvider>
+                </MemoryRouter>
+              </QueryProvider>
+            </ApiProxyContextProvider>
+          </PortalTargetContext.Provider>
+        </HiddenAppProvider>
+      </ConfigProvider>
+    </ShadowRootContext.Provider>
   );
 }
 
