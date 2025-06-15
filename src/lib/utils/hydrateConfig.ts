@@ -21,13 +21,26 @@ function hydrateEnvironment(environment: undefined | string | string[]): string[
   return envArray.filter((env): env is string => typeof env === 'string' && env !== '');
 }
 
-function hydratePlacement(placement: undefined | string): Configuration['placement'] {
-  switch (placement) {
-    case 'bottom-right-corner':
-      return 'bottom-right-corner';
-    case 'right-edge':
-    default:
-      return 'right-edge';
+const placements = [
+  'top-left-corner',
+  'top-edge',
+  'top-right-corner',
+  'bottom-left-corner',
+  'bottom-edge',
+  'bottom-right-corner',
+  'left-top-corner',
+  'left-edge',
+  'left-bottom-corner',
+  'right-top-corner',
+  'right-edge',
+  'right-bottom-corner',
+] as const;
+
+export function hydratePlacement(placement: undefined | string): Configuration['placement'] {
+  if (placement && placements.includes(placement as Configuration['placement'])) {
+    return placement as Configuration['placement'];
+  } else {
+    return 'right-edge';
   }
 }
 

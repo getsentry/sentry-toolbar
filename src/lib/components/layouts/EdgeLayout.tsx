@@ -1,12 +1,14 @@
 import {cva, cx} from 'cva';
-import type {ReactNode} from 'react';
+import {Fragment, type ReactNode} from 'react';
+import DragDropPositionSurface from 'toolbar/components/DragDropPositionSurface';
 import {useConfigContext} from 'toolbar/context/ConfigContext';
+import type {Configuration} from 'toolbar/types/Configuration';
 
 interface Props {
   children: ReactNode;
 }
 
-const layoutClass = cva(['pointer-events-none fixed inset-0 z-debug grid gap-2 p-2  '], {
+const layoutClass = cva('pointer-events-none fixed inset-0 grid h-full gap-2 p-2', {
   variants: {
     placement: {
       'top-left-corner': ['grid-rows-[max-content_1fr]', "[grid-template-areas:'nav''main']", 'items-start'],
@@ -21,11 +23,11 @@ const layoutClass = cva(['pointer-events-none fixed inset-0 z-debug grid gap-2 p
       'right-top-corner': ['grid-cols-[1fr_max-content]', "[grid-template-areas:'main_nav']", 'items-start'],
       'right-edge': ['grid-cols-[1fr_max-content]', "[grid-template-areas:'main_nav']", 'items-center'],
       'right-bottom-corner': ['grid-cols-[1fr_max-content]', "[grid-template-areas:'main_nav']", 'items-end'],
-    },
+    } satisfies Record<Configuration['placement'], string[]>,
   },
 });
 
-const navAreaClass = cva(['pointer-events-auto', 'contain-layout', '[grid-area:nav]'], {
+const navAreaClass = cva('pointer-events-auto contain-layout [grid-area:nav]', {
   variants: {
     placement: {
       'top-left-corner': ['justify-self-start'],
@@ -40,11 +42,11 @@ const navAreaClass = cva(['pointer-events-auto', 'contain-layout', '[grid-area:n
       'right-top-corner': [],
       'right-edge': [],
       'right-bottom-corner': [],
-    },
+    } satisfies Record<Configuration['placement'], string[]>,
   },
 });
 
-const mainAreaClass = cva(['pointer-events-auto', 'contain-layout', '[grid-area:main]'], {
+const mainAreaClass = cva('pointer-events-auto contain-layout [grid-area:main]', {
   variants: {
     placement: {
       'top-left-corner': ['justify-self-start', 'self-start'],
@@ -59,13 +61,19 @@ const mainAreaClass = cva(['pointer-events-auto', 'contain-layout', '[grid-area:
       'right-top-corner': ['justify-self-end'],
       'right-edge': ['justify-self-end'],
       'right-bottom-corner': ['justify-self-end'],
-    },
+    } satisfies Record<Configuration['placement'], string[]>,
   },
 });
 
 export default function EdgeLayout({children}: Props) {
   const [{placement}] = useConfigContext();
-  return <div className={layoutClass({placement})}>{children}</div>;
+
+  return (
+    <Fragment>
+      <div className={layoutClass({placement})}>{children}</div>
+      <DragDropPositionSurface instanceName="EdgeLayout-NavArea" />
+    </Fragment>
+  );
 }
 
 const areaCss = cx(
@@ -74,6 +82,7 @@ const areaCss = cx(
 
 export function NavArea({children}: Props) {
   const [{placement}] = useConfigContext();
+
   return (
     <div role="dialog" className={navAreaClass({placement})}>
       <div className={areaCss}>{children}</div>

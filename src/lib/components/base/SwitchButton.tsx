@@ -33,7 +33,7 @@ const btnClassName = cva(
   }
 );
 
-const nubClassName = cva(['absolute', 'rounded-full', 'transition'], {
+const nubClassName = cva('absolute rounded-full transition', {
   variants: {
     size: {
       sm: ['top-px', 'size-1.5'],

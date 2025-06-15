@@ -47,10 +47,10 @@ export default function AppRouter() {
           path="/"
           element={
             <EdgeLayout>
+              <Outlet />
               <NavArea>
                 <Navigation />
               </NavArea>
-              <Outlet />
             </EdgeLayout>
           }>
           <Route

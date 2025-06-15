@@ -1,6 +1,6 @@
 import {cva} from 'cva';
 
-const Placeholder = cva(['flex', 'flex-col', 'shrink-0', 'justify-center', 'items-center', 'rounded-md'], {
+const Placeholder = cva('flex shrink-0 flex-col items-center justify-center rounded-md', {
   variants: {
     base: {
       true: ['w-full', 'h-14'],

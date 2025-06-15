@@ -8,7 +8,6 @@ import type {To} from 'react-router-dom';
 import Indicator from 'toolbar/components/base/Indicator';
 import {Menu, MenuItem} from 'toolbar/components/base/menu/Menu';
 import {Tooltip, TooltipTrigger, TooltipContent} from 'toolbar/components/base/tooltip/Tooltip';
-import IconChevron from 'toolbar/components/icon/IconChevron';
 import IconClose from 'toolbar/components/icon/IconClose';
 import IconContract from 'toolbar/components/icon/IconContract';
 import IconExpand from 'toolbar/components/icon/IconExpand';
@@ -27,34 +26,33 @@ import type {Configuration} from 'toolbar/types/Configuration';
 import {DebugTarget} from 'toolbar/types/Configuration';
 import parsePlacement from 'toolbar/utils/parsePlacement';
 
-const navClassName = cva(['flex', 'gap-1', 'items-center'], {
+const navClassName = cva('flex items-center gap-1', {
   variants: {
-    placement: {
-      'top-left-corner': ['flex-row'],
-      'top-edge': ['flex-row'],
-      'top-right-corner': ['flex-row'],
-      'bottom-left-corner': ['flex-row'],
-      'bottom-edge': ['flex-row'],
-      'bottom-right-corner': ['flex-row'],
-      'left-top-corner': ['flex-col'],
-      'left-edge': ['flex-col'],
-      'left-bottom-corner': ['flex-col'],
-      'right-top-corner': ['flex-col'],
-      'right-edge': ['flex-col'],
-      'right-bottom-corner': ['flex-col'],
+    isHorizontal: {
+      false: ['flex-col'],
+      true: ['flex-row'],
     },
-  },
-  defaultVariants: {
-    placement: 'right-edge',
   },
 });
 
-const navSeparator = cx(['m-0', 'w-full', 'border-translucentGray-200']);
-const menuSeparator = cx(['mx-1', 'my-0.5']);
+const navGrabber = cva(
+  'relative cursor-grab border-transparent after:absolute after:bg-translucentGray-200 after:hover:bg-gray-300',
+  {
+    variants: {
+      isHorizontal: {
+        false: ['-my-1 w-full py-1 after:top-1/2 after:h-px after:w-full'],
+        true: ['-mx-1 h-[34px] w-px px-1 after:left-1/2 after:h-full after:w-px'],
+      },
+    },
+  }
+);
+
+const menuSeparator = cx('mx-1 my-0.5');
 
 const navItemClassName = cx([
   'relative',
   'flex',
+  'flex-col',
   'rounded-md',
   'p-1',
   'text-gray-400',
@@ -91,18 +89,20 @@ export default function Navigation() {
     },
   });
 
-  const isHorizontal = placement.startsWith('top') || placement.startsWith('bottom');
+  const [major] = parsePlacement(placement);
+  const isHorizontal = ['top', 'bottom'].includes(major);
 
   return (
     <div
-      className={cx(navClassName({placement}), 'p-1')}
+      className={cx(navClassName({isHorizontal}), 'p-1')}
       onMouseOver={() => setIsHovered(true)}
       onMouseOut={() => setIsHovered(false)}>
-      {isHorizontal ? null : <OptionsMenu placement={placement} isPinned={isPinned} setIsPinned={setIsPinned} />}
+      <OptionsMenu placement={placement} isPinned={isPinned} setIsPinned={setIsPinned} />
 
       <Transition show={isExpanded}>
-        <div className={cx(navClassName({placement}), 'p-0 transition duration-300 ease-in data-[closed]:opacity-0')}>
-          <hr className={cx(navSeparator, {hidden: isHorizontal})} />
+        <div
+          className={cx(navClassName({isHorizontal}), 'p-0 transition duration-300 ease-in data-[closed]:opacity-0')}>
+          <hr className={navGrabber({isHorizontal})} data-grabber />
 
           <Tooltip>
             <TooltipTrigger asChild>
@@ -133,7 +133,6 @@ export default function Navigation() {
           </Tooltip>
         </div>
       </Transition>
-      {isHorizontal ? <OptionsMenu placement={placement} isPinned={isPinned} setIsPinned={setIsPinned} /> : null}
     </div>
   );
 }
@@ -161,7 +160,6 @@ function OptionsMenu({
   const [, setIsHidden] = useHiddenAppContext();
 
   const [major] = parsePlacement(placement);
-  const isHorizontal = ['top', 'bottom'].includes(major);
 
   return (
     <Tooltip>
@@ -169,13 +167,7 @@ function OptionsMenu({
         <Menu
           className={cx(navItemClassName, 'p-1')}
           menuClassName="border-translucentGray-200 border"
-          trigger={
-            isHorizontal ? (
-              ({isOpen}) => <IconChevron direction={isOpen ? 'right' : 'down'} size="sm" />
-            ) : (
-              <IconSentry size="sm" />
-            )
-          }
+          trigger={<IconSentry size="sm" />}
           placement={triggerPlacement[major]}>
           {debug.includes(DebugTarget.SETTINGS) ? (
             <Fragment>
@@ -186,7 +178,7 @@ function OptionsMenu({
                 <IconSettings size="sm" />
                 Init Config
               </MenuItem>
-              <hr className={cx(menuSeparator, {hidden: isHorizontal})} />
+              <hr className={cx(menuSeparator)} />
             </Fragment>
           ) : null}
 
@@ -214,7 +206,7 @@ function OptionsMenu({
             </TooltipContent>
           </Tooltip>
 
-          <hr className={cx(menuSeparator, {hidden: isHorizontal})} />
+          <hr className={cx(menuSeparator)} />
 
           <MenuItem className={menuItemClass} label="logout" onClick={() => apiProxy.logout()}>
             <IconLock size="sm" isLocked={false} />

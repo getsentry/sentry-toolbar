@@ -1,8 +1,8 @@
 import type {Meta} from '@storybook/react';
-import type {ComponentProps} from 'react';
-import {Fragment} from 'react/jsx-runtime';
 import EdgeLayout, {MainArea, NavArea} from 'toolbar/components/layouts/EdgeLayout';
 import Navigation from 'toolbar/components/Navigation';
+import {StaticConfigProvider, useConfigContext} from 'toolbar/context/ConfigContext';
+import type {Configuration} from 'toolbar/types/Configuration';
 
 const meta = {
   title: 'components/EdgeLayout',
@@ -20,20 +20,45 @@ const meta = {
   },
   args: {
     placement: 'right-edge',
-    children: <Fragment>Some content</Fragment>,
+  },
+  argTypes: {
+    placement: {
+      defaultValue: 'right-edge',
+      control: {
+        type: 'select',
+      },
+      options: [
+        'top-left-corner',
+        'top-edge',
+        'top-right-corner',
+        'bottom-left-corner',
+        'bottom-edge',
+        'bottom-right-corner',
+        'left-top-corner',
+        'left-edge',
+        'left-bottom-corner',
+        'right-top-corner',
+        'right-edge',
+        'right-bottom-corner',
+      ],
+    },
   },
 } as Meta<typeof EdgeLayout>;
 
 export default meta;
 
-const Template = ({placement}: ComponentProps<typeof EdgeLayout>) => {
+let key = 0;
+const Template = ({placement}: {placement: Configuration['placement']}) => {
+  const [baseConfig] = useConfigContext();
   return (
-    <EdgeLayout placement={placement}>
-      <NavArea placement={placement}>
-        <Navigation placement={placement} />
-      </NavArea>
-      <MainArea placement={placement}>Empty Panel</MainArea>
-    </EdgeLayout>
+    <StaticConfigProvider key={key++} config={{...baseConfig, placement}}>
+      <EdgeLayout>
+        <NavArea>
+          <Navigation />
+        </NavArea>
+        <MainArea>Empty Panel</MainArea>
+      </EdgeLayout>
+    </StaticConfigProvider>
   );
 };
 

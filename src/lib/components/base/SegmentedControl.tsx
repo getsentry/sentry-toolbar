@@ -7,7 +7,7 @@ interface Props<Keys extends string[]> {
   onChange: (value: Keys[number]) => void;
 }
 
-const btnClassName = cva(['rounded-md'], {
+const btnClassName = cva('rounded-md', {
   variants: {
     isSelected: {
       true: ['bg-white', 'font-medium', 'border-l first:border-l-0'],

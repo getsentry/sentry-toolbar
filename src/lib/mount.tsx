@@ -20,7 +20,7 @@ export default function mount(rootNode: HTMLElement, config: Configuration) {
   const reactRoot = createRoot(reactMount);
   reactRoot.render(
     <StrictMode>
-      <Providers config={config} shadow={shadow} portalMount={portalMount}>
+      <Providers config={config} shadowRoot={shadow} reactMount={reactMount} portalMount={portalMount}>
         <AppRouter />
       </Providers>
     </StrictMode>
@@ -43,6 +43,12 @@ function buildDom(config: Configuration) {
 
   const host = DOCUMENT.createElement('div');
   host.id = config.domId;
+  host.style.inset = '0';
+  host.style.position = 'absolute';
+  // Typescript assumes all css style values are string, z-index should be a
+  // CSS `<integer>` type. However the max int value is implementation-defined
+  // See: https://drafts.csswg.org/css-values/#numeric-types
+  host.style.zIndex = String(Number.MAX_SAFE_INTEGER);
 
   const shadow = host.attachShadow({mode: 'open'});
 
