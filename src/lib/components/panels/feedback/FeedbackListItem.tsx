@@ -1,6 +1,6 @@
 import {cx} from 'cva';
 import type {ReactElement} from 'react';
-import {useContext, useMemo} from 'react';
+import {useMemo} from 'react';
 import AssignedTo from 'toolbar/components/AssignedTo';
 import {Tooltip, TooltipTrigger, TooltipContent} from 'toolbar/components/base/tooltip/Tooltip';
 import RelativeDateTime from 'toolbar/components/datetime/RelativeDateTime';
@@ -10,7 +10,7 @@ import IconImage from 'toolbar/components/icon/IconImage';
 import IconPlay from 'toolbar/components/icon/IconPlay';
 import ProjectIcon from 'toolbar/components/project/ProjectIcon';
 import SentryAppLink from 'toolbar/components/SentryAppLink';
-import ConfigContext from 'toolbar/context/ConfigContext';
+import {useConfigContext} from 'toolbar/context/ConfigContext';
 import useReplayCount from 'toolbar/hooks/useReplayCount';
 import type {FeedbackIssueListItem} from 'toolbar/sentryApi/types/group';
 import type Member from 'toolbar/sentryApi/types/Member';
@@ -27,7 +27,7 @@ export default function FeedbackListItem({
   teams: OrganizationTeam[] | undefined;
   members: Member[] | undefined;
 }) {
-  const {organizationSlug} = useContext(ConfigContext);
+  const [{organizationSlug}] = useConfigContext();
   const {feedbackHasReplay} = useReplayCountForFeedbacks(organizationSlug);
   const hasReplayId = feedbackHasReplay(item.id);
   const isFatal = FATAL_SOURCES.includes(item.metadata.source ?? '');
@@ -59,7 +59,7 @@ export default function FeedbackListItem({
 }
 
 function FeedbackType({item}: {item: FeedbackIssueListItem}) {
-  const {projectIdOrSlug} = useContext(ConfigContext);
+  const [{projectIdOrSlug}] = useConfigContext();
 
   return (
     <span className={cx({truncate: true, 'font-bold': !item.hasSeen, 'text-sm': true})}>
@@ -83,7 +83,7 @@ function FeedbackMessage({message}: {message: string | null | undefined}) {
 }
 
 function FeedbackProject({item}: {item: FeedbackIssueListItem}) {
-  const {organizationSlug, projectIdOrSlug} = useContext(ConfigContext);
+  const [{organizationSlug, projectIdOrSlug}] = useConfigContext();
 
   return (
     <div className="flex flex-row items-center gap-0.5">

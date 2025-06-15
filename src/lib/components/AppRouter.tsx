@@ -1,4 +1,3 @@
-import {useContext} from 'react';
 import {Fragment} from 'react/jsx-runtime';
 import {Routes, Route, Outlet} from 'react-router-dom';
 import DebugState from 'toolbar/components/DebugState';
@@ -14,7 +13,7 @@ import Disconnected from 'toolbar/components/unauth/Disconnected';
 import InvalidDomain from 'toolbar/components/unauth/InvalidDomain';
 import Login from 'toolbar/components/unauth/Login';
 import MissingProject from 'toolbar/components/unauth/MissingProject';
-import ConfigContext from 'toolbar/context/ConfigContext';
+import {useConfigContext} from 'toolbar/context/ConfigContext';
 import useClearQueryCacheOnProxyStateChange from 'toolbar/hooks/useClearQueryCacheOnProxyStateChange';
 import useNavigateOnProxyStateChange from 'toolbar/hooks/useNavigateOnProxyStateChange';
 
@@ -22,7 +21,7 @@ export default function AppRouter() {
   useNavigateOnProxyStateChange();
   useClearQueryCacheOnProxyStateChange();
 
-  const {placement} = useContext(ConfigContext);
+  const [{placement}] = useConfigContext();
   return (
     <Routes>
       <Route

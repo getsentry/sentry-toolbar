@@ -1,12 +1,11 @@
-import {useContext} from 'react';
 import {useLocation} from 'react-router-dom';
 import {useApiProxyState} from 'toolbar/context/ApiProxyContext';
-import ConfigContext from 'toolbar/context/ConfigContext';
+import {useConfigContext} from 'toolbar/context/ConfigContext';
 import {DebugTarget} from 'toolbar/types/Configuration';
 
 export default function DebugState() {
   const proxyState = useApiProxyState();
-  const {debug} = useContext(ConfigContext);
+  const [{debug}] = useConfigContext();
 
   const location = useLocation();
   return (

@@ -1,10 +1,9 @@
 import {cx} from 'cva';
-import {useContext} from 'react';
 import AssignedTo from 'toolbar/components/AssignedTo';
 import RelativeDateTime from 'toolbar/components/datetime/RelativeDateTime';
 import ProjectIcon from 'toolbar/components/project/ProjectIcon';
 import SentryAppLink from 'toolbar/components/SentryAppLink';
-import ConfigContext from 'toolbar/context/ConfigContext';
+import {useConfigContext} from 'toolbar/context/ConfigContext';
 import type {Group} from 'toolbar/sentryApi/types/group';
 import type Member from 'toolbar/sentryApi/types/Member';
 import type {OrganizationTeam} from 'toolbar/sentryApi/types/Organization';
@@ -40,7 +39,7 @@ export default function IssueListItem({
 }
 
 function IssueType({item}: {item: Group}) {
-  const {projectIdOrSlug} = useContext(ConfigContext);
+  const [{projectIdOrSlug}] = useConfigContext();
 
   return (
     <span className={cx({truncate: true, 'font-bold': !item.hasSeen, 'text-sm': true})}>
@@ -66,7 +65,7 @@ function IssueMessage({message}: {message: string | null | undefined}) {
 }
 
 function IssueProject({item}: {item: Group}) {
-  const {organizationSlug, projectIdOrSlug} = useContext(ConfigContext);
+  const [{organizationSlug, projectIdOrSlug}] = useConfigContext();
 
   return (
     <div className="flex flex-row items-center gap-0.5">

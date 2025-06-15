@@ -1,9 +1,8 @@
-import {useContext} from 'react';
 import UnauthPill from 'toolbar/components/unauth/UnauthPill';
-import ConfigContext from 'toolbar/context/ConfigContext';
+import {useConfigContext} from 'toolbar/context/ConfigContext';
 
 export default function Disconnected() {
-  const {sentryOrigin} = useContext(ConfigContext);
+  const [{sentryOrigin}] = useConfigContext();
 
   return (
     <UnauthPill>

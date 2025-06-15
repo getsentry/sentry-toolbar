@@ -1,10 +1,8 @@
-import {useContext} from 'react';
 import UnauthPill, {UnauthPillAppLink} from 'toolbar/components/unauth/UnauthPill';
-import ConfigContext from 'toolbar/context/ConfigContext';
+import {useConfigContext} from 'toolbar/context/ConfigContext';
 
 export default function InvalidDomain() {
-  const config = useContext(ConfigContext);
-  const {projectIdOrSlug} = config;
+  const [{projectIdOrSlug}] = useConfigContext();
 
   return (
     <UnauthPill>
