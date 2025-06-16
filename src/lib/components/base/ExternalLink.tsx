@@ -1,11 +1,11 @@
 import {cx} from 'cva';
 import {type UrlObject} from 'query-string';
 import qs from 'query-string';
-import type {ForwardedRef} from 'react';
+import type {ComponentProps, ForwardedRef} from 'react';
 import {forwardRef, type MouseEvent} from 'react';
 import {twMerge} from 'tailwind-merge';
 
-interface Props {
+interface Props extends ComponentProps<'a'> {
   children: React.ReactNode;
   to: UrlObject;
   onClick?: (event: MouseEvent) => void;
@@ -15,7 +15,7 @@ interface Props {
 const linkClass = cx('text-blue-400 hover:underline');
 
 const ExternalLink = forwardRef(function ExternalLink(
-  {children, className, to, onClick}: Props,
+  {children, className, to, onClick, ...props}: Props,
   ref: ForwardedRef<HTMLAnchorElement>
 ) {
   const url = qs.stringifyUrl(to);
@@ -23,6 +23,7 @@ const ExternalLink = forwardRef(function ExternalLink(
   return (
     <a
       ref={ref}
+      {...props}
       href={url}
       onClick={onClick}
       rel="noreferrer noopener"
