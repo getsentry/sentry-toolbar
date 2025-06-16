@@ -36,7 +36,7 @@ const placements = [
   'right-bottom-corner',
 ] as const;
 
-function hydratePlacement(placement: undefined | string): Configuration['placement'] {
+export function hydratePlacement(placement: undefined | string): Configuration['placement'] {
   if (placement && placements.includes(placement as Configuration['placement'])) {
     return placement as Configuration['placement'];
   } else {
