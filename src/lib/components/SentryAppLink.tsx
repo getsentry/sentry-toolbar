@@ -1,11 +1,11 @@
 import {type UrlObject} from 'query-string';
-import type {ForwardedRef} from 'react';
+import type {ComponentProps, ForwardedRef} from 'react';
 import {forwardRef, type MouseEvent} from 'react';
 import ExternalLink from 'toolbar/components/base/ExternalLink';
 import {useConfigContext} from 'toolbar/context/ConfigContext';
 import {getSentryWebOrigin} from 'toolbar/sentryApi/urls';
 
-export interface Props {
+export interface Props extends ComponentProps<typeof ExternalLink> {
   children: React.ReactNode;
   to: UrlObject;
   onClick?: (event: MouseEvent) => void;
@@ -13,7 +13,7 @@ export interface Props {
 }
 
 const SentryAppLink = forwardRef(function SentryAppLink(
-  {children, className, to, onClick}: Props,
+  {children, className, to, onClick, ...props}: Props,
   ref: ForwardedRef<HTMLAnchorElement>
 ) {
   const [config] = useConfigContext();
@@ -21,6 +21,7 @@ const SentryAppLink = forwardRef(function SentryAppLink(
   return (
     <ExternalLink
       ref={ref}
+      {...props}
       to={{
         url: `${getSentryWebOrigin(config)}${to.url}`,
         query: to.query,
