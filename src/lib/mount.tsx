@@ -10,7 +10,7 @@ import setColorScheme from 'toolbar/utils/setColorScheme';
 
 export default function mount(rootNode: HTMLElement, config: Configuration) {
   const cleanup: (() => void)[] = [];
-  const {host, reactMount, portalMount} = buildDom(config);
+  const {host, reactMount, portalMount, shadowRoot} = buildDom(config);
 
   setDefaultOptions({locale: localeTimeRelativeAbbr});
 
@@ -20,7 +20,7 @@ export default function mount(rootNode: HTMLElement, config: Configuration) {
   const reactRoot = createRoot(reactMount);
   reactRoot.render(
     <StrictMode>
-      <Providers config={config} portalMount={portalMount}>
+      <Providers config={config} portalMount={portalMount} reactMount={reactMount} shadowRoot={shadowRoot}>
         <AppRouter />
       </Providers>
     </StrictMode>
@@ -44,21 +44,21 @@ function buildDom(config: Configuration) {
   const host = DOCUMENT.createElement('div');
   host.id = config.domId;
 
-  const shadow = host.attachShadow({mode: 'open'});
+  const shadowRoot = host.attachShadow({mode: 'open'});
 
   const style = DOCUMENT.createElement('style');
   style.innerHTML = styles;
-  shadow.appendChild(style);
+  shadowRoot.appendChild(style);
 
   const reactMount = DOCUMENT.createElement('div');
   reactMount.dataset.name = 'react-mount';
-  shadow.appendChild(reactMount);
+  shadowRoot.appendChild(reactMount);
 
   const portalMount = DOCUMENT.createElement('div');
   portalMount.dataset.name = 'portal-mount';
   // We can use tailwind classes because tailwind will read all `src/**/*/.tsx` files
   portalMount.className = 'relative z-portal';
-  shadow.appendChild(portalMount);
+  shadowRoot.appendChild(portalMount);
 
-  return {host, reactMount, portalMount};
+  return {host, reactMount, portalMount, shadowRoot};
 }
