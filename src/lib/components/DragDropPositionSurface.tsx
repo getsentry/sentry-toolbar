@@ -37,12 +37,14 @@ export default function DragDropPositionSurface({instanceName}: Props) {
 
   const {mousePosition, lastPosition} = useDragDropPositionSurface({onPositionChange: handlePositionChange});
 
+  if (!mousePosition) {
+    return null;
+  }
+
   return (
     <Fragment>
-      {mousePosition ? <DropTargets /> : null}
-      {mousePosition ? (
-        <GrabberGhost mousePosition={mousePosition} position={lastPosition as Configuration['placement']} />
-      ) : null}
+      <DropTargets />
+      <GrabberGhost mousePosition={mousePosition} position={lastPosition as Configuration['placement']} />
     </Fragment>
   );
 }
@@ -188,20 +190,19 @@ const targetGhostClass = cva(
   }
 );
 
-function TargetShape({position}: {position: Configuration['placement']}) {
-  return (
-    <div className={targetWrapperClass}>
-      <div data-name={position} className={targetShapeClasses[position]} />
-      <div className={cx(targetGhostClass({position}), ghostPositionClass({position}))} />
-    </div>
-  );
-}
-
 function DropTargets() {
   return (
     <div className="pointer-events-auto absolute inset-0 z-dragdrop">
-      {Object.keys(targetShapeClasses).map(position => (
-        <TargetShape key={position} position={position as Configuration['placement']} />
+      {Object.entries(targetShapeClasses).map(([position, className]) => (
+        <div key={position} className={targetWrapperClass}>
+          <div data-name={position} className={className} />
+          <div
+            className={cx(
+              targetGhostClass({position: position as Configuration['placement']}),
+              ghostPositionClass({position: position as Configuration['placement']})
+            )}
+          />
+        </div>
       ))}
 
       {/* Center section, not a drop target */}
