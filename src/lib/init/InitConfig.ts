@@ -74,7 +74,6 @@ export default interface InitConfig {
    * top & bottom edges will result in a horizontal toolbar while left & right edges will result in a vertical toolbar.
    *
    * Default: `"right-edge"`
-   *
    */
   placement?:
     | undefined
