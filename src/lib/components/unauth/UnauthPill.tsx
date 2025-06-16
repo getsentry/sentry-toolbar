@@ -16,7 +16,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const menuSeparator = cx(['mx-1', 'my-0.5']);
+const menuSeparator = cx('mx-1 my-0.5');
 
 const buttonClass = cx(
   'rounded-full transition-all text-white-raw p-1 hover:text-black-raw hover:bg-white-raw hover:underline'

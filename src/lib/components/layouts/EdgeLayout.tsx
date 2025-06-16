@@ -13,8 +13,8 @@ const layoutClass = cva(
   {
     variants: {
       placement: {
-        'right-edge': ['items-center'],
-        'bottom-right-corner': ['items-end'],
+        'right-edge': 'items-center',
+        'bottom-right-corner': 'items-end',
       },
     },
     defaultVariants: {

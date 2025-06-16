@@ -23,8 +23,8 @@ const btnClassName = cva(
   {
     variants: {
       size: {
-        sm: ['h-2', 'w-4'],
-        lg: ['h-[24px]', 'w-[45px]'],
+        sm: 'h-2 w-4',
+        lg: 'h-[24px] w-[45px]',
       },
     },
     defaultVariants: {
@@ -33,15 +33,15 @@ const btnClassName = cva(
   }
 );
 
-const nubClassName = cva(['absolute', 'rounded-full', 'transition'], {
+const nubClassName = cva('absolute rounded-full transition', {
   variants: {
     size: {
-      sm: ['top-px', 'size-1.5'],
-      lg: ['top-[3px]', 'size-2'],
+      sm: 'top-px size-1.5',
+      lg: 'top-[3px] size-2',
     },
     isActive: {
-      true: ['bg-purple-400'],
-      false: ['bg-gray-100'],
+      true: 'bg-purple-400',
+      false: 'bg-gray-100',
     },
   },
   compoundVariants: [

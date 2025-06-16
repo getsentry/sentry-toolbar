@@ -39,7 +39,7 @@ import {createContext, forwardRef, useContext, useEffect, useRef, useState} from
 import {twMerge} from 'tailwind-merge';
 import PortalTargetContext from 'toolbar/context/PortalTargetContext';
 
-const baseTriggerClassName = cx(['rounded-lg', 'border-surface-400', 'p-0.5']);
+const baseTriggerClassName = cx('rounded-lg border-surface-400 p-0.5');
 const baseMenuClassName = cx([
   'bg-surface-400',
   'max-w-60',
