@@ -1,8 +1,7 @@
-import {useContext} from 'react';
-import ConfigContext from 'toolbar/context/ConfigContext';
+import {useConfigContext} from 'toolbar/context/ConfigContext';
 
 export default function SettingsPanel() {
-  const config = useContext(ConfigContext);
+  const [config] = useConfigContext();
 
   return (
     <section className="h-full overflow-y-auto">

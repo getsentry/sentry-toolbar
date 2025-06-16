@@ -1,6 +1,6 @@
 import type {ReactNode} from 'react';
 import {createContext, useContext, useEffect, useState} from 'react';
-import ConfigContext from 'toolbar/context/ConfigContext';
+import {useConfigContext} from 'toolbar/context/ConfigContext';
 import type {FlagMap, FlagValue} from 'toolbar/init/featureFlagAdapter';
 
 interface State {
@@ -22,7 +22,7 @@ const FeatureFlagAdapterContext = createContext<State>({
 });
 
 export function FeatureFlagAdapterProvider({children}: {children: ReactNode}) {
-  const {featureFlags} = useContext(ConfigContext);
+  const [{featureFlags}] = useConfigContext();
   const [state, setState] = useState(() => ({
     isDirty: false,
     flagMap: {},

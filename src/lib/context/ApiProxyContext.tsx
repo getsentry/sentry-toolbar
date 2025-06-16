@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import {createContext, useCallback, useContext, useEffect, useRef, useState} from 'react';
 import type {ReactNode} from 'react';
-import ConfigContext from 'toolbar/context/ConfigContext';
+import {useConfigContext} from 'toolbar/context/ConfigContext';
 import defaultConfig from 'toolbar/context/defaultConfig';
 import usePrevious from 'toolbar/hooks/usePrevious';
 import {getSentryIFrameOrigin} from 'toolbar/sentryApi/urls';
@@ -16,7 +16,7 @@ interface Props {
 }
 
 export function ApiProxyContextProvider({children}: Props) {
-  const config = useContext(ConfigContext);
+  const [config] = useConfigContext();
   const {debug, organizationSlug, projectIdOrSlug} = config;
   const enableLogging = debug.includes(DebugTarget.LOGGING);
 

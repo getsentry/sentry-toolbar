@@ -1,5 +1,4 @@
-import {useContext} from 'react';
-import ConfigContext from 'toolbar/context/ConfigContext';
+import {useConfigContext} from 'toolbar/context/ConfigContext';
 import useFetchInfiniteSentryData from 'toolbar/hooks/fetch/useFetchInfiniteSentryData';
 import useFetchSentryData from 'toolbar/hooks/fetch/useFetchSentryData';
 import {useInfiniteIssueListQuery, useProjectQuery} from 'toolbar/sentryApi/queryKeys';
@@ -9,7 +8,7 @@ interface Props {
 }
 
 export default function useInfiniteIssuesList({query}: Props) {
-  const {environment, organizationSlug, projectIdOrSlug} = useContext(ConfigContext);
+  const [{environment, organizationSlug, projectIdOrSlug}] = useConfigContext();
 
   const {data: project, isSuccess} = useFetchSentryData({
     ...useProjectQuery(String(organizationSlug), String(projectIdOrSlug)),

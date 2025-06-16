@@ -1,4 +1,3 @@
-import {useContext} from 'react';
 import {Tooltip, TooltipContent, TooltipTrigger} from 'toolbar/components/base/tooltip/Tooltip';
 import InfiniteListItems from 'toolbar/components/InfiniteListItems';
 import InfiniteListState from 'toolbar/components/InfiniteListState';
@@ -7,14 +6,14 @@ import useInfiniteFeedbackList from 'toolbar/components/panels/feedback/useInfin
 import Placeholder from 'toolbar/components/Placeholder';
 import ProjectIcon from 'toolbar/components/project/ProjectIcon';
 import SentryAppLink from 'toolbar/components/SentryAppLink';
-import ConfigContext from 'toolbar/context/ConfigContext';
+import {useConfigContext} from 'toolbar/context/ConfigContext';
 import useFetchSentryData from 'toolbar/hooks/fetch/useFetchSentryData';
 import useCurrentSentryTransactionName from 'toolbar/hooks/useCurrentSentryTransactionName';
 import {useMembersQuery, useTeamsQuery} from 'toolbar/sentryApi/queryKeys';
 import type {FeedbackIssueListItem} from 'toolbar/sentryApi/types/group';
 
 export default function FeedbackPanel() {
-  const {organizationSlug, projectIdOrSlug} = useContext(ConfigContext);
+  const [{organizationSlug, projectIdOrSlug}] = useConfigContext();
 
   const transactionName = useCurrentSentryTransactionName();
   const query = transactionName ? `url:*${transactionName}` : '';
