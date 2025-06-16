@@ -1,4 +1,16 @@
 
+## 1.0.0-beta.18
+
+### Various fixes & improvements
+
+- feat: Implement support for drag+drop placement (#269) by @ryan953
+- feat: Implement support for multiple placements around the screen edge (#268) by @ryan953
+- fix: Fix the z-index of the toolbar (#267) by @ryan953
+- feat: Allow SentryAppLink & ExternalLink to take all props from `<a>` (#266) by @ryan953
+- ref: Create ReactMountContext to pass a ref to the react mountpoint (#265) by @ryan953
+- ref: Stop using arrays with cx() or cva() unless the class list is huge (#264) by @ryan953
+- ref: Create static & mutable Config providers so some values can be overridden in memory (#263) by @ryan953
+
 ## 1.0.0-beta.17
 
 ### Various fixes & improvements
