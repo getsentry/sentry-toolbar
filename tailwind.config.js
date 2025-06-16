@@ -13,6 +13,7 @@ const tailwind_config = {
         portal: 10_000,
         menu: 10_001,
         tooltip: 10_002,
+        dragdrop: 10_003,
       },
 
       icon: {

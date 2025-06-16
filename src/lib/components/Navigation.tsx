@@ -34,7 +34,18 @@ const navClassName = cva('flex items-center gap-1', {
   },
 });
 
-const navSeparator = cx('m-0 w-full border-translucentGray-200');
+const navGrabber = cva(
+  'relative cursor-grab border-transparent after:absolute after:bg-translucentGray-200 after:hover:bg-gray-300',
+  {
+    variants: {
+      isHorizontal: {
+        false: ['-my-1 w-full py-1 after:top-1/2 after:h-px after:w-full'],
+        true: ['-mx-1 h-[34px] w-px px-1 after:left-1/2 after:h-full after:w-px'],
+      },
+    },
+  }
+);
+
 const menuSeparator = cx('mx-1 my-0.5');
 
 const navItemClassName = cx([
@@ -90,7 +101,7 @@ export default function Navigation() {
       <Transition show={isExpanded}>
         <div
           className={cx(navClassName({isHorizontal}), 'p-0 transition duration-300 ease-in data-[closed]:opacity-0')}>
-          <hr className={navSeparator} />
+          <hr className={navGrabber({isHorizontal})} data-grabber />
 
           <Tooltip>
             <TooltipTrigger asChild>

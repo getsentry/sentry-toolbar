@@ -1,6 +1,7 @@
 import {cva, cx} from 'cva';
 import {Fragment} from 'react';
 import type {ReactNode} from 'react';
+import DragDropPositionSurface from 'toolbar/components/DragDropPositionSurface';
 import {useConfigContext} from 'toolbar/context/ConfigContext';
 import type {Configuration} from 'toolbar/types/Configuration';
 
@@ -71,6 +72,7 @@ export default function EdgeLayout({children}: Props) {
   return (
     <Fragment>
       <div className={layoutClass({placement})}>{children}</div>
+      <DragDropPositionSurface instanceName="EdgeLayout" />
     </Fragment>
   );
 }
