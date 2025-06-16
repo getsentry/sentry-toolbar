@@ -70,10 +70,25 @@ export default interface InitConfig {
 
   /**
    * Where to render the toolbar on the screen.
+   * The first value is the side/edge of the screen, and the second value is where along that edge to place it.
+   * top & bottom edges will result in a horizontal toolbar while left & right edges will result in a vertical toolbar.
    *
    * Default: `"right-edge"`
    */
-  placement?: undefined | 'right-edge' | 'bottom-right-corner';
+  placement?:
+    | undefined
+    | 'top-left-corner'
+    | 'top-edge'
+    | 'top-right-corner'
+    | 'bottom-left-corner'
+    | 'bottom-edge'
+    | 'bottom-right-corner'
+    | 'left-top-corner'
+    | 'left-edge'
+    | 'left-bottom-corner'
+    | 'right-top-corner'
+    | 'right-edge'
+    | 'right-bottom-corner';
 
   /**
    * Whether to use dark mode, or light

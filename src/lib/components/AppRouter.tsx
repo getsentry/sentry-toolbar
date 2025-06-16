@@ -2,7 +2,7 @@ import {Fragment} from 'react/jsx-runtime';
 import {Routes, Route, Outlet} from 'react-router-dom';
 import DebugState from 'toolbar/components/DebugState';
 import CenterLayout from 'toolbar/components/layouts/CenterLayout';
-import EdgeLayout from 'toolbar/components/layouts/EdgeLayout';
+import EdgeLayout, {MainArea, NavArea} from 'toolbar/components/layouts/EdgeLayout';
 import Navigation from 'toolbar/components/Navigation';
 import FeatureFlagsPanel from 'toolbar/components/panels/featureFlags/FeatureFlagsPanel';
 import FeedbackPanel from 'toolbar/components/panels/feedback/FeedbackPanel';
@@ -13,7 +13,6 @@ import Disconnected from 'toolbar/components/unauth/Disconnected';
 import InvalidDomain from 'toolbar/components/unauth/InvalidDomain';
 import Login from 'toolbar/components/unauth/Login';
 import MissingProject from 'toolbar/components/unauth/MissingProject';
-import {useConfigContext} from 'toolbar/context/ConfigContext';
 import useClearQueryCacheOnProxyStateChange from 'toolbar/hooks/useClearQueryCacheOnProxyStateChange';
 import useNavigateOnProxyStateChange from 'toolbar/hooks/useNavigateOnProxyStateChange';
 
@@ -21,7 +20,6 @@ export default function AppRouter() {
   useNavigateOnProxyStateChange();
   useClearQueryCacheOnProxyStateChange();
 
-  const [{placement}] = useConfigContext();
   return (
     <Routes>
       <Route
@@ -48,18 +46,18 @@ export default function AppRouter() {
         <Route
           path="/"
           element={
-            <EdgeLayout placement={placement}>
-              <EdgeLayout.NavArea>
+            <EdgeLayout>
+              <NavArea>
                 <Navigation />
-              </EdgeLayout.NavArea>
+              </NavArea>
               <Outlet />
             </EdgeLayout>
           }>
           <Route
             element={
-              <EdgeLayout.MainArea>
+              <MainArea>
                 <Outlet />
-              </EdgeLayout.MainArea>
+              </MainArea>
             }>
             <Route path="/settings" element={<SettingsPanel />} />
             <Route path="/issues" element={<IssuesPanel />} />
