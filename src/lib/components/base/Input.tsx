@@ -6,8 +6,8 @@ const inputClass = cva(
   {
     variants: {
       disabled: {
-        true: ['bg-translucentSurface-100', 'text-gray-300'],
-        false: ['bg-white', 'text-gray-400'],
+        true: 'bg-translucentSurface-100 text-gray-300',
+        false: 'bg-white text-gray-400',
       },
     },
     defaultVariants: {

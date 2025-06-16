@@ -23,10 +23,10 @@ import {useHiddenAppContext} from 'toolbar/context/HiddenAppContext';
 import useNavigationExpansion from 'toolbar/hooks/useNavigationExpansion';
 import {DebugTarget} from 'toolbar/types/Configuration';
 
-const navClassName = cx(['flex', 'flex-col', 'gap-1', 'items-center']);
+const navClassName = cx('flex flex-col gap-1 items-center');
 
-const navSeparator = cx(['m-0', 'w-full', 'border-translucentGray-200']);
-const menuSeparator = cx(['mx-1', 'my-0.5']);
+const navSeparator = cx('m-0 w-full border-translucentGray-200');
+const menuSeparator = cx('mx-1 my-0.5');
 
 const navItemClassName = cx([
   'relative',
