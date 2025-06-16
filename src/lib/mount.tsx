@@ -44,6 +44,7 @@ function buildDom(config: Configuration) {
   const host = DOCUMENT.createElement('div');
   host.id = config.domId;
   host.style.inset = '0';
+  host.style.pointerEvents = 'none';
   host.style.position = 'absolute';
   // Typescript assumes all css style values are string, z-index should be a
   // CSS `<integer>` type. However the max int value is implementation-defined
