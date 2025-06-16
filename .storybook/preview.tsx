@@ -21,7 +21,11 @@ const preview: Preview = {
       return <Story />;
     },
     (Story, {parameters: {config}}) => (
-      <Providers config={config} portalMount={document.body} reactMount={document.body} shadowRoot={document}>
+      <Providers
+        config={config}
+        portalMount={document.body}
+        reactMount={document.body}
+        shadowRoot={document.createElement('div').attachShadow({mode: 'open'})}>
         <Story />
       </Providers>
     ),
