@@ -1,4 +1,10 @@
 
+## 1.0.0-beta.19
+
+### Various fixes & improvements
+
+- fix: Dont intercept pointer events at the root toolbar host (#270) by @ryan953
+
 ## 1.0.0-beta.18
 
 ### Various fixes & improvements
