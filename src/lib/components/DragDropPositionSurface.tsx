@@ -1,5 +1,6 @@
 import {cva, cx} from 'cva';
 import {Fragment, useCallback, useContext, useEffect, useRef, useState} from 'react';
+import {twMerge} from 'tailwind-merge';
 import {useConfigContext} from 'toolbar/context/ConfigContext';
 import ReactMountContext from 'toolbar/context/ReactMountContext';
 import ShadowRootContext from 'toolbar/context/ShadowRootContext';
@@ -141,18 +142,54 @@ function GrabberGhost({mousePosition, position}: {mousePosition: Coord; position
 const targetWrapperClass = cx('group pointer-events-none absolute inset-0');
 const targetShapeBaseClass = cx('absolute inset-0 pointer-events-auto cursor-grab');
 const targetShapeClasses = {
-  'top-left-corner': cx(targetShapeBaseClass, '[clip-path:polygon(0%_0%,33.33%_33.33%,33.33%_0%)]'),
-  'top-edge': cx(targetShapeBaseClass, '[clip-path:polygon(33.33%_0%,66.66%_0%,66.66%_33.33%,33.33%_33.33%)]'),
-  'top-right-corner': cx(targetShapeBaseClass, '[clip-path:polygon(100%_0%,66.66%_0%,66.66%_33.33%)]'),
-  'bottom-left-corner': cx(targetShapeBaseClass, '[clip-path:polygon(0%_100%,33.33%_66.66%,33.33%_100%)]'),
-  'bottom-edge': cx(targetShapeBaseClass, '[clip-path:polygon(33.33%_66.66%,66.66%_66.66%,66.66%_100%,33.33%_100%)]'),
-  'bottom-right-corner': cx(targetShapeBaseClass, '[clip-path:polygon(66.66%_66.66%,100%_100%,66.66%_100%)]'),
-  'left-top-corner': cx(targetShapeBaseClass, '[clip-path:polygon(0%_0%,33.33%_33.33%,0%_33.33%)]'),
-  'left-edge': cx(targetShapeBaseClass, '[clip-path:polygon(0%_33.33%,33.33%_33.33%,33.33%_66.66%,0%_66.66%)]'),
-  'left-bottom-corner': cx(targetShapeBaseClass, '[clip-path:polygon(0%_100%,33.33%_66.66%,0%_66.66%)]'),
-  'right-top-corner': cx(targetShapeBaseClass, '[clip-path:polygon(100%_0%,100%_33.33%,66.66%_33.33%)]'),
-  'right-edge': cx(targetShapeBaseClass, '[clip-path:polygon(66.66%_33.33%,100%_33.33%,100%_66.66%,66.66%_66.66%)]'),
-  'right-bottom-corner': cx(targetShapeBaseClass, '[clip-path:polygon(66.66%_66.66%,100%_66.66%,100%_100%)]'),
+  'top-left-corner': cx(targetShapeBaseClass, '[clip-path:polygon(0%_0%,33.33%_33.33%,33.33%_0%)]', 'bg-[red]/10'),
+  'top-edge': cx(
+    targetShapeBaseClass,
+    '[clip-path:polygon(33.33%_0%,66.66%_0%,66.66%_33.33%,33.33%_33.33%)]',
+    'bg-[blue]/10'
+  ),
+  'top-right-corner': cx(targetShapeBaseClass, '[clip-path:polygon(100%_0%,66.66%_0%,66.66%_33.33%)]', 'bg-[green]/10'),
+  'bottom-left-corner': cx(
+    targetShapeBaseClass,
+    '[clip-path:polygon(0%_100%,33.33%_66.66%,33.33%_100%)]',
+    'bg-[yellow]/10'
+  ),
+  'bottom-edge': cx(
+    targetShapeBaseClass,
+    '[clip-path:polygon(33.33%_66.66%,66.66%_66.66%,66.66%_100%,33.33%_100%)]',
+    'bg-[purple]/10'
+  ),
+  'bottom-right-corner': cx(
+    targetShapeBaseClass,
+    '[clip-path:polygon(66.66%_66.66%,100%_100%,66.66%_100%)]',
+    'bg-[orange]/10'
+  ),
+  'left-top-corner': cx(targetShapeBaseClass, '[clip-path:polygon(0%_0%,33.33%_33.33%,0%_33.33%)]', 'bg-[pink]/10'),
+  'left-edge': cx(
+    targetShapeBaseClass,
+    '[clip-path:polygon(0%_33.33%,33.33%_33.33%,33.33%_66.66%,0%_66.66%)]',
+    'bg-[teal]/10'
+  ),
+  'left-bottom-corner': cx(
+    targetShapeBaseClass,
+    '[clip-path:polygon(0%_100%,33.33%_66.66%,0%_66.66%)]',
+    'bg-[indigo]/10'
+  ),
+  'right-top-corner': cx(
+    targetShapeBaseClass,
+    '[clip-path:polygon(100%_0%,100%_33.33%,66.66%_33.33%)]',
+    'bg-[violet]/10'
+  ),
+  'right-edge': cx(
+    targetShapeBaseClass,
+    '[clip-path:polygon(66.66%_33.33%,100%_33.33%,100%_66.66%,66.66%_66.66%)]',
+    'bg-[gray]/10'
+  ),
+  'right-bottom-corner': cx(
+    targetShapeBaseClass,
+    '[clip-path:polygon(66.66%_66.66%,100%_66.66%,100%_100%)]',
+    'bg-[black]/10'
+  ),
 } satisfies Record<Configuration['placement'], string>;
 const targetGhostClass = cva(
   [
@@ -190,12 +227,12 @@ const targetGhostClass = cva(
   }
 );
 
-function DropTargets() {
+function DropTargets({showDebugColors = false}: {showDebugColors?: boolean}) {
   return (
     <div className="pointer-events-auto absolute inset-0 z-dragdrop">
       {Object.entries(targetShapeClasses).map(([position, className]) => (
         <div key={position} className={targetWrapperClass}>
-          <div data-name={position} className={className} />
+          <div data-name={position} className={twMerge(className, cx({'bg-[transparent]': !showDebugColors}))} />
           <div
             className={cx(
               targetGhostClass({position: position as Configuration['placement']}),
