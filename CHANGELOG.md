@@ -1,4 +1,10 @@
 
+## 1.0.0-beta.20
+
+### Various fixes & improvements
+
+- fix: Allow pointer events within the portal, so menus work (#271) by @ryan953
+
 ## 1.0.0-beta.19
 
 ### Various fixes & improvements
