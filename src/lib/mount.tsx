@@ -64,7 +64,7 @@ function buildDom(config: Configuration) {
   const portalMount = DOCUMENT.createElement('div');
   portalMount.dataset.name = 'portal-mount';
   // We can use tailwind classes because tailwind will read all `src/**/*/.tsx` files
-  portalMount.className = 'relative z-portal';
+  portalMount.className = 'relative z-portal pointer-events-auto';
   shadowRoot.appendChild(portalMount);
 
   return {host, reactMount, portalMount, shadowRoot};
