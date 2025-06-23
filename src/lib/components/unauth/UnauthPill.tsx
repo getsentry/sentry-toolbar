@@ -1,15 +1,17 @@
 import {cx} from 'cva';
 import type {ForwardedRef} from 'react';
-import {forwardRef} from 'react';
+import {forwardRef, Fragment} from 'react';
 import {twMerge} from 'tailwind-merge';
 import ExternalLink from 'toolbar/components/base/ExternalLink';
 import {Menu, MenuItem} from 'toolbar/components/base/menu/Menu';
 import {Tooltip, TooltipTrigger, TooltipContent} from 'toolbar/components/base/tooltip/Tooltip';
 import IconChevron from 'toolbar/components/icon/IconChevron';
 import IconClose from 'toolbar/components/icon/IconClose';
+import IconLock from 'toolbar/components/icon/IconLock';
 import IconOpen from 'toolbar/components/icon/IconOpen';
 import IconSentry from 'toolbar/components/icon/IconSentry';
 import SentryAppLink, {type Props as SentryAppLinkProps} from 'toolbar/components/SentryAppLink';
+import {useApiProxyInstance, useApiProxyState} from 'toolbar/context/ApiProxyContext';
 import {useHiddenAppContext} from 'toolbar/context/HiddenAppContext';
 
 interface Props {
@@ -26,6 +28,8 @@ const menuItemClass = cx('flex grow gap-1 whitespace-nowrap focus:bg-white-raw f
 
 export default function UnauthPill({children}: Props) {
   const [, setIsHidden] = useHiddenAppContext();
+  const apiProxy = useApiProxyInstance();
+  const proxyState = useApiProxyState();
 
   return (
     <div className="flex translate-y-[30vh] flex-row place-items-center gap-1 rounded-full bg-black-raw p-px px-2 text-sm text-white-raw">
@@ -77,6 +81,20 @@ export default function UnauthPill({children}: Props) {
             Open a new tab to see it again.
           </TooltipContent>
         </Tooltip>
+
+        {['missing-project', 'invalid-domain', 'logged-in'].includes(proxyState) ? (
+          <Fragment>
+            <hr className={menuSeparator} />
+
+            <MenuItem
+              className={twMerge(menuItemClass, 'text-white-raw p-1')}
+              label="hide"
+              onClick={() => apiProxy.logout()}>
+              <IconLock size="sm" />
+              Logout
+            </MenuItem>
+          </Fragment>
+        ) : null}
       </Menu>
     </div>
   );
