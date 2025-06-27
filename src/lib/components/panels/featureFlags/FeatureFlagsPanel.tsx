@@ -50,8 +50,6 @@ function FeatureFlagEditor() {
   const [searchTerm, setSearchTerm] = useState('');
   const [showAddFlag, setShowAddFlag] = useState(false);
 
-  console.log('FeatureFlagEditor', {prefilter, overrides, flagMap, searchTerm, showAddFlag});
-
   const overrideOnly = prefilter === 'overrides';
   const allFlagNames = useMemo(
     () =>
