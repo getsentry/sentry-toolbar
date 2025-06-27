@@ -50,11 +50,17 @@ function FeatureFlagEditor() {
   const [searchTerm, setSearchTerm] = useState('');
   const [showAddFlag, setShowAddFlag] = useState(false);
 
+  console.log('FeatureFlagEditor', {prefilter, overrides, flagMap, searchTerm, showAddFlag});
+
   const overrideOnly = prefilter === 'overrides';
-  const visibleFlagNames = useMemo(
+  const allFlagNames = useMemo(
     () =>
       overrideOnly ? Object.keys(overrides) : Array.from(new Set([...Object.keys(overrides), ...Object.keys(flagMap)])),
     [flagMap, overrides, overrideOnly]
+  );
+  const visibleFlagNames = useMemo(
+    () => allFlagNames.filter(name => name.toLowerCase().includes(searchTerm.toLowerCase())),
+    [allFlagNames, searchTerm]
   );
 
   const estimateSize = 46;
