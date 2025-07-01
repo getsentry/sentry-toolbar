@@ -28,7 +28,7 @@ export default function UnauthPill({children}: Props) {
   const [, setIsHidden] = useHiddenAppContext();
 
   return (
-    <div className="flex translate-y-[30vh] flex-row place-items-center gap-1 rounded-full bg-black-raw p-px px-2 text-sm text-white-raw">
+    <div className="pointer-events-auto flex translate-y-[30vh] flex-row place-items-center gap-1 rounded-full bg-black-raw p-px px-2 text-sm text-white-raw">
       <Tooltip>
         <TooltipTrigger asChild>
           <UnauthPillAppLink to={{url: '/'}}>
