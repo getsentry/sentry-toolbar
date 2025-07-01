@@ -12,7 +12,7 @@ export default function CenterLayout({children}: Props) {
 
 CenterLayout.MainArea = function MainArea({children}: Props) {
   return (
-    <div role="dialog" className="pointer-events-auto flex overscroll-contain contain-layout">
+    <div role="dialog" className="flex overscroll-contain contain-layout">
       {children}
     </div>
   );
