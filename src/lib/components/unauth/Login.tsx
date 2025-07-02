@@ -1,5 +1,4 @@
 import {useCallback, useRef, useState} from 'react';
-import UnauthPill from 'toolbar/components/unauth/UnauthPill';
 import {UnauthPillButton} from 'toolbar/components/unauth/UnauthPill';
 import {useApiProxyInstance} from 'toolbar/context/ApiProxyContext';
 import {useConfigContext} from 'toolbar/context/ConfigContext';
@@ -41,20 +40,18 @@ export default function Login() {
   }, [apiProxy, debugLoginSuccess]);
 
   return (
-    <UnauthPill>
-      <div className="flex-col">
-        {isLoggingIn ? (
-          <div className="flex gap-0.25">
-            <span className="py-1">Logging in...</span>
-            <UnauthPillButton onClick={resetState}>reset</UnauthPillButton>
-          </div>
-        ) : (
-          <UnauthPillButton onClick={openPopup}>Login to Sentry</UnauthPillButton>
-        )}
-        {showPopupBlockerMessage ? (
-          <div className="py-1">Don&apos;t see the login popup? Check your popup blocker</div>
-        ) : null}
-      </div>
-    </UnauthPill>
+    <div className="flex-col">
+      {isLoggingIn ? (
+        <div className="flex gap-0.25">
+          <span className="py-1">Logging in...</span>
+          <UnauthPillButton onClick={resetState}>reset</UnauthPillButton>
+        </div>
+      ) : (
+        <UnauthPillButton onClick={openPopup}>Login to Sentry</UnauthPillButton>
+      )}
+      {showPopupBlockerMessage ? (
+        <div className="py-1">Don&apos;t see the login popup? Check your popup blocker</div>
+      ) : null}
+    </div>
   );
 }

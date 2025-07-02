@@ -32,7 +32,7 @@ export default function UnauthPill({children}: Props) {
   const proxyState = useApiProxyState();
 
   return (
-    <div className="pointer-events-auto flex translate-y-[30vh] flex-row place-items-center gap-1 rounded-full bg-black-raw p-px px-2 text-sm text-white-raw">
+    <div className="flex flex-row place-items-center gap-1 rounded-full bg-black-raw px-2 py-px text-sm text-white-raw">
       <Tooltip>
         <TooltipTrigger asChild>
           <UnauthPillAppLink to={{url: '/'}}>
@@ -45,7 +45,7 @@ export default function UnauthPill({children}: Props) {
       {children}
 
       <Menu
-        className={cx(buttonClass, 'p-1')}
+        className={twMerge(buttonClass, 'p-1')}
         menuClassName="bg-black-raw"
         trigger={({isOpen}) => <IconChevron direction={isOpen ? 'right' : 'down'} size="xs" />}
         placement="right-start">
