@@ -5,22 +5,24 @@ import {Fragment} from 'react';
 import type {MouseEvent} from 'react';
 import {NavLink, useLocation, useNavigate} from 'react-router-dom';
 import type {To} from 'react-router-dom';
+import ExternalLink from 'toolbar/components/base/ExternalLink';
 import Indicator from 'toolbar/components/base/Indicator';
 import {Menu, MenuItem} from 'toolbar/components/base/menu/Menu';
 import {Tooltip, TooltipTrigger, TooltipContent} from 'toolbar/components/base/tooltip/Tooltip';
 import IconClose from 'toolbar/components/icon/IconClose';
-import IconContract from 'toolbar/components/icon/IconContract';
-import IconExpand from 'toolbar/components/icon/IconExpand';
 import IconFlag from 'toolbar/components/icon/IconFlag';
 import IconIssues from 'toolbar/components/icon/IconIssues';
 import IconLock from 'toolbar/components/icon/IconLock';
 import IconMegaphone from 'toolbar/components/icon/IconMegaphone';
+import IconOpen from 'toolbar/components/icon/IconOpen';
+import IconPin from 'toolbar/components/icon/IconPin';
 import IconSentry from 'toolbar/components/icon/IconSentry';
 import IconSettings from 'toolbar/components/icon/IconSettings';
 import {useApiProxyInstance} from 'toolbar/context/ApiProxyContext';
 import {useConfigContext} from 'toolbar/context/ConfigContext';
 import {useFeatureFlagAdapterContext} from 'toolbar/context/FeatureFlagAdapterContext';
 import {useHiddenAppContext} from 'toolbar/context/HiddenAppContext';
+import {useMousePositionContext} from 'toolbar/context/MousePositionContext';
 import useNavigationExpansion from 'toolbar/hooks/useNavigationExpansion';
 import {DebugTarget} from 'toolbar/types/Configuration';
 import parsePlacement from 'toolbar/utils/parsePlacement';
@@ -72,6 +74,8 @@ const menuItemClass = cx('flex grow gap-1 whitespace-nowrap');
 
 export default function Navigation() {
   const [{placement}] = useConfigContext();
+  const [mousePosition] = useMousePositionContext();
+  const isMoving = Boolean(mousePosition);
   const {isExpanded, isPinned, setIsHovered, setIsPinned} = useNavigationExpansion();
   const {pathname} = useLocation();
   const navigate = useNavigate();
@@ -98,7 +102,7 @@ export default function Navigation() {
       onMouseOut={() => setIsHovered(false)}>
       <OptionsMenu isPinned={isPinned} setIsPinned={setIsPinned} />
 
-      <Transition show={isExpanded}>
+      <Transition show={isMoving || isExpanded}>
         <div
           className={cx(navClassName({isHorizontal}), 'p-0 transition duration-300 ease-in data-[closed]:opacity-0')}>
           <hr className={navGrabber({isHorizontal})} data-grabber />
@@ -176,11 +180,27 @@ function OptionsMenu({isPinned, setIsPinned}: {isPinned: boolean; setIsPinned: (
           <Tooltip>
             <TooltipTrigger asChild>
               <MenuItem className={menuItemClass} label="pin" onClick={() => setIsPinned(!isPinned)}>
-                {isPinned ? <IconContract size="sm" /> : <IconExpand size="sm" />}
-                {isPinned ? 'Contract' : 'Expand'}
+                <IconPin isSolid={isPinned} size="sm" />
+                {isPinned ? 'Pinned' : 'Un-Pinned'}
               </MenuItem>
             </TooltipTrigger>
-            <TooltipContent>{isPinned ? 'Shrink to save space' : 'Expand to show all tools'}</TooltipContent>
+            <TooltipContent>
+              {isPinned ? 'This panel will stay expanded' : 'This panel will shrink when not in use'}
+            </TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <MenuItem className={menuItemClass} label="help">
+                <ExternalLink
+                  to={{url: 'https://docs.sentry.io/product/sentry-toolbar/'}}
+                  className="contents text-inherit">
+                  <IconOpen size="sm" />
+                  Help
+                </ExternalLink>
+              </MenuItem>
+            </TooltipTrigger>
+            <TooltipContent className="whitespace-nowrap">Read the docs</TooltipContent>
           </Tooltip>
 
           <Tooltip>

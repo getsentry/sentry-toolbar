@@ -63,8 +63,6 @@ export default function UnauthPill({children}: Props) {
           <TooltipContent className="whitespace-nowrap">Read the docs</TooltipContent>
         </Tooltip>
 
-        <hr className={menuSeparator} />
-
         <Tooltip>
           <TooltipTrigger asChild>
             <MenuItem
