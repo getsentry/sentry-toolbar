@@ -1,8 +1,8 @@
 import {Fragment} from 'react/jsx-runtime';
 import {Routes, Route, Outlet} from 'react-router-dom';
 import DebugState from 'toolbar/components/DebugState';
-import CenterLayout from 'toolbar/components/layouts/CenterLayout';
 import EdgeLayout, {MainArea, NavArea} from 'toolbar/components/layouts/EdgeLayout';
+import UnauthLayout from 'toolbar/components/layouts/UnauthLayout';
 import Navigation from 'toolbar/components/Navigation';
 import FeatureFlagsPanel from 'toolbar/components/panels/featureFlags/FeatureFlagsPanel';
 import FeedbackPanel from 'toolbar/components/panels/feedback/FeedbackPanel';
@@ -31,11 +31,9 @@ export default function AppRouter() {
         }>
         <Route
           element={
-            <CenterLayout>
-              <CenterLayout.MainArea>
-                <Outlet />
-              </CenterLayout.MainArea>
-            </CenterLayout>
+            <UnauthLayout>
+              <Outlet />
+            </UnauthLayout>
           }>
           <Route path="/disconnected" element={<Disconnected />} />
           <Route path="/connecting" element={<Connecting />} />
