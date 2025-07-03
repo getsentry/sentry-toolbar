@@ -1,18 +1,14 @@
 import {cva, cx} from 'cva';
-import {Fragment, useCallback, useContext, useEffect, useRef, useState} from 'react';
+import {Fragment, useCallback, useContext, useEffect, useRef} from 'react';
 import {twMerge} from 'tailwind-merge';
 import {useConfigContext} from 'toolbar/context/ConfigContext';
+import type {Coord} from 'toolbar/context/MousePositionContext';
+import {useMousePositionContext} from 'toolbar/context/MousePositionContext';
 import ReactMountContext from 'toolbar/context/ReactMountContext';
 import ShadowRootContext from 'toolbar/context/ShadowRootContext';
 import {useLocalStorage} from 'toolbar/hooks/useStorage';
 import type {Configuration} from 'toolbar/types/Configuration';
 import {hydratePlacement} from 'toolbar/utils/hydrateConfig';
-
-interface Coord {
-  x: number;
-  y: number;
-}
-type MaybeCoord = null | Coord;
 
 function hasGrabberAncestor(element: Element | null) {
   return element?.hasAttribute('data-grabber') || element?.closest('[data-grabber]') !== null;
@@ -54,7 +50,7 @@ function useDragDropPositionSurface({onPositionChange}: {onPositionChange: (posi
   const shadowRoot = useContext(ShadowRootContext);
   const reactMount = useContext(ReactMountContext);
 
-  const [mousePosition, setMousePosition] = useState<MaybeCoord>(null);
+  const [mousePosition, setMousePosition] = useMousePositionContext();
   const lastPositionRef = useRef<string>('unknown');
 
   useEffect(() => {
@@ -89,7 +85,7 @@ function useDragDropPositionSurface({onPositionChange}: {onPositionChange: (posi
     return () => {
       reactMount.removeEventListener('mousedown', handleMouseDown);
     };
-  }, [reactMount, onPositionChange, shadowRoot]);
+  }, [reactMount, onPositionChange, shadowRoot, setMousePosition]);
 
   return {mousePosition, lastPosition: lastPositionRef.current};
 }
