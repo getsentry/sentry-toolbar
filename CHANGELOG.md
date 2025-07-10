@@ -1,4 +1,14 @@
 
+## 1.0.0-beta.21
+
+### Various fixes & improvements
+
+- feat: Iterate on expand/collapse labels, and keep expanded during drag+drop (#278) by @ryan953
+- feat: Collapse any unauth dialog after 5s (#277) by @ryan953
+- feat: Allow logout, which can reset things, if we cant connect after login (#273) by @ryan953
+- fix: CenterLayout.MainArea should not capture mouse events,  (#276) by @ryan953
+- fix: Feature Flag searchTerms should be used to filter down the list of items (#274) by @ryan953
+
 ## 1.0.0-beta.20
 
 ### Various fixes & improvements
