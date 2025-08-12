@@ -122,7 +122,8 @@ function FeatureFlagEditor() {
       </div>
 
       <div className="flex grow flex-col">
-        <InfiniteListItems<string>
+        <InfiniteListItems<string, ApiResult<string[]>>
+          deduplicateItems={pages => pages.flatMap(page => page.json)}
           estimateSize={() => estimateSize}
           queryResult={{
             data: {

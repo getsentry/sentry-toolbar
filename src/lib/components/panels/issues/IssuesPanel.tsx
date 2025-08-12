@@ -11,6 +11,7 @@ import useFetchSentryData from 'toolbar/hooks/fetch/useFetchSentryData';
 import useCurrentSentryTransactionName from 'toolbar/hooks/useCurrentSentryTransactionName';
 import {useMembersQuery, useTeamsQuery} from 'toolbar/sentryApi/queryKeys';
 import {IssueCategory, type Group} from 'toolbar/sentryApi/types/group';
+import type {ApiResult} from 'toolbar/types/api';
 
 export default function IssuesPanel() {
   const [{organizationSlug, projectIdOrSlug}] = useConfigContext();
@@ -61,7 +62,8 @@ export default function IssuesPanel() {
               <div className={Placeholder()} />
             </div>
           )}>
-          <InfiniteListItems<Group>
+          <InfiniteListItems<Group, ApiResult<Group[]>>
+            deduplicateItems={pages => pages.flatMap(page => page.json)}
             estimateSize={() => estimateSize}
             queryResult={queryResult}
             itemRenderer={(props: {item: Group}) => (
