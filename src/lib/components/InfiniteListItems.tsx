@@ -1,13 +1,14 @@
 import type {InfiniteData, UseInfiniteQueryResult} from '@tanstack/react-query';
-import {useVirtualizer} from '@tanstack/react-virtual';
+import {useVirtualizer, type VirtualItem} from '@tanstack/react-virtual';
 import {useEffect, useRef} from 'react';
 import LoadingSpinner from 'toolbar/components/LoadingSpinner';
 import type {ApiResult} from 'toolbar/types/api';
 
-interface Props<Data> {
-  itemRenderer: ({item}: {item: Data}) => React.ReactNode;
+interface Props<ListItem, Response = ApiResult<ListItem[]>> {
+  deduplicateItems: (page: Response[]) => ListItem[];
+  itemRenderer: ({item, virtualItem}: {item: ListItem; virtualItem: VirtualItem}) => React.ReactNode;
   queryResult: Pick<
-    UseInfiniteQueryResult<InfiniteData<ApiResult<Data[]>>, Error>,
+    UseInfiniteQueryResult<InfiniteData<Response>, Error>,
     'data' | 'hasNextPage' | 'isFetchingNextPage' | 'fetchNextPage'
   >;
   emptyMessage?: () => React.ReactNode;
@@ -17,7 +18,8 @@ interface Props<Data> {
   overscan?: number;
 }
 
-export default function InfiniteListItems<Data>({
+export default function InfiniteListItems<ListItem, Response = ApiResult<ListItem[]>>({
+  deduplicateItems,
   estimateSize,
   itemRenderer,
   emptyMessage = EmptyMessage,
@@ -25,9 +27,9 @@ export default function InfiniteListItems<Data>({
   loadingMoreMessage = LoadingMoreMessage,
   overscan,
   queryResult,
-}: Props<Data>) {
+}: Props<ListItem, Response>) {
   const {data, hasNextPage, isFetchingNextPage, fetchNextPage} = queryResult;
-  const loadedRows = data ? data.pages.flatMap(d => d.json) : [];
+  const loadedRows = deduplicateItems(data?.pages ?? []);
   const parentRef = useRef<HTMLDivElement>(null);
 
   const rowVirtualizer = useVirtualizer({
@@ -54,17 +56,17 @@ export default function InfiniteListItems<Data>({
       <div style={{height: rowVirtualizer.getTotalSize()}} className="relative flex w-full flex-col">
         <ul style={{transform: `translateY(${items[0]?.start ?? 0}px)`}} className="absolute left-0 top-0 w-full">
           {items.length ? null : emptyMessage()}
-          {items.map(virtualRow => {
-            const isLoaderRow = virtualRow.index > loadedRows.length - 1;
-            const item = loadedRows.at(virtualRow.index);
+          {items.map(virtualItem => {
+            const isLoaderRow = virtualItem.index > loadedRows.length - 1;
+            const item = loadedRows.at(virtualItem.index);
 
             return (
-              <li data-index={virtualRow.index} key={virtualRow.index} ref={rowVirtualizer.measureElement}>
+              <li data-index={virtualItem.index} key={virtualItem.index} ref={rowVirtualizer.measureElement}>
                 {isLoaderRow
                   ? hasNextPage
                     ? loadingMoreMessage()
                     : loadingCompleteMessage()
-                  : item && itemRenderer({item})}
+                  : item && itemRenderer({item, virtualItem})}
               </li>
             );
           })}

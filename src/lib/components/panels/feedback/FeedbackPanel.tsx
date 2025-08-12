@@ -11,6 +11,7 @@ import useFetchSentryData from 'toolbar/hooks/fetch/useFetchSentryData';
 import useCurrentSentryTransactionName from 'toolbar/hooks/useCurrentSentryTransactionName';
 import {useMembersQuery, useTeamsQuery} from 'toolbar/sentryApi/queryKeys';
 import type {FeedbackIssueListItem} from 'toolbar/sentryApi/types/group';
+import type {ApiResult} from 'toolbar/types/api';
 
 export default function FeedbackPanel() {
   const [{organizationSlug, projectIdOrSlug}] = useConfigContext();
@@ -59,7 +60,8 @@ export default function FeedbackPanel() {
               <div className={Placeholder()} />
             </div>
           )}>
-          <InfiniteListItems<FeedbackIssueListItem>
+          <InfiniteListItems<FeedbackIssueListItem, ApiResult<FeedbackIssueListItem[]>>
+            deduplicateItems={pages => pages.flatMap(page => page.json)}
             estimateSize={() => estimateSize}
             queryResult={queryResult}
             itemRenderer={(props: {item: FeedbackIssueListItem}) => (
