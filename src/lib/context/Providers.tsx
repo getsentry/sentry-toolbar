@@ -20,8 +20,8 @@ interface Props {
 }
 
 export default function Providers({children, config, portalMount, reactMount, shadowRoot}: Props) {
-  useEffect(() => setColorScheme(reactMount, config.theme));
-  useEffect(() => setColorScheme(portalMount, config.theme));
+  useEffect(() => setColorScheme(reactMount, config.theme), [config.theme, reactMount]);
+  useEffect(() => setColorScheme(portalMount, config.theme), [config.theme, portalMount]);
 
   return (
     <StaticConfigProvider config={config}>
