@@ -6,16 +6,11 @@ import Providers from 'toolbar/context/Providers';
 import styles from 'toolbar/index.css?inline'; // returned as a string
 import type {Configuration} from 'toolbar/types/Configuration';
 import {localeTimeRelativeAbbr} from 'toolbar/utils/locale';
-import setColorScheme from 'toolbar/utils/setColorScheme';
 
 export default function mount(rootNode: HTMLElement, config: Configuration) {
-  const cleanup: (() => void)[] = [];
   const {host, reactMount, portalMount, shadowRoot} = buildDom(config);
 
   setDefaultOptions({locale: localeTimeRelativeAbbr});
-
-  cleanup.push(setColorScheme(reactMount, config.theme));
-  cleanup.push(setColorScheme(portalMount, config.theme));
 
   const reactRoot = createRoot(reactMount);
   reactRoot.render(
@@ -25,16 +20,12 @@ export default function mount(rootNode: HTMLElement, config: Configuration) {
       </Providers>
     </StrictMode>
   );
-  cleanup.push(() =>
-    // `setTimeout` helps to avoid "Attempted to synchronously unmount a root while React was already rendering."
-    setTimeout(() => reactRoot.unmount(), 0)
-  );
-
   rootNode.appendChild(host);
-  cleanup.push(() => host.remove());
 
   return () => {
-    cleanup.forEach(fn => fn());
+    // `setTimeout` helps to avoid "Attempted to synchronously unmount a root while React was already rendering."
+    setTimeout(() => reactRoot.unmount(), 0);
+    host.remove();
   };
 }
 
