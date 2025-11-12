@@ -17,8 +17,8 @@
     "url": "git@github.com:getsentry/sentry-toolbar.git"
   },
   "volta": {
-    "node": "22.5.1",
-    "pnpm": "9.7.0"
+    "node": "22.21.1",
+    "pnpm": "10.21.0"
   },
   "type": "module",
   "files": [
