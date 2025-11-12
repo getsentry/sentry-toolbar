@@ -1,4 +1,4 @@
-import {forwardRef, Fragment} from 'react';
+import {Fragment} from 'react';
 import SVGIconBase from 'toolbar/components/icon/SVGIconBase';
 import type {SVGIconProps} from 'toolbar/components/icon/SVGIconBase';
 
@@ -6,9 +6,9 @@ interface Props extends SVGIconProps {
   isLocked?: boolean;
 }
 
-const IconLock = forwardRef<SVGSVGElement, Props>(function IconLock({isLocked = false, ...props}: Props, ref) {
+export default function IconLock({isLocked = false, ...props}: Props) {
   return (
-    <SVGIconBase {...props} ref={ref}>
+    <SVGIconBase {...props}>
       {isLocked ? (
         <Fragment>
           <path d="M11.67,7.94a.75.75,0,0,1-.75-.75V4.34a2.84,2.84,0,1,0-5.67,0V7.19a.75.75,0,1,1-1.5,0V4.34a4.34,4.34,0,1,1,8.67,0V7.19A.76.76,0,0,1,11.67,7.94" />
@@ -24,6 +24,4 @@ const IconLock = forwardRef<SVGSVGElement, Props>(function IconLock({isLocked = 
       )}
     </SVGIconBase>
   );
-});
-
-export default IconLock;
+}

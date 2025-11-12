@@ -1,6 +1,5 @@
 import {cva} from 'cva';
 import type {HTMLAttributes} from 'react';
-import {forwardRef} from 'react';
 import * as PlatformIconProxy from 'toolbar/components/icon/PlatformIconProxy';
 import type {IconProps} from 'toolbar/components/icon/types';
 import {iconSizes} from 'toolbar/components/icon/types';
@@ -252,25 +251,17 @@ const wrapperClass = cva('relative bg-surface-100', {
   },
 });
 
-const PlatformIcon = forwardRef<HTMLDivElement, Props>(function PlatformIcon(
-  {platform, isLoading, ...iconProps}: Props,
-  ref
-) {
+export default function PlatformIcon({platform, isLoading, ...iconProps}: Props) {
   const {size: providedSize = 'sm', ...rest} = useIconDefaultsContext(iconProps);
   const size = iconSizes[providedSize];
 
   const iconName = PLATFORM_TO_ICON[platform] ?? '_default';
   const Icon = PlatformIconProxy[iconName];
   return (
-    <div
-      {...rest}
-      className={wrapperClass({isLoading})}
-      style={{width: size, height: size, ...iconProps.style}}
-      ref={ref}>
+    <div {...rest} className={wrapperClass({isLoading})} style={{width: size, height: size, ...iconProps.style}}>
       {isLoading ? null : <Icon />}
     </div>
   );
-});
-export default PlatformIcon;
+}
 
 export const PLATFORMS = Object.keys(PLATFORM_TO_ICON);

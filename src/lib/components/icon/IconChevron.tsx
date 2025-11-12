@@ -1,4 +1,4 @@
-import {forwardRef, Fragment} from 'react';
+import {Fragment} from 'react';
 import SVGIconBase from 'toolbar/components/icon/SVGIconBase';
 import type {SVGIconProps} from 'toolbar/components/icon/SVGIconBase';
 
@@ -14,14 +14,10 @@ const iconDirections = {
   left: '270',
 };
 
-const IconChevron = forwardRef<SVGSVGElement, Props>(function IconChevron(
-  {isCircled = false, direction = 'up', ...props}: Props,
-  ref
-) {
+export default function IconChevron({isCircled = false, direction = 'up', ...props}: Props) {
   return (
     <SVGIconBase
       {...props}
-      ref={ref}
       className="transition-transform duration-[120] ease-in-out"
       style={{transform: `rotate(${iconDirections[direction]}deg)`}}>
       {isCircled ? (
@@ -34,6 +30,4 @@ const IconChevron = forwardRef<SVGSVGElement, Props>(function IconChevron(
       )}
     </SVGIconBase>
   );
-});
-
-export default IconChevron;
+}

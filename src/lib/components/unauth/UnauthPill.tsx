@@ -1,6 +1,5 @@
 import {cx} from 'cva';
-import type {ForwardedRef} from 'react';
-import {forwardRef, Fragment} from 'react';
+import {Fragment} from 'react';
 import {twMerge} from 'tailwind-merge';
 import ExternalLink from 'toolbar/components/base/ExternalLink';
 import {Menu, MenuItem} from 'toolbar/components/base/menu/Menu';
@@ -98,26 +97,20 @@ export default function UnauthPill({children}: Props) {
   );
 }
 
-const UnauthPillButton = forwardRef(function UnauthPillButton(
-  {children, ...props}: React.ComponentProps<'button'>,
-  ref: ForwardedRef<HTMLButtonElement>
-) {
+const UnauthPillButton = function UnauthPillButton({children, ...props}: React.ComponentProps<'button'>) {
   return (
-    <button {...props} ref={ref} className={twMerge(buttonClass, props.className)}>
+    <button {...props} className={twMerge(buttonClass, props.className)}>
       {children}
     </button>
   );
-});
+};
 
-const UnauthPillAppLink = forwardRef(function UnauthPillAppLink(
-  {children, ...props}: SentryAppLinkProps,
-  ref: ForwardedRef<HTMLAnchorElement>
-) {
+const UnauthPillAppLink = function UnauthPillAppLink({children, ...props}: SentryAppLinkProps) {
   return (
-    <SentryAppLink {...props} ref={ref} className={twMerge(buttonClass, props.className)}>
+    <SentryAppLink {...props} className={twMerge(buttonClass, props.className)}>
       {children}
     </SentryAppLink>
   );
-});
+};
 
 export {UnauthPillButton, UnauthPillAppLink};
