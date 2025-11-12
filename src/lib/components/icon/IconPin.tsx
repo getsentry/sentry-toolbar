@@ -1,4 +1,4 @@
-import {forwardRef, Fragment} from 'react';
+import {Fragment} from 'react';
 import type {SVGIconProps} from 'toolbar/components/icon/SVGIconBase';
 import SVGIconBase from 'toolbar/components/icon/SVGIconBase';
 
@@ -6,9 +6,9 @@ interface Props extends SVGIconProps {
   isSolid?: boolean;
 }
 
-const IconPin = forwardRef<SVGSVGElement, Props>(function IconPin({isSolid = false, ...props}: Props, ref) {
+export default function IconPin({isSolid = false, ...props}: Props) {
   return (
-    <SVGIconBase {...props} ref={ref}>
+    <SVGIconBase {...props}>
       {isSolid ? (
         <Fragment>
           <path d="M9.48,14.24A.71.71,0,0,1,9,14L5.49,10.55,2.36,7.45,2,7.13a.74.74,0,0,1,0-1l.29-.33c1-1.09,2.49-1.5,4.55-1.22L9.64.79a.76.76,0,0,1,.55-.31.78.78,0,0,1,.58.22l4.52,4.54a.7.7,0,0,1,.22.58.72.72,0,0,1-.3.55L11.46,9.15c.3,2.14-.08,3.65-1.15,4.61l-.34.29A.72.72,0,0,1,9.48,14.24Z" />
@@ -22,8 +22,4 @@ const IconPin = forwardRef<SVGSVGElement, Props>(function IconPin({isSolid = fal
       )}
     </SVGIconBase>
   );
-});
-
-IconPin.displayName = '';
-
-export default IconPin;
+}

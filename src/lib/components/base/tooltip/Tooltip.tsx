@@ -1,8 +1,8 @@
 import {useMergeRefs, FloatingPortal, FloatingArrow} from '@floating-ui/react';
 import type {Placement} from '@floating-ui/react';
 import {cx} from 'cva';
-import type {HTMLProps, ReactNode} from 'react';
-import {cloneElement, createContext, forwardRef, isValidElement, useContext} from 'react';
+import type {HTMLProps, ReactNode, Ref} from 'react';
+import {cloneElement, createContext, isValidElement, useContext} from 'react';
 import useTooltip from 'toolbar/components/base/tooltip/useTooltip';
 import PortalTargetContext from 'toolbar/context/PortalTargetContext';
 
@@ -34,51 +34,49 @@ export function Tooltip({children, ...options}: {children: ReactNode} & TooltipO
   return <TooltipContext.Provider value={tooltip}>{children}</TooltipContext.Provider>;
 }
 
-export const TooltipTrigger = forwardRef<HTMLElement, HTMLProps<HTMLElement> & {asChild?: boolean}>(
-  function TooltipTrigger(
-    {children, asChild = false, ...props}: HTMLProps<HTMLElement> & {asChild?: boolean},
-    propRef
-  ) {
-    const context = useTooltipContext();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const childrenRef = (children as any).ref;
-    const ref = useMergeRefs([context.refs.setReference, propRef, childrenRef]);
+export function TooltipTrigger({
+  children,
+  asChild = false,
+  ref: propRef,
+  ...props
+}: HTMLProps<HTMLElement> & {asChild?: boolean}) {
+  const context = useTooltipContext();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const childrenRef = (children as any).ref;
+  const ref = useMergeRefs([context.refs.setReference, propRef, childrenRef]);
 
-    // `asChild` allows the user to pass any element as the anchor
-    if (asChild && isValidElement(children)) {
-      return cloneElement(
-        children,
-        // eslint-disable-next-line react-hooks/refs
-        context.getReferenceProps({
-          ref,
-          ...props,
-          ...children.props,
-          'data-state': context.open ? 'open' : 'closed',
-        })
-      );
-    }
-
-    return (
-      <button
-        ref={ref}
-        className="cursor-default"
-        // The user can style the trigger based on the state
-        data-state={context.open ? 'open' : 'closed'}
-        {...context.getReferenceProps(props)}>
-        {children}
-      </button>
+  // `asChild` allows the user to pass any element as the anchor
+  if (asChild && isValidElement(children)) {
+    return cloneElement(
+      children,
+      // eslint-disable-next-line react-hooks/refs
+      context.getReferenceProps({
+        ref,
+        ...props,
+        // @ts-expect-error TS2698: Spread types may only be created from object types.
+        ...children.props,
+        'data-state': context.open ? 'open' : 'closed',
+      })
     );
   }
-);
 
-export const TooltipContent = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(function TooltipContent(
-  {children, className, style, ...props}: HTMLProps<HTMLDivElement>,
-  propRef
-) {
+  return (
+    <button
+      ref={ref}
+      className="cursor-default"
+      // The user can style the trigger based on the state
+      data-state={context.open ? 'open' : 'closed'}
+      {...context.getReferenceProps(props)}>
+      {children}
+    </button>
+  );
+}
+
+export function TooltipContent({children, className, style, ref: propRef, ...props}: HTMLProps<HTMLDivElement>) {
   const portalTarget = useContext(PortalTargetContext);
   const context = useTooltipContext();
 
-  const ref = useMergeRefs([context.refs.setFloating, propRef]);
+  const ref = useMergeRefs([context.refs.setFloating, propRef as Ref<HTMLDivElement>]);
   if (!context.open) {
     return null;
   }
@@ -109,4 +107,4 @@ export const TooltipContent = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElemen
       </div>
     </FloatingPortal>
   );
-});
+}
