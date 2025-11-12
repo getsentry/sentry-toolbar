@@ -12,7 +12,8 @@ export type ProxyState =
   | 'logged-out'
   | 'missing-project'
   | 'invalid-domain'
-  | 'logged-in';
+  | 'logged-in'
+  | 'stale';
 
 let _SINGLETON: null | ApiProxy = null;
 

@@ -1,8 +1,7 @@
 import {Fragment} from 'react/jsx-runtime';
-import {Routes, Route, Outlet} from 'react-router-dom';
+import {Routes, Route, Outlet, useNavigate} from 'react-router-dom';
 import DebugState from 'toolbar/components/DebugState';
 import EdgeLayout, {MainArea, NavArea} from 'toolbar/components/layouts/EdgeLayout';
-import UnauthLayout from 'toolbar/components/layouts/UnauthLayout';
 import Navigation from 'toolbar/components/Navigation';
 import FeatureFlagsPanel from 'toolbar/components/panels/featureFlags/FeatureFlagsPanel';
 import FeedbackPanel from 'toolbar/components/panels/feedback/FeedbackPanel';
@@ -13,57 +12,61 @@ import Disconnected from 'toolbar/components/unauth/Disconnected';
 import InvalidDomain from 'toolbar/components/unauth/InvalidDomain';
 import Login from 'toolbar/components/unauth/Login';
 import MissingProject from 'toolbar/components/unauth/MissingProject';
+import {useApiProxyState} from 'toolbar/context/ApiProxyContext';
 import useClearQueryCacheOnProxyStateChange from 'toolbar/hooks/useClearQueryCacheOnProxyStateChange';
-import useNavigateOnProxyStateChange from 'toolbar/hooks/useNavigateOnProxyStateChange';
 
 export default function AppRouter() {
-  useNavigateOnProxyStateChange();
   useClearQueryCacheOnProxyStateChange();
 
   return (
     <Routes>
       <Route
+        path="/"
         element={
           <Fragment>
             <DebugState />
-            <Outlet />
-          </Fragment>
-        }>
-        <Route
-          element={
-            <UnauthLayout>
-              <Outlet />
-            </UnauthLayout>
-          }>
-          <Route path="/disconnected" element={<Disconnected />} />
-          <Route path="/connecting" element={<Connecting />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/missing-project" element={<MissingProject />} />
-          <Route path="/invalid-domain" element={<InvalidDomain />} />
-        </Route>
-        <Route
-          path="/"
-          element={
             <EdgeLayout>
               <NavArea>
                 <Navigation />
               </NavArea>
               <Outlet />
             </EdgeLayout>
+          </Fragment>
+        }>
+        <Route
+          element={
+            <MainArea>
+              <Outlet />
+            </MainArea>
           }>
+          <Route path="/disconnected" element={<Disconnected />} />
+          <Route path="/connecting" element={<Connecting />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/missing-project" element={<MissingProject />} />
+          <Route path="/invalid-domain" element={<InvalidDomain />} />
+          <Route path="/settings" element={<SettingsPanel />} />
           <Route
             element={
-              <MainArea>
+              <LoginRequired>
                 <Outlet />
-              </MainArea>
+              </LoginRequired>
             }>
-            <Route path="/settings" element={<SettingsPanel />} />
             <Route path="/issues" element={<IssuesPanel />} />
             <Route path="/feedback" element={<FeedbackPanel />} />
-            <Route path="/featureFlags" element={<FeatureFlagsPanel />} />
           </Route>
+          <Route path="/featureFlags" element={<FeatureFlagsPanel />} />
         </Route>
       </Route>
     </Routes>
   );
+}
+
+function LoginRequired({children}: {children: React.ReactNode}) {
+  const proxyState = useApiProxyState();
+  const navigate = useNavigate();
+
+  if (proxyState !== 'logged-in') {
+    navigate('/');
+  }
+  return children;
 }
