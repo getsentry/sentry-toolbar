@@ -10,7 +10,6 @@ type Options<QueryFnData, SelectFnData> = UseInfiniteQueryOptions<
   ApiResult<QueryFnData>,
   Error,
   SelectFnData,
-  ApiResult<QueryFnData>,
   ApiEndpointQueryKey,
   ParsedHeader
 >;
