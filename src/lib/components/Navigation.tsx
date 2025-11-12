@@ -1,30 +1,20 @@
-import type {Placement} from '@floating-ui/react';
 import {Transition} from '@headlessui/react';
 import {cva, cx} from 'cva';
-import {Fragment} from 'react';
 import type {MouseEvent} from 'react';
 import {NavLink, useLocation, useNavigate} from 'react-router-dom';
 import type {To} from 'react-router-dom';
-import ExternalLink from 'toolbar/components/base/ExternalLink';
 import Indicator from 'toolbar/components/base/Indicator';
-import {Menu, MenuItem} from 'toolbar/components/base/menu/Menu';
 import {Tooltip, TooltipTrigger, TooltipContent} from 'toolbar/components/base/tooltip/Tooltip';
-import IconClose from 'toolbar/components/icon/IconClose';
 import IconFlag from 'toolbar/components/icon/IconFlag';
 import IconIssues from 'toolbar/components/icon/IconIssues';
-import IconLock from 'toolbar/components/icon/IconLock';
 import IconMegaphone from 'toolbar/components/icon/IconMegaphone';
-import IconOpen from 'toolbar/components/icon/IconOpen';
-import IconPin from 'toolbar/components/icon/IconPin';
-import IconSentry from 'toolbar/components/icon/IconSentry';
-import IconSettings from 'toolbar/components/icon/IconSettings';
-import {useApiProxyInstance} from 'toolbar/context/ApiProxyContext';
+import OptionsMenu from 'toolbar/components/navigation/OptionsMenu';
+import {navItemClassName} from 'toolbar/components/navigation/styles';
+import {useApiProxyState} from 'toolbar/context/ApiProxyContext';
 import {useConfigContext} from 'toolbar/context/ConfigContext';
 import {useFeatureFlagAdapterContext} from 'toolbar/context/FeatureFlagAdapterContext';
-import {useHiddenAppContext} from 'toolbar/context/HiddenAppContext';
 import {useMousePositionContext} from 'toolbar/context/MousePositionContext';
 import useNavigationExpansion from 'toolbar/hooks/useNavigationExpansion';
-import {DebugTarget} from 'toolbar/types/Configuration';
 import parsePlacement from 'toolbar/utils/parsePlacement';
 
 const navClassName = cva('flex items-center gap-1', {
@@ -48,30 +38,6 @@ const navGrabber = cva(
   }
 );
 
-const menuSeparator = cx('mx-1 my-0.5');
-
-const navItemClassName = cx([
-  'relative',
-  'flex',
-  'flex-col',
-  'rounded-md',
-  'p-1',
-  'text-gray-400',
-  'border',
-  'border-solid',
-  'border-transparent',
-  'outline-none',
-  'hover:text-purple-400',
-  'hover:bg-purple-100',
-  'hover:border-current',
-  'hover:disabled:border-transparent',
-  'aria-currentPage:text-purple-400',
-  'aria-currentPage:bg-purple-100',
-  'aria-currentPage:border-current',
-]);
-
-const menuItemClass = cx('flex grow gap-1 whitespace-nowrap');
-
 export default function Navigation() {
   const [{placement}] = useConfigContext();
   const [mousePosition] = useMousePositionContext();
@@ -79,6 +45,7 @@ export default function Navigation() {
   const {isExpanded, isPinned, setIsHovered, setIsPinned} = useNavigationExpansion();
   const {pathname} = useLocation();
   const navigate = useNavigate();
+  const proxyState = useApiProxyState();
 
   const {overrides} = useFeatureFlagAdapterContext();
 
@@ -107,23 +74,27 @@ export default function Navigation() {
           className={cx(navClassName({isHorizontal}), 'p-0 transition duration-300 ease-in data-[closed]:opacity-0')}>
           <hr className={navGrabber({isHorizontal})} data-grabber />
 
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <NavLink {...toPathOrHome('/issues')} className={navItemClassName}>
-                <IconIssues size="sm" />
-              </NavLink>
-            </TooltipTrigger>
-            <TooltipContent>Issues</TooltipContent>
-          </Tooltip>
+          {proxyState === 'logged-in' ? (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <NavLink {...toPathOrHome('/issues')} className={navItemClassName}>
+                  <IconIssues size="sm" />
+                </NavLink>
+              </TooltipTrigger>
+              <TooltipContent>Issues</TooltipContent>
+            </Tooltip>
+          ) : null}
 
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <NavLink {...toPathOrHome('/feedback')} className={navItemClassName}>
-                <IconMegaphone size="sm" />
-              </NavLink>
-            </TooltipTrigger>
-            <TooltipContent>User Feedback</TooltipContent>
-          </Tooltip>
+          {proxyState === 'logged-in' ? (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <NavLink {...toPathOrHome('/feedback')} className={navItemClassName}>
+                  <IconMegaphone size="sm" />
+                </NavLink>
+              </TooltipTrigger>
+              <TooltipContent>User Feedback</TooltipContent>
+            </Tooltip>
+          ) : null}
 
           <Tooltip>
             <TooltipTrigger asChild>
@@ -137,95 +108,5 @@ export default function Navigation() {
         </div>
       </Transition>
     </div>
-  );
-}
-
-const optionsMenuTriggerPlacement: Record<ReturnType<typeof parsePlacement>[0], Placement> = {
-  top: 'bottom-end',
-  bottom: 'top-end',
-  left: 'right-start',
-  right: 'left-start',
-};
-
-function OptionsMenu({isPinned, setIsPinned}: {isPinned: boolean; setIsPinned: (isPinned: boolean) => void}) {
-  const [{debug, placement}] = useConfigContext();
-  const {pathname} = useLocation();
-  const navigate = useNavigate();
-  const apiProxy = useApiProxyInstance();
-  const [, setIsHidden] = useHiddenAppContext();
-
-  const [major] = parsePlacement(placement);
-
-  return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Menu
-          className={cx(navItemClassName, 'p-1')}
-          menuClassName="border-translucentGray-200 border"
-          trigger={<IconSentry size="sm" />}
-          placement={optionsMenuTriggerPlacement[major]}>
-          {debug.includes(DebugTarget.SETTINGS) ? (
-            <Fragment>
-              <MenuItem
-                className={menuItemClass}
-                label="settings"
-                onClick={() => navigate(pathname === '/settings' ? '/' : '/settings')}>
-                <IconSettings size="sm" />
-                Init Config
-              </MenuItem>
-              <hr className={menuSeparator} />
-            </Fragment>
-          ) : null}
-
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <MenuItem className={menuItemClass} label="pin" onClick={() => setIsPinned(!isPinned)}>
-                <IconPin isSolid={isPinned} size="sm" />
-                {isPinned ? 'Pinned' : 'Un-Pinned'}
-              </MenuItem>
-            </TooltipTrigger>
-            <TooltipContent>
-              {isPinned ? 'This panel will stay expanded' : 'This panel will shrink when not in use'}
-            </TooltipContent>
-          </Tooltip>
-
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <MenuItem className={menuItemClass} label="help">
-                <ExternalLink
-                  to={{url: 'https://docs.sentry.io/product/sentry-toolbar/'}}
-                  className="contents text-inherit">
-                  <IconOpen size="sm" />
-                  Help
-                </ExternalLink>
-              </MenuItem>
-            </TooltipTrigger>
-            <TooltipContent className="whitespace-nowrap">Read the docs</TooltipContent>
-          </Tooltip>
-
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <MenuItem className={menuItemClass} label="hide" onClick={() => setIsHidden(true)}>
-                <IconClose size="sm" />
-                Hide Toolbar
-              </MenuItem>
-            </TooltipTrigger>
-            <TooltipContent className="whitespace-nowrap">
-              Hide the toolbar for the session.
-              <br />
-              Open a new tab to see it again.
-            </TooltipContent>
-          </Tooltip>
-
-          <hr className={menuSeparator} />
-
-          <MenuItem className={menuItemClass} label="logout" onClick={() => apiProxy.logout()}>
-            <IconLock size="sm" isLocked={false} />
-            Logout
-          </MenuItem>
-        </Menu>
-      </TooltipTrigger>
-      <TooltipContent>More options</TooltipContent>
-    </Tooltip>
   );
 }

@@ -1,5 +1,5 @@
+import {Button} from '@headlessui/react';
 import {useCallback, useRef, useState} from 'react';
-import {UnauthPillButton} from 'toolbar/components/unauth/UnauthPill';
 import {useApiProxyInstance} from 'toolbar/context/ApiProxyContext';
 import {useConfigContext} from 'toolbar/context/ConfigContext';
 import {DebugTarget} from 'toolbar/types/Configuration';
@@ -42,12 +42,12 @@ export default function Login() {
   return (
     <div className="flex-col">
       {isLoggingIn ? (
-        <div className="flex gap-0.25">
+        <div className="flex items-center gap-0.25">
           <span className="py-1">Logging in...</span>
-          <UnauthPillButton onClick={resetState}>reset</UnauthPillButton>
+          <Button onClick={resetState}>reset</Button>
         </div>
       ) : (
-        <UnauthPillButton onClick={openPopup}>Login to Sentry</UnauthPillButton>
+        <Button onClick={openPopup}>Login to Sentry</Button>
       )}
       {showPopupBlockerMessage ? (
         <div className="py-1">Don&apos;t see the login popup? Check your popup blocker</div>

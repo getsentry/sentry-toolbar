@@ -1,4 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/react';
+import {MainArea} from 'toolbar/components/layouts/EdgeLayout';
 import MissingProject from 'toolbar/components/unauth/MissingProject';
 
 const meta = {
@@ -7,20 +8,22 @@ const meta = {
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: 'centered',
+    theme: 'light',
+    config: {
+      theme: 'light',
+    },
   },
 } as Meta<typeof MissingProject>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  parameters: {
-    theme: 'light',
-    storage: {
-      useNavigationExpansion_isPinned: false,
-    },
-    config: {
-      theme: 'light',
-    },
-  },
+const Template = () => {
+  return (
+    <MainArea>
+      <MissingProject />
+    </MainArea>
+  );
 };
+
+export const Default = Template.bind<Story['parameters']>({});
