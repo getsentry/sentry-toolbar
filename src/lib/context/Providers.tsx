@@ -31,7 +31,7 @@ export default function Providers({children, config, portalMount, reactMount, sh
             <PortalTargetContext.Provider value={portalMount}>
               <ApiProxyContextProvider>
                 <QueryProvider>
-                  <MemoryRouter future={{}}>
+                  <MemoryRouter>
                     <FeatureFlagAdapterProvider>
                       <MutableConfigProvider>{children}</MutableConfigProvider>
                     </FeatureFlagAdapterProvider>
