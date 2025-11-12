@@ -1,4 +1,4 @@
-import type {Meta, StoryObj} from '@storybook/react';
+import type {Meta, StoryObj} from '@storybook/react-vite';
 import type {ComponentProps} from 'react';
 import IconAdd from 'toolbar/components/icon/IconAdd';
 import IconChat from 'toolbar/components/icon/IconChat';

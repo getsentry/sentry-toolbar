@@ -1,4 +1,4 @@
-import type {Meta, StoryObj} from '@storybook/react';
+import type {Meta, StoryObj} from '@storybook/react-vite';
 import InvalidDomain from 'toolbar/components/unauth/InvalidDomain';
 
 const meta = {

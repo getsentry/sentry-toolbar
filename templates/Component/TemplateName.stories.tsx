@@ -1,5 +1,6 @@
-import type {Meta, StoryObj} from '@storybook/react';
+import type {Meta, StoryObj} from '@storybook/react-vite';
 import TemplateName from 'toolbar/../../templates/Component/TemplateName';
+import type {Props} from 'toolbar/../../templates/Component/TemplateName';
 
 const meta = {
   title: 'Example/TemplateName',
@@ -14,14 +15,14 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  render: args => {
+  render: (args: Props) => {
     return <TemplateName {...args} />;
   },
   args: {},
 };
 
 export const WithCode: Story = {
-  render: args => {
+  render: (args: Props) => {
     // here comes the code
     return <TemplateName {...args} />;
   },

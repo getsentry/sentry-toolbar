@@ -1,4 +1,4 @@
-import type {Meta, StoryObj} from '@storybook/react';
+import type {Meta, StoryObj} from '@storybook/react-vite';
 import PlatformIcon, {PLATFORMS} from 'toolbar/components/icon/PlatformIcon';
 import type {IconProps} from 'toolbar/components/icon/types';
 import {iconSizes} from 'toolbar/components/icon/types';
