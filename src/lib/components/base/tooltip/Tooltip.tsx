@@ -48,6 +48,7 @@ export const TooltipTrigger = forwardRef<HTMLElement, HTMLProps<HTMLElement> & {
     if (asChild && isValidElement(children)) {
       return cloneElement(
         children,
+        // eslint-disable-next-line react-hooks/refs
         context.getReferenceProps({
           ref,
           ...props,
@@ -96,7 +97,9 @@ export const TooltipContent = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElemen
         )}
         {...context.getFloatingProps(props)}>
         <FloatingArrow
+          // eslint-disable-next-line react-hooks/refs
           ref={context.arrowRef}
+          // eslint-disable-next-line react-hooks/refs
           context={context.context}
           stroke="var(--translucent-gray-200)"
           strokeWidth={1}

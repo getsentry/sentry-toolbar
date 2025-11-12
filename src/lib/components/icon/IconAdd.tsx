@@ -6,7 +6,6 @@ interface Props extends SVGIconProps {
   isCircled?: boolean;
 }
 
-// eslint-disable-next-line react/prop-types
 const IconAdd = forwardRef<SVGSVGElement, Props>(function IconAdd({isCircled = false, ...props}, ref) {
   return (
     <SVGIconBase {...props} ref={ref}>

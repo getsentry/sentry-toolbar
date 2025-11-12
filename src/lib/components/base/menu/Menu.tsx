@@ -198,6 +198,7 @@ export const MenuComponent = forwardRef<HTMLButtonElement, MenuProps & HTMLProps
     return (
       <FloatingNode id={nodeId}>
         <button
+          // eslint-disable-next-line react-hooks/refs
           ref={useMergeRefs([refs.setReference, item.ref, forwardedRef])}
           tabIndex={!isNested ? undefined : parent.activeIndex === item.index ? 0 : -1}
           role={isNested ? 'menuitem' : undefined}
@@ -239,6 +240,7 @@ export const MenuComponent = forwardRef<HTMLButtonElement, MenuProps & HTMLProps
                   initialFocus={isNested ? -1 : 0}
                   returnFocus={!isNested}>
                   <div
+                    // eslint-disable-next-line react-hooks/refs
                     ref={refs.setFloating}
                     className={twMerge(baseMenuClassName, menuClassName)}
                     style={floatingStyles}

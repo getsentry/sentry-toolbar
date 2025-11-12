@@ -1,6 +1,7 @@
 // @ts-check
 /* eslint-disable filename-export/match-default-export */
 
+import {globalIgnores} from 'eslint/config';
 import {fixupPluginRules} from '@eslint/compat';
 import eslint from '@eslint/js';
 import pluginTypescript from '@typescript-eslint/eslint-plugin';
@@ -18,6 +19,7 @@ import tailwindPlugin from 'eslint-plugin-tailwindcss';
 import eslintTS from 'typescript-eslint';
 
 const eslint_config = [
+  globalIgnores(['./dist/**', './packages/**/dist/**']),
   eslint.configs.recommended,
   ...eslintTS.configs.recommended,
   ...eslintTS.configs.stylistic,

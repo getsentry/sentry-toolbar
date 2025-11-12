@@ -29,6 +29,7 @@ export function FeatureFlagAdapterProvider({children}: {children: ReactNode}) {
     overrides: {},
     setOverride: (name: string, value: FlagValue) => {
       featureFlags?.setOverride?.(name, value);
+      // eslint-disable-next-line react-hooks/immutability
       setState(state => ({
         ...state,
         isDirty: true,

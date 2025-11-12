@@ -160,6 +160,7 @@ export default function useAggregatedQueryKeys<AggregatableQueryKey, Data>({
       subscriptions.current.push(unsubscribe);
 
       if (allQueuedQueries.length > queuedQueriesBatch.length) {
+        // eslint-disable-next-line react-hooks/immutability
         fetchData();
       }
     } catch (error) {

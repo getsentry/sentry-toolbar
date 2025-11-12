@@ -52,9 +52,8 @@ export default function useTooltip({
         padding: 5,
       }),
       shift({padding: 5}),
-      arrow({
-        element: arrowRef,
-      }),
+      // eslint-disable-next-line react-hooks/refs
+      arrow({element: arrowRef}),
     ],
   });
 

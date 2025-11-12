@@ -31,6 +31,7 @@ export function ApiProxyContextProvider({children}: Props) {
     [enableLogging]
   );
 
+  // eslint-disable-next-line react-hooks/refs
   const proxyRef = useRef<ApiProxy>(ApiProxy.singleton(config, iframeRef));
   const [proxyState, setProxyState] = useState<ProxyState>('connecting');
   const lastProxyState = usePrevious(proxyState);
@@ -56,6 +57,7 @@ export function ApiProxyContextProvider({children}: Props) {
 
   log('Render with state', {proxyState});
   return (
+    // eslint-disable-next-line react-hooks/refs
     <ApiProxyContext.Provider value={proxyRef.current}>
       <ApiProxyStateContext.Provider value={proxyState}>
         <iframe

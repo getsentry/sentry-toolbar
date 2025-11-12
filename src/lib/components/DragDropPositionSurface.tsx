@@ -87,6 +87,7 @@ function useDragDropPositionSurface({onPositionChange}: {onPositionChange: (posi
     };
   }, [reactMount, onPositionChange, shadowRoot, setMousePosition]);
 
+  // eslint-disable-next-line react-hooks/refs
   return {mousePosition, lastPosition: lastPositionRef.current};
 }
 

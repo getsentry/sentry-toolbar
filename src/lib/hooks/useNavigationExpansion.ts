@@ -17,7 +17,6 @@ export default function useNavigationExpansion() {
       }
       timeoutRef.current = null;
     } else if (!isHovered) {
-      setIsDelayedOpen(true);
       timeoutRef.current = setTimeout(() => {
         setIsDelayedOpen(false);
       }, 2_000);
@@ -27,7 +26,12 @@ export default function useNavigationExpansion() {
   return {
     isExpanded: pathname !== '/' || isPinned || isHovered || isDelayedOpen,
     isPinned,
-    setIsHovered,
+    setIsHovered: (value: boolean) => {
+      if (!value) {
+        setIsDelayedOpen(true);
+      }
+      setIsHovered(value);
+    },
     setIsPinned,
   };
 }
