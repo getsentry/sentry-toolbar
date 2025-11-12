@@ -76,9 +76,9 @@
     "@eslint/eslintrc": "3.3.1",
     "@eslint/js": "9.39.1",
     "@sentry/vite-plugin": "^2.22.4",
-    "@storybook/addon-links": "9.1.16",
-    "@storybook/builder-vite": "9.1.16",
-    "@storybook/react-vite": "9.1.16",
+    "@storybook/addon-links": "10.0.7",
+    "@storybook/builder-vite": "10.0.7",
+    "@storybook/react-vite": "10.0.7",
     "@testing-library/jest-dom": "6.6.3",
     "@testing-library/react": "16.1.0",
     "@types/jest": "29.5.13",
@@ -99,7 +99,7 @@
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "7.0.1",
     "eslint-plugin-react-refresh": "0.4.24",
-    "eslint-plugin-storybook": "9.1.16",
+    "eslint-plugin-storybook": "10.0.7",
     "eslint-plugin-tailwindcss": "3.18.2",
     "generate-react-cli": "8.4.8",
     "husky": "9.1.4",
@@ -114,7 +114,7 @@
     "postcss-preset-env": "10.0.3",
     "prettier": "3.3.3",
     "react-docgen-typescript": "2.2.2",
-    "storybook": "9.1.16",
+    "storybook": "10.0.7",
     "stylelint": "16.11.0",
     "stylelint-config-standard": "36.0.1",
     "stylelint-order": "6.0.4",
@@ -129,6 +129,6 @@
     "vite": "5.4.7",
     "vite-plugin-dts": "4.0.1",
     "vite-plugin-svgr": "^4.3.0",
-    "@storybook/addon-docs": "9.1.16"
+    "@storybook/addon-docs": "10.0.7"
   }
 }
