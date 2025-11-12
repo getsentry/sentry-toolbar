@@ -1,4 +1,4 @@
-import type {Meta, StoryObj} from '@storybook/react';
+import type {Meta, StoryObj} from '@storybook/react-vite';
 import {cx} from 'cva';
 import {useState} from 'react';
 import {Menu, MenuItem} from 'toolbar/components/base/menu/Menu';

@@ -1,4 +1,4 @@
-import type {Preview} from '@storybook/react';
+import type {Preview} from '@storybook/react-vite';
 import '../src/lib/index.css';
 import Providers from 'toolbar/context/Providers';
 import type {Configuration} from 'toolbar/types/Configuration';

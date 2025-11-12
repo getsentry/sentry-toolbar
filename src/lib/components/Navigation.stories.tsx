@@ -1,4 +1,4 @@
-import type {Meta} from '@storybook/react';
+import type {Meta} from '@storybook/react-vite';
 import EdgeLayout, {NavArea} from 'toolbar/components/layouts/EdgeLayout';
 import Navigation from 'toolbar/components/Navigation';
 import {useConfigContext, StaticConfigProvider} from 'toolbar/context/ConfigContext';
