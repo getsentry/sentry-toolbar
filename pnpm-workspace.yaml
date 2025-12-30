@@ -1,0 +1,5 @@
+ignoredBuiltDependencies:
+  - '@sentry/cli'
+
+onlyBuiltDependencies:
+  - esbuild
