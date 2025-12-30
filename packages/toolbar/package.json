@@ -16,10 +16,7 @@
     "type": "git",
     "url": "git@github.com:getsentry/sentry-toolbar.git"
   },
-  "volta": {
-    "node": "20.4.0",
-    "pnpm": "9.7.0"
-  },
+  "packageManager": "pnpm@10.26.2",
   "publishConfig": {
     "access": "public"
   },
