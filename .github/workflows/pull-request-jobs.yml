@@ -18,20 +18,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Read .nvmrc
-        run: echo "NVMRC=$(cat .nvmrc)" >> $GITHUB_ENV
-        id: nvm
-
-      - name: Use Node.js ${{ env.NVMRC }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NVMRC }}
-
       - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 10.21.0
-          run_install: false
+        uses: pnpm/action-setup@v4
 
       - name: Get pnpm store directory
         shell: bash
