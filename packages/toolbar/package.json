@@ -54,7 +54,7 @@
     "@types/react": "^19.0.10",
     "ts-node": "10.9.2",
     "typescript": "5.7.2",
-    "vite": "5.4.7",
+    "vite": "5.4.21",
     "vite-plugin-dts": "4.0.1"
   },
   "peerDependencies": {
