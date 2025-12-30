@@ -1,7 +1,4 @@
 /* eslint-disable tailwindcss/no-custom-classname */
-
-import {throttle} from 'lodash';
-import {useEffect} from 'react';
 import useLogic from 'toolbar/../../templates/Component/useLogic';
 
 export interface Props {
@@ -12,12 +9,6 @@ export interface Props {
 export default function TemplateName({initialValue = 0}: Props) {
   const {count, incrementCount} = useLogic(initialValue);
 
-  useEffect(() => {
-    const runner = throttle(() => {
-      console.log('throttle');
-    }, 10);
-    runner();
-  }, []);
   return (
     <div className="border-slate-300 w-60 border p-6 text-center">
       <h2 className="mb-3 text-2xl">Counter</h2>

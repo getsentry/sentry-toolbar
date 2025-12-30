@@ -1,4 +1,4 @@
-import type {StartSpanOptions} from '@sentry/types';
+import type {StartSpanOptions} from '@sentry/core';
 import {useState, useEffect} from 'react';
 import {useConfigContext} from 'toolbar/context/ConfigContext';
 import useSentryClientAndScope from 'toolbar/hooks/useSentryClientAndScope';
