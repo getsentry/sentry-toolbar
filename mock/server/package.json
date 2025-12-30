@@ -3,13 +3,7 @@
   "name": "mock-server",
   "version": "0.0.0",
   "main": "index.js",
-  "engines": {
-    "node": ">=18",
-    "pnpm": ">=9"
-  },
-  "volta": {
-    "extends": "../../package.json"
-  },
+  "packageManager": "pnpm@10.26.2",
   "scripts": {
     "start": "PORT=8080 node index.js"
   },
