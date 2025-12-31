@@ -50,6 +50,7 @@ function buildDom(config: Configuration) {
 
   const reactMount = DOCUMENT.createElement('div');
   reactMount.dataset.name = 'react-mount';
+  reactMount.className = 'fixed inset-0 size-full pointer-events-none';
   shadowRoot.appendChild(reactMount);
 
   const portalMount = DOCUMENT.createElement('div');
