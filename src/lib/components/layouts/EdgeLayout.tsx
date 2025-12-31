@@ -1,8 +1,8 @@
 import {cva, cx} from 'cva';
 import type {ReactNode} from 'react';
+import {Fragment} from 'react/jsx-runtime';
 import DragDropPositionSurface from 'toolbar/components/DragDropPositionSurface';
 import {useConfigContext} from 'toolbar/context/ConfigContext';
-import {MousePositionProvider} from 'toolbar/context/MousePositionContext';
 import type {Configuration} from 'toolbar/types/Configuration';
 
 interface Props {
@@ -70,10 +70,10 @@ export default function EdgeLayout({children}: Props) {
   const [{placement}] = useConfigContext();
 
   return (
-    <MousePositionProvider>
+    <Fragment>
       <div className={layoutClass({placement})}>{children}</div>
       <DragDropPositionSurface instanceName="EdgeLayout" />
-    </MousePositionProvider>
+    </Fragment>
   );
 }
 

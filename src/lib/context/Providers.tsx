@@ -5,6 +5,7 @@ import {ApiProxyContextProvider} from 'toolbar/context/ApiProxyContext';
 import {StaticConfigProvider, MutableConfigProvider} from 'toolbar/context/ConfigContext';
 import {FeatureFlagAdapterProvider} from 'toolbar/context/FeatureFlagAdapterContext';
 import {HiddenAppProvider} from 'toolbar/context/HiddenAppContext';
+import {MousePositionProvider} from 'toolbar/context/MousePositionContext';
 import PortalTargetContext from 'toolbar/context/PortalTargetContext';
 import ReactMountContext from 'toolbar/context/ReactMountContext';
 import ShadowRootContext from 'toolbar/context/ShadowRootContext';
@@ -33,7 +34,9 @@ export default function Providers({children, config, portalMount, reactMount, sh
                 <QueryProvider>
                   <MemoryRouter>
                     <FeatureFlagAdapterProvider>
-                      <MutableConfigProvider>{children}</MutableConfigProvider>
+                      <MutableConfigProvider>
+                        <MousePositionProvider>{children}</MousePositionProvider>
+                      </MutableConfigProvider>
                     </FeatureFlagAdapterProvider>
                   </MemoryRouter>
                 </QueryProvider>
