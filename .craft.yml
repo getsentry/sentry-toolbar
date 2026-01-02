@@ -15,15 +15,6 @@ targets:
       - path: /sentry-toolbar/{{version}}/
         metadata:
           cacheControl: 'public, max-age=60'
-  # Latest CDN Bundle Target
-  - name: gcs
-    id: 'browser-cdn-bundles'
-    includeNames: /.*\.js.*$/
-    bucket: sentry-js-sdk
-    paths:
-      - path: /sentry-toolbar/latest/
-        metadata:
-          cacheControl: 'public, max-age=60'
   # NPM package target
   - name: npm
     id: '@sentry/toolbar'
