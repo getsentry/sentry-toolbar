@@ -39,5 +39,5 @@ export default function Placeholder({
   className,
   ...props
 }: VariantProps<typeof placeholderClass> & React.ComponentProps<'div'>) {
-  return <div className={twMerge(placeholderClass(), className)} {...props} />;
+  return <div className={twMerge(placeholderClass(props), className)} {...props} />;
 }
