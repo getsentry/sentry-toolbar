@@ -19,14 +19,13 @@ export default function CurrentOrg({size = 'md', link = true}: Props) {
   if (isPending || isError) {
     return (
       <div className="flex items-center gap-1">
-        <Placeholder height="full" width="full" shape="round" state={isError ? 'error' : 'normal'} />
+        <Placeholder shape="round" state={isError ? 'error' : 'normal'} className="size-3" />
         <Placeholder height="text" state={isError ? 'error' : 'normal'} className="w-[160px]" />
       </div>
     );
   }
 
   const org = data.json;
-
   return (
     <div className="flex items-center gap-1">
       <AvatarIcon name={org.name} avatarUrl={org.avatar.avatarUrl} type="org" tooltip={org.name} size={size} />
