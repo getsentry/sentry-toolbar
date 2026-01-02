@@ -1,7 +1,11 @@
 import {cx} from 'cva';
+import {Fragment} from 'react';
 import Breadcrumbs from 'toolbar/components/base/Breadcrumbs';
+import InternalLink from 'toolbar/components/base/InternalLink';
 import ScrollableList from 'toolbar/components/base/ScrollableList';
-import IconSettings from 'toolbar/components/icon/IconSettings';
+import IconOpen from 'toolbar/components/icon/IconOpen';
+import CurrentOrg from 'toolbar/components/panels/settings/CurrentOrg';
+import {useApiProxyState} from 'toolbar/context/ApiProxyContext';
 import {useConfigContext} from 'toolbar/context/ConfigContext';
 
 const sectionPadding = cx('px-2 py-1');
@@ -9,12 +13,34 @@ const sectionBorder = cx('border-b border-b-translucentGray-200');
 
 export default function ConfigPanel() {
   const [config] = useConfigContext();
+  const proxyState = useApiProxyState();
+
+  const organizationSlug = config.organizationSlug;
 
   return (
     <section className="flex grow flex-col">
       <h1 className={cx(sectionBorder, sectionPadding, 'flex flex-row items-center gap-1 font-medium')}>
-        <IconSettings size="sm" />
-        <Breadcrumbs items={[{label: 'Settings', to: '/settings'}, {label: 'Config'}]} />
+        <Breadcrumbs
+          items={[
+            {
+              label: (
+                <InternalLink to="/settings" className="flex items-center gap-1">
+                  {proxyState === 'logged-in' ? (
+                    <CurrentOrg size="md" link={false} />
+                  ) : (
+                    <Fragment>
+                      <IconOpen size="md" />
+                      {organizationSlug}
+                    </Fragment>
+                  )}
+                </InternalLink>
+              ),
+            },
+            {label: 'Config'},
+          ]}
+        />
+
+        {}
       </h1>
 
       <ScrollableList>

@@ -11,6 +11,7 @@ const imageClassName = cva('flex items-center justify-center truncate object-cov
     type: {
       user: 'rounded-full',
       team: 'rounded-[3px]',
+      org: 'rounded-[3px]',
     },
   },
 });
@@ -18,7 +19,7 @@ const imageClassName = cva('flex items-center justify-center truncate object-cov
 interface Props {
   name: string;
   avatarUrl?: string;
-  type: 'user' | 'team';
+  type: 'user' | 'team' | 'org';
   tooltip: string;
   size?: 'sm' | 'md' | 'lg';
 }
