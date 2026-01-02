@@ -68,5 +68,9 @@ function RequireAuth({children}: {children: ReactNode}) {
     }
   }, [proxyState, navigate]);
 
+  if (proxyState !== 'logged-in') {
+    return null;
+  }
+
   return children;
 }
