@@ -1,6 +1,7 @@
-import {cva} from 'cva';
+import {cva, type VariantProps} from 'cva';
+import {twMerge} from 'tailwind-merge';
 
-const Placeholder = cva('flex shrink-0 flex-col items-center justify-center rounded-md', {
+const placeholderClass = cva('flex shrink-0 flex-col items-center justify-center rounded-md', {
   variants: {
     height: {
       full: 'h-full',
@@ -34,4 +35,9 @@ const Placeholder = cva('flex shrink-0 flex-col items-center justify-center roun
   },
 });
 
-export default Placeholder;
+export default function Placeholder({
+  className,
+  ...props
+}: VariantProps<typeof placeholderClass> & React.ComponentProps<'div'>) {
+  return <div className={twMerge(placeholderClass(), className)} {...props} />;
+}

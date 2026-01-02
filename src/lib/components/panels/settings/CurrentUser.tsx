@@ -1,4 +1,3 @@
-import {cx} from 'cva';
 import AvatarIcon from 'toolbar/components/avatar/AvatarIcon';
 import Placeholder from 'toolbar/components/base/Placeholder';
 import Media from 'toolbar/components/Media';
@@ -11,25 +10,11 @@ export default function CurrentUser() {
   });
 
   if (isPending || isError) {
-    const redPlaceholderClass = Placeholder({
-      height: 'text',
-      width: 'auto',
-      state: isError ? 'error' : 'normal',
-    });
     return (
       <Media
-        media={
-          <div
-            className={Placeholder({
-              height: 'full',
-              width: 'full',
-              shape: 'round',
-              state: isError ? 'error' : 'normal',
-            })}
-          />
-        }
-        title={<div className={cx(redPlaceholderClass, 'w-160px')} />}
-        description={<div className={cx(redPlaceholderClass, 'w-120px')} />}
+        media={<Placeholder height="full" width="full" shape="round" state={isError ? 'error' : 'normal'} />}
+        title={<Placeholder height="text" state={isError ? 'error' : 'normal'} className="w-[160px]" />}
+        description={<Placeholder height="text" state={isError ? 'error' : 'normal'} className="w-[120px]" />}
         size="lg"
       />
     );

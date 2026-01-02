@@ -1,18 +1,9 @@
 import type {Meta, StoryObj} from '@storybook/react-vite';
-import type {VariantProps} from 'cva';
 import Placeholder from 'toolbar/components/base/Placeholder';
 
-type PlaceholderProps = VariantProps<typeof Placeholder> & {
-  children?: React.ReactNode;
-};
-
-function PlaceholderDemo({children, ...props}: PlaceholderProps) {
-  return <div className={Placeholder(props)}>{children}</div>;
-}
-
-const meta: Meta<typeof PlaceholderDemo> = {
+const meta: Meta<typeof Placeholder> = {
   title: 'components/base/Placeholder',
-  component: PlaceholderDemo,
+  component: Placeholder,
   argTypes: {
     height: {
       control: 'select',
@@ -44,7 +35,7 @@ const meta: Meta<typeof PlaceholderDemo> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof PlaceholderDemo>;
+type Story = StoryObj<typeof Placeholder>;
 
 // Playground with all controls
 export const Playground: Story = {
@@ -213,15 +204,15 @@ export const SkeletonExample: Story = {
   render: () => (
     <div className="flex flex-col gap-2 p-4">
       <div className="flex items-center gap-3">
-        <div className={Placeholder({height: 'full', width: 'auto', shape: 'round'})} style={{width: 40, height: 40}} />
+        <Placeholder shape="round" className="size-[40px]" />
         <div className="flex flex-1 flex-col gap-1">
-          <div className={Placeholder({height: 'text', width: 'auto'})} style={{width: '60%'}} />
-          <div className={Placeholder({height: 'text', width: 'auto'})} style={{width: '40%'}} />
+          <Placeholder height="text" className="w-3/5" />
+          <Placeholder height="text" className="w-2/5" />
         </div>
       </div>
-      <div className={Placeholder({height: 'small', width: 'full'})} />
-      <div className={Placeholder({height: 'text', width: 'full'})} />
-      <div className={Placeholder({height: 'text', width: 'auto'})} style={{width: '80%'}} />
+      <Placeholder height="small" width="full" />
+      <Placeholder height="text" width="full" />
+      <Placeholder height="text" className="w-4/5" />
     </div>
   ),
 };

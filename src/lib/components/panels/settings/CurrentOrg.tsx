@@ -1,4 +1,3 @@
-import {cx} from 'cva';
 import AvatarIcon from 'toolbar/components/avatar/AvatarIcon';
 import Placeholder from 'toolbar/components/base/Placeholder';
 import SentryAppLink from 'toolbar/components/base/SentryAppLink';
@@ -18,22 +17,10 @@ export default function CurrentOrg({size = 'md', link = true}: Props) {
   });
 
   if (isPending || isError) {
-    const redPlaceholderClass = Placeholder({
-      height: 'text',
-      width: 'auto',
-      state: isError ? 'error' : 'normal',
-    });
     return (
       <div className="flex items-center gap-1">
-        <div
-          className={Placeholder({
-            height: 'full',
-            width: 'full',
-            shape: 'round',
-            state: isError ? 'error' : 'normal',
-          })}
-        />
-        <div className={cx(redPlaceholderClass, 'w-160px')} />
+        <Placeholder height="full" width="full" shape="round" state={isError ? 'error' : 'normal'} />
+        <Placeholder height="text" state={isError ? 'error' : 'normal'} className="w-[160px]" />
       </div>
     );
   }

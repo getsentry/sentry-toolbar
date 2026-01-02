@@ -180,7 +180,7 @@ export const AllSizes: Story = {
 
 export const PlaceholderMedia: Story = {
   args: {
-    media: <div className={Placeholder({height: 'full', width: 'full', shape: 'round'})} />,
+    media: <Placeholder height="full" width="full" shape="round" />,
     title: 'Loading...',
     description: 'Please wait',
     size: 'md',
@@ -191,21 +191,21 @@ export const AllPlaceholders: Story = {
   render: () => (
     <div className="flex flex-col gap-3">
       <Media
-        media={<div className={Placeholder({height: 'full', width: 'full', shape: 'round'})} />}
-        title={<div className={Placeholder({height: 'text', width: 'auto'})} style={{width: '120px'}} />}
-        description={<div className={Placeholder({height: 'text', width: 'auto'})} style={{width: '80px'}} />}
+        media={<Placeholder height="full" width="full" shape="round" />}
+        title={<Placeholder height="text" style={{width: '120px'}} />}
+        description={<Placeholder height="text" style={{width: '80px'}} />}
         size="sm"
       />
       <Media
-        media={<div className={Placeholder({height: 'full', width: 'full', shape: 'round'})} />}
-        title={<div className={Placeholder({height: 'text', width: 'auto'})} style={{width: '140px'}} />}
-        description={<div className={Placeholder({height: 'text', width: 'auto'})} style={{width: '100px'}} />}
+        media={<Placeholder height="full" width="full" shape="round" />}
+        title={<Placeholder height="text" style={{width: '140px'}} />}
+        description={<Placeholder height="text" style={{width: '100px'}} />}
         size="md"
       />
       <Media
-        media={<div className={Placeholder({height: 'full', width: 'full', shape: 'round'})} />}
-        title={<div className={Placeholder({height: 'text', width: 'auto'})} style={{width: '160px'}} />}
-        description={<div className={Placeholder({height: 'text', width: 'auto'})} style={{width: '120px'}} />}
+        media={<Placeholder height="full" width="full" shape="round" />}
+        title={<Placeholder height="text" style={{width: '160px'}} />}
+        description={<Placeholder height="text" style={{width: '120px'}} />}
         size="lg"
       />
     </div>
@@ -216,21 +216,21 @@ export const PlaceholderSquareMedia: Story = {
   render: () => (
     <div className="flex flex-col gap-3">
       <Media
-        media={<div className={Placeholder({height: 'full', width: 'full', shape: 'square'})} />}
-        title={<div className={Placeholder({height: 'text', width: 'auto'})} style={{width: '100px'}} />}
-        description={<div className={Placeholder({height: 'text', width: 'auto'})} style={{width: '70px'}} />}
+        media={<Placeholder height="full" width="full" shape="square" />}
+        title={<Placeholder height="text" style={{width: '100px'}} />}
+        description={<Placeholder height="text" style={{width: '70px'}} />}
         size="sm"
       />
       <Media
-        media={<div className={Placeholder({height: 'full', width: 'full', shape: 'square'})} />}
-        title={<div className={Placeholder({height: 'text', width: 'auto'})} style={{width: '130px'}} />}
-        description={<div className={Placeholder({height: 'text', width: 'auto'})} style={{width: '90px'}} />}
+        media={<Placeholder height="full" width="full" shape="square" />}
+        title={<Placeholder height="text" style={{width: '130px'}} />}
+        description={<Placeholder height="text" style={{width: '90px'}} />}
         size="md"
       />
       <Media
-        media={<div className={Placeholder({height: 'full', width: 'full', shape: 'square'})} />}
-        title={<div className={Placeholder({height: 'text', width: 'auto'})} style={{width: '150px'}} />}
-        description={<div className={Placeholder({height: 'text', width: 'auto'})} style={{width: '110px'}} />}
+        media={<Placeholder height="full" width="full" shape="square" />}
+        title={<Placeholder height="text" style={{width: '150px'}} />}
+        description={<Placeholder height="text" style={{width: '110px'}} />}
         size="lg"
       />
     </div>
