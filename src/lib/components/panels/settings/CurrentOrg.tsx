@@ -21,7 +21,7 @@ export default function CurrentOrg({size = 'md', link = true}: Props) {
     const redPlaceholderClass = Placeholder({
       height: 'text',
       width: 'auto',
-      state: isError ? 'normal' : 'error',
+      state: isError ? 'error' : 'normal',
     });
     return (
       <div className="flex items-center gap-1">
@@ -30,7 +30,7 @@ export default function CurrentOrg({size = 'md', link = true}: Props) {
             height: 'full',
             width: 'full',
             shape: 'round',
-            state: isError ? 'normal' : 'error',
+            state: isError ? 'error' : 'normal',
           })}
         />
         <div className={cx(redPlaceholderClass, 'w-160px')} />

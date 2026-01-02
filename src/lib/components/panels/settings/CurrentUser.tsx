@@ -14,7 +14,7 @@ export default function CurrentUser() {
     const redPlaceholderClass = Placeholder({
       height: 'text',
       width: 'auto',
-      state: isError ? 'normal' : 'error',
+      state: isError ? 'error' : 'normal',
     });
     return (
       <Media
@@ -24,7 +24,7 @@ export default function CurrentUser() {
               height: 'full',
               width: 'full',
               shape: 'round',
-              state: isError ? 'normal' : 'error',
+              state: isError ? 'error' : 'normal',
             })}
           />
         }
