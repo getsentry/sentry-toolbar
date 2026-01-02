@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/react-vite';
-import LoadingSpinner from 'toolbar/components/LoadingSpinner';
+import LoadingSpinner from 'toolbar/components/base/LoadingSpinner';
 
 const meta: Meta<typeof LoadingSpinner> = {
   title: 'Components/LoadingSpinner',

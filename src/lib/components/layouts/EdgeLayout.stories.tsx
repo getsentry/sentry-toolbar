@@ -1,6 +1,6 @@
 import type {Meta} from '@storybook/react-vite';
-import EdgeLayout, {MainArea, NavArea} from 'toolbar/components/layouts/EdgeLayout';
-import Navigation from 'toolbar/components/Navigation';
+import EdgeLayout, {PanelArea, NavArea} from 'toolbar/components/layouts/EdgeLayout';
+import NavigationPanel from 'toolbar/components/panels/nav/NavigationPanel';
 import {StaticConfigProvider, useConfigContext} from 'toolbar/context/ConfigContext';
 import type {Configuration} from 'toolbar/types/Configuration';
 
@@ -54,9 +54,9 @@ const Template = ({placement}: {placement: Configuration['placement']}) => {
     <StaticConfigProvider key={key++} config={{...baseConfig, placement}}>
       <EdgeLayout>
         <NavArea>
-          <Navigation />
+          <NavigationPanel />
         </NavArea>
-        <MainArea>Empty Panel</MainArea>
+        <PanelArea>Empty Panel</PanelArea>
       </EdgeLayout>
     </StaticConfigProvider>
   );

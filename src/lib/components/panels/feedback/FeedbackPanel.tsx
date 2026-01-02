@@ -1,11 +1,12 @@
+import {cx} from 'cva';
+import Placeholder from 'toolbar/components/base/Placeholder';
+import SentryAppLink from 'toolbar/components/base/SentryAppLink';
 import {Tooltip, TooltipContent, TooltipTrigger} from 'toolbar/components/base/tooltip/Tooltip';
 import InfiniteListItems from 'toolbar/components/InfiniteListItems';
 import InfiniteListState from 'toolbar/components/InfiniteListState';
 import FeedbackListItem from 'toolbar/components/panels/feedback/FeedbackListItem';
 import useInfiniteFeedbackList from 'toolbar/components/panels/feedback/useInfiniteFeedbackList';
-import Placeholder from 'toolbar/components/Placeholder';
 import ProjectIcon from 'toolbar/components/project/ProjectIcon';
-import SentryAppLink from 'toolbar/components/SentryAppLink';
 import {useConfigContext} from 'toolbar/context/ConfigContext';
 import useFetchSentryData from 'toolbar/hooks/fetch/useFetchSentryData';
 import useCurrentSentryTransactionName from 'toolbar/hooks/useCurrentSentryTransactionName';
@@ -54,10 +55,10 @@ export default function FeedbackPanel() {
           backgroundUpdatingMessage={() => null}
           loadingMessage={() => (
             <div className="flex flex-col gap-1 px-1 pt-1">
-              <div className={Placeholder()} />
-              <div className={Placeholder()} />
-              <div className={Placeholder()} />
-              <div className={Placeholder()} />
+              <div className={cx(Placeholder(), 'h-[56px]')} />
+              <div className={cx(Placeholder(), 'h-[56px]')} />
+              <div className={cx(Placeholder(), 'h-[56px]')} />
+              <div className={cx(Placeholder(), 'h-[56px]')} />
             </div>
           )}>
           <InfiniteListItems<FeedbackIssueListItem, ApiResult<FeedbackIssueListItem[]>>

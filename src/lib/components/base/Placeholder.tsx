@@ -2,20 +2,33 @@ import {cva} from 'cva';
 
 const Placeholder = cva('flex shrink-0 flex-col items-center justify-center rounded-md', {
   variants: {
-    base: {
-      true: 'h-14 w-full',
+    height: {
+      full: 'h-full',
+      auto: 'h-auto',
+      text: 'h-[1rem]',
+      small: 'h-2',
+      medium: 'h-3',
+      large: 'h-4',
+    },
+    width: {
+      full: 'w-full',
+      auto: 'w-auto',
+      small: 'w-2',
+      medium: 'w-3',
+      large: 'w-4',
     },
     shape: {
       square: 'rounded-md',
       round: 'rounded-full',
     },
     state: {
-      normal: 'bg-surface-100',
+      normal: 'bg-gray-100',
       error: 'bg-red-100 text-red-200',
     },
   },
   defaultVariants: {
-    base: true,
+    height: 'text',
+    width: 'full',
     shape: 'square',
     state: 'normal',
   },

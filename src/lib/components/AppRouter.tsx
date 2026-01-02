@@ -1,69 +1,72 @@
-import {Fragment} from 'react/jsx-runtime';
-import {Routes, Route, Outlet} from 'react-router-dom';
+import {Fragment, useEffect, type ReactNode} from 'react';
+import {Routes, Route, Outlet, useNavigate} from 'react-router-dom';
 import DebugState from 'toolbar/components/DebugState';
-import EdgeLayout, {MainArea, NavArea} from 'toolbar/components/layouts/EdgeLayout';
-import UnauthLayout from 'toolbar/components/layouts/UnauthLayout';
-import Navigation from 'toolbar/components/Navigation';
+import DragDropPositionSurface from 'toolbar/components/DragDropPositionSurface';
+import EdgeLayout, {PanelArea, NavArea} from 'toolbar/components/layouts/EdgeLayout';
 import FeatureFlagsPanel from 'toolbar/components/panels/featureFlags/FeatureFlagsPanel';
 import FeedbackPanel from 'toolbar/components/panels/feedback/FeedbackPanel';
 import IssuesPanel from 'toolbar/components/panels/issues/IssuesPanel';
+import NavigationPanel from 'toolbar/components/panels/nav/NavigationPanel';
+import ConfigPanel from 'toolbar/components/panels/settings/ConfigPanel';
 import SettingsPanel from 'toolbar/components/panels/settings/SettingsPanel';
-import Connecting from 'toolbar/components/unauth/Connecting';
-import Disconnected from 'toolbar/components/unauth/Disconnected';
-import InvalidDomain from 'toolbar/components/unauth/InvalidDomain';
-import Login from 'toolbar/components/unauth/Login';
-import MissingProject from 'toolbar/components/unauth/MissingProject';
+import {useApiProxyState} from 'toolbar/context/ApiProxyContext';
 import useClearQueryCacheOnProxyStateChange from 'toolbar/hooks/useClearQueryCacheOnProxyStateChange';
-import useNavigateOnProxyStateChange from 'toolbar/hooks/useNavigateOnProxyStateChange';
 
 export default function AppRouter() {
-  useNavigateOnProxyStateChange();
   useClearQueryCacheOnProxyStateChange();
 
   return (
     <Routes>
       <Route
+        // Global layout wrapper
+        path="/"
         element={
           <Fragment>
             <DebugState />
-            <Outlet />
+            <EdgeLayout>
+              <NavArea>
+                <NavigationPanel />
+              </NavArea>
+              <Outlet />
+              <DragDropPositionSurface instanceName="EdgeLayout" />
+            </EdgeLayout>
           </Fragment>
         }>
         <Route
           element={
-            <UnauthLayout>
+            <PanelArea>
               <Outlet />
-            </UnauthLayout>
+            </PanelArea>
           }>
-          <Route path="/disconnected" element={<Disconnected />} />
-          <Route path="/connecting" element={<Connecting />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/missing-project" element={<MissingProject />} />
-          <Route path="/invalid-domain" element={<InvalidDomain />} />
-        </Route>
-        <Route
-          path="/"
-          element={
-            <EdgeLayout>
-              <NavArea>
-                <Navigation />
-              </NavArea>
-              <Outlet />
-            </EdgeLayout>
-          }>
+          <Route path="/settings">
+            <Route index element={<SettingsPanel />} />
+            <Route path="config" element={<ConfigPanel />} />
+          </Route>
+          <Route path="/featureFlags" element={<FeatureFlagsPanel />} />
           <Route
             element={
-              <MainArea>
+              <RequireAuth>
                 <Outlet />
-              </MainArea>
+              </RequireAuth>
             }>
-            <Route path="/settings" element={<SettingsPanel />} />
             <Route path="/issues" element={<IssuesPanel />} />
             <Route path="/feedback" element={<FeedbackPanel />} />
-            <Route path="/featureFlags" element={<FeatureFlagsPanel />} />
           </Route>
         </Route>
       </Route>
     </Routes>
   );
+}
+
+function RequireAuth({children}: {children: ReactNode}) {
+  const navigate = useNavigate();
+  const proxyState = useApiProxyState();
+
+  useEffect(() => {
+    if (proxyState !== 'logged-in') {
+      navigate('/');
+    }
+  }, [proxyState, navigate]);
+
+  return children;
 }
