@@ -30,7 +30,7 @@ export default function useWindowKeyValueSync<Value>({key, callback}: Props<Valu
     return () => {
       window.removeEventListener(SYNCED_STORAGE_EVENT, handler);
     };
-  });
+  }, [callback, key]);
 
   return useCallback(
     (value: Value) => {
