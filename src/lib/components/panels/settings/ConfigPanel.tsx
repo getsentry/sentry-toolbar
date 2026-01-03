@@ -39,8 +39,6 @@ export default function ConfigPanel() {
             {label: 'Config'},
           ]}
         />
-
-        {}
       </h1>
 
       <ScrollableList>
