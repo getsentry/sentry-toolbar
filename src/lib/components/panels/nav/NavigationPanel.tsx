@@ -1,8 +1,5 @@
 import {Transition} from '@headlessui/react';
 import {cva, cx} from 'cva';
-import type {MouseEvent} from 'react';
-import {useLocation, useNavigate} from 'react-router-dom';
-import type {To} from 'react-router-dom';
 import Indicator from 'toolbar/components/base/Indicator';
 import IconFlag from 'toolbar/components/icon/IconFlag';
 import IconIssues from 'toolbar/components/icon/IconIssues';
@@ -31,21 +28,9 @@ export default function NavigationPanel() {
   const [mousePosition] = useMousePositionContext();
   const isMoving = Boolean(mousePosition);
   const {isExpanded, setIsHovered} = useNavigationExpansion();
-  const {pathname} = useLocation();
-  const navigate = useNavigate();
 
   const proxyState = useApiProxyState();
   const {overrides} = useFeatureFlagAdapterContext();
-
-  const toPathOrHome = (to: To) => ({
-    to,
-    onClick: (e: MouseEvent) => {
-      if (pathname === to) {
-        e.preventDefault();
-        navigate('/');
-      }
-    },
-  });
 
   const [major] = parsePlacement(placement);
   const isHorizontal = ['top', 'bottom'].includes(major);
@@ -55,7 +40,7 @@ export default function NavigationPanel() {
       className={cx(navClassName({isHorizontal}), 'p-1')}
       onMouseOver={() => setIsHovered(true)}
       onMouseOut={() => setIsHovered(false)}>
-      <NavButton {...toPathOrHome('/settings')} tooltip="More options">
+      <NavButton to="/settings" tooltip="More options">
         <IconSentry size="sm" />
       </NavButton>
 
