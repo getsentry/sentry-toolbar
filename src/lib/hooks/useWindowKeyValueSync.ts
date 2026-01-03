@@ -12,7 +12,14 @@ function isSyncedEvent<S>(event: Event, key: string): event is WindowKeyValueSyn
   return isCustomEvent(event) && event.type === SYNCED_STORAGE_EVENT && event.detail.key === key;
 }
 
-export default function useWindowKeyValueSync<Value>({key, callback}: {key: string; callback: (value: Value) => void}) {
+interface Props<Value> {
+  key: string;
+  callback: (value: Value) => void;
+}
+
+type Dispatch<Value> = (value: Value) => void;
+
+export default function useWindowKeyValueSync<Value>({key, callback}: Props<Value>): Dispatch<Value> {
   useEffect(() => {
     const handler = (event: Event) => {
       if (isSyncedEvent<Value>(event, key)) {
@@ -25,12 +32,10 @@ export default function useWindowKeyValueSync<Value>({key, callback}: {key: stri
     };
   });
 
-  return {
-    dispatch: useCallback(
-      (value: Value) => {
-        window.dispatchEvent(new CustomEvent(SYNCED_STORAGE_EVENT, {detail: {key, value}}));
-      },
-      [key]
-    ),
-  };
+  return useCallback(
+    (value: Value) => {
+      window.dispatchEvent(new CustomEvent(SYNCED_STORAGE_EVENT, {detail: {key, value}}));
+    },
+    [key]
+  );
 }

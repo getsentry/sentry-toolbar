@@ -4,10 +4,10 @@ import {useState} from 'react';
 import useWindowKeyValueSync from 'toolbar/hooks/useWindowKeyValueSync';
 import {localStorage, sessionStorage} from 'toolbar/utils/storage';
 
-function deserialize<Data>(storage: Storage, key: string, initialValue: Data) {
+function deserialize<Data>(storage: Storage, key: string, initialValue: Data): Data {
   try {
     const item = storage.getItem(key);
-    return item ? JSON.parse(item) : initialValue;
+    return item ? (JSON.parse(item) as Data) : initialValue;
   } catch (error) {
     console.error(error);
     return initialValue;
@@ -33,9 +33,9 @@ function useStorage<Data>(
   initialValue: SetStateAction<Data>
 ): [Data, (value: Data) => void] {
   // @ts-expect-error TS(2349): This expression is not callable.
-  const init = typeof initialValue === 'function' ? initialValue(undefined) : initialValue;
+  const init = typeof initialValue === 'function' ? (initialValue(undefined) as Data) : initialValue;
   const [value, setValue] = useState(() => deserialize(storage, key, init));
-  const {dispatch} = useWindowKeyValueSync({key, callback: setValue});
+  const dispatch = useWindowKeyValueSync({key, callback: setValue});
 
   const setValueAndNotify = useCallback(
     (newValue: Data) => {
@@ -50,12 +50,12 @@ function useStorage<Data>(
 }
 
 export function useLocalStorage<Data>(key: string, initialValue: SetStateAction<Data>): [Data, (value: Data) => void] {
-  return useStorage<Data>(localStorage, key, initialValue);
+  return useStorage(localStorage, key, initialValue);
 }
 
 export function useSessionStorage<Data>(
   key: string,
   initialValue: SetStateAction<Data>
 ): [Data, (value: Data) => void] {
-  return useStorage<Data>(sessionStorage, key, initialValue);
+  return useStorage(sessionStorage, key, initialValue);
 }
