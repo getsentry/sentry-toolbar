@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/react-vite';
-import Disconnected from 'toolbar/components/unauth/Disconnected';
+import Disconnected from 'toolbar/components/panels/settings/proxyState/Disconnected';
 
 const meta = {
   title: 'components/unauth/Disconnected',

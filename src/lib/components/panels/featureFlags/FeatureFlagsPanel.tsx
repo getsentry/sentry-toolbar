@@ -1,5 +1,6 @@
 import {cx} from 'cva';
 import {useMemo, useState} from 'react';
+import Button from 'toolbar/components/base/Button';
 import ExternalLink from 'toolbar/components/base/ExternalLink';
 import IconChevron from 'toolbar/components/icon/IconChevron';
 import IconClose from 'toolbar/components/icon/IconClose';
@@ -111,12 +112,10 @@ function FeatureFlagEditor() {
 
         {prefilter === 'overrides' ? (
           <div className={cx(sectionPadding, 'flex flex-col items-stretch')}>
-            <button
-              className="flex items-center justify-center gap-1 self-stretch rounded-md border border-gray-200 p-0.75 text-sm hover:bg-gray-100 hover:underline"
-              onClick={clearOverrides}>
+            <Button onClick={clearOverrides} aria-label="Reset All Overrides" title="Reset All Overrides">
               <IconClose isCircled size="xs" />
               <span>Reset All Overrides</span>
-            </button>
+            </Button>
           </div>
         ) : null}
       </div>

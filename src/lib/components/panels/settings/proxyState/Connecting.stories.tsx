@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/react-vite';
-import Connecting from 'toolbar/components/unauth/Connecting';
+import Connecting from 'toolbar/components/panels/settings/proxyState/Connecting';
 
 const meta = {
   title: 'components/unauth/Connecting',

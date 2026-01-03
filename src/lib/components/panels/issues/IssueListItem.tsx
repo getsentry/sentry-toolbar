@@ -1,8 +1,8 @@
 import {cx} from 'cva';
 import AssignedTo from 'toolbar/components/AssignedTo';
+import SentryAppLink from 'toolbar/components/base/SentryAppLink';
 import RelativeDateTime from 'toolbar/components/datetime/RelativeDateTime';
 import ProjectIcon from 'toolbar/components/project/ProjectIcon';
-import SentryAppLink from 'toolbar/components/SentryAppLink';
 import {useConfigContext} from 'toolbar/context/ConfigContext';
 import type {Group} from 'toolbar/sentryApi/types/group';
 import type Member from 'toolbar/sentryApi/types/Member';

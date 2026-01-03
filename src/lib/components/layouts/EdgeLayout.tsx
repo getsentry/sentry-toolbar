@@ -1,7 +1,6 @@
 import {cva, cx} from 'cva';
 import type {ReactNode} from 'react';
 import {Fragment} from 'react/jsx-runtime';
-import DragDropPositionSurface from 'toolbar/components/DragDropPositionSurface';
 import {useConfigContext} from 'toolbar/context/ConfigContext';
 import type {Configuration} from 'toolbar/types/Configuration';
 
@@ -47,7 +46,7 @@ const navAreaClass = cva('pointer-events-auto contain-layout [grid-area:nav]', {
   },
 });
 
-const mainAreaClass = cva('pointer-events-auto contain-layout [grid-area:main]', {
+const panelAreaClass = cva('pointer-events-auto contain-layout [grid-area:main]', {
   variants: {
     placement: {
       'top-left-corner': ['justify-self-start', 'self-start'],
@@ -72,7 +71,6 @@ export default function EdgeLayout({children}: Props) {
   return (
     <Fragment>
       <div className={layoutClass({placement})}>{children}</div>
-      <DragDropPositionSurface instanceName="EdgeLayout" />
     </Fragment>
   );
 }
@@ -91,10 +89,10 @@ export function NavArea({children}: Props) {
   );
 }
 
-export function MainArea({children}: Props) {
+export function PanelArea({children}: Props) {
   const [{placement}] = useConfigContext();
   return (
-    <div role="dialog" className={mainAreaClass({placement})}>
+    <div role="dialog" className={panelAreaClass({placement})}>
       <div className={cx('h-[90vh] max-h-[560px] w-[320px] max-w-[320px] contain-size', areaCss)}>{children}</div>
     </div>
   );
