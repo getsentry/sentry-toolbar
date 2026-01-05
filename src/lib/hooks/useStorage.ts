@@ -1,42 +1,61 @@
+import type {SetStateAction} from 'react';
 import {useCallback} from 'react';
 import {useState} from 'react';
+import useWindowKeyValueSync from 'toolbar/hooks/useWindowKeyValueSync';
 import {localStorage, sessionStorage} from 'toolbar/utils/storage';
 
-function getStorageValue<Data>(storage: Storage, key: string, initialValue: Data) {
+function deserialize<Data>(storage: Storage, key: string, initialValue: Data): Data {
   try {
     const item = storage.getItem(key);
-    return item ? JSON.parse(item) : initialValue;
+    return item ? (JSON.parse(item) as Data) : initialValue;
   } catch (error) {
     console.error(error);
     return initialValue;
   }
 }
 
-export default function useStorage<Data>(
+function serialize<Data>(storage: Storage, key: string, value: Data) {
+  try {
+    storage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+/**
+ * Notifies and reacts to state changes.
+ * Use this you want to access local storage state from multiple components
+ * on the same page.
+ */
+function useStorage<Data>(
   storage: Storage,
   key: string,
-  initialValue: Data
+  initialValue: SetStateAction<Data>
 ): [Data, (value: Data) => void] {
-  const [storedValue, setStoredValue] = useState(() => getStorageValue(storage, key, initialValue));
+  // @ts-expect-error TS(2349): This expression is not callable.
+  const init = typeof initialValue === 'function' ? (initialValue(undefined) as Data) : initialValue;
+  const [value, setValue] = useState(() => deserialize(storage, key, init));
+  const dispatch = useWindowKeyValueSync({key, callback: setValue});
 
-  const setValue = useCallback(
-    (value: Data) => {
-      try {
-        setStoredValue(value);
-        storage.setItem(key, JSON.stringify(value));
-      } catch (error) {
-        console.error(error);
-      }
+  const setValueAndNotify = useCallback(
+    (newValue: Data) => {
+      setValue(newValue);
+      serialize(storage, key, newValue);
+      dispatch(newValue);
     },
-    [key, storage]
+    [key, dispatch, setValue, storage]
   );
-  return [storedValue, setValue];
+
+  return [value, setValueAndNotify];
 }
 
-export function useLocalStorage<Data>(key: string, initialValue: Data): [Data, (value: Data) => void] {
-  return useStorage<Data>(localStorage, key, initialValue);
+export function useLocalStorage<Data>(key: string, initialValue: SetStateAction<Data>): [Data, (value: Data) => void] {
+  return useStorage(localStorage, key, initialValue);
 }
 
-export function useSessionStorage<Data>(key: string, initialValue: Data): [Data, (value: Data) => void] {
-  return useStorage<Data>(sessionStorage, key, initialValue);
+export function useSessionStorage<Data>(
+  key: string,
+  initialValue: SetStateAction<Data>
+): [Data, (value: Data) => void] {
+  return useStorage(sessionStorage, key, initialValue);
 }

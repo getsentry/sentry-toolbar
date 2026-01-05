@@ -1,7 +1,8 @@
 import type {InfiniteData, UseInfiniteQueryResult} from '@tanstack/react-query';
 import {useVirtualizer, type VirtualItem} from '@tanstack/react-virtual';
 import {useEffect, useRef} from 'react';
-import LoadingSpinner from 'toolbar/components/LoadingSpinner';
+import LoadingSpinner from 'toolbar/components/base/LoadingSpinner';
+import ScrollableList from 'toolbar/components/base/ScrollableList';
 import type {ApiResult} from 'toolbar/types/api';
 
 interface Props<ListItem, Response = ApiResult<ListItem[]>> {
@@ -52,27 +53,26 @@ export default function InfiniteListItems<ListItem, Response = ApiResult<ListIte
   }, [hasNextPage, fetchNextPage, loadedRows.length, isFetchingNextPage, items]);
 
   return (
-    <div ref={parentRef} className="flex size-full flex-col overflow-auto overscroll-contain contain-strict">
-      <div style={{height: rowVirtualizer.getTotalSize()}} className="relative flex w-full flex-col">
-        <ul style={{transform: `translateY(${items[0]?.start ?? 0}px)`}} className="absolute left-0 top-0 w-full">
-          {items.length ? null : emptyMessage()}
-          {items.map(virtualItem => {
-            const isLoaderRow = virtualItem.index > loadedRows.length - 1;
-            const item = loadedRows.at(virtualItem.index);
+    <ScrollableList
+      ref={parentRef}
+      height={rowVirtualizer.getTotalSize()}
+      transform={`translateY(${items[0]?.start ?? 0}px)`}>
+      {items.length ? null : emptyMessage()}
+      {items.map(virtualItem => {
+        const isLoaderRow = virtualItem.index > loadedRows.length - 1;
+        const item = loadedRows.at(virtualItem.index);
 
-            return (
-              <li data-index={virtualItem.index} key={virtualItem.index} ref={rowVirtualizer.measureElement}>
-                {isLoaderRow
-                  ? hasNextPage
-                    ? loadingMoreMessage()
-                    : loadingCompleteMessage()
-                  : item && itemRenderer({item, virtualItem})}
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    </div>
+        return (
+          <li data-index={virtualItem.index} key={virtualItem.index} ref={rowVirtualizer.measureElement}>
+            {isLoaderRow
+              ? hasNextPage
+                ? loadingMoreMessage()
+                : loadingCompleteMessage()
+              : item && itemRenderer({item, virtualItem})}
+          </li>
+        );
+      })}
+    </ScrollableList>
   );
 }
 

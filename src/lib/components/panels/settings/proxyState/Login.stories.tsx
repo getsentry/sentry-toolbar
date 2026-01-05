@@ -1,14 +1,14 @@
 import type {Meta, StoryObj} from '@storybook/react-vite';
-import MissingProject from 'toolbar/components/unauth/MissingProject';
+import Login from 'toolbar/components/panels/settings/proxyState/Login';
 
 const meta = {
-  title: 'components/unauth/MissingProject',
-  component: MissingProject,
+  title: 'components/unauth/Login',
+  component: Login,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: 'centered',
   },
-} as Meta<typeof MissingProject>;
+} as Meta<typeof Login>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/react-vite';
-import InvalidDomain from 'toolbar/components/unauth/InvalidDomain';
+import InvalidDomain from 'toolbar/components/panels/settings/proxyState/InvalidDomain';
 
 const meta = {
   title: 'components/unauth/InvalidDomain',

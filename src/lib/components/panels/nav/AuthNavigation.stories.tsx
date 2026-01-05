@@ -1,12 +1,12 @@
 import type {Meta} from '@storybook/react-vite';
 import EdgeLayout, {NavArea} from 'toolbar/components/layouts/EdgeLayout';
-import Navigation from 'toolbar/components/Navigation';
+import NavigationPanel from 'toolbar/components/panels/nav/NavigationPanel';
 import {useConfigContext, StaticConfigProvider} from 'toolbar/context/ConfigContext';
 import type {Configuration} from 'toolbar/types/Configuration';
 
 const meta = {
-  title: 'components/Navigation',
-  component: Navigation,
+  title: 'components/panels/nav/NavigationPanel',
+  component: NavigationPanel,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: 'centered',
@@ -34,7 +34,7 @@ const meta = {
       ],
     },
   },
-} as Meta<typeof Navigation>;
+} as Meta<typeof NavigationPanel>;
 
 export default meta;
 
@@ -45,7 +45,7 @@ const Template = ({placement}: {placement: Configuration['placement']}) => {
     <StaticConfigProvider key={key++} config={{...baseConfig, placement}}>
       <EdgeLayout>
         <NavArea>
-          <Navigation />
+          <NavigationPanel />
         </NavArea>
       </EdgeLayout>
     </StaticConfigProvider>

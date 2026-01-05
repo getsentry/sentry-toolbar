@@ -1,4 +1,4 @@
-import {UnauthPillAppLink} from 'toolbar/components/unauth/UnauthPill';
+import SentryAppLink from 'toolbar/components/base/SentryAppLink';
 import {useConfigContext} from 'toolbar/context/ConfigContext';
 
 export default function MissingProject() {
@@ -7,13 +7,13 @@ export default function MissingProject() {
   return (
     <div className="flex gap-0.25">
       <span className="py-1">Missing Project</span>
-      <UnauthPillAppLink
+      <SentryAppLink
         to={{
           url: '/settings/projects/',
           query: {query: projectIdOrSlug},
         }}>
         Open project list
-      </UnauthPillAppLink>
+      </SentryAppLink>
     </div>
   );
 }
