@@ -1,4 +1,38 @@
 
+## 1.0.0-beta.22
+
+### New Features ✨
+
+- Toolbar v2: Unauth flow inside the EdgeLayout by @ryan953 in [#310](https://github.com/getsentry/sentry-toolbar/pull/310)
+
+### Bug Fixes 🐛
+
+- (InfiniteListItems) Fix types to support non-array based ApiResult objects by @ryan953 in [#279](https://github.com/getsentry/sentry-toolbar/pull/279)
+- Fix an issue where the drag+drop targets move when the page scrolls by @ryan953 in [#309](https://github.com/getsentry/sentry-toolbar/pull/309)
+
+### Build / dependencies / internal 🔧
+
+- Do not auto-publish the `latest` version to the CDN by @ryan953 in [#311](https://github.com/getsentry/sentry-toolbar/pull/311)
+- RM unused lockfile by @ryan953 in [#308](https://github.com/getsentry/sentry-toolbar/pull/308)
+- Bump production dependencies to latest versions by @ryan953 in [#307](https://github.com/getsentry/sentry-toolbar/pull/307)
+- Update vite inside the packages/toolbar folder as well by @ryan953 in [#306](https://github.com/getsentry/sentry-toolbar/pull/306)
+- Bump vite version by @ryan953 in [#304](https://github.com/getsentry/sentry-toolbar/pull/304)
+- Bump the node version expected, and let pnpm manage it by @ryan953 in [#303](https://github.com/getsentry/sentry-toolbar/pull/303)
+- Update UI deps by @ryan953 in [#291](https://github.com/getsentry/sentry-toolbar/pull/291)
+- Upgrade caniuse by @ryan953 in [#290](https://github.com/getsentry/sentry-toolbar/pull/290)
+- Upgrade stylelint by @ryan953 in [#289](https://github.com/getsentry/sentry-toolbar/pull/289)
+- Upgrade storybook by @ryan953 in [#288](https://github.com/getsentry/sentry-toolbar/pull/288)
+- Upgrade to React v19 and remove forwardRef() by @ryan953 in [#287](https://github.com/getsentry/sentry-toolbar/pull/287)
+- Upgrade ESLint and TS deps by @ryan953 in [#286](https://github.com/getsentry/sentry-toolbar/pull/286)
+- Move calls to setColorScheme into react, as effects by @ryan953 in [#282](https://github.com/getsentry/sentry-toolbar/pull/282)
+- Remove duplicate, unused, component by @ryan953 in [#283](https://github.com/getsentry/sentry-toolbar/pull/283)
+
+### Other
+
+- deps: Bump eslint dependencies by @ryan953 in [#301](https://github.com/getsentry/sentry-toolbar/pull/301)
+- deps: Bump storybook dependencies by @ryan953 in [#299](https://github.com/getsentry/sentry-toolbar/pull/299)
+- ci: Run codeql on every PR or push to main by @ryan953 in [2fa0bb45](https://github.com/getsentry/sentry-toolbar/commit/2fa0bb45e6978e0157c3c3f03d6b72f81af8a5b8)
+
 ## 1.0.0-beta.21
 
 ### Various fixes & improvements
