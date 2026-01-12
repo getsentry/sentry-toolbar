@@ -7,6 +7,7 @@ import FeatureFlagsPanel from 'toolbar/components/panels/featureFlags/FeatureFla
 import FeedbackPanel from 'toolbar/components/panels/feedback/FeedbackPanel';
 import IssuesPanel from 'toolbar/components/panels/issues/IssuesPanel';
 import NavigationPanel from 'toolbar/components/panels/nav/NavigationPanel';
+import SeerExplorerPanel from 'toolbar/components/panels/seerExplorer/SeerExplorerPanel';
 import ConfigPanel from 'toolbar/components/panels/settings/ConfigPanel';
 import SettingsPanel from 'toolbar/components/panels/settings/SettingsPanel';
 import {useApiProxyState} from 'toolbar/context/ApiProxyContext';
@@ -51,6 +52,7 @@ export default function AppRouter() {
             }>
             <Route path="/issues" element={<IssuesPanel />} />
             <Route path="/feedback" element={<FeedbackPanel />} />
+            <Route path="/seerExplorer" element={<SeerExplorerPanel />} />
           </Route>
         </Route>
       </Route>
