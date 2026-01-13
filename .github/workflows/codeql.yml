@@ -8,6 +8,10 @@ on:
   schedule:
     - cron: "44 12 * * 1"
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   analyze:
     name: Analyze
