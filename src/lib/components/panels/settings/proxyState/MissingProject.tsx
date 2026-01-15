@@ -5,8 +5,8 @@ export default function MissingProject() {
   const [{projectIdOrSlug}] = useConfigContext();
 
   return (
-    <div className="flex gap-0.25">
-      <span className="py-1">Missing Project</span>
+    <div className="flex flex-col gap-0.25">
+      <p>Missing Project</p>
       <SentryAppLink
         to={{
           url: '/settings/projects/',
