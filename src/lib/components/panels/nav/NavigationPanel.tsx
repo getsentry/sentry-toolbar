@@ -13,6 +13,7 @@ import {useApiProxyState} from 'toolbar/context/ApiProxyContext';
 import {useConfigContext} from 'toolbar/context/ConfigContext';
 import {useFeatureFlagAdapterContext} from 'toolbar/context/FeatureFlagAdapterContext';
 import {useMousePositionContext} from 'toolbar/context/MousePositionContext';
+import useSeerExplorerAccess from 'toolbar/hooks/useSeerExplorerAccess';
 import parsePlacement from 'toolbar/utils/parsePlacement';
 
 const navClassName = cva('flex items-center gap-1', {
@@ -31,6 +32,7 @@ export default function NavigationPanel() {
 
   const proxyState = useApiProxyState();
   const {overrides} = useFeatureFlagAdapterContext();
+  const {hasAccess: showSeerExplorer} = useSeerExplorerAccess();
 
   const [major] = parsePlacement(placement);
   const isHorizontal = ['top', 'bottom'].includes(major);
@@ -52,9 +54,11 @@ export default function NavigationPanel() {
 
           {isLoggedIn && (
             <>
-              <NavButton to="/seerExplorer" tooltip="Seer Explorer">
-                <IconSeer size="sm" />
-              </NavButton>
+              {showSeerExplorer && (
+                <NavButton to="/seerExplorer" tooltip="Seer Explorer">
+                  <IconSeer size="sm" />
+                </NavButton>
+              )}
 
               <NavButton to="/issues" tooltip="Issues">
                 <IconIssues size="sm" />
