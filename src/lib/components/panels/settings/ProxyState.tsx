@@ -29,7 +29,7 @@ export default function ProxyState() {
     case 'invalid-domain':
       return (
         <Fragment>
-          <InvalidDomain />;
+          <InvalidDomain />
           <Logout />
         </Fragment>
       );

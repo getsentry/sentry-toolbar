@@ -5,7 +5,7 @@ export default function InvalidDomain() {
   const [{projectIdOrSlug}] = useConfigContext();
 
   return (
-    <div className="flex gap-0.25">
+    <div className="flex flex-col gap-0.25">
       <span className="py-1">The domain is invalid or not configured</span>
       <SentryAppLink
         to={{

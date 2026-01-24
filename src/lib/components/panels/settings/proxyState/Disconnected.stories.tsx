@@ -2,7 +2,7 @@ import type {Meta, StoryObj} from '@storybook/react-vite';
 import Disconnected from 'toolbar/components/panels/settings/proxyState/Disconnected';
 
 const meta = {
-  title: 'components/unauth/Disconnected',
+  title: 'components/panels/settings/proxyState/Disconnected',
   component: Disconnected,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
