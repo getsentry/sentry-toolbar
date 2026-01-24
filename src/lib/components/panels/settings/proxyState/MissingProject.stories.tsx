@@ -2,7 +2,7 @@ import type {Meta, StoryObj} from '@storybook/react-vite';
 import MissingProject from 'toolbar/components/panels/settings/proxyState/MissingProject';
 
 const meta = {
-  title: 'components/unauth/MissingProject',
+  title: 'components/panels/settings/proxyState/MissingProject',
   component: MissingProject,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout

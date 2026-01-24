@@ -2,7 +2,7 @@ import type {Meta, StoryObj} from '@storybook/react-vite';
 import InvalidDomain from 'toolbar/components/panels/settings/proxyState/InvalidDomain';
 
 const meta = {
-  title: 'components/unauth/InvalidDomain',
+  title: 'components/panels/settings/proxyState/InvalidDomain',
   component: InvalidDomain,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout

@@ -1,3 +1,4 @@
+import {Fragment} from 'react';
 import Connecting from 'toolbar/components/panels/settings/proxyState/Connecting';
 import Disconnected from 'toolbar/components/panels/settings/proxyState/Disconnected';
 import InvalidDomain from 'toolbar/components/panels/settings/proxyState/InvalidDomain';
@@ -19,9 +20,19 @@ export default function ProxyState() {
     case 'logged-out':
       return <Login />;
     case 'missing-project':
-      return <MissingProject />;
+      return (
+        <Fragment>
+          <MissingProject />
+          <Logout />
+        </Fragment>
+      );
     case 'invalid-domain':
-      return <InvalidDomain />;
+      return (
+        <Fragment>
+          <InvalidDomain />
+          <Logout />
+        </Fragment>
+      );
     case 'logged-in':
       return <Logout />;
   }

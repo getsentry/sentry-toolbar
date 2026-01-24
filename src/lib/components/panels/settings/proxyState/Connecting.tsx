@@ -12,5 +12,9 @@ export default function Connecting() {
   });
   useEffect(start, [start]);
 
-  return isVisible ? <span className="py-1">Connecting to {sentryOrigin}...</span> : null;
+  return isVisible ? (
+    <span className="py-1">
+      Connecting to <code>{sentryOrigin}</code>...
+    </span>
+  ) : null;
 }

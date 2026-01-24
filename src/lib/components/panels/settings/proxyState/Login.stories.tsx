@@ -2,7 +2,7 @@ import type {Meta, StoryObj} from '@storybook/react-vite';
 import Login from 'toolbar/components/panels/settings/proxyState/Login';
 
 const meta = {
-  title: 'components/unauth/Login',
+  title: 'components/panels/settings/proxyState/Login',
   component: Login,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
