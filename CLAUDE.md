@@ -18,6 +18,13 @@ React/TypeScript library that embeds in web apps to provide quick access to Sent
 
 ## Non-Negotiable Rules
 
+**Package Manager**
+- ALWAYS use `pnpm` - NEVER use `npm` or `npx`
+- Use `pnpm dlx` instead of `npx` for running packages
+- Examples:
+  - ✅ `pnpm install`, `pnpm add package`, `pnpm dlx prettier`
+  - ❌ `npm install`, `npm i`, `npx prettier`
+
 **Error Handling**
 - Never silently catch errors. Always log or show user feedback.
 - Bad: `catch (e) {}`
