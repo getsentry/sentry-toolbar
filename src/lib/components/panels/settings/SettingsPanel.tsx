@@ -1,9 +1,10 @@
 import {cx} from 'cva';
+import {addDays, addMonths} from 'date-fns';
 import {twMerge} from 'tailwind-merge';
-import Button from 'toolbar/components/base/Button';
 import ExternalLink from 'toolbar/components/base/ExternalLink';
 import InternalLink from 'toolbar/components/base/InternalLink';
 import ScrollableList from 'toolbar/components/base/ScrollableList';
+import Select from 'toolbar/components/base/Select';
 import SentryAppLink from 'toolbar/components/base/SentryAppLink';
 import SwitchButton from 'toolbar/components/base/SwitchButton';
 import IconChevron from 'toolbar/components/icon/IconChevron';
@@ -23,9 +24,11 @@ const sectionPadding = cx('px-2 py-1');
 const sectionBorder = cx('border-b border-b-translucentGray-200');
 const rowClass = cx('flex items-center justify-between gap-1');
 
+type HideDuration = 'session' | 'day' | 'month';
+
 export default function SettingsPanel() {
   const proxyState = useApiProxyState();
-  const [, setIsHidden] = useHiddenAppContext();
+  const [, setHideDuration] = useHiddenAppContext();
   const {isPinned, setIsPinned} = useNavigationExpansion();
 
   const [{organizationSlug, projectIdOrSlug}] = useConfigContext();
@@ -71,11 +74,32 @@ export default function SettingsPanel() {
         <li className={cx(rowClass, sectionPadding, sectionBorder)}>
           <span className="flex items-center gap-1 text-sm">
             <IconShow size="sm" />
-            Hide for Session
+            Hide Toolbar
           </span>
-          <Button onClick={() => setIsHidden(true)} aria-label="Hide for Session" title="Hide for Session">
-            Hide
-          </Button>
+          <Select
+            onChange={e => {
+              switch (e.target.value as HideDuration) {
+                case 'session':
+                  setHideDuration('session');
+                  break;
+                case 'day':
+                  setHideDuration(addDays(new Date(), 1));
+                  break;
+                case 'month':
+                  setHideDuration(addMonths(new Date(), 1));
+                  break;
+              }
+            }}
+            defaultValue=""
+            aria-label="Hide Toolbar"
+            title="Hide Toolbar">
+            <option value="" disabled>
+              Select duration
+            </option>
+            <option value="session">This Session</option>
+            <option value="day">1 Day</option>
+            <option value="month">1 Month</option>
+          </Select>
         </li>
 
         <li className={cx(rowClass, sectionPadding)}>
