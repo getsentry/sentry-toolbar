@@ -19,6 +19,7 @@ import ProxyState from 'toolbar/components/panels/settings/ProxyState';
 import {useApiProxyState} from 'toolbar/context/ApiProxyContext';
 import {useConfigContext} from 'toolbar/context/ConfigContext';
 import {useHiddenAppContext} from 'toolbar/context/HiddenAppContext';
+import useToast from 'toolbar/hooks/useToast';
 
 const sectionPadding = cx('px-2 py-1');
 const sectionBorder = cx('border-b border-b-translucentGray-200');
@@ -28,6 +29,7 @@ export default function SettingsPanel() {
   const proxyState = useApiProxyState();
   const [, setHideDuration] = useHiddenAppContext();
   const {isPinned, setIsPinned} = useNavigationExpansion();
+  const {showToast} = useToast();
 
   const [{organizationSlug, projectIdOrSlug}] = useConfigContext();
 
@@ -80,12 +82,15 @@ export default function SettingsPanel() {
               const value = e.target.value;
               switch (value) {
                 case 'session':
+                  showToast('Toolbar hidden for this session');
                   setHideDuration('session');
                   break;
                 case 'day':
+                  showToast('Toolbar hidden for 1 day');
                   setHideDuration(addDays(new Date(), 1));
                   break;
                 case 'month':
+                  showToast('Toolbar hidden for 1 month');
                   setHideDuration(addMonths(new Date(), 1));
                   break;
               }

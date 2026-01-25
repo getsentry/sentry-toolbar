@@ -9,6 +9,7 @@ import {MousePositionProvider} from 'toolbar/context/MousePositionContext';
 import PortalTargetContext from 'toolbar/context/PortalTargetContext';
 import ReactMountContext from 'toolbar/context/ReactMountContext';
 import ShadowRootContext from 'toolbar/context/ShadowRootContext';
+import {ToastProvider} from 'toolbar/context/ToastContext';
 import type {Configuration} from 'toolbar/types/Configuration';
 import setColorScheme from 'toolbar/utils/setColorScheme';
 
@@ -35,7 +36,9 @@ export default function Providers({children, config, portalMount, reactMount, sh
                   <MemoryRouter>
                     <FeatureFlagAdapterProvider>
                       <MutableConfigProvider>
-                        <MousePositionProvider>{children}</MousePositionProvider>
+                        <ToastProvider>
+                          <MousePositionProvider>{children}</MousePositionProvider>
+                        </ToastProvider>
                       </MutableConfigProvider>
                     </FeatureFlagAdapterProvider>
                   </MemoryRouter>
