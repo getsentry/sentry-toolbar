@@ -25,8 +25,6 @@ const sectionPadding = cx('px-2 py-1');
 const sectionBorder = cx('border-b border-b-translucentGray-200');
 const rowClass = cx('flex items-center justify-between gap-1');
 
-type HideDuration = 'session' | 'day' | 'month';
-
 export default function SettingsPanel() {
   const proxyState = useApiProxyState();
   const [, setHideDuration] = useHiddenAppContext();
@@ -81,7 +79,7 @@ export default function SettingsPanel() {
           <Select
             value={hideSelectValue}
             onChange={e => {
-              const value = e.target.value as HideDuration;
+              const value = e.target.value;
               switch (value) {
                 case 'session':
                   setHideDuration('session');
