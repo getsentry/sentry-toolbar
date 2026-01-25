@@ -37,12 +37,11 @@ React/TypeScript library that embeds in web apps to provide quick access to Sent
 
 **TypeScript**
 - Avoid `any` - use `unknown` with type guards
-- Export types with components: `interface ComponentProps`
 - Prefer `interface Props` over `type Props = {}` for React component props
 
 **React**
 - Function components only
-- Props interface: `{ComponentName}Props`
+- Props interface: `Props`
 - Extract reusable logic to custom hooks
 
 **Styling**

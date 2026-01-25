@@ -1,6 +1,5 @@
 import {cx} from 'cva';
 import {addDays, addMonths} from 'date-fns';
-import {useState} from 'react';
 import {twMerge} from 'tailwind-merge';
 import ExternalLink from 'toolbar/components/base/ExternalLink';
 import InternalLink from 'toolbar/components/base/InternalLink';
@@ -29,7 +28,6 @@ export default function SettingsPanel() {
   const proxyState = useApiProxyState();
   const [, setHideDuration] = useHiddenAppContext();
   const {isPinned, setIsPinned} = useNavigationExpansion();
-  const [hideSelectValue] = useState('');
 
   const [{organizationSlug, projectIdOrSlug}] = useConfigContext();
 
@@ -77,7 +75,7 @@ export default function SettingsPanel() {
             Hide Toolbar
           </span>
           <Select
-            value={hideSelectValue}
+            value=""
             onChange={e => {
               const value = e.target.value;
               switch (value) {

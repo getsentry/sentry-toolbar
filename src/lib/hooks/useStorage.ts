@@ -55,12 +55,12 @@ function useStorage<Data extends Serializable | SerializableArray | Serializable
   const [value, setValue] = useState<Data>(() => deserialize(storage, key, init));
 
   const handleSync = useCallback(
-    (value: unknown) => {
+    (value: Data | undefined) => {
       if (value === undefined) {
         setValue(init);
         storage.removeItem(key);
       } else {
-        setValue(value as Data);
+        setValue(value);
       }
     },
     [init, key, storage]
