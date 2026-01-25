@@ -86,6 +86,7 @@ export function HiddenAppProvider({children}: {children: ReactNode}) {
   return <HiddenAppContext.Provider value={[isHidden, setHideDuration]}>{children}</HiddenAppContext.Provider>;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useHiddenAppContext() {
   return useContext(HiddenAppContext);
 }

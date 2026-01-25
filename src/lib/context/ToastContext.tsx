@@ -56,8 +56,7 @@ function ToastContainer({toasts}: ToastContainerProps) {
       {toasts.map(toast => (
         <div
           key={toast.id}
-          // eslint-disable-next-line tailwindcss/no-custom-classname
-          className="animate-in slide-in-from-right pointer-events-auto rounded-md border border-purple-300 bg-purple-300 px-3 py-2 text-sm text-white shadow-lg">
+          className="pointer-events-auto animate-slide-in-right rounded-md border border-purple-300 bg-purple-300 px-3 py-2 text-sm text-white shadow-lg">
           {toast.message}
         </div>
       ))}
