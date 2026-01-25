@@ -46,17 +46,23 @@ function useStorage<Data extends Serializable | SerializableArray | Serializable
 ): [Data, (value: Data) => void, () => void] {
   // @ts-expect-error TS(2349): This expression is not callable.
   const init = typeof initialValue === 'function' ? initialValue(undefined) : initialValue;
-  const [value, setValue] = useState<Data | undefined>(() => deserialize(storage, key, init));
-  const dispatch = useWindowKeyValueSync({
-    key,
-    callback: value => {
+  const [value, setValue] = useState<Data>(() => deserialize(storage, key, init));
+
+  const handleSync = useCallback(
+    (value: unknown) => {
       if (value === undefined) {
-        setValue(undefined);
+        setValue(init);
         storage.removeItem(key);
       } else {
         setValue(value as Data);
       }
     },
+    [init, key, storage]
+  );
+
+  const dispatch = useWindowKeyValueSync({
+    key,
+    callback: handleSync,
   });
 
   const setValueAndNotify = useCallback(
@@ -65,15 +71,16 @@ function useStorage<Data extends Serializable | SerializableArray | Serializable
       serialize(storage, key, newValue);
       dispatch(newValue);
     },
-    [key, dispatch, setValue, storage]
+    [key, dispatch, storage]
   );
 
   const clearValue = useCallback(() => {
+    setValue(init);
     storage.removeItem(key);
     dispatch(undefined);
-  }, [key, dispatch, storage]);
+  }, [init, key, dispatch, storage]);
 
-  return [value as Data, setValueAndNotify, clearValue];
+  return [value, setValueAndNotify, clearValue];
 }
 
 export function useLocalStorage<Data extends Serializable | SerializableArray | SerializableRecord>(

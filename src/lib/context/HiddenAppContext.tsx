@@ -22,15 +22,12 @@ export function HiddenAppProvider({children}: {children: ReactNode}) {
 
       if (hiddenUntilDate > now) {
         return true;
-      } else {
-        // Hide duration has expired, clear it
-        clearHiddenUntil();
-        return false;
       }
+      // If expired, return false and let useEffect handle cleanup
     }
 
     return false;
-  }, [clearHiddenUntil, hiddenForSession, hiddenUntil]);
+  }, [hiddenForSession, hiddenUntil]);
 
   useEffect(() => {
     // Check periodically if time-based hiding has expired (every minute)
@@ -53,15 +50,19 @@ export function HiddenAppProvider({children}: {children: ReactNode}) {
     (hiddenUntil: 'session' | Date) => {
       try {
         if (hiddenUntil === 'session') {
+          // Clear time-based hiding when switching to session-based
+          clearHiddenUntil();
           setHiddenForSession(true);
         } else {
+          // Clear session-based hiding when switching to time-based
+          setHiddenForSession(false);
           setHiddenUntil(hiddenUntil.toISOString());
         }
       } catch (error) {
         console.error('Failed to set hide duration:', error);
       }
     },
-    [setHiddenForSession, setHiddenUntil]
+    [clearHiddenUntil, setHiddenForSession, setHiddenUntil]
   );
 
   if (isHidden) {
