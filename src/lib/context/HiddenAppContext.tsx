@@ -30,21 +30,24 @@ export function HiddenAppProvider({children}: {children: ReactNode}) {
   }, [hiddenForSession, hiddenUntil]);
 
   useEffect(() => {
+    // Only set up interval if there's a time-based hide duration
+    if (!hiddenUntil) {
+      return;
+    }
+
     // Check periodically if time-based hiding has expired (every minute)
     const interval = setInterval(() => {
-      if (hiddenUntil) {
-        const hiddenUntilDate = new Date(hiddenUntil);
-        const now = new Date();
+      const hiddenUntilDate = new Date(hiddenUntil);
+      const now = new Date();
 
-        if (hiddenUntilDate <= now) {
-          // Hide duration has expired, clear it
-          clearHiddenUntil();
-        }
+      if (hiddenUntilDate <= now) {
+        // Hide duration has expired, clear it
+        clearHiddenUntil();
       }
     }, 60 * 1000); // Check every minute
 
     return () => clearInterval(interval);
-  }, [clearHiddenUntil, hiddenUntil, setHiddenUntil]);
+  }, [clearHiddenUntil, hiddenUntil]);
 
   const setHideDuration = useCallback(
     (hiddenUntil: 'session' | Date) => {
