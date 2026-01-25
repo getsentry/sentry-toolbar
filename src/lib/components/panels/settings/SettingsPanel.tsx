@@ -31,7 +31,7 @@ export default function SettingsPanel() {
   const proxyState = useApiProxyState();
   const [, setHideDuration] = useHiddenAppContext();
   const {isPinned, setIsPinned} = useNavigationExpansion();
-  const [hideSelectValue, setHideSelectValue] = useState('');
+  const [hideSelectValue] = useState('');
 
   const [{organizationSlug, projectIdOrSlug}] = useConfigContext();
 
@@ -93,8 +93,6 @@ export default function SettingsPanel() {
                   setHideDuration(addMonths(new Date(), 1));
                   break;
               }
-              // Reset select to empty after triggering hide
-              setHideSelectValue('');
             }}
             aria-label="Hide Toolbar"
             title="Hide Toolbar">
