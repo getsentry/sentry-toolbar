@@ -1,6 +1,7 @@
 import type {ReactNode} from 'react';
 import {createContext, useCallback, useContext, useEffect, useMemo} from 'react';
 import {useLocalStorage, useSessionStorage} from 'toolbar/hooks/useStorage';
+import {localStorage as storage} from 'toolbar/utils/storage';
 
 const HiddenAppContext = createContext<[boolean, (duration: 'session' | Date) => void]>([false, () => {}]);
 
@@ -37,12 +38,22 @@ export function HiddenAppProvider({children}: {children: ReactNode}) {
 
     // Check periodically if time-based hiding has expired (every minute)
     const interval = setInterval(() => {
-      const hiddenUntilDate = new Date(hiddenUntil);
-      const now = new Date();
+      // Read fresh value from localStorage to handle cross-tab updates
+      const currentHideUntil = storage.getItem('hideUntil');
+      if (!currentHideUntil) {
+        return;
+      }
 
-      if (hiddenUntilDate <= now) {
-        // Hide duration has expired, clear it
-        clearHiddenUntil();
+      try {
+        const hiddenUntilDate = new Date(JSON.parse(currentHideUntil));
+        const now = new Date();
+
+        if (hiddenUntilDate <= now) {
+          // Hide duration has expired, clear it
+          clearHiddenUntil();
+        }
+      } catch (error) {
+        console.error('Failed to parse hideUntil from localStorage:', error);
       }
     }, 60 * 1000); // Check every minute
 
