@@ -17,9 +17,9 @@ const selectVariants = cva(
   }
 );
 
-type Props = ComponentProps<'select'> & {
+interface Props extends ComponentProps<'select'> {
   variant?: 'default' | 'primary';
-};
+}
 
 export default function Select({className, children, variant, ...props}: Props) {
   return (
