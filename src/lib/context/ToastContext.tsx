@@ -52,11 +52,11 @@ function ToastContainer({toasts}: ToastContainerProps) {
   }
 
   return (
-    <div className="pointer-events-none fixed bottom-4 right-4 z-debug flex flex-col gap-2">
+    <div className="pointer-events-none fixed bottom-4 right-4 z-debug flex flex-col gap-1">
       {toasts.map(toast => (
         <div
           key={toast.id}
-          className="pointer-events-auto animate-slide-in-right rounded-md border border-purple-300 bg-purple-300 px-3 py-2 text-sm text-white shadow-lg">
+          className="pointer-events-auto animate-slide-in-right self-end rounded-md border border-purple-300 bg-purple-400 px-2 py-1 text-sm text-white shadow-lg">
           {toast.message}
         </div>
       ))}

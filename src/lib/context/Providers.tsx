@@ -27,27 +27,27 @@ export default function Providers({children, config, portalMount, reactMount, sh
 
   return (
     <StaticConfigProvider config={config}>
-      <HiddenAppProvider>
-        <ShadowRootContext.Provider value={shadowRoot}>
-          <ReactMountContext.Provider value={reactMount}>
-            <PortalTargetContext.Provider value={portalMount}>
-              <ApiProxyContextProvider>
-                <QueryProvider>
-                  <MemoryRouter>
-                    <FeatureFlagAdapterProvider>
-                      <MutableConfigProvider>
-                        <ToastProvider>
+      <ToastProvider>
+        <HiddenAppProvider>
+          <ShadowRootContext.Provider value={shadowRoot}>
+            <ReactMountContext.Provider value={reactMount}>
+              <PortalTargetContext.Provider value={portalMount}>
+                <ApiProxyContextProvider>
+                  <QueryProvider>
+                    <MemoryRouter>
+                      <FeatureFlagAdapterProvider>
+                        <MutableConfigProvider>
                           <MousePositionProvider>{children}</MousePositionProvider>
-                        </ToastProvider>
-                      </MutableConfigProvider>
-                    </FeatureFlagAdapterProvider>
-                  </MemoryRouter>
-                </QueryProvider>
-              </ApiProxyContextProvider>
-            </PortalTargetContext.Provider>
-          </ReactMountContext.Provider>
-        </ShadowRootContext.Provider>
-      </HiddenAppProvider>
+                        </MutableConfigProvider>
+                      </FeatureFlagAdapterProvider>
+                    </MemoryRouter>
+                  </QueryProvider>
+                </ApiProxyContextProvider>
+              </PortalTargetContext.Provider>
+            </ReactMountContext.Provider>
+          </ShadowRootContext.Provider>
+        </HiddenAppProvider>
+      </ToastProvider>
     </StaticConfigProvider>
   );
 }
