@@ -1,5 +1,5 @@
 import type {SetStateAction} from 'react';
-import {useCallback} from 'react';
+import {useCallback, useMemo} from 'react';
 import {useState} from 'react';
 import useWindowKeyValueSync from 'toolbar/hooks/useWindowKeyValueSync';
 import {localStorage, sessionStorage} from 'toolbar/utils/storage';
@@ -44,8 +44,14 @@ function useStorage<Data extends Serializable | SerializableArray | Serializable
   key: string,
   initialValue: SetStateAction<Data>
 ): [Data, (value: Data) => void, () => void] {
-  // @ts-expect-error TS(2349): This expression is not callable.
-  const init = typeof initialValue === 'function' ? initialValue(undefined) : initialValue;
+  const init = useMemo(
+    () =>
+      typeof initialValue === 'function'
+        ? // @ts-expect-error - initialValue could be a function that takes undefined
+          initialValue(undefined)
+        : initialValue,
+    [initialValue]
+  );
   const [value, setValue] = useState<Data>(() => deserialize(storage, key, init));
 
   const handleSync = useCallback(
