@@ -31,7 +31,7 @@ describe('useLocalStorage', () => {
   });
 
   it('updates state and persists to storage', () => {
-    const {result} = renderHook(() => useLocalStorage('test-key', 'initial'));
+    const {result} = renderHook(() => useLocalStorage<string>('test-key', 'initial'));
 
     act(() => {
       result.current[1]('new-value');
@@ -79,8 +79,8 @@ describe('useLocalStorage', () => {
   });
 
   it('syncs value across multiple hook instances via window events', () => {
-    const {result: result1} = renderHook(() => useLocalStorage('test-key', 'initial'));
-    const {result: result2} = renderHook(() => useLocalStorage('test-key', 'initial'));
+    const {result: result1} = renderHook(() => useLocalStorage<string>('test-key', 'initial'));
+    const {result: result2} = renderHook(() => useLocalStorage<string>('test-key', 'initial'));
 
     act(() => {
       result1.current[1]('synced-value');
@@ -91,8 +91,8 @@ describe('useLocalStorage', () => {
   });
 
   it('does not sync values between different keys', () => {
-    const {result: resultA} = renderHook(() => useLocalStorage('key-a', 'initial-a'));
-    const {result: resultB} = renderHook(() => useLocalStorage('key-b', 'initial-b'));
+    const {result: resultA} = renderHook(() => useLocalStorage<string>('key-a', 'initial-a'));
+    const {result: resultB} = renderHook(() => useLocalStorage<string>('key-b', 'initial-b'));
 
     act(() => {
       resultA.current[1]('new-a');
@@ -103,7 +103,7 @@ describe('useLocalStorage', () => {
   });
 
   it('returns stable setter function', () => {
-    const {result, rerender} = renderHook(() => useLocalStorage('test-key', 'initial'));
+    const {result, rerender} = renderHook(() => useLocalStorage<string>('test-key', 'initial'));
 
     const firstSetter = result.current[1];
     rerender();
@@ -113,7 +113,7 @@ describe('useLocalStorage', () => {
   });
 
   it('handles boolean values', () => {
-    const {result} = renderHook(() => useLocalStorage('test-key', false));
+    const {result} = renderHook(() => useLocalStorage<boolean>('test-key', false));
 
     expect(result.current[0]).toBe(false);
 
@@ -137,7 +137,7 @@ describe('useLocalStorage', () => {
   });
 
   it('handles numeric values', () => {
-    const {result} = renderHook(() => useLocalStorage('test-key', 0));
+    const {result} = renderHook(() => useLocalStorage<number>('test-key', 0));
 
     act(() => {
       result.current[1](42);
@@ -168,7 +168,7 @@ describe('useSessionStorage', () => {
   });
 
   it('updates state and persists to storage', () => {
-    const {result} = renderHook(() => useSessionStorage('test-key', 'initial'));
+    const {result} = renderHook(() => useSessionStorage<string>('test-key', 'initial'));
 
     act(() => {
       result.current[1]('new-value');
@@ -179,8 +179,8 @@ describe('useSessionStorage', () => {
   });
 
   it('syncs value across multiple hook instances via window events', () => {
-    const {result: result1} = renderHook(() => useSessionStorage('test-key', 'initial'));
-    const {result: result2} = renderHook(() => useSessionStorage('test-key', 'initial'));
+    const {result: result1} = renderHook(() => useSessionStorage<string>('test-key', 'initial'));
+    const {result: result2} = renderHook(() => useSessionStorage<string>('test-key', 'initial'));
 
     act(() => {
       result1.current[1]('synced-value');

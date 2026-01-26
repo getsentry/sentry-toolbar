@@ -45,6 +45,7 @@ const preview: Preview = {
     },
     config: baseConfig,
   },
+  tags: ['autodocs'],
 };
 
 export default preview;

@@ -9,6 +9,7 @@ import {MousePositionProvider} from 'toolbar/context/MousePositionContext';
 import PortalTargetContext from 'toolbar/context/PortalTargetContext';
 import ReactMountContext from 'toolbar/context/ReactMountContext';
 import ShadowRootContext from 'toolbar/context/ShadowRootContext';
+import {ToastProvider} from 'toolbar/context/ToastContext';
 import type {Configuration} from 'toolbar/types/Configuration';
 import setColorScheme from 'toolbar/utils/setColorScheme';
 
@@ -26,25 +27,27 @@ export default function Providers({children, config, portalMount, reactMount, sh
 
   return (
     <StaticConfigProvider config={config}>
-      <HiddenAppProvider>
-        <ShadowRootContext.Provider value={shadowRoot}>
-          <ReactMountContext.Provider value={reactMount}>
-            <PortalTargetContext.Provider value={portalMount}>
-              <ApiProxyContextProvider>
-                <QueryProvider>
-                  <MemoryRouter>
-                    <FeatureFlagAdapterProvider>
-                      <MutableConfigProvider>
-                        <MousePositionProvider>{children}</MousePositionProvider>
-                      </MutableConfigProvider>
-                    </FeatureFlagAdapterProvider>
-                  </MemoryRouter>
-                </QueryProvider>
-              </ApiProxyContextProvider>
-            </PortalTargetContext.Provider>
-          </ReactMountContext.Provider>
-        </ShadowRootContext.Provider>
-      </HiddenAppProvider>
+      <ToastProvider>
+        <HiddenAppProvider>
+          <ShadowRootContext.Provider value={shadowRoot}>
+            <ReactMountContext.Provider value={reactMount}>
+              <PortalTargetContext.Provider value={portalMount}>
+                <ApiProxyContextProvider>
+                  <QueryProvider>
+                    <MemoryRouter>
+                      <FeatureFlagAdapterProvider>
+                        <MutableConfigProvider>
+                          <MousePositionProvider>{children}</MousePositionProvider>
+                        </MutableConfigProvider>
+                      </FeatureFlagAdapterProvider>
+                    </MemoryRouter>
+                  </QueryProvider>
+                </ApiProxyContextProvider>
+              </PortalTargetContext.Provider>
+            </ReactMountContext.Provider>
+          </ShadowRootContext.Provider>
+        </HiddenAppProvider>
+      </ToastProvider>
     </StaticConfigProvider>
   );
 }

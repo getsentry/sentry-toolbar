@@ -18,6 +18,13 @@ React/TypeScript library that embeds in web apps to provide quick access to Sent
 
 ## Non-Negotiable Rules
 
+**Package Manager**
+- ALWAYS use `pnpm` - NEVER use `npm` or `npx`
+- Use `pnpm dlx` instead of `npx` for running packages
+- Examples:
+  - ✅ `pnpm install`, `pnpm add package`, `pnpm dlx prettier`
+  - ❌ `npm install`, `npm i`, `npx prettier`
+
 **Error Handling**
 - Never silently catch errors. Always log or show user feedback.
 - Bad: `catch (e) {}`
@@ -37,11 +44,11 @@ React/TypeScript library that embeds in web apps to provide quick access to Sent
 
 **TypeScript**
 - Avoid `any` - use `unknown` with type guards
-- Export types with components: `interface ComponentProps`
+- Prefer `interface Props` over `type Props = {}` for React component props
 
 **React**
 - Function components only
-- Props interface: `{ComponentName}Props`
+- Props interface: `Props`
 - Extract reusable logic to custom hooks
 
 **Styling**

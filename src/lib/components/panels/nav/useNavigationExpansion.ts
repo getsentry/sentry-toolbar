@@ -8,7 +8,7 @@ export default function useNavigationExpansion() {
   const timeoutRef = useRef<null | ReturnType<typeof setTimeout>>(null);
   const [isDelayedOpen, setIsDelayedOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const [isPinned, setIsPinned] = useLocalStorage('useNavigationExpansion_isPinned', false);
+  const [isPinned, setIsPinned] = useLocalStorage<boolean>('useNavigationExpansion_isPinned', false);
 
   useEffect(() => {
     if (isPinned || isHovered) {

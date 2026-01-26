@@ -55,4 +55,10 @@ function createStorage(getStorage: () => Storage): Storage {
 
 const localStorage = createStorage(() => window.localStorage);
 const sessionStorage = createStorage(() => window.sessionStorage);
+
+/**
+ * WARNING: Do not use these storage instances directly.
+ * Prefer the `useLocalStorage` and `useSessionStorage` hooks from
+ * `src/lib/hooks/useStorage.ts` which provide React state synchronization.
+ */
 export {localStorage, sessionStorage, noopStorage};

@@ -1,9 +1,10 @@
 import {cx} from 'cva';
+import {addDays, addMonths} from 'date-fns';
 import {twMerge} from 'tailwind-merge';
-import Button from 'toolbar/components/base/Button';
 import ExternalLink from 'toolbar/components/base/ExternalLink';
 import InternalLink from 'toolbar/components/base/InternalLink';
 import ScrollableList from 'toolbar/components/base/ScrollableList';
+import Select from 'toolbar/components/base/Select';
 import SentryAppLink from 'toolbar/components/base/SentryAppLink';
 import SwitchButton from 'toolbar/components/base/SwitchButton';
 import IconChevron from 'toolbar/components/icon/IconChevron';
@@ -18,6 +19,7 @@ import ProxyState from 'toolbar/components/panels/settings/ProxyState';
 import {useApiProxyState} from 'toolbar/context/ApiProxyContext';
 import {useConfigContext} from 'toolbar/context/ConfigContext';
 import {useHiddenAppContext} from 'toolbar/context/HiddenAppContext';
+import useToast from 'toolbar/hooks/useToast';
 
 const sectionPadding = cx('px-2 py-1');
 const sectionBorder = cx('border-b border-b-translucentGray-200');
@@ -25,8 +27,9 @@ const rowClass = cx('flex items-center justify-between gap-1');
 
 export default function SettingsPanel() {
   const proxyState = useApiProxyState();
-  const [, setIsHidden] = useHiddenAppContext();
+  const [, setHideDuration] = useHiddenAppContext();
   const {isPinned, setIsPinned} = useNavigationExpansion();
+  const {showToast} = useToast();
 
   const [{organizationSlug, projectIdOrSlug}] = useConfigContext();
 
@@ -71,11 +74,36 @@ export default function SettingsPanel() {
         <li className={cx(rowClass, sectionPadding, sectionBorder)}>
           <span className="flex items-center gap-1 text-sm">
             <IconShow size="sm" />
-            Hide for Session
+            Hide Toolbar
           </span>
-          <Button onClick={() => setIsHidden(true)} aria-label="Hide for Session" title="Hide for Session">
-            Hide
-          </Button>
+          <Select
+            value=""
+            onChange={e => {
+              const value = e.target.value;
+              switch (value) {
+                case 'session':
+                  showToast('Toolbar hidden for this session');
+                  setHideDuration('session');
+                  break;
+                case 'day':
+                  showToast('Toolbar hidden for 1 day');
+                  setHideDuration(addDays(new Date(), 1));
+                  break;
+                case 'month':
+                  showToast('Toolbar hidden for 1 month');
+                  setHideDuration(addMonths(new Date(), 1));
+                  break;
+              }
+            }}
+            aria-label="Hide Toolbar"
+            title="Hide Toolbar">
+            <option value="" disabled>
+              Select duration
+            </option>
+            <option value="session">This Session</option>
+            <option value="day">1 Day</option>
+            <option value="month">1 Month</option>
+          </Select>
         </li>
 
         <li className={cx(rowClass, sectionPadding)}>
