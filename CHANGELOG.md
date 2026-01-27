@@ -1,4 +1,26 @@
 
+## 1.0.0-beta.23
+
+### New Features ✨
+
+- Allow users to dismiss the toolbar, across all windows, for 1 day or 1 month by @ryan953 in [#319](https://github.com/getsentry/sentry-toolbar/pull/319)
+
+### Bug Fixes 🐛
+
+- (auth) When login doesnt connect fully, allow logout by @ryan953 in [#316](https://github.com/getsentry/sentry-toolbar/pull/316)
+
+### Internal Changes 🔧
+
+#### Release
+
+- Fix changelog-preview permissions by @BYK in [#315](https://github.com/getsentry/sentry-toolbar/pull/315)
+- Switch from action-prepare-release to Craft by @BYK in [#312](https://github.com/getsentry/sentry-toolbar/pull/312)
+
+#### Other
+
+- Add some config/setup for claude by @ryan953 in [#317](https://github.com/getsentry/sentry-toolbar/pull/317)
+- Use pull_request_target for changelog preview by @BYK in [#313](https://github.com/getsentry/sentry-toolbar/pull/313)
+
 ## 1.0.0-beta.22
 
 ### New Features ✨
