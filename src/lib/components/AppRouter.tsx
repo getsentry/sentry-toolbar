@@ -7,10 +7,12 @@ import FeatureFlagsPanel from 'toolbar/components/panels/featureFlags/FeatureFla
 import FeedbackPanel from 'toolbar/components/panels/feedback/FeedbackPanel';
 import IssuesPanel from 'toolbar/components/panels/issues/IssuesPanel';
 import NavigationPanel from 'toolbar/components/panels/nav/NavigationPanel';
+import SeerExplorerPanel from 'toolbar/components/panels/seerExplorer/SeerExplorerPanel';
 import ConfigPanel from 'toolbar/components/panels/settings/ConfigPanel';
 import SettingsPanel from 'toolbar/components/panels/settings/SettingsPanel';
 import {useApiProxyState} from 'toolbar/context/ApiProxyContext';
 import useClearQueryCacheOnProxyStateChange from 'toolbar/hooks/useClearQueryCacheOnProxyStateChange';
+import useSeerExplorerAccess from 'toolbar/hooks/useSeerExplorerAccess';
 
 export default function AppRouter() {
   useClearQueryCacheOnProxyStateChange();
@@ -51,6 +53,14 @@ export default function AppRouter() {
             }>
             <Route path="/issues" element={<IssuesPanel />} />
             <Route path="/feedback" element={<FeedbackPanel />} />
+            <Route
+              path="/seerExplorer"
+              element={
+                <RequireSeerExplorer>
+                  <SeerExplorerPanel />
+                </RequireSeerExplorer>
+              }
+            />
           </Route>
         </Route>
       </Route>
@@ -69,6 +79,23 @@ function RequireAuth({children}: {children: ReactNode}) {
   }, [proxyState, navigate]);
 
   if (proxyState !== 'logged-in') {
+    return null;
+  }
+
+  return children;
+}
+
+function RequireSeerExplorer({children}: {children: ReactNode}) {
+  const navigate = useNavigate();
+  const {hasAccess, isPending} = useSeerExplorerAccess();
+
+  useEffect(() => {
+    if (!isPending && !hasAccess) {
+      navigate('/');
+    }
+  }, [hasAccess, isPending, navigate]);
+
+  if (isPending || !hasAccess) {
     return null;
   }
 
