@@ -13,6 +13,11 @@ interface Props<Value> {
    * - Called with undefined when key is deleted in another tab
    */
   callback: (value: Value | undefined) => void;
+  /**
+   * Whether to enable cross-tab sync. Set to false for storage backends
+   * that don't fire cross-tab storage events (e.g. sessionStorage).
+   */
+  enabled?: boolean;
 }
 
 /**
@@ -33,8 +38,12 @@ interface Props<Value> {
  *   }
  * });
  */
-export default function useCrossTabStorageSync<Value>({key, callback}: Props<Value>) {
+export default function useCrossTabStorageSync<Value>({key, callback, enabled = true}: Props<Value>) {
   useEffect(() => {
+    if (!enabled) {
+      return;
+    }
+
     const handleStorageEvent = (e: StorageEvent) => {
       // Storage events fire for ALL localStorage changes, filter to our key
       const prefixedKey = STORAGE_PREFIX + key;
@@ -63,5 +72,5 @@ export default function useCrossTabStorageSync<Value>({key, callback}: Props<Val
     return () => {
       window.removeEventListener('storage', handleStorageEvent);
     };
-  }, [key, callback]);
+  }, [key, callback, enabled]);
 }

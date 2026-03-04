@@ -77,6 +77,7 @@ function useStorage<Data extends Serializable | SerializableArray | Serializable
   useCrossTabStorageSync<Data>({
     key,
     callback: handleSync,
+    enabled: storage === localStorage,
   });
 
   const setValueAndNotify = useCallback(
