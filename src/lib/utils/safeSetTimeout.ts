@@ -11,7 +11,7 @@ const MAX_TIMEOUT_MS = 2_147_483_647; // 2^31 - 1 ms
 export default function safeSetTimeout(callback: () => void, delay: number): () => void {
   let id: ReturnType<typeof setTimeout> | undefined;
 
-  if (delay <= MAX_TIMEOUT_MS) {
+  if (Number.isNaN(delay) || delay <= MAX_TIMEOUT_MS) {
     id = setTimeout(callback, delay);
   } else {
     id = setTimeout(() => {
