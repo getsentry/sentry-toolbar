@@ -1,4 +1,4 @@
-const PREFIX = 'sntry_';
+export const STORAGE_PREFIX = 'sntry_';
 
 // Noop storage for instances where storage is not available
 const noopStorage: Storage = {
@@ -24,7 +24,7 @@ const noopStorage: Storage = {
   },
 };
 
-const STORAGE_TEST_KEY = PREFIX + 'storage_check';
+const STORAGE_TEST_KEY = STORAGE_PREFIX + 'storage_check';
 
 // Returns a storage wrapper by trying to perform a single storage op.
 // This asserts that storage is both available and that it can be used.
@@ -42,10 +42,10 @@ function createStorage(getStorage: () => Storage): Storage {
     return {
       length: 0,
       clear: () => {}, // Don't clear localStorage on 3rd party websites
-      getItem: (key: string) => storage.getItem(PREFIX + key),
+      getItem: (key: string) => storage.getItem(STORAGE_PREFIX + key),
       key: () => null, // Don't snoop on values set within 3rd party websites
-      removeItem: (key: string) => storage.removeItem(PREFIX + key),
-      setItem: (key: string, value) => storage.setItem(PREFIX + key, value),
+      removeItem: (key: string) => storage.removeItem(STORAGE_PREFIX + key),
+      setItem: (key: string, value) => storage.setItem(STORAGE_PREFIX + key, value),
     };
   } catch (_e) {
     console.warn('Unable to create storage... using noopStorage');
