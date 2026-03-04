@@ -1,6 +1,7 @@
 import type {SetStateAction} from 'react';
 import {useCallback, useMemo} from 'react';
 import {useState} from 'react';
+import useCrossTabStorageSync from 'toolbar/hooks/useCrossTabStorageSync';
 import useWindowKeyValueSync from 'toolbar/hooks/useWindowKeyValueSync';
 import {localStorage, sessionStorage} from 'toolbar/utils/storage';
 
@@ -66,9 +67,17 @@ function useStorage<Data extends Serializable | SerializableArray | Serializable
     [init, key, storage]
   );
 
+  // Same-tab synchronization via CustomEvent
   const dispatch = useWindowKeyValueSync({
     key,
     callback: handleSync,
+  });
+
+  // Cross-tab synchronization via storage event (only for localStorage)
+  useCrossTabStorageSync<Data>({
+    key,
+    callback: handleSync,
+    enabled: storage === localStorage,
   });
 
   const setValueAndNotify = useCallback(

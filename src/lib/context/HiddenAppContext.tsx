@@ -1,7 +1,7 @@
 import type {ReactNode} from 'react';
 import {createContext, useCallback, useContext, useEffect, useMemo} from 'react';
 import {useLocalStorage, useSessionStorage} from 'toolbar/hooks/useStorage';
-import {localStorage as storage} from 'toolbar/utils/storage';
+import safeSetTimeout from 'toolbar/utils/safeSetTimeout';
 
 const HiddenAppContext = createContext<[boolean, (duration: 'session' | Date) => void]>([false, () => {}]);
 
@@ -30,34 +30,33 @@ export function HiddenAppProvider({children}: {children: ReactNode}) {
     return false;
   }, [hiddenForSession, hiddenUntil]);
 
+  // Set up timeout to clear hideUntil when it expires
   useEffect(() => {
-    // Only set up interval if there's a time-based hide duration
     if (!hiddenUntil) {
       return;
     }
 
-    // Check periodically if time-based hiding has expired (every minute)
-    const interval = setInterval(() => {
-      // Read fresh value from localStorage to handle cross-tab updates
-      const currentHideUntil = storage.getItem('hideUntil');
-      if (!currentHideUntil) {
+    try {
+      const hiddenUntilDate = new Date(hiddenUntil);
+      const now = new Date();
+      const msUntilExpiry = hiddenUntilDate.getTime() - now.getTime();
+
+      // If already expired, clear immediately
+      if (msUntilExpiry <= 0) {
+        clearHiddenUntil();
         return;
       }
 
-      try {
-        const hiddenUntilDate = new Date(JSON.parse(currentHideUntil));
-        const now = new Date();
+      const cancelTimeout = safeSetTimeout(() => {
+        clearHiddenUntil();
+      }, msUntilExpiry);
 
-        if (hiddenUntilDate <= now) {
-          // Hide duration has expired, clear it
-          clearHiddenUntil();
-        }
-      } catch (error) {
-        console.error('Failed to parse hideUntil from localStorage:', error);
-      }
-    }, 60 * 1000); // Check every minute
-
-    return () => clearInterval(interval);
+      return cancelTimeout;
+    } catch (error) {
+      console.error('Failed to parse hideUntil date:', error);
+      // If date parsing fails, clear the invalid value
+      clearHiddenUntil();
+    }
   }, [clearHiddenUntil, hiddenUntil]);
 
   const setHideDuration = useCallback(
