@@ -1,6 +1,7 @@
 import type {ReactNode} from 'react';
 import {createContext, useCallback, useContext, useEffect, useMemo} from 'react';
 import {useLocalStorage, useSessionStorage} from 'toolbar/hooks/useStorage';
+import safeSetTimeout from 'toolbar/utils/safeSetTimeout';
 
 const HiddenAppContext = createContext<[boolean, (duration: 'session' | Date) => void]>([false, () => {}]);
 
@@ -46,13 +47,11 @@ export function HiddenAppProvider({children}: {children: ReactNode}) {
         return;
       }
 
-      // Set timeout to clear exactly when it expires
-      // Note: setTimeout max is ~24.8 days, but this is fine for our use case (max 1 month)
-      const timeout = setTimeout(() => {
+      const cancelTimeout = safeSetTimeout(() => {
         clearHiddenUntil();
       }, msUntilExpiry);
 
-      return () => clearTimeout(timeout);
+      return cancelTimeout;
     } catch (error) {
       console.error('Failed to parse hideUntil date:', error);
       // If date parsing fails, clear the invalid value
