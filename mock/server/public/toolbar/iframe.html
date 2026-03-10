@@ -91,9 +91,15 @@
           // tokens be destroyed and reload the iframe in an unauth state.
           log('Has access info', { cookie: Boolean(document.cookie), accessToken: Boolean(accessToken) });
 
+          // const csrf = {'X-CSRFToken': getCsrfToken()};
+
           const initWithCreds = {
             ...init,
-            headers: { ...init.headers, ...bearer },
+            headers: {
+              ...init.headers,
+              ...bearer,
+              ...csrf,
+            },
             credentials: 'same-origin',
           };
           log({ initWithCreds });
