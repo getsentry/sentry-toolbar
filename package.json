@@ -126,5 +126,10 @@
     "vite": "7.3.0",
     "vite-plugin-dts": "4.5.4",
     "vite-plugin-svgr": "^4.5.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "@babel/plugin-transform-modules-systemjs": ">=7.29.4"
+    }
   }
 }
