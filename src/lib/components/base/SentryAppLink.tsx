@@ -14,12 +14,18 @@ export interface Props extends ComponentProps<typeof ExternalLink> {
 
 export default function SentryAppLink({children, className, to, onClick, ...props}: Props) {
   const [config] = useConfigContext();
+  const {organizationSlug} = config;
+
+  let urlPath = to.url;
+  if (organizationSlug && (urlPath.startsWith('/issues') || urlPath.startsWith('/user-feedback'))) {
+    urlPath = `/organizations/${organizationSlug}${urlPath}`;
+  }
 
   return (
     <ExternalLink
       {...props}
       to={{
-        url: `${getSentryWebOrigin(config)}${to.url}`,
+        url: `${getSentryWebOrigin(config)}${urlPath}`,
         query: to.query,
       }}
       onClick={onClick}
