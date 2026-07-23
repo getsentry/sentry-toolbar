@@ -17,7 +17,10 @@ export default function SentryAppLink({children, className, to, onClick, ...prop
   const {organizationSlug} = config;
 
   let urlPath = to.url;
-  if (organizationSlug && (urlPath.startsWith('/issues') || urlPath.startsWith('/user-feedback'))) {
+  if (
+    organizationSlug &&
+    (urlPath.startsWith('/issues') || urlPath.startsWith('/feedback') || urlPath.startsWith('/user-feedback'))
+  ) {
     urlPath = `/organizations/${organizationSlug}${urlPath}`;
   }
 
