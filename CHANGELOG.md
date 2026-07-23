@@ -1,4 +1,24 @@
 
+## 1.0.0-beta.24
+
+### New Features ✨
+
+- Sync localStorage operations & values across all tabs by @ryan953 in [#325](https://github.com/getsentry/sentry-toolbar/pull/325)
+
+### Bug Fixes 🐛
+
+- Prepend organizationSlug to issue and user-feedback URLs in SentryAppLink (#339) by @saitejabandaru-in in [#341](https://github.com/getsentry/sentry-toolbar/pull/341)
+- Include organization slug in issue link path for self-hosted Sen… by @SpiliosDimakopoulos in [#340](https://github.com/getsentry/sentry-toolbar/pull/340)
+
+### Internal Changes 🔧
+
+- (deps) Bump react-router-dom to 7.18.0 by @gggritso in [#337](https://github.com/getsentry/sentry-toolbar/pull/337)
+- Bump @babel/plugin-transform-modules-systemjs by @ryan953 in [#335](https://github.com/getsentry/sentry-toolbar/pull/335)
+- Bump vite to 7.3.2 by @ryan953 in [#334](https://github.com/getsentry/sentry-toolbar/pull/334)
+- Pin GitHub Actions to full-length commit SHAs by @joshuarli in [#331](https://github.com/getsentry/sentry-toolbar/pull/331)
+- Bump storybook dependency by @ryan953 in [#328](https://github.com/getsentry/sentry-toolbar/pull/328)
+- Run `pnpm update` to bump packages by @ryan953 in [#326](https://github.com/getsentry/sentry-toolbar/pull/326)
+
 ## 1.0.0-beta.23
 
 ### New Features ✨
