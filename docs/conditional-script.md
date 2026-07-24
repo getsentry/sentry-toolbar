@@ -1,4 +1,4 @@
-This file show one way to conditionally load the `<script>` tag, and call it within a react app.
+This file shows one way to conditionally load the `<script>` tag, and call it within a react app.
 
 There are 3 files to look at:
 - util to insert the script tag
