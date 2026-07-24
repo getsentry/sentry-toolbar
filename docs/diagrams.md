@@ -70,7 +70,7 @@ flowchart TB
     window.handleParent --> originIsReferrer{"messageEvent.origin === referrer?"}
     originIsReferrer -- true --> checkParentMessage{"messageEvent.data.message?"}
     checkParentMessage -- "request-login" --> window.open["window.open"]    
-    checkParentMessage -- "requets-logout" --> clearCookie{"document.cookie = ''"}
+    checkParentMessage -- "request-logout" --> clearCookie{"document.cookie = ''"}
     clearCookie --> opener.postMessage2["opener.postMessage('stale')"]
     
     parentPost -- enables --> port.handleMessage(("port.handleMessage"))

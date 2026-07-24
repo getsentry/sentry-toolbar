@@ -14,7 +14,7 @@ Bring critical Sentry insights and tools directly into your web app for easier t
 
 ## Usage
 
-To use the Sentry Toolbar, install `@sentry/toolbar` into your React project and include the hook in  a React component that wraps your app.
+To use the Sentry Toolbar, install `@sentry/toolbar` into your React project and include the hook in a React component that wraps your app.
 
 ```javascript
 import {useSentryToolbar} from '@sentry/toolbar';
