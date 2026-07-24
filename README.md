@@ -71,7 +71,7 @@ In production you can load up the Toolbar via a script tag, and configure it:
 </script>
 ```
 
-Or, if you're using React than you can install a package from NPM which will configure and inject the toolbar at once:
+Or, if you're using React then you can install a package from NPM which will configure and inject the toolbar at once:
 ```bash
 npm add @sentry/toolbar
 ```
@@ -89,13 +89,13 @@ useSentryToolbar({
 
 ### Deploy targets
 
-It's strongly recommended to think about what environments is your app deployed to, and of those which should have the toolbar available.
+It's strongly recommended to think about what environments your app is deployed to, and of those which should have the toolbar available.
 
 In dev and staging environments, it's possible to unconditionally include the toolbar so all developers and testers can use the toolbar and link from the page they're looking at back to sentry.
 
 In production it's strongly recommended to conditionally include the toolbar `<script>` tag so that only developers of your app, or members of your sentry organization can see it. The specific code for this is something you'll need to write based on how your app works.
 
-For example, if work at a company called Joshy's Pizza and need to be logged into the website to place an order. I add a condition like this to
+For example, if I work at a company called Joshy's Pizza and need to be logged into the website to place an order. I add a condition like this to
 a) show the toolbar at all times during development
 b) show the toolbar only if a pizza employee is logged in to the production environment
 
