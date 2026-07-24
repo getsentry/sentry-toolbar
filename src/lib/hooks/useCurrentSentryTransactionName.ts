@@ -7,7 +7,9 @@ export default function useCurrentSentryTransactionName() {
   const [{transactionToSearchTerm}] = useConfigContext();
   const {scope, client} = useSentryClientAndScope();
 
-  const [transactionName, setTransactionName] = useState(scope?.getScopeData().transactionName ?? '');
+  const [transactionName, setTransactionName] = useState(
+    scope?.getScopeData().transactionName || window.location.pathname
+  );
 
   useEffect(() => {
     if (client) {
