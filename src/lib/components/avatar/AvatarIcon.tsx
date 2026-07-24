@@ -32,7 +32,7 @@ export default function AvatarIcon({name, avatarUrl, type, tooltip, size = 'sm'}
     <Tooltip>
       <TooltipTrigger>
         {avatarUrl ? (
-          <img className={cx(imageClassName({size, type}))} src={avatarUrl} />
+          <img className={cx(imageClassName({size, type}))} src={avatarUrl} alt={name} />
         ) : (
           <span className={cx(imageClassName({size, type}))} style={{backgroundColor: getAvatarColor(name)}}>
             {getAvatarInitials(name)}
